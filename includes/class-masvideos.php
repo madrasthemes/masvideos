@@ -72,6 +72,7 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
         private function define_constants() {
             $this->define( 'MAS_VIDEOS_ABSPATH', dirname( MAS_VIDEOS_PLUGIN_FILE ) . '/' );
             $this->define( 'MAS_VIDEOS_PLUGIN_BASENAME', plugin_basename( MAS_VIDEOS_PLUGIN_FILE ) );
+            $this->define( 'MAS_VIDEOS_VERSION', $this->version );
             $this->define( 'MAS_VIDEOS_TEMPLATE_DEBUG_MODE', false );
         }
 
@@ -84,12 +85,14 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
              */
             include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';
             include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
+            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
         }
 
         /**
          * Init Mas_Videos when Wordpress Initializes
          */
         public function init_hooks() {
+            register_activation_hook( MAS_VIDEOS_PLUGIN_FILE, array( 'Mas_Videos_Install', 'install' ) );
             // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         }
 
