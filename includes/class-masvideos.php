@@ -79,6 +79,11 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * Init Mas_Videos when Wordpress Initializes
          */
         public function includes() {
+            /**
+             * Core classes.
+             */
+            include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';
+            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
         }
 
         /**

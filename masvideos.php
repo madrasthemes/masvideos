@@ -37,3 +37,6 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
 function Mas_Videos() {
     return Mas_Videos::instance();
 }
+
+// Global for backwards compatibility.
+$GLOBALS['masvideos'] = Mas_Videos();
