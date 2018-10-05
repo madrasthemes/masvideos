@@ -303,7 +303,7 @@ class Mas_Videos_Admin_Attributes {
                             </thead>
                             <tbody>
                                 <?php
-                                if ( $attribute_taxonomies = masvideos_get_attribute_taxonomies() ) :
+                                if ( $attribute_taxonomies = masvideos_get_attribute_taxonomies( $post_type ) ) :
                                     foreach ( $attribute_taxonomies as $tax ) :
                                         ?>
                                         <tr>

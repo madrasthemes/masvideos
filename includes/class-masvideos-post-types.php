@@ -108,6 +108,59 @@ class Mas_Videos_Post_Types {
             )
         );
 
+        register_post_type(
+            'movie',
+            apply_filters(
+                'masvideos_register_post_type_movie',
+                array(
+                    'labels'              => array(
+                        'name'                  => __( 'Movies', 'masvideos' ),
+                        'singular_name'         => __( 'Movie', 'masvideos' ),
+                        'all_items'             => __( 'All Movies', 'masvideos' ),
+                        'menu_name'             => _x( 'Movies', 'Admin menu name', 'masvideos' ),
+                        'add_new'               => __( 'Add New', 'masvideos' ),
+                        'add_new_item'          => __( 'Add new movie', 'masvideos' ),
+                        'edit'                  => __( 'Edit', 'masvideos' ),
+                        'edit_item'             => __( 'Edit movie', 'masvideos' ),
+                        'new_item'              => __( 'New movie', 'masvideos' ),
+                        'view_item'             => __( 'View movie', 'masvideos' ),
+                        'view_items'            => __( 'View movies', 'masvideos' ),
+                        'search_items'          => __( 'Search movies', 'masvideos' ),
+                        'not_found'             => __( 'No movies found', 'masvideos' ),
+                        'not_found_in_trash'    => __( 'No movies found in trash', 'masvideos' ),
+                        'parent'                => __( 'Parent movie', 'masvideos' ),
+                        'featured_image'        => __( 'Movie image', 'masvideos' ),
+                        'set_featured_image'    => __( 'Set movie image', 'masvideos' ),
+                        'remove_featured_image' => __( 'Remove movie image', 'masvideos' ),
+                        'use_featured_image'    => __( 'Use as movie image', 'masvideos' ),
+                        'insert_into_item'      => __( 'Insert into movie', 'masvideos' ),
+                        'uploaded_to_this_item' => __( 'Uploaded to this movie', 'masvideos' ),
+                        'filter_items_list'     => __( 'Filter movies', 'masvideos' ),
+                        'items_list_navigation' => __( 'Movies navigation', 'masvideos' ),
+                        'items_list'            => __( 'Movies list', 'masvideos' ),
+                    ),
+                    'description'         => __( 'This is where you can add new movies to your store.', 'masvideos' ),
+                    'public'              => true,
+                    'show_ui'             => true,
+                    'capability_type'     => 'movie',
+                    'map_meta_cap'        => true,
+                    'publicly_queryable'  => true,
+                    'exclude_from_search' => false,
+                    'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+                    'rewrite'             => $permalinks['movie_rewrite_slug'] ? array(
+                        'slug'       => $permalinks['movie_rewrite_slug'],
+                        'with_front' => false,
+                        'feeds'      => true,
+                    ) : false,
+                    'query_var'           => true,
+                    'supports'            => $supports,
+                    'has_archive'         => $has_archive,
+                    'show_in_nav_menus'   => true,
+                    'show_in_rest'        => true,
+                )
+            )
+        );
+
         do_action( 'masvideos_after_register_post_type' );
     }
 
@@ -155,7 +208,7 @@ class Mas_Videos_Post_Types {
                         'assign_terms' => 'assign_video_terms',
                     ),
                     'rewrite'               => array(
-                        'slug'         => $permalinks['category_rewrite_slug'],
+                        'slug'         => $permalinks['video_category_rewrite_slug'],
                         'with_front'   => false,
                         'hierarchical' => true,
                     ),
@@ -196,7 +249,86 @@ class Mas_Videos_Post_Types {
                         'assign_terms' => 'assign_video_terms',
                     ),
                     'rewrite'               => array(
-                        'slug'       => $permalinks['tag_rewrite_slug'],
+                        'slug'       => $permalinks['video_tag_rewrite_slug'],
+                        'with_front' => false,
+                    ),
+                )
+            )
+        );
+
+        register_taxonomy(
+            'movie_cat',
+            apply_filters( 'masvideos_taxonomy_objects_movie_cat', array( 'movie' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_movie_cat', array(
+                    'hierarchical'          => true,
+                    'update_count_callback' => '_wc_term_recount',
+                    'label'                 => __( 'Categories', 'masvideos' ),
+                    'labels'                => array(
+                        'name'              => __( 'Movie categories', 'masvideos' ),
+                        'singular_name'     => __( 'Category', 'masvideos' ),
+                        'menu_name'         => _x( 'Categories', 'Admin menu name', 'masvideos' ),
+                        'search_items'      => __( 'Search categories', 'masvideos' ),
+                        'all_items'         => __( 'All categories', 'masvideos' ),
+                        'parent_item'       => __( 'Parent category', 'masvideos' ),
+                        'parent_item_colon' => __( 'Parent category:', 'masvideos' ),
+                        'edit_item'         => __( 'Edit category', 'masvideos' ),
+                        'update_item'       => __( 'Update category', 'masvideos' ),
+                        'add_new_item'      => __( 'Add new category', 'masvideos' ),
+                        'new_item_name'     => __( 'New category name', 'masvideos' ),
+                        'not_found'         => __( 'No categories found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_movie_terms',
+                        'edit_terms'   => 'edit_movie_terms',
+                        'delete_terms' => 'delete_movie_terms',
+                        'assign_terms' => 'assign_movie_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'         => $permalinks['movie_category_rewrite_slug'],
+                        'with_front'   => false,
+                        'hierarchical' => true,
+                    ),
+                )
+            )
+        );
+
+        register_taxonomy(
+            'movie_tag',
+            apply_filters( 'masvideos_taxonomy_objects_movie_tag', array( 'movie' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_movie_tag', array(
+                    'hierarchical'          => false,
+                    'update_count_callback' => '_wc_term_recount',
+                    'label'                 => __( 'Movie tags', 'masvideos' ),
+                    'labels'                => array(
+                        'name'                       => __( 'Movie tags', 'masvideos' ),
+                        'singular_name'              => __( 'Tag', 'masvideos' ),
+                        'menu_name'                  => _x( 'Tags', 'Admin menu name', 'masvideos' ),
+                        'search_items'               => __( 'Search tags', 'masvideos' ),
+                        'all_items'                  => __( 'All tags', 'masvideos' ),
+                        'edit_item'                  => __( 'Edit tag', 'masvideos' ),
+                        'update_item'                => __( 'Update tag', 'masvideos' ),
+                        'add_new_item'               => __( 'Add new tag', 'masvideos' ),
+                        'new_item_name'              => __( 'New tag name', 'masvideos' ),
+                        'popular_items'              => __( 'Popular tags', 'masvideos' ),
+                        'separate_items_with_commas' => __( 'Separate tags with commas', 'masvideos' ),
+                        'add_or_remove_items'        => __( 'Add or remove tags', 'masvideos' ),
+                        'choose_from_most_used'      => __( 'Choose from the most used tags', 'masvideos' ),
+                        'not_found'                  => __( 'No tags found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_movie_terms',
+                        'edit_terms'   => 'edit_movie_terms',
+                        'delete_terms' => 'delete_movie_terms',
+                        'assign_terms' => 'assign_movie_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'       => $permalinks['movie_tag_rewrite_slug'],
                         'with_front' => false,
                     ),
                 )
@@ -264,7 +396,7 @@ class Mas_Videos_Post_Types {
 
                     if ( 1 === $tax->attribute_public && sanitize_title( $tax->attribute_name ) ) {
                         $taxonomy_data['rewrite'] = array(
-                            'slug'         => trailingslashit( $permalinks['attribute_rewrite_slug'] ) . sanitize_title( $tax->attribute_name ),
+                            'slug'         => trailingslashit( $permalinks[ $tax->post_type . '_attribute_rewrite_slug' ] ) . sanitize_title( $tax->attribute_name ),
                             'with_front'   => false,
                             'hierarchical' => true,
                         );

@@ -43,6 +43,7 @@ class Mas_Videos_Admin_Menus {
         // add_menu_page( __( 'MasVideos', 'masvideos' ), __( 'MasVideos', 'masvideos' ), 'manage_masvideos', 'masvideos', null, null, '55.5' );
 
         add_submenu_page( 'edit.php?post_type=video', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_video_terms', 'video_attributes', array( $this, 'attributes_page' ) );
+        add_submenu_page( 'edit.php?post_type=movie', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_movie_terms', 'movie_attributes', array( $this, 'attributes_page' ) );
     }
 
     /**

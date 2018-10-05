@@ -46,18 +46,26 @@ function masvideos_implode_text_attributes( $attributes ) {
  *
  * @return array of objects
  */
-function masvideos_get_attribute_taxonomies() {
-    $attribute_taxonomies = get_transient( 'masvideos_attribute_taxonomies' );
+function masvideos_get_attribute_taxonomies( $post_type = '' ) {
+    $transient_name = 'masvideos_attribute_taxonomies';
+    if( ! empty( $post_type ) ) {
+        $transient_name = "masvideos_{$post_type}_attribute_taxonomies";
+    }
+    $attribute_taxonomies = get_transient( $transient_name );
 
     if ( false === $attribute_taxonomies ) {
         global $wpdb;
 
-        $attribute_taxonomies = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}masvideos_attribute_taxonomies WHERE attribute_name != '' ORDER BY attribute_name ASC;" );
+        $where = "attribute_name != ''";
+        if( ! empty( $post_type ) ) {
+            $where .= " AND post_type = '{$post_type}'";
+        }
+        $attribute_taxonomies = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}masvideos_attribute_taxonomies WHERE {$where} ORDER BY attribute_name ASC;" );
 
-        set_transient( 'masvideos_attribute_taxonomies', $attribute_taxonomies );
+        set_transient( $transient_name, $attribute_taxonomies );
     }
 
-    return (array) array_filter( apply_filters( 'masvideos_attribute_taxonomies', $attribute_taxonomies ) );
+    return (array) array_filter( apply_filters( $transient_name, $attribute_taxonomies ) );
 }
 
 /**
@@ -91,7 +99,7 @@ function masvideos_variation_attribute_name( $attribute_name ) {
 function masvideos_attribute_taxonomy_name_by_id( $attribute_id ) {
     global $wpdb;
 
-    $data = $wpdb->get_var(
+    $data = $wpdb->get_row(
         $wpdb->prepare(
             "
         SELECT attribute_name, post_type
@@ -203,7 +211,7 @@ function masvideos_get_attribute_taxonomy_names() {
  */
 function masvideos_get_attribute_types() {
     return (array) apply_filters(
-        'product_attributes_type_selector', array(
+        'masvideos_attributes_type_selector', array(
             'select' => __( 'Select', 'masvideos' ),
         )
     );
@@ -450,13 +458,13 @@ function masvideos_create_attribute( $args ) {
     // Validate slug.
     if ( strlen( $slug ) >= 28 ) {
         /* translators: %s: attribute slug */
-        return new WP_Error( 'invalid_product_attribute_slug_too_long', sprintf( __( 'Slug "%s" is too long (28 characters max). Shorten it, please.', 'masvideos' ), $slug ), array( 'status' => 400 ) );
+        return new WP_Error( 'invalid_masvideos_attribute_slug_too_long', sprintf( __( 'Slug "%s" is too long (28 characters max). Shorten it, please.', 'masvideos' ), $slug ), array( 'status' => 400 ) );
     } elseif ( masvideos_check_if_attribute_name_is_reserved( $slug ) ) {
         /* translators: %s: attribute slug */
-        return new WP_Error( 'invalid_product_attribute_slug_reserved_name', sprintf( __( 'Slug "%s" is not allowed because it is a reserved term. Change it, please.', 'masvideos' ), $slug ), array( 'status' => 400 ) );
+        return new WP_Error( 'invalid_masvideos_attribute_slug_reserved_name', sprintf( __( 'Slug "%s" is not allowed because it is a reserved term. Change it, please.', 'masvideos' ), $slug ), array( 'status' => 400 ) );
     } elseif ( ( 0 === $id && taxonomy_exists( masvideos_attribute_taxonomy_name( $args['post_type'], $slug ) ) ) || ( isset( $args['old_slug'] ) && $args['old_slug'] !== $slug && taxonomy_exists( masvideos_attribute_taxonomy_name( $args['post_type'], $slug ) ) ) ) {
         /* translators: %s: attribute slug */
-        return new WP_Error( 'invalid_product_attribute_slug_already_exists', sprintf( __( 'Slug "%s" is already in use. Change it, please.', 'masvideos' ), $slug ), array( 'status' => 400 ) );
+        return new WP_Error( 'invalid_masvideos_attribute_slug_already_exists', sprintf( __( 'Slug "%s" is already in use. Change it, please.', 'masvideos' ), $slug ), array( 'status' => 400 ) );
     }
 
     // Validate type.
@@ -477,6 +485,8 @@ function masvideos_create_attribute( $args ) {
         'attribute_public'  => isset( $args['has_archives'] ) ? (int) $args['has_archives'] : 0,
         'post_type'         => $args['post_type'],
     );
+
+    $post_type = $data['post_type'];
 
     // Create or update.
     if ( 0 === $id ) {
@@ -528,16 +538,16 @@ function masvideos_create_attribute( $args ) {
             // Update taxonomies in the wp term taxonomy table.
             $wpdb->update(
                 $wpdb->term_taxonomy,
-                array( 'taxonomy' => masvideos_attribute_taxonomy_name( $data['post_type'], $data['attribute_name'] ) ),
-                array( 'taxonomy' => $data['post_type'] . $old_slug )
+                array( 'taxonomy' => masvideos_attribute_taxonomy_name( $post_type, $data['attribute_name'] ) ),
+                array( 'taxonomy' => $post_type . $old_slug )
             );
 
             // Update taxonomy ordering term meta.
             $table_name = get_option( 'db_version' ) < 34370 ? $wpdb->prefix . 'masvideos_termmeta' : $wpdb->termmeta;
             $wpdb->update(
                 $table_name,
-                array( 'meta_key' => 'order_' . $data['post_type'] . '_' . sanitize_title( $data['attribute_name'] ) ), // WPCS: slow query ok.
-                array( 'meta_key' => 'order_' . $data['post_type'] . '_' . sanitize_title( $old_slug ) ) // WPCS: slow query ok.
+                array( 'meta_key' => 'order_' . $post_type . '_' . sanitize_title( $data['attribute_name'] ) ), // WPCS: slow query ok.
+                array( 'meta_key' => 'order_' . $post_type . '_' . sanitize_title( $old_slug ) ) // WPCS: slow query ok.
             );
 
             // Update attributes which use this taxonomy.
@@ -546,17 +556,17 @@ function masvideos_create_attribute( $args ) {
 
             $wpdb->query(
                 $wpdb->prepare(
-                    "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE( meta_value, %s, %s ) WHERE meta_key = '_" . $data['post_type'] . "_attributes'",
-                    's:' . $old_attribute_name_length . ':"' . $data['post_type'] . '_' . $old_slug . '"',
-                    's:' . $attribute_name_length . ':"' . $data['post_type'] . '_' . $data['attribute_name'] . '"'
+                    "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE( meta_value, %s, %s ) WHERE meta_key = '_" . $post_type . "_attributes'",
+                    's:' . $old_attribute_name_length . ':"' . $post_type . '_' . $old_slug . '"',
+                    's:' . $attribute_name_length . ':"' . $post_type . '_' . $data['attribute_name'] . '"'
                 )
             );
 
             // Update variations which use this taxonomy.
             $wpdb->update(
                 $wpdb->postmeta,
-                array( 'meta_key' => 'attribute_' . $data['post_type'] . '_' . sanitize_title( $data['attribute_name'] ) ), // WPCS: slow query ok.
-                array( 'meta_key' => 'attribute_' . $data['post_type'] . '_' . sanitize_title( $old_slug ) ) // WPCS: slow query ok.
+                array( 'meta_key' => 'attribute_' . $post_type . '_' . sanitize_title( $data['attribute_name'] ) ), // WPCS: slow query ok.
+                array( 'meta_key' => 'attribute_' . $post_type . '_' . sanitize_title( $old_slug ) ) // WPCS: slow query ok.
             );
         }
     }
@@ -564,6 +574,7 @@ function masvideos_create_attribute( $args ) {
     // Clear cache and flush rewrite rules.
     wp_schedule_single_event( time(), 'masvideos_flush_rewrite_rules' );
     delete_transient( 'masvideos_attribute_taxonomies' );
+    delete_transient( "masvideos_{$post_type}_attribute_taxonomies" );
 
     return $id;
 }
@@ -612,7 +623,7 @@ function masvideos_update_attribute( $id, $args ) {
 function masvideos_delete_attribute( $id ) {
     global $wpdb;
 
-    $data = $wpdb->get_var(
+    $data = $wpdb->get_row(
         $wpdb->prepare(
             "
         SELECT attribute_name, post_type
@@ -654,6 +665,7 @@ function masvideos_delete_attribute( $id ) {
         do_action( 'masvideos_attribute_deleted', $id, $name, $taxonomy );
         wp_schedule_single_event( time(), 'masvideos_flush_rewrite_rules' );
         delete_transient( 'masvideos_attribute_taxonomies' );
+        delete_transient( "masvideos_{$post_type}_attribute_taxonomies" );
 
         return true;
     }

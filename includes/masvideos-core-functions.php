@@ -42,11 +42,15 @@ function masvideos_get_video_permalink_structure() {
     $saved_permalinks = (array) get_option( 'masvideos_video_permalinks', array() );
     $permalinks       = wp_parse_args(
         array_filter( $saved_permalinks ), array(
-            'video_base'             => _x( 'video', 'slug', 'masvideos' ),
-            'category_base'          => _x( 'video-category', 'slug', 'masvideos' ),
-            'tag_base'               => _x( 'video-tag', 'slug', 'masvideos' ),
-            'attribute_base'         => '',
-            'use_verbose_page_rules' => false,
+            'video_base'                   => _x( 'video', 'slug', 'masvideos' ),
+            'video_category_base'          => _x( 'video-category', 'slug', 'masvideos' ),
+            'video_tag_base'               => _x( 'video-tag', 'slug', 'masvideos' ),
+            'video_attribute_base'         => '',
+            'movie_base'                   => _x( 'movie', 'slug', 'masvideos' ),
+            'movie_category_base'          => _x( 'movie-category', 'slug', 'masvideos' ),
+            'movie_tag_base'               => _x( 'movie-tag', 'slug', 'masvideos' ),
+            'movie_attribute_base'         => '',
+            'use_verbose_page_rules'       => false,
         )
     );
 
@@ -54,10 +58,15 @@ function masvideos_get_video_permalink_structure() {
         update_option( 'masvideos_video_permalinks', $permalinks );
     }
 
-    $permalinks['video_rewrite_slug']     = untrailingslashit( $permalinks['video_base'] );
-    $permalinks['category_rewrite_slug']  = untrailingslashit( $permalinks['category_base'] );
-    $permalinks['tag_rewrite_slug']       = untrailingslashit( $permalinks['tag_base'] );
-    $permalinks['attribute_rewrite_slug'] = untrailingslashit( $permalinks['attribute_base'] );
+    $permalinks['video_rewrite_slug']           = untrailingslashit( $permalinks['video_base'] );
+    $permalinks['video_category_rewrite_slug']  = untrailingslashit( $permalinks['video_category_base'] );
+    $permalinks['video_tag_rewrite_slug']       = untrailingslashit( $permalinks['video_tag_base'] );
+    $permalinks['video_attribute_rewrite_slug'] = untrailingslashit( $permalinks['video_attribute_base'] );
+
+    $permalinks['movie_rewrite_slug']           = untrailingslashit( $permalinks['movie_base'] );
+    $permalinks['movie_category_rewrite_slug']  = untrailingslashit( $permalinks['movie_category_base'] );
+    $permalinks['movie_tag_rewrite_slug']       = untrailingslashit( $permalinks['movie_tag_base'] );
+    $permalinks['movie_attribute_rewrite_slug'] = untrailingslashit( $permalinks['movie_attribute_base'] );
 
     return $permalinks;
 }
