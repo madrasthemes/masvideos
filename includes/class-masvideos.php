@@ -86,6 +86,10 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
             include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';
             include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
             include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
+
+            if ( $this->is_request( 'admin' ) ) {
+                include_once MAS_VIDEOS_ABSPATH . 'includes/admin/class-masvideos-admin.php';
+            }
         }
 
         /**
@@ -145,6 +149,25 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
         private function define( $name, $value ) {
             if ( ! defined( $name ) ) {
                 define( $name, $value );
+            }
+        }
+
+        /**
+         * What type of request is this?
+         *
+         * @param  string $type admin, ajax, cron or frontend.
+         * @return bool
+         */
+        private function is_request( $type ) {
+            switch ( $type ) {
+                case 'admin':
+                    return is_admin();
+                case 'ajax':
+                    return defined( 'DOING_AJAX' );
+                case 'cron':
+                    return defined( 'DOING_CRON' );
+                case 'frontend':
+                    return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' );
             }
         }
     }

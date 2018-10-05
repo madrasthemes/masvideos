@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+// Include core functions (available in both admin and frontend).
+require MAS_VIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
+require MAS_VIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
+require MAS_VIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
+
 /**
  * Define a constant if it is not already defined.
  *
@@ -55,4 +60,16 @@ function masvideos_get_video_permalink_structure() {
     $permalinks['attribute_rewrite_slug'] = untrailingslashit( $permalinks['attribute_base'] );
 
     return $permalinks;
+}
+
+/**
+ * Retrieve page ids.
+ *
+ * @param string $page Page slug.
+ * @return int
+ */
+function masvideos_get_page_id( $page ) {
+    $page = apply_filters( 'masvideos_get_' . $page . '_page_id', get_option( 'masvideos_' . $page . '_page_id' ) );
+
+    return $page ? absint( $page ) : -1;
 }
