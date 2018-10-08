@@ -2,7 +2,7 @@
 /**
  * Template Loader
  *
- * @package Mas_Videos/Classes
+ * @package Masvideos/Classes
  */
 
 defined( 'ABSPATH' ) || exit;

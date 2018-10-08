@@ -100,13 +100,22 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * Include required frontend files.
          */
         public function frontend_includes() {
+            include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-template-hooks.php';
             include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-template-loader.php';
+        }
+
+        /**
+         * Function used to Init WooCommerce Template Functions - This makes them pluggable by plugins and themes.
+         */
+        public function include_template_functions() {
+            include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-template-functions.php';
         }
 
         /**
          * Init Mas_Videos when Wordpress Initializes
          */
         public function init_hooks() {
+            add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
             register_activation_hook( MAS_VIDEOS_PLUGIN_FILE, array( 'Mas_Videos_Install', 'install' ) );
             // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         }
