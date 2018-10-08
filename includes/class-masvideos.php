@@ -90,6 +90,17 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
             if ( $this->is_request( 'admin' ) ) {
                 include_once MAS_VIDEOS_ABSPATH . 'includes/admin/class-masvideos-admin.php';
             }
+
+            if ( $this->is_request( 'frontend' ) ) {
+                $this->frontend_includes();
+            }
+        }
+
+        /**
+         * Include required frontend files.
+         */
+        public function frontend_includes() {
+            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-template-loader.php';
         }
 
         /**
