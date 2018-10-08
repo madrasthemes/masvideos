@@ -40,20 +40,21 @@ class Mas_Videos_Post_Types {
         do_action( 'masvideos_register_post_type' );
 
         $permalinks = masvideos_get_video_permalink_structure();
-        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
 
+        // For Videos
+        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $videos_page_id = 0;
 
-        // if ( current_theme_supports( 'masvideos' ) ) {
+        if ( current_theme_supports( 'masvideos' ) ) {
             $has_archive = $videos_page_id && get_post( $videos_page_id ) ? urldecode( get_page_uri( $videos_page_id ) ) : 'videos';
-        // } else {
-        //     $has_archive = false;
-        // }
+        } else {
+            $has_archive = false;
+        }
 
         // If theme support changes, we may need to flush permalinks since some are changed based on this flag.
-        // if ( update_option( 'current_theme_supports_masvideos', current_theme_supports( 'masvideos' ) ? 'yes' : 'no' ) ) {
-        //     update_option( 'masvideos_queue_flush_rewrite_rules', 'yes' );
-        // }
+        if ( update_option( 'current_theme_supports_masvideos', current_theme_supports( 'masvideos' ) ? 'yes' : 'no' ) ) {
+            update_option( 'masvideos_queue_flush_rewrite_rules', 'yes' );
+        }
 
         register_post_type(
             'video',
@@ -107,6 +108,16 @@ class Mas_Videos_Post_Types {
                 )
             )
         );
+
+        // For Videos
+        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $movies_page_id = 0;
+
+        if ( current_theme_supports( 'masvideos' ) ) {
+            $has_archive = $movies_page_id && get_post( $movies_page_id ) ? urldecode( get_page_uri( $movies_page_id ) ) : 'movies';
+        } else {
+            $has_archive = false;
+        }
 
         register_post_type(
             'movie',
@@ -416,10 +427,10 @@ class Mas_Videos_Post_Types {
      * @since 3.3.0
      */
     public static function maybe_flush_rewrite_rules() {
-        // if ( 'yes' === get_option( 'masvideos_queue_flush_rewrite_rules' ) ) {
-            // update_option( 'masvideos_queue_flush_rewrite_rules', 'no' );
+        if ( 'yes' === get_option( 'masvideos_queue_flush_rewrite_rules' ) ) {
+            update_option( 'masvideos_queue_flush_rewrite_rules', 'no' );
             self::flush_rewrite_rules();
-        // }
+        }
     }
 
     /**
@@ -437,7 +448,7 @@ class Mas_Videos_Post_Types {
      * @return bool
      */
     public static function gutenberg_can_edit_post_type( $can_edit, $post_type ) {
-        return 'video' === $post_type ? false : $can_edit;
+        return in_array( $post_type, array( 'video', 'movie' ) ) ? false : $can_edit;
     }
 
     /**
@@ -446,6 +457,7 @@ class Mas_Videos_Post_Types {
     public static function support_jetpack_omnisearch() {
         if ( class_exists( 'Jetpack_Omnisearch_Posts' ) ) {
             new Jetpack_Omnisearch_Posts( 'video' );
+            new Jetpack_Omnisearch_Posts( 'movie' );
         }
     }
 
@@ -457,6 +469,7 @@ class Mas_Videos_Post_Types {
      */
     public static function rest_api_allowed_post_types( $post_types ) {
         $post_types[] = 'video';
+        $post_types[] = 'movie';
 
         return $post_types;
     }
