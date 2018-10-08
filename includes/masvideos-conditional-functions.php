@@ -5,11 +5,23 @@
  * Functions for determining the current query/page.
  *
  * @package     Masvideos/Functions
- * @version     2.3.0
+ * @version     1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
+}
+
+if ( ! function_exists( 'is_ajax' ) ) {
+
+    /**
+     * Is_ajax - Returns true when the page is loaded via ajax.
+     *
+     * @return bool
+     */
+    function is_ajax() {
+        return defined( 'DOING_AJAX' );
+    }
 }
 
 if ( ! function_exists( 'is_videos' ) ) {
@@ -74,18 +86,6 @@ if ( ! function_exists( 'is_video' ) ) {
     }
 }
 
-if ( ! function_exists( 'is_ajax' ) ) {
-
-    /**
-     * Is_ajax - Returns true when the page is loaded via ajax.
-     *
-     * @return bool
-     */
-    function is_ajax() {
-        return defined( 'DOING_AJAX' );
-    }
-}
-
 if ( ! function_exists( 'taxonomy_is_video_attribute' ) ) {
 
     /**
@@ -99,5 +99,83 @@ if ( ! function_exists( 'taxonomy_is_video_attribute' ) ) {
         global $masvideos_attributes;
 
         return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['video'] );
+    }
+}
+
+if ( ! function_exists( 'is_movies' ) ) {
+
+    /**
+     * Is_shop - Returns true when viewing the movie type archive (shop).
+     *
+     * @return bool
+     */
+    function is_movies() {
+        return ( is_post_type_archive( 'movie' ) || is_page( masvideos_get_page_id( 'movies' ) ) );
+    }
+}
+
+if ( ! function_exists( 'is_movie_taxonomy' ) ) {
+
+    /**
+     * Is_movie_taxonomy - Returns true when viewing a movie taxonomy archive.
+     *
+     * @return bool
+     */
+    function is_movie_taxonomy() {
+        return is_tax( get_object_taxonomies( 'movie' ) );
+    }
+}
+
+if ( ! function_exists( 'is_movie_category' ) ) {
+
+    /**
+     * Is_movie_category - Returns true when viewing a movie category.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_movie_category( $term = '' ) {
+        return is_tax( 'movie_cat', $term );
+    }
+}
+
+if ( ! function_exists( 'is_movie_tag' ) ) {
+
+    /**
+     * Is_movie_tag - Returns true when viewing a movie tag.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_movie_tag( $term = '' ) {
+        return is_tax( 'movie_tag', $term );
+    }
+}
+
+if ( ! function_exists( 'is_movie' ) ) {
+
+    /**
+     * Is_movie - Returns true when viewing a single movie.
+     *
+     * @return bool
+     */
+    function is_movie() {
+        return is_singular( array( 'movie' ) );
+    }
+}
+
+if ( ! function_exists( 'taxonomy_is_movie_attribute' ) ) {
+
+    /**
+     * Returns true when the passed taxonomy name is a movie attribute.
+     *
+     * @uses   $masmovies_attributes global which stores taxonomy names upon registration
+     * @param  string $name of the attribute.
+     * @return bool
+     */
+    function taxonomy_is_movie_attribute( $name ) {
+        global $masvideos_attributes;
+
+        return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['movie'] );
     }
 }
