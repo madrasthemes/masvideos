@@ -115,17 +115,49 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * Init Mas_Videos when Wordpress Initializes
          */
         public function init_hooks() {
-            add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
             register_activation_hook( MAS_VIDEOS_PLUGIN_FILE, array( 'Mas_Videos_Install', 'install' ) );
-            // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+            add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
+            add_action( 'init', array( $this, 'init' ), 0 );
         }
 
         /**
-         * Enqueue scripts
+         * Init WooCommerce when WordPress Initialises.
          */
-        public function enqueue_scripts() {
-            wp_enqueue_style( 'masvideos-style', plugins_url( 'assets/css/style.css', MAS_VIDEOS_PLUGIN_FILE ), '', $this->version );
-            wp_style_add_data( 'masvideos-style', 'rtl', 'replace' );
+        public function init() {
+            // Before init action.
+            do_action( 'before_masvideos_init' );
+
+            // Set up localisation.
+            $this->load_plugin_textdomain();
+
+            // Load class instances.
+            // $this->product_factory                     = new WC_Product_Factory();
+            // $this->structured_data                     = new WC_Structured_Data();
+
+            // Classes/actions loaded for the frontend and for ajax requests.
+            // if ( $this->is_request( 'frontend' ) ) {
+            // }
+
+            // Init action.
+            do_action( 'masvideos_init' );
+        }
+
+        /**
+         * Load Localisation files.
+         *
+         * Note: the first-loaded translation file overrides any following ones if the same translation is present.
+         *
+         * Locales found in:
+         *      - WP_LANG_DIR/masvideos/masvideos-LOCALE.mo
+         *      - WP_LANG_DIR/plugins/masvideos-LOCALE.mo
+         */
+        public function load_plugin_textdomain() {
+            $locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+            $locale = apply_filters( 'plugin_locale', $locale, 'masvideos' );
+
+            unload_textdomain( 'masvideos' );
+            load_textdomain( 'masvideos', WP_LANG_DIR . '/masvideos/masvideos-' . $locale . '.mo' );
+            load_plugin_textdomain( 'masvideos', false, plugin_basename( dirname( MAS_VIDEOS_PLUGIN_FILE ) ) . '/i18n/languages' );
         }
 
         /**
