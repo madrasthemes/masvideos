@@ -45,14 +45,14 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * Cloning is forbidden.
          */
         public function __clone() {
-            wc_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'masvideos' ), '2.1' );
+            _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'masvideos' ), '1.0.0' );
         }
 
         /**
          * Unserializing instances of this class is forbidden.
          */
         public function __wakeup() {
-            wc_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'masvideos' ), '2.1' );
+            _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'masvideos' ), '1.0.0' );
         }
 
         /**
