@@ -29,14 +29,14 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
         /**
          * Query instance.
          *
-         * @var WC_Query
+         * @var Mas_Videos_Videos_Query
          */
         public $video_query = null;
 
         /**
          * Query instance.
          *
-         * @var WC_Query
+         * @var Mas_Videos_Movies_Query
          */
         public $movie_query = null;
 
@@ -153,8 +153,8 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
             // if ( $this->is_request( 'frontend' ) ) {
             // }
 
-            $this->video_query = new Mas_Videos_Video_Query();
-            $this->movie_query = new Mas_Videos_Movie_Query();
+            $this->video_query = new Mas_Videos_Videos_Query();
+            $this->movie_query = new Mas_Videos_Movies_Query();
 
             // Init action.
             do_action( 'masvideos_init' );

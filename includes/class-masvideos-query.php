@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Mas_Videos_Video_Query Class.
+ * Mas_Videos_Videos_Query Class.
  */
-class Mas_Videos_Video_Query {
+class Mas_Videos_Videos_Query {
 
     /**
      * Reference to the main video query on the page.
@@ -389,9 +389,9 @@ class Mas_Videos_Video_Query {
 
 
 /**
- * Mas_Videos_Movie_Query Class.
+ * Mas_Videos_Movies_Query Class.
  */
-class Mas_Videos_Movie_Query {
+class Mas_Videos_Movies_Query {
 
     /**
      * Reference to the main movie query on the page.
