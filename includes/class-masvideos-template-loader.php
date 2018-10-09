@@ -116,7 +116,7 @@ class Mas_Videos_Template_Loader {
             } else {
                 $default_file = 'archive-movie.php';
             }
-        } elseif ( is_post_type_archive( 'movie' ) || is_page( masmovies_get_page_id( 'movies' ) ) ) {
+        } elseif ( is_post_type_archive( 'movie' ) || is_page( masvideos_get_page_id( 'movies' ) ) ) {
             $default_file = self::$theme_support ? 'archive-movie.php' : '';
         } else {
             $default_file = '';
