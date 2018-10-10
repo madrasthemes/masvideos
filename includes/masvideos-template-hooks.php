@@ -23,3 +23,14 @@ add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_l
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_link_open', 10 );
 add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_title', 10 );
 add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_link_close', 10 );
+
+
+/**
+ * Video Single.
+ */
+add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_title', 5 );
+
+/**
+ * Movie Single.
+ */
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_title', 5 );

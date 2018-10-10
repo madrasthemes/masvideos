@@ -617,3 +617,28 @@ if ( ! function_exists( 'masvideos_template_loop_category_link_close' ) ) {
         echo '</a>';
     }
 }
+
+
+/**
+ * Single
+ */
+
+if ( ! function_exists( 'masvideos_template_single_video_title' ) ) {
+
+    /**
+     * Output the video title.
+     */
+    function masvideos_template_single_video_title() {
+        the_title( '<h1 class="video_title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_title' ) ) {
+
+    /**
+     * Output the movie title.
+     */
+    function masvideos_template_single_movie_title() {
+        the_title( '<h1 class="movie_title entry-title">', '</h1>' );
+    }
+}
