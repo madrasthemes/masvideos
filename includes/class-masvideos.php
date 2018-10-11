@@ -95,6 +95,11 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          */
         public function includes() {
             /**
+             * Class autoloader.
+             */
+            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-autoloader.php';
+
+            /**
              * Core classes.
              */
             include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';

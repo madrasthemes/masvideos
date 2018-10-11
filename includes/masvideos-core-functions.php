@@ -5,7 +5,7 @@
  * General core functions available on both the front-end and admin.
  *
  * @package Masvideos\Functions
- * @version 3.3.0
+ * @version 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
