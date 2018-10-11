@@ -95,3 +95,75 @@ function masvideos_clean( $var ) {
         return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
     }
 }
+
+/**
+ * Run masvideos_clean over posted textarea but maintain line breaks.
+ *
+ * @since  3.0.0
+ * @param  string $var Data to sanitize.
+ * @return string
+ */
+function masvideos_sanitize_textarea( $var ) {
+    return implode( "\n", array_map( 'masvideos_clean', explode( "\n", $var ) ) );
+}
+
+/**
+ * Sanitize a string destined to be a tooltip.
+ *
+ * @since  1.0.0 Tooltips are encoded with htmlspecialchars to prevent XSS. Should not be used in conjunction with esc_attr()
+ * @param  string $var Data to sanitize.
+ * @return string
+ */
+function masvideos_sanitize_tooltip( $var ) {
+    return htmlspecialchars(
+        wp_kses(
+            html_entity_decode( $var ), array(
+                'br'     => array(),
+                'em'     => array(),
+                'strong' => array(),
+                'small'  => array(),
+                'span'   => array(),
+                'ul'     => array(),
+                'li'     => array(),
+                'ol'     => array(),
+                'p'      => array(),
+            )
+        )
+    );
+}
+
+/**
+ * Merge two arrays.
+ *
+ * @param array $a1 First array to merge.
+ * @param array $a2 Second array to merge.
+ * @return array
+ */
+function masvideos_array_overlay( $a1, $a2 ) {
+    foreach ( $a1 as $k => $v ) {
+        if ( ! array_key_exists( $k, $a2 ) ) {
+            continue;
+        }
+        if ( is_array( $v ) && is_array( $a2[ $k ] ) ) {
+            $a1[ $k ] = masvideos_array_overlay( $v, $a2[ $k ] );
+        } else {
+            $a1[ $k ] = $a2[ $k ];
+        }
+    }
+    return $a1;
+}
+
+/**
+ * Implode and escape HTML attributes for output.
+ *
+ * @since 1.0.0
+ * @param array $raw_attributes Attribute name value pairs.
+ * @return string
+ */
+function masvideos_implode_html_attributes( $raw_attributes ) {
+    $attributes = array();
+    foreach ( $raw_attributes as $name => $value ) {
+        $attributes[] = esc_attr( $name ) . '="' . esc_attr( $value ) . '"';
+    }
+    return implode( ' ', $attributes );
+}
