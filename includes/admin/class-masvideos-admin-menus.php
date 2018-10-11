@@ -8,14 +8,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'Mas_Videos_Admin_Menus', false ) ) {
-    return new Mas_Videos_Admin_Menus();
+if ( class_exists( 'MasVideos_Admin_Menus', false ) ) {
+    return new MasVideos_Admin_Menus();
 }
 
 /**
- * Mas_Videos_Admin_Menus Class.
+ * MasVideos_Admin_Menus Class.
  */
-class Mas_Videos_Admin_Menus {
+class MasVideos_Admin_Menus {
 
     /**
      * Hook in tabs.
@@ -128,8 +128,8 @@ class Mas_Videos_Admin_Menus {
      * Init the attributes page.
      */
     public function attributes_page() {
-        Mas_Videos_Admin_Attributes::output();
+        MasVideos_Admin_Attributes::output();
     }
 }
 
-return new Mas_Videos_Admin_Menus();
+return new MasVideos_Admin_Menus();

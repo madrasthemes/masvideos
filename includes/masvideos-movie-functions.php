@@ -1,10 +1,10 @@
 <?php
 /**
- * Masvideos Movie Functions
+ * MasVideos Movie Functions
  *
  * Functions for movie specific things.
  *
- * @package Masvideos/Functions
+ * @package MasVideos/Functions
  * @version 1.0.0
  */
 
@@ -37,17 +37,17 @@ function masvideos_get_movies( $args ) {
         }
     }
 
-    $query = new Mas_Videos_Movie_Query( $args ); // WC_Product_Query
+    $query = new MasVideos_Movie_Query( $args ); // WC_Product_Query
     return $query->get_movies();
 }
 
 /**
- * Main function for returning movies, uses the Mas_Videos_Movie_Factory class.
+ * Main function for returning movies, uses the MasVideos_Movie_Factory class.
  *
  * @since 1.0.0
  *
  * @param mixed $the_movie Post object or post ID of the movie.
- * @return Mas_Videos_Movie|null|false
+ * @return MasVideos_Movie|null|false
  */
 function masvideos_get_movie( $the_movie = false ) {
     if ( ! did_action( 'masvideos_init' ) ) {
@@ -55,5 +55,5 @@ function masvideos_get_movie( $the_movie = false ) {
         _doing_it_wrong( __FUNCTION__, sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_movie', 'masvideos_init' ), '1.0.0' );
         return false;
     }
-    return Mas_Videos()->movie_factory->get_movie( $the_movie, $deprecated );
+    return MasVideos()->movie_factory->get_movie( $the_movie, $deprecated );
 }

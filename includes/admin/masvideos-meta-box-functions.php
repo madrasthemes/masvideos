@@ -1,9 +1,9 @@
 <?php
 /**
- * Masvideos Meta Box Functions
+ * MasVideos Meta Box Functions
  *
  * @category    Core
- * @package     Masvideos/Admin/Functions
+ * @package     MasVideos/Admin/Functions
  * @version     1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) {

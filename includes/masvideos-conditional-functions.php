@@ -1,10 +1,10 @@
 <?php
 /**
- * Masvideos Conditional Functions
+ * MasVideos Conditional Functions
  *
  * Functions for determining the current query/page.
  *
- * @package     Masvideos/Functions
+ * @package     MasVideos/Functions
  * @version     1.0.0
  */
 

@@ -1,10 +1,10 @@
 <?php
 /**
- * Masvideos Template Hooks
+ * MasVideos Template Hooks
  *
- * Action/filter hooks used for Masvideos functions/templates.
+ * Action/filter hooks used for MasVideos functions/templates.
  *
- * @package Masvideos/Templates
+ * @package MasVideos/Templates
  * @version 1.0.0
  */
 

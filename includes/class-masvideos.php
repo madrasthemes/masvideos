@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-if ( ! class_exists( 'Mas_Videos' ) ) {
+if ( ! class_exists( 'MasVideos' ) ) {
     /**
      * Main plugin class
      *
-     * @class Mas_Videos
+     * @class MasVideos
      * @version 1.0.0
      */
-    final class Mas_Videos {
+    final class MasVideos {
         /**
          * Version
          *
@@ -22,31 +22,31 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
         /**
          * The single instance of the class.
          *
-         * @var Mas_Videos
+         * @var MasVideos
          */
         protected static $_instance = null;
 
         /**
          * Query instance.
          *
-         * @var Mas_Videos_Videos_Query
+         * @var MasVideos_Videos_Query
          */
         public $video_query = null;
 
         /**
          * Query instance.
          *
-         * @var Mas_Videos_Movies_Query
+         * @var MasVideos_Movies_Query
          */
         public $movie_query = null;
 
         /**
-         * Main Mas_Videos Instance.
+         * Main MasVideos Instance.
          *
-         * Ensures only one instance of Mas_Videos is loaded or can be loaded.
+         * Ensures only one instance of MasVideos is loaded or can be loaded.
          *
          * @static
-         * @return Mas_Videos - Main instance.
+         * @return MasVideos - Main instance.
          */
         public static function instance() {
             if ( is_null( self::$_instance ) ) {
@@ -70,7 +70,7 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
         }
 
         /**
-         * Mas_Videos Constructor.
+         * MasVideos Constructor.
          */
         public function __construct() {
             $this->define_constants();
@@ -84,31 +84,31 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * Define constants
          */
         private function define_constants() {
-            $this->define( 'MAS_VIDEOS_ABSPATH', dirname( MAS_VIDEOS_PLUGIN_FILE ) . '/' );
-            $this->define( 'MAS_VIDEOS_PLUGIN_BASENAME', plugin_basename( MAS_VIDEOS_PLUGIN_FILE ) );
-            $this->define( 'MAS_VIDEOS_VERSION', $this->version );
-            $this->define( 'MAS_VIDEOS_TEMPLATE_DEBUG_MODE', false );
+            $this->define( 'MASVIDEOS_ABSPATH', dirname( MASVIDEOS_PLUGIN_FILE ) . '/' );
+            $this->define( 'MASVIDEOS_PLUGIN_BASENAME', plugin_basename( MASVIDEOS_PLUGIN_FILE ) );
+            $this->define( 'MASVIDEOS_VERSION', $this->version );
+            $this->define( 'MASVIDEOS_TEMPLATE_DEBUG_MODE', false );
         }
 
         /**
-         * Init Mas_Videos when Wordpress Initializes
+         * Init MasVideos when Wordpress Initializes
          */
         public function includes() {
             /**
              * Class autoloader.
              */
-            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-autoloader.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-autoloader.php';
 
             /**
              * Core classes.
              */
-            include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';
-            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
-            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
-            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
 
             if ( $this->is_request( 'admin' ) ) {
-                include_once MAS_VIDEOS_ABSPATH . 'includes/admin/class-masvideos-admin.php';
+                include_once MASVIDEOS_ABSPATH . 'includes/admin/class-masvideos-admin.php';
             }
 
             if ( $this->is_request( 'frontend' ) ) {
@@ -120,22 +120,22 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * Include required frontend files.
          */
         public function frontend_includes() {
-            include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-template-hooks.php';
-            include_once MAS_VIDEOS_ABSPATH . 'includes/class-masvideos-template-loader.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/masvideos-template-hooks.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-template-loader.php';
         }
 
         /**
          * Function used to Init WooCommerce Template Functions - This makes them pluggable by plugins and themes.
          */
         public function include_template_functions() {
-            include_once MAS_VIDEOS_ABSPATH . 'includes/masvideos-template-functions.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/masvideos-template-functions.php';
         }
 
         /**
-         * Init Mas_Videos when Wordpress Initializes
+         * Init MasVideos when Wordpress Initializes
          */
         public function init_hooks() {
-            register_activation_hook( MAS_VIDEOS_PLUGIN_FILE, array( 'Mas_Videos_Install', 'install' ) );
+            register_activation_hook( MASVIDEOS_PLUGIN_FILE, array( 'MasVideos_Install', 'install' ) );
             add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
             add_action( 'init', array( $this, 'init' ), 0 );
         }
@@ -158,8 +158,8 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
             // if ( $this->is_request( 'frontend' ) ) {
             // }
 
-            $this->video_query = new Mas_Videos_Videos_Query();
-            $this->movie_query = new Mas_Videos_Movies_Query();
+            $this->video_query = new MasVideos_Videos_Query();
+            $this->movie_query = new MasVideos_Movies_Query();
 
             // Init action.
             do_action( 'masvideos_init' );
@@ -180,7 +180,7 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
 
             unload_textdomain( 'masvideos' );
             load_textdomain( 'masvideos', WP_LANG_DIR . '/masvideos/masvideos-' . $locale . '.mo' );
-            load_plugin_textdomain( 'masvideos', false, plugin_basename( dirname( MAS_VIDEOS_PLUGIN_FILE ) ) . '/i18n/languages' );
+            load_plugin_textdomain( 'masvideos', false, plugin_basename( dirname( MASVIDEOS_PLUGIN_FILE ) ) . '/i18n/languages' );
         }
 
         /**
@@ -188,7 +188,7 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * @return string
          */
         public function plugin_url() {
-            return untrailingslashit( plugins_url( '/', MAS_VIDEOS_PLUGIN_FILE ) );
+            return untrailingslashit( plugins_url( '/', MASVIDEOS_PLUGIN_FILE ) );
         }
 
         /**
@@ -196,7 +196,7 @@ if ( ! class_exists( 'Mas_Videos' ) ) {
          * @return string
          */
         public function plugin_path() {
-            return untrailingslashit( plugin_dir_path( MAS_VIDEOS_PLUGIN_FILE ) );
+            return untrailingslashit( plugin_dir_path( MASVIDEOS_PLUGIN_FILE ) );
         }
 
         /**

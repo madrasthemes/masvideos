@@ -1,8 +1,8 @@
 <?php
 /**
- * Masvideos Autoloader.
+ * MasVideos Autoloader.
  *
- * @package Masvideos/Classes
+ * @package MasVideos/Classes
  * @version 1.0.0
  */
 
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Autoloader class.
  */
-class Mas_Videos_Autoloader {
+class MasVideos_Autoloader {
 
     /**
      * Path to the includes directory.
@@ -30,7 +30,7 @@ class Mas_Videos_Autoloader {
 
         spl_autoload_register( array( $this, 'autoload' ) );
 
-        $this->include_path = untrailingslashit( plugin_dir_path( MAS_VIDEOS_PLUGIN_FILE ) ) . '/includes/';
+        $this->include_path = untrailingslashit( plugin_dir_path( MASVIDEOS_PLUGIN_FILE ) ) . '/includes/';
     }
 
     /**
@@ -58,7 +58,7 @@ class Mas_Videos_Autoloader {
     }
 
     /**
-     * Auto-load WC classes on demand to reduce memory consumption.
+     * Auto-load MasVideos classes on demand to reduce memory consumption.
      *
      * @param string $class Class name.
      */
@@ -86,4 +86,4 @@ class Mas_Videos_Autoloader {
     }
 }
 
-new Mas_Videos_Autoloader();
+new MasVideos_Autoloader();

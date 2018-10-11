@@ -4,16 +4,16 @@
  *
  * The attributes section lets users add custom attributes to assign to videos, movies, series - they can also be used in the "Filter by Attribute" widget.
  *
- * @package Masvideos/Admin
- * @version 2.3.0
+ * @package MasVideos/Admin
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Mas_Videos_Admin_Attributes Class.
+ * MasVideos_Admin_Attributes Class.
  */
-class Mas_Videos_Admin_Attributes {
+class MasVideos_Admin_Attributes {
 
     /**
      * Handles output of the attributes page in admin.
@@ -217,7 +217,7 @@ class Mas_Videos_Admin_Attributes {
                             /**
                              * Attribute types can change the way attributes are displayed on the frontend and admin.
                              *
-                             * By Default Masvideos only includes the `select` type. Others can be added with the
+                             * By Default MasVideos only includes the `select` type. Others can be added with the
                              * `masvideos_attributes_type_selector` filter. If there is only the default type registered,
                              * this setting will be hidden.
                              */
@@ -411,7 +411,7 @@ class Mas_Videos_Admin_Attributes {
                                 /**
                                  * Attribute types can change the way attributes are displayed on the frontend and admin.
                                  *
-                                 * By Default Masvideos only includes the `select` type. Others can be added with the
+                                 * By Default MasVideos only includes the `select` type. Others can be added with the
                                  * `masvideos_attributes_type_selector` filter. If there is only the default type registered,
                                  * this setting will be hidden.
                                  */

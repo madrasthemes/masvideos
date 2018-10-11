@@ -2,7 +2,7 @@
 /**
  * Template Loader
  *
- * @package Masvideos/Classes
+ * @package MasVideos/Classes
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Template loader class.
  */
-class Mas_Videos_Template_Loader {
+class MasVideos_Template_Loader {
 
     /**
      * Store the videos page ID.
@@ -79,8 +79,8 @@ class Mas_Videos_Template_Loader {
             $search_files = self::get_template_loader_files( $default_file );
             $template     = locate_template( $search_files );
 
-            if ( ! $template || MAS_VIDEOS_TEMPLATE_DEBUG_MODE ) {
-                $template = Mas_Videos()->plugin_path() . '/templates/' . $default_file;
+            if ( ! $template || MASVIDEOS_TEMPLATE_DEBUG_MODE ) {
+                $template = MasVideos()->plugin_path() . '/templates/' . $default_file;
             }
         }
 
@@ -151,9 +151,9 @@ class Mas_Videos_Template_Loader {
         if ( is_video_taxonomy() ) {
             $object      = get_queried_object();
             $templates[] = 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
-            $templates[] = Mas_Videos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
             $templates[] = 'taxonomy-' . $object->taxonomy . '.php';
-            $templates[] = Mas_Videos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
         }
 
         if ( is_singular( 'movie' ) ) {
@@ -168,16 +168,16 @@ class Mas_Videos_Template_Loader {
         if ( is_movie_taxonomy() ) {
             $object      = get_queried_object();
             $templates[] = 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
-            $templates[] = Mas_Videos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
             $templates[] = 'taxonomy-' . $object->taxonomy . '.php';
-            $templates[] = Mas_Videos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
         }
 
         $templates[] = $default_file;
-        $templates[] = Mas_Videos()->template_path() . $default_file;
+        $templates[] = MasVideos()->template_path() . $default_file;
 
         return array_unique( $templates );
     }
 }
 
-add_action( 'init', array( 'Mas_Videos_Template_Loader', 'init' ) );
+add_action( 'init', array( 'MasVideos_Template_Loader', 'init' ) );

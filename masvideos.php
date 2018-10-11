@@ -13,7 +13,7 @@
  * Text Domain: masvideos
  * Domain Path: /languages/
  *
- * @package Mas_Videos
+ * @package MasVideos
  * @category Core
  * @author Madras Themes
  */
@@ -21,22 +21,22 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-// Define MAS_VIDEOS_PLUGIN_FILE.
-if ( ! defined( 'MAS_VIDEOS_PLUGIN_FILE' ) ) {
-    define( 'MAS_VIDEOS_PLUGIN_FILE', __FILE__ );
+// Define MASVIDEOS_PLUGIN_FILE.
+if ( ! defined( 'MASVIDEOS_PLUGIN_FILE' ) ) {
+    define( 'MASVIDEOS_PLUGIN_FILE', __FILE__ );
 }
 
-// Include the main Mas_Videos class.
-if ( ! class_exists( 'Mas_Videos' ) ) {
-    include_once dirname( MAS_VIDEOS_PLUGIN_FILE ) . '/includes/class-masvideos.php';
+// Include the main MasVideos class.
+if ( ! class_exists( 'MasVideos' ) ) {
+    include_once dirname( MASVIDEOS_PLUGIN_FILE ) . '/includes/class-masvideos.php';
 }
 
 /**
- * Unique access instance for Mas_Videos class
+ * Unique access instance for MasVideos class
  */
-function Mas_Videos() {
-    return Mas_Videos::instance();
+function MasVideos() {
+    return MasVideos::instance();
 }
 
 // Global for backwards compatibility.
-$GLOBALS['masvideos'] = Mas_Videos();
+$GLOBALS['masvideos'] = MasVideos();

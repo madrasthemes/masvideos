@@ -2,16 +2,16 @@
 /**
  * Installation related functions and actions.
  *
- * @package Mas_Videos/Classes
+ * @package MasVideos/Classes
  * @version 3.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Mas_Videos_Install Class.
+ * MasVideos_Install Class.
  */
-class Mas_Videos_Install {
+class MasVideos_Install {
 
     /**
      * DB updates and callbacks that need to be run per version.
@@ -35,12 +35,12 @@ class Mas_Videos_Install {
     }
 
     /**
-     * Check Mas_Videos version and run the updater is required.
+     * Check MasVideos version and run the updater is required.
      *
      * This check is done on all requests and runs if the versions do not match.
      */
     public static function check_version() {
-        if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'masvideos_version' ), Mas_Videos()->version, '<' ) ) {
+        if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'masvideos_version' ), MasVideos()->version, '<' ) ) {
             self::install();
             do_action( 'masvideos_updated' );
         }
@@ -61,7 +61,7 @@ class Mas_Videos_Install {
 
         // If we made it till here nothing is running yet, lets set the transient now.
         set_transient( 'masvideos_installing', 'yes', MINUTE_IN_SECONDS * 10 );
-        masvideos_maybe_define_constant( 'MAS_VIDEOS_INSTALLING', true );
+        masvideos_maybe_define_constant( 'MASVIDEOS_INSTALLING', true );
 
         self::create_tables();
         self::create_roles();
@@ -81,8 +81,8 @@ class Mas_Videos_Install {
      * @since 3.2.0
      */
     private static function setup_environment() {
-        Mas_Videos_Post_Types::register_post_types();
-        Mas_Videos_Post_Types::register_taxonomies();
+        MasVideos_Post_Types::register_post_types();
+        MasVideos_Post_Types::register_taxonomies();
     }
 
     /**
@@ -90,7 +90,7 @@ class Mas_Videos_Install {
      */
     private static function update_version() {
         delete_option( 'masvideos_version' );
-        add_option( 'masvideos_version', Mas_Videos()->version );
+        add_option( 'masvideos_version', MasVideos()->version );
     }
 
     /**
@@ -142,11 +142,11 @@ class Mas_Videos_Install {
     /**
      * Update DB version to current.
      *
-     * @param string|null $version New Mas_Videos DB version or null.
+     * @param string|null $version New MasVideos DB version or null.
      */
     public static function update_db_version( $version = null ) {
         delete_option( 'masvideos_db_version' );
-        add_option( 'masvideos_db_version', is_null( $version ) ? Mas_Videos()->version : $version );
+        add_option( 'masvideos_db_version', is_null( $version ) ? MasVideos()->version : $version );
     }
 
     /**
@@ -210,7 +210,7 @@ class Mas_Videos_Install {
      * Changing indexes may cause duplicate index notices in logs due to https://core.trac.wordpress.org/ticket/34870 but dropping
      * indexes first causes too much load on some servers/larger DB.
      *
-     * When adding or removing a table, make sure to update the list of tables in Mas_Videos_Install::get_tables().
+     * When adding or removing a table, make sure to update the list of tables in MasVideos_Install::get_tables().
      *
      * @return string
      */
@@ -241,7 +241,7 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
     }
 
     /**
-     * Return a list of Mas_Videos tables. Used to make sure all WC tables are dropped when uninstalling the plugin
+     * Return a list of MasVideos tables. Used to make sure all WC tables are dropped when uninstalling the plugin
      * in a single site or multi site environment.
      *
      * @return array WC tables.
@@ -254,11 +254,11 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
         );
 
         /**
-         * Filter the list of known Mas_Videos tables.
+         * Filter the list of known MasVideos tables.
          *
-         * If Mas_Videos plugins need to add new tables, they can inject them here.
+         * If MasVideos plugins need to add new tables, they can inject them here.
          *
-         * @param array $tables An array of Mas_Videos-specific database table names.
+         * @param array $tables An array of MasVideos-specific database table names.
          */
         $tables = apply_filters( 'masvideos_install_get_tables', $tables );
 
@@ -266,7 +266,7 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
     }
 
     /**
-     * Drop Mas_Videos tables.
+     * Drop MasVideos tables.
      *
      * @return void
      */
@@ -314,7 +314,7 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
     }
 
     /**
-     * Get capabilities for Mas_Videos - these are assigned to admin/shop manager during installation or reset.
+     * Get capabilities for MasVideos - these are assigned to admin/shop manager during installation or reset.
      *
      * @return array
      */
@@ -357,7 +357,7 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
     }
 
     /**
-     * Remove Mas_Videos roles.
+     * Remove MasVideos roles.
      */
     public static function remove_roles() {
         global $wp_roles;
@@ -380,4 +380,4 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
     }
 }
 
-Mas_Videos_Install::init();
+MasVideos_Install::init();

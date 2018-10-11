@@ -1,10 +1,10 @@
 <?php
 /**
- * Masvideos Core Functions
+ * MasVideos Core Functions
  *
  * General core functions available on both the front-end and admin.
  *
- * @package Masvideos\Functions
+ * @package MasVideos\Functions
  * @version 1.0.0
  */
 
@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Include core functions (available in both admin and frontend).
-require MAS_VIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
-require MAS_VIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
-require MAS_VIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
-// require MAS_VIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
-// require MAS_VIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
+// require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
+// require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
 
 /**
  * Define a constant if it is not already defined.
@@ -35,7 +35,7 @@ function masvideos_maybe_define_constant( $name, $value ) {
 /**
  * Get template part (for templates like the shop-loop).
  *
- * MAS_VIDEOS_TEMPLATE_DEBUG_MODE will prevent overrides in themes from taking priority.
+ * MASVIDEOS_TEMPLATE_DEBUG_MODE will prevent overrides in themes from taking priority.
  *
  * @access public
  * @param mixed  $slug Template slug.
@@ -45,18 +45,18 @@ function masvideos_get_template_part( $slug, $name = '' ) {
     $template = '';
 
     // Look in yourtheme/slug-name.php and yourtheme/masvideos/slug-name.php.
-    if ( $name && ! MAS_VIDEOS_TEMPLATE_DEBUG_MODE ) {
-        $template = locate_template( array( "{$slug}-{$name}.php", Mas_Videos()->template_path() . "{$slug}-{$name}.php" ) );
+    if ( $name && ! MASVIDEOS_TEMPLATE_DEBUG_MODE ) {
+        $template = locate_template( array( "{$slug}-{$name}.php", MasVideos()->template_path() . "{$slug}-{$name}.php" ) );
     }
 
     // Get default slug-name.php.
-    if ( ! $template && $name && file_exists( Mas_Videos()->plugin_path() . "/templates/{$slug}-{$name}.php" ) ) {
-        $template = Mas_Videos()->plugin_path() . "/templates/{$slug}-{$name}.php";
+    if ( ! $template && $name && file_exists( MasVideos()->plugin_path() . "/templates/{$slug}-{$name}.php" ) ) {
+        $template = MasVideos()->plugin_path() . "/templates/{$slug}-{$name}.php";
     }
 
     // If template file doesn't exist, look in yourtheme/slug.php and yourtheme/masvideos/slug.php.
-    if ( ! $template && ! MAS_VIDEOS_TEMPLATE_DEBUG_MODE ) {
-        $template = locate_template( array( "{$slug}.php", Mas_Videos()->template_path() . "{$slug}.php" ) );
+    if ( ! $template && ! MASVIDEOS_TEMPLATE_DEBUG_MODE ) {
+        $template = locate_template( array( "{$slug}.php", MasVideos()->template_path() . "{$slug}.php" ) );
     }
 
     // Allow 3rd party plugins to filter template file from their plugin.
@@ -134,11 +134,11 @@ function masvideos_get_template_html( $template_name, $args = array(), $template
  */
 function masvideos_locate_template( $template_name, $template_path = '', $default_path = '' ) {
     if ( ! $template_path ) {
-        $template_path = Mas_Videos()->template_path();
+        $template_path = MasVideos()->template_path();
     }
 
     if ( ! $default_path ) {
-        $default_path = Mas_Videos()->plugin_path() . '/templates/';
+        $default_path = MasVideos()->plugin_path() . '/templates/';
     }
 
     // Look within passed path within the theme - this is priority.
@@ -150,7 +150,7 @@ function masvideos_locate_template( $template_name, $template_path = '', $defaul
     );
 
     // Get default template/.
-    if ( ! $template || MAS_VIDEOS_TEMPLATE_DEBUG_MODE ) {
+    if ( ! $template || MASVIDEOS_TEMPLATE_DEBUG_MODE ) {
         $template = $default_path . $template_name;
     }
 

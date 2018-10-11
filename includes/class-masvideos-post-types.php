@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Post types Class.
  */
-class Mas_Videos_Post_Types {
+class MasVideos_Post_Types {
 
     /**
      * Hook in methods.
@@ -475,4 +475,4 @@ class Mas_Videos_Post_Types {
     }
 }
 
-Mas_Videos_Post_Types::init();
+MasVideos_Post_Types::init();

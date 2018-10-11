@@ -2,7 +2,7 @@
 /**
  * MadrasThemes Admin
  *
- * @class    Mas_Videos_Admin
+ * @class    MasVideos_Admin
  * @author   MadrasThemes
  * @category Admin
  * @package  MadrasThemes/Admin
@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Mas_Videos_Admin class.
+ * MasVideos_Admin class.
  */
-class Mas_Videos_Admin {
+class MasVideos_Admin {
 
     /**
      * Constructor.
@@ -40,7 +40,6 @@ class Mas_Videos_Admin {
      */
     public function includes() {
         include_once dirname( __FILE__ ) . '/masvideos-meta-box-functions.php';
-        include_once dirname( __FILE__ ) . '/class-masvideos-admin-attributes.php';
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-menus.php';
     }
 
@@ -75,7 +74,7 @@ class Mas_Videos_Admin {
     /**
      * Check on a Jetpack install queued by the Setup Wizard.
      *
-     * See: Mas_Videos_Admin_Setup_Wizard::install_jetpack()
+     * See: MasVideos_Admin_Setup_Wizard::install_jetpack()
      */
     public function setup_wizard_check_jetpack() {
         $jetpack_active = class_exists( 'Jetpack' );
@@ -88,4 +87,4 @@ class Mas_Videos_Admin {
     }
 }
 
-return new Mas_Videos_Admin();
+return new MasVideos_Admin();

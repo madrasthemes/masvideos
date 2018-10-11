@@ -1,10 +1,10 @@
 <?php
 /**
- * Masvideos Template
+ * MasVideos Template
  *
  * Functions for the templating system.
  *
- * @package  Masvideos\Functions
+ * @package  MasVideos\Functions
  * @version  1.0.0
  */
 
@@ -56,7 +56,7 @@ add_action( 'template_redirect', 'masvideos_template_redirect' );
  * When the_post is called, put video data into a global.
  *
  * @param mixed $post Post Object.
- * @return Mas_Videos_Video
+ * @return MasVideos_Video
  */
 function masvideos_setup_video_data( $post ) {
     unset( $GLOBALS['video'] );
@@ -81,7 +81,7 @@ function masvideos_setup_video_data( $post ) {
  * When the_post is called, put movie data into a global.
  *
  * @param mixed $post Post Object.
- * @return Mas_Videos_Movie
+ * @return MasVideos_Movie
  */
 function masvideos_setup_movie_data( $post ) {
     unset( $GLOBALS['movie'] );
@@ -263,7 +263,7 @@ function masvideos_set_movies_loop_prop( $prop, $value = '' ) {
 }
 
 /**
- * Should the Masvideos loop be displayed?
+ * Should the MasVideos loop be displayed?
  *
  * This will return true if we have posts (videos) or if we have subcats to display.
  *
@@ -275,7 +275,7 @@ function masvideos_videos_loop() {
 }
 
 /**
- * Should the Masvideos loop be displayed?
+ * Should the MasVideos loop be displayed?
  *
  * This will return true if we have posts (movies) or if we have subcats to display.
  *
@@ -299,10 +299,10 @@ function masvideos_movies_loop() {
 function masvideos_generator_tag( $gen, $type ) {
     switch ( $type ) {
         case 'html':
-            $gen .= "\n" . '<meta name="generator" content="Masvideos ' . esc_attr( MAS_VIDEOS_VERSION ) . '">';
+            $gen .= "\n" . '<meta name="generator" content="MasVideos ' . esc_attr( MASVIDEOS_VERSION ) . '">';
             break;
         case 'xhtml':
-            $gen .= "\n" . '<meta name="generator" content="Masvideos ' . esc_attr( MAS_VIDEOS_VERSION ) . '" />';
+            $gen .= "\n" . '<meta name="generator" content="MasVideos ' . esc_attr( MASVIDEOS_VERSION ) . '" />';
             break;
     }
     return $gen;
@@ -313,7 +313,7 @@ function masvideos_generator_tag( $gen, $type ) {
  *
  * @since 1.0.0
  * @param string|array           $class      One or more classes to add to the class list.
- * @param int|WP_Post|Mas_Videos_Videos_Query $video_id Video ID or video object.
+ * @param int|WP_Post|MasVideos_Videos_Query $video_id Video ID or video object.
  */
 function masvideos_video_class( $class = '', $video_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_video_class( $class, $video_id ) ) ) . '"';
@@ -325,7 +325,7 @@ function masvideos_video_class( $class = '', $video_id = null ) {
  *
  * @since 1.0.0
  * @param string|array           $class      One or more classes to add to the class list.
- * @param int|WP_Post|Mas_Videos_Movies_Query $movie_id Movie ID or movie object.
+ * @param int|WP_Post|MasVideos_Movies_Query $movie_id Movie ID or movie object.
  */
 function masvideos_movie_class( $class = '', $movie_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_movie_class( $class, $movie_id ) ) ) . '"';

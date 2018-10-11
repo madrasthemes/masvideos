@@ -1,17 +1,17 @@
 <?php
 /**
- * Contains the query functions for Masvideos which alter the front-end post queries and loops
+ * Contains the query functions for MasVideos which alter the front-end post queries and loops
  *
  * @version 1.0.0
- * @package Masvideos\Classes
+ * @package MasVideos\Classes
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Mas_Videos_Videos_Query Class.
+ * MasVideos_Videos_Query Class.
  */
-class Mas_Videos_Videos_Query {
+class MasVideos_Videos_Query {
 
     /**
      * Reference to the main video query on the page.
@@ -389,9 +389,9 @@ class Mas_Videos_Videos_Query {
 
 
 /**
- * Mas_Videos_Movies_Query Class.
+ * MasVideos_Movies_Query Class.
  */
-class Mas_Videos_Movies_Query {
+class MasVideos_Movies_Query {
 
     /**
      * Reference to the main movie query on the page.
