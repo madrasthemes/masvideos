@@ -103,6 +103,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
              * Abstract classes.
              */
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-data.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie.php';
 
             /**
              * Core classes.
