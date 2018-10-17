@@ -744,11 +744,11 @@ abstract class MasVideos_Data {
                 return;
             }
 
-            if ( is_a( $value, 'WC_DateTime' ) ) {
+            if ( is_a( $value, 'MasVideos_DateTime' ) ) {
                 $datetime = $value;
             } elseif ( is_numeric( $value ) ) {
                 // Timestamps are handled as UTC timestamps in all cases.
-                $datetime = new WC_DateTime( "@{$value}", new DateTimeZone( 'UTC' ) );
+                $datetime = new MasVideos_DateTime( "@{$value}", new DateTimeZone( 'UTC' ) );
             } else {
                 // Strings are defined in local WP timezone. Convert to UTC.
                 if ( 1 === preg_match( '/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|((-|\+)\d{2}:\d{2}))$/', $value, $date_bits ) ) {
@@ -757,7 +757,7 @@ abstract class MasVideos_Data {
                 } else {
                     $timestamp = wc_string_to_timestamp( get_gmt_from_date( gmdate( 'Y-m-d H:i:s', wc_string_to_timestamp( $value ) ) ) );
                 }
-                $datetime  = new WC_DateTime( "@{$timestamp}", new DateTimeZone( 'UTC' ) );
+                $datetime  = new MasVideos_DateTime( "@{$timestamp}", new DateTimeZone( 'UTC' ) );
             }
 
             // Set local timezone or offset.

@@ -273,7 +273,7 @@ class MasVideos_Data_Store_WP {
     /**
      * Map a valid date query var to WP_Query arguments.
      * Valid date formats: YYYY-MM-DD or timestamp, possibly combined with an operator from $valid_operators.
-     * Also accepts a WC_DateTime object.
+     * Also accepts a MasVideos_DateTime object.
      *
      * @since 1.0.0
      * @param mixed  $query_var A valid date format.
@@ -285,25 +285,25 @@ class MasVideos_Data_Store_WP {
         $query_parse_regex = '/([^.<>]*)(>=|<=|>|<|\.\.\.)([^.<>]+)/';
         $valid_operators   = array( '>', '>=', '=', '<=', '<', '...' );
 
-        // YYYY-MM-DD queries have 'day' precision. Timestamp/WC_DateTime queries have 'second' precision.
+        // YYYY-MM-DD queries have 'day' precision. Timestamp/MasVideos_DateTime queries have 'second' precision.
         $precision = 'second';
 
         $dates    = array();
         $operator = '=';
 
         try {
-            // Specific time query with a WC_DateTime.
-            if ( is_a( $query_var, 'WC_DateTime' ) ) {
+            // Specific time query with a MasVideos_DateTime.
+            if ( is_a( $query_var, 'MasVideos_DateTime' ) ) {
                 $dates[] = $query_var;
             } elseif ( is_numeric( $query_var ) ) { // Specific time query with a timestamp.
-                $dates[] = new WC_DateTime( "@{$query_var}", new DateTimeZone( 'UTC' ) );
+                $dates[] = new MasVideos_DateTime( "@{$query_var}", new DateTimeZone( 'UTC' ) );
             } elseif ( preg_match( $query_parse_regex, $query_var, $sections ) ) { // Query with operators and possible range of dates.
                 if ( ! empty( $sections[1] ) ) {
-                    $dates[] = is_numeric( $sections[1] ) ? new WC_DateTime( "@{$sections[1]}", new DateTimeZone( 'UTC' ) ) : masvideos_string_to_datetime( $sections[1] );
+                    $dates[] = is_numeric( $sections[1] ) ? new MasVideos_DateTime( "@{$sections[1]}", new DateTimeZone( 'UTC' ) ) : masvideos_string_to_datetime( $sections[1] );
                 }
 
                 $operator = in_array( $sections[2], $valid_operators, true ) ? $sections[2] : '';
-                $dates[]  = is_numeric( $sections[3] ) ? new WC_DateTime( "@{$sections[3]}", new DateTimeZone( 'UTC' ) ) : masvideos_string_to_datetime( $sections[3] );
+                $dates[]  = is_numeric( $sections[3] ) ? new MasVideos_DateTime( "@{$sections[3]}", new DateTimeZone( 'UTC' ) ) : masvideos_string_to_datetime( $sections[3] );
 
                 if ( ! is_numeric( $sections[1] ) && ! is_numeric( $sections[3] ) ) {
                     $precision = 'day';

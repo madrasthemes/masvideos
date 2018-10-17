@@ -123,6 +123,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
              * Core classes.
              */
             include_once MASVIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-datetime.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
