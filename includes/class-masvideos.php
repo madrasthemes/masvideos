@@ -107,6 +107,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-autoloader.php';
 
             /**
+             * Interfaces.
+             */
+            include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-object-data-store-interface.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-video-data-store-interface.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-movie-data-store-interface.php';
+
+            /**
              * Abstract classes.
              */
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-data.php';
