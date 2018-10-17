@@ -100,6 +100,11 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-autoloader.php';
 
             /**
+             * Abstract classes.
+             */
+            include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-data.php';
+
+            /**
              * Core classes.
              */
             include_once MASVIDEOS_ABSPATH . 'includes/masvideos-core-functions.php';
