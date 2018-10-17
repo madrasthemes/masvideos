@@ -41,6 +41,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
         public $movie_query = null;
 
         /**
+         * Movie factory instance.
+         *
+         * @var MasVideos_Movie_Factory
+         */
+        public $movie_factory = null;
+
+        /**
          * Main MasVideos Instance.
          *
          * Ensures only one instance of MasVideos is loaded or can be loaded.
@@ -112,6 +119,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-factory.php';
 
             /**
              * Data stores - used to store and retrieve CRUD object data from the database.
@@ -162,7 +170,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->load_plugin_textdomain();
 
             // Load class instances.
-            // $this->product_factory                     = new WC_Product_Factory();
+            $this->movie_factory                     = new MasVideos_Movie_Factory();
             // $this->structured_data                     = new WC_Structured_Data();
 
             // Classes/actions loaded for the frontend and for ajax requests.
