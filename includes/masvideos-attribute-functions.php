@@ -145,9 +145,6 @@ function masvideos_attribute_label( $name, $product = '' ) {
         $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies(), 'attribute_label', 'attribute_name' );
         $label      = isset( $all_labels[ $name ] ) ? $all_labels[ $name ] : $name;
     } elseif ( $product ) {
-        if ( $product->is_type( 'variation' ) ) {
-            $product = masvideos_get_product( $product->get_parent_id() );
-        }
         $attributes = array();
 
         if ( false !== $product ) {

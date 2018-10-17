@@ -23,7 +23,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      * @var array
      */
     protected $internal_meta_keys = array(
-        '_visibility',
         '_default_attributes',
         '_movie_attributes',
         '_featured',
@@ -94,7 +93,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
             $this->update_post_meta( $movie, true );
             $this->update_terms( $movie, true );
-            $this->update_visibility( $movie, true );
             $this->update_attributes( $movie, true );
             $this->handle_updated_props( $movie );
 
@@ -137,7 +135,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         );
 
         $this->read_attributes( $movie );
-        $this->read_visibility( $movie );
         $this->read_movie_data( $movie );
         $this->read_extra_data( $movie );
         $movie->set_object_read( true );
@@ -209,7 +206,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $this->update_post_meta( $movie );
         $this->update_terms( $movie );
-        $this->update_visibility( $movie );
         $this->update_attributes( $movie );
         $this->handle_updated_props( $movie );
 
@@ -297,12 +293,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'image_id'           => get_post_thumbnail_id( $id ),
             )
         );
-
-        // Handle sale dates on the fly in case of missed cron schedule.
-        if ( $movie->is_type( 'simple' ) && $movie->is_on_sale( 'edit' ) && $movie->get_sale_price( 'edit' ) !== $movie->get_price( 'edit' ) ) {
-            update_post_meta( $movie->get_id(), '_price', $movie->get_sale_price( 'edit' ) );
-            $movie->set_price( $movie->get_sale_price( 'edit' ) );
-        }
     }
 
     /**
@@ -318,38 +308,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 $movie->{$function}( get_post_meta( $movie->get_id(), '_' . $key, true ) );
             }
         }
-    }
-
-    /**
-     * Convert visibility terms to props.
-     * Catalog visibility valid values are 'visible', 'catalog', 'search', and 'hidden'.
-     *
-     * @param MasVideos_Movie $movie Movie object.
-     * @since 1.0.0
-     */
-    protected function read_visibility( &$movie ) {
-        $terms           = get_the_terms( $movie->get_id(), 'movie_visibility' );
-        $term_names      = is_array( $terms ) ? wp_list_pluck( $terms, 'name' ) : array();
-        $featured        = in_array( 'featured', $term_names, true );
-        $exclude_search  = in_array( 'exclude-from-search', $term_names, true );
-        $exclude_catalog = in_array( 'exclude-from-catalog', $term_names, true );
-
-        if ( $exclude_search && $exclude_catalog ) {
-            $catalog_visibility = 'hidden';
-        } elseif ( $exclude_search ) {
-            $catalog_visibility = 'catalog';
-        } elseif ( $exclude_catalog ) {
-            $catalog_visibility = 'search';
-        } else {
-            $catalog_visibility = 'visible';
-        }
-
-        $movie->set_props(
-            array(
-                'featured'           => $featured,
-                'catalog_visibility' => $catalog_visibility,
-            )
-        );
     }
 
     /**
@@ -506,50 +464,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     }
 
     /**
-     * Update visibility terms based on props.
-     *
-     * @since 1.0.0
-     *
-     * @param MasVideos_Movie $movie Movie object.
-     * @param bool       $force Force update. Used during create.
-     */
-    protected function update_visibility( &$movie, $force = false ) {
-        $changes = $movie->get_changes();
-
-        if ( $force || array_intersect( array( 'featured', 'average_rating', 'catalog_visibility' ), array_keys( $changes ) ) ) {
-            $terms = array();
-
-            if ( $movie->get_featured() ) {
-                $terms[] = 'featured';
-            }
-
-            $rating = min( 5, round( $movie->get_average_rating(), 0 ) );
-
-            if ( $rating > 0 ) {
-                $terms[] = 'rated-' . $rating;
-            }
-
-            switch ( $movie->get_catalog_visibility() ) {
-                case 'hidden':
-                    $terms[] = 'exclude-from-search';
-                    $terms[] = 'exclude-from-catalog';
-                    break;
-                case 'catalog':
-                    $terms[] = 'exclude-from-search';
-                    break;
-                case 'search':
-                    $terms[] = 'exclude-from-catalog';
-                    break;
-            }
-
-            if ( ! is_wp_error( wp_set_post_terms( $movie->get_id(), $terms, 'movie_visibility', false ) ) ) {
-                delete_transient( 'masvideos_featured_movies' );
-                do_action( 'masvideos_movie_set_visibility', $movie->get_id(), $movie->get_catalog_visibility() );
-            }
-        }
-    }
-
-    /**
      * Update attributes which are a mix of terms and meta data.
      *
      * @param MasVideos_Movie $movie Movie object.
@@ -588,7 +502,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                         'value'        => $value,
                         'position'     => $attribute->get_position(),
                         'is_visible'   => $attribute->get_visible() ? 1 : 0,
-                        'is_variation' => $attribute->get_variation() ? 1 : 0,
                         'is_taxonomy'  => $attribute->is_taxonomy() ? 1 : 0,
                     );
                 }
@@ -623,28 +536,12 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      * @since 1.0.0
      */
     public function get_featured_movie_ids() {
-        $movie_visibility_term_ids = masvideos_get_movie_visibility_term_ids();
 
         return get_posts(
             array(
-                'post_type'      => array( 'movie', 'movie_variation' ),
+                'post_type'      => array( 'movie' ),
                 'posts_per_page' => -1,
                 'post_status'    => 'publish',
-                // phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_tax_query
-                'tax_query'      => array(
-                    'relation' => 'AND',
-                    array(
-                        'taxonomy' => 'movie_visibility',
-                        'field'    => 'term_taxonomy_id',
-                        'terms'    => array( $movie_visibility_term_ids['featured'] ),
-                    ),
-                    array(
-                        'taxonomy' => 'movie_visibility',
-                        'field'    => 'term_taxonomy_id',
-                        'terms'    => array( $movie_visibility_term_ids['exclude-from-catalog'] ),
-                        'operator' => 'NOT IN',
-                    ),
-                ),
                 'fields'         => 'id=>parent',
             )
         );
@@ -694,11 +591,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $include_term_ids            = array_merge( $cats_array, $tags_array );
         $exclude_term_ids            = array();
-        $movie_visibility_term_ids = masvideos_get_movie_visibility_term_ids();
-
-        if ( $movie_visibility_term_ids['exclude-from-catalog'] ) {
-            $exclude_term_ids[] = $movie_visibility_term_ids['exclude-from-catalog'];
-        }
 
         $query = array(
             'fields' => "
@@ -740,7 +632,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      */
     public function update_average_rating( $movie ) {
         update_post_meta( $movie->get_id(), '_masvideos_average_rating', $movie->get_average_rating( 'edit' ) );
-        self::update_visibility( $movie, true );
     }
 
     /**
@@ -779,13 +670,12 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      * Search movie data for a term and return ids.
      *
      * @param  string   $term Search term.
-     * @param  string   $type Type of movie.
-     * @param  bool     $include_variations Include variations in search or not.
      * @param  bool     $all_statuses Should we search all statuses or limit to published.
-     * @param  null|int $limit Limit returned results. @since 3.5.0.
+     * @param  null|int $limit Limit returned results.
+     * @since  1.0.0.
      * @return array of ids
      */
-    public function search_movies( $term, $type = '', $include_variations = false, $all_statuses = false, $limit = null ) {
+    public function search_movies( $term, $all_statuses = false, $limit = null ) {
         global $wpdb;
 
         $post_types    = array( 'movie' );
@@ -838,11 +728,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             $search_where = 'AND (' . implode( ') OR (', $search_queries ) . ')';
         }
 
-        if ( $type && in_array( $type, array( 'virtual', 'downloadable' ), true ) ) {
-            $type_join  = " LEFT JOIN {$wpdb->postmeta} postmeta_type ON posts.ID = postmeta_type.post_id ";
-            $type_where = " AND ( postmeta_type.meta_key = '_{$type}' AND postmeta_type.meta_value = 'yes' ) ";
-        }
-
         if ( ! $all_statuses ) {
             $status_where = " AND posts.post_status IN ('" . implode( "','", $post_statuses ) . "') ";
         }
@@ -873,9 +758,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             $post_id   = absint( $term );
             $post_type = get_post_type( $post_id );
 
-            if ( 'movie_variation' === $post_type && $include_variations ) {
-                $movie_ids[] = $post_id;
-            } elseif ( 'movie' === $post_type ) {
+            if ( 'movie' === $post_type ) {
                 $movie_ids[] = $post_id;
             }
 
@@ -932,10 +815,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         }
 
         // These queries cannot be auto-generated so we have to remove them and build them manually.
-        $manual_queries = array(
-            'featured'   => '',
-            'visibility' => '',
-        );
+        $manual_queries = array();
         foreach ( $manual_queries as $key => $manual_query ) {
             if ( isset( $query_vars[ $key ] ) ) {
                 $manual_queries[ $key ] = $query_vars[ $key ];
@@ -970,69 +850,6 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'field'    => 'slug',
                 'terms'    => $query_vars['tag'],
             );
-        }
-
-        // Handle featured.
-        if ( '' !== $manual_queries['featured'] ) {
-            $movie_visibility_term_ids = masvideos_get_movie_visibility_term_ids();
-            if ( $manual_queries['featured'] ) {
-                $wp_query_args['tax_query'][] = array(
-                    'taxonomy' => 'movie_visibility',
-                    'field'    => 'term_taxonomy_id',
-                    'terms'    => array( $movie_visibility_term_ids['featured'] ),
-                );
-                $wp_query_args['tax_query'][] = array(
-                    'taxonomy' => 'movie_visibility',
-                    'field'    => 'term_taxonomy_id',
-                    'terms'    => array( $movie_visibility_term_ids['exclude-from-catalog'] ),
-                    'operator' => 'NOT IN',
-                );
-            } else {
-                $wp_query_args['tax_query'][] = array(
-                    'taxonomy' => 'movie_visibility',
-                    'field'    => 'term_taxonomy_id',
-                    'terms'    => array( $movie_visibility_term_ids['featured'] ),
-                    'operator' => 'NOT IN',
-                );
-            }
-        }
-
-        // Handle visibility.
-        if ( $manual_queries['visibility'] ) {
-            switch ( $manual_queries['visibility'] ) {
-                case 'search':
-                    $wp_query_args['tax_query'][] = array(
-                        'taxonomy' => 'movie_visibility',
-                        'field'    => 'slug',
-                        'terms'    => array( 'exclude-from-search' ),
-                        'operator' => 'NOT IN',
-                    );
-                    break;
-                case 'catalog':
-                    $wp_query_args['tax_query'][] = array(
-                        'taxonomy' => 'movie_visibility',
-                        'field'    => 'slug',
-                        'terms'    => array( 'exclude-from-catalog' ),
-                        'operator' => 'NOT IN',
-                    );
-                    break;
-                case 'visible':
-                    $wp_query_args['tax_query'][] = array(
-                        'taxonomy' => 'movie_visibility',
-                        'field'    => 'slug',
-                        'terms'    => array( 'exclude-from-catalog', 'exclude-from-search' ),
-                        'operator' => 'NOT IN',
-                    );
-                    break;
-                case 'hidden':
-                    $wp_query_args['tax_query'][] = array(
-                        'taxonomy' => 'movie_visibility',
-                        'field'    => 'slug',
-                        'terms'    => array( 'exclude-from-catalog', 'exclude-from-search' ),
-                        'operator' => 'AND',
-                    );
-                    break;
-            }
         }
 
         // Handle date queries.

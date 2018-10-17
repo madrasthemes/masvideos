@@ -55,43 +55,15 @@ class MasVideos_Movie extends MasVideos_Data {
         'catalog_visibility' => 'visible',
         'description'        => '',
         'short_description'  => '',
-        'sku'                => '',
-        'price'              => '',
-        'regular_price'      => '',
-        'sale_price'         => '',
-        'date_on_sale_from'  => null,
-        'date_on_sale_to'    => null,
-        'total_sales'        => '0',
-        'tax_status'         => 'taxable',
-        'tax_class'          => '',
-        'manage_stock'       => false,
-        'stock_quantity'     => null,
-        'stock_status'       => 'instock',
-        'backorders'         => 'no',
-        'low_stock_amount'   => '',
-        'sold_individually'  => false,
-        'weight'             => '',
-        'length'             => '',
-        'width'              => '',
-        'height'             => '',
-        'upsell_ids'         => array(),
-        'cross_sell_ids'     => array(),
         'parent_id'          => 0,
         'reviews_allowed'    => true,
-        'purchase_note'      => '',
         'attributes'         => array(),
         'default_attributes' => array(),
         'menu_order'         => 0,
-        'virtual'            => false,
-        'downloadable'       => false,
         'category_ids'       => array(),
         'tag_ids'            => array(),
-        'shipping_class_id'  => 0,
-        'downloads'          => array(),
         'image_id'           => '',
         'gallery_image_ids'  => array(),
-        'download_limit'     => -1,
-        'download_expiry'    => -1,
         'rating_counts'      => array(),
         'average_rating'     => 0,
         'review_count'       => 0,
@@ -430,10 +402,7 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param string $visibility Options: 'hidden', 'visible', 'search' and 'catalog'.
      */
     public function set_catalog_visibility( $visibility ) {
-        $options = array_keys( masvideos_get_movie_visibility_options() );
-        if ( ! in_array( $visibility, $options, true ) ) {
-            $this->error( 'movie_invalid_catalog_visibility', __( 'Invalid catalog visibility option.', 'masvideos' ) );
-        }
+        $visibility = 'visible';
         $this->set_prop( 'catalog_visibility', $visibility );
     }
 
