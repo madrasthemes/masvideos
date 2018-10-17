@@ -3,7 +3,7 @@
  * Plugin Name: MAS Videos
  * Plugin URI: https://madrasthemes.com/masvideos
  * Description: This plugins helps to run videos, movies and series in your site.
- * Version: 1.0.0
+ * Version: 0.0.24
  * Author: MadrasThemes
  * Author URI: https://madrasthemes.com/
  * Network: true
