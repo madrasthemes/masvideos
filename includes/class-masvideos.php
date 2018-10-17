@@ -133,6 +133,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
              */
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-data-store.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-data-store-wp.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-movie-data-store-cpt.php';
 
             if ( $this->is_request( 'admin' ) ) {
                 include_once MASVIDEOS_ABSPATH . 'includes/admin/class-masvideos-admin.php';
