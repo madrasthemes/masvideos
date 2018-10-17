@@ -112,6 +112,11 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
 
+            /**
+             * Data stores - used to store and retrieve CRUD object data from the database.
+             */
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-data-store.php';
+
             if ( $this->is_request( 'admin' ) ) {
                 include_once MASVIDEOS_ABSPATH . 'includes/admin/class-masvideos-admin.php';
             }
