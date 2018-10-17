@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
-// require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
-// require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
 
 /**
  * Define a constant if it is not already defined.

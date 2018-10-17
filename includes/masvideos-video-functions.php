@@ -55,5 +55,5 @@ function masvideos_get_video( $the_video = false ) {
         _doing_it_wrong( __FUNCTION__, sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_video', 'masvideos_init' ), '1.0.0' );
         return false;
     }
-    return MasVideos()->video_factory->get_video( $the_video, $deprecated );
+    return MasVideos()->video_factory->get_video( $the_video );
 }
