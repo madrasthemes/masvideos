@@ -288,6 +288,121 @@ function masvideos_timezone_offset() {
 }
 
 /**
+ * Get the price format depending on the currency position.
+ *
+ * @return string
+ */
+function  masvideos_get_price_format() {
+    $currency_pos = 'left';
+    $format       = '%1$s%2$s';
+
+    switch ( $currency_pos ) {
+        case 'left':
+            $format = '%1$s%2$s';
+            break;
+        case 'right':
+            $format = '%2$s%1$s';
+            break;
+        case 'left_space':
+            $format = '%1$s&nbsp;%2$s';
+            break;
+        case 'right_space':
+            $format = '%2$s&nbsp;%1$s';
+            break;
+    }
+
+    return apply_filters( ' masvideos_price_format', $format, $currency_pos );
+}
+
+/**
+ * Return the thousand separator for prices.
+ *
+ * @since  1.0.0
+ * @return string
+ */
+function  masvideos_get_price_thousand_separator() {
+    return stripslashes( apply_filters( ' masvideos_get_price_thousand_separator', ',' ) );
+}
+
+/**
+ * Return the decimal separator for prices.
+ *
+ * @since  1.0.0
+ * @return string
+ */
+function  masvideos_get_price_decimal_separator() {
+    $separator = apply_filters( ' masvideos_get_price_decimal_separator', '.' );
+    return $separator ? stripslashes( $separator ) : '.';
+}
+
+/**
+ * Return the number of decimals after the decimal point.
+ *
+ * @since  1.0.0
+ * @return int
+ */
+function  masvideos_get_price_decimals() {
+    return absint( apply_filters( ' masvideos_get_price_decimals', 2 ) );
+}
+
+/**
+ * Format decimal numbers ready for DB storage.
+ *
+ * Sanitize, remove decimals, and optionally round + trim off zeros.
+ *
+ * This function does not remove thousands - this should be done before passing a value to the function.
+ *
+ * @param  float|string $number     Expects either a float or a string with a decimal separator only (no thousands).
+ * @param  mixed        $dp number  Number of decimal points to use, blank to use  masvideos_price_num_decimals, or false to avoid all rounding.
+ * @param  bool         $trim_zeros From end of string.
+ * @return string
+ */
+function masvideos_format_decimal( $number, $dp = false, $trim_zeros = false ) {
+    $locale   = localeconv();
+    $decimals = array( masvideos_get_price_decimal_separator(), $locale['decimal_point'], $locale['mon_decimal_point'] );
+
+    // Remove locale from string.
+    if ( ! is_float( $number ) ) {
+        $number = str_replace( $decimals, '.', $number );
+        $number = preg_replace( '/[^0-9\.,-]/', '', masvideos_clean( $number ) );
+    }
+
+    if ( false !== $dp ) {
+        $dp     = intval( '' === $dp ? masvideos_get_price_decimals() : $dp );
+        $number = number_format( floatval( $number ), $dp, '.', '' );
+    } elseif ( is_float( $number ) ) {
+        // DP is false - don't use number format, just return a string using whatever is given. Remove scientific notation using sprintf.
+        $number = str_replace( $decimals, '.', sprintf( '%.' . masvideos_get_rounding_precision() . 'f', $number ) );
+        // We already had a float, so trailing zeros are not needed.
+        $trim_zeros = true;
+    }
+
+    if ( $trim_zeros && strstr( $number, '.' ) ) {
+        $number = rtrim( rtrim( $number, '0' ), '.' );
+    }
+
+    return $number;
+}
+
+/**
+ * Convert a float to a string without locale formatting which PHP adds when changing floats to strings.
+ *
+ * @param  float $float Float value to format.
+ * @return string
+ */
+function masvideos_float_to_string( $float ) {
+    if ( ! is_float( $float ) ) {
+        return $float;
+    }
+
+    $locale = localeconv();
+    $string = strval( $float );
+    $string = str_replace( $locale['decimal_point'], '.', $string );
+
+    return $string;
+}
+
+/**
  * Implode and escape HTML attributes for output.
  *
  * @since 1.0.0

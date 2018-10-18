@@ -159,6 +159,84 @@ function masvideos_locate_template( $template_name, $template_path = '', $defaul
 }
 
 /**
+ * Get rounding precision for internal MasVideos calculations.
+ * Will increase the precision of masvideos_get_price_decimals by 2 decimals, unless MASVIDEOS_ROUNDING_PRECISION is set to a higher number.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_rounding_precision() {
+    $precision = masvideos_get_price_decimals() + 2;
+    if ( absint( MASVIDEOS_ROUNDING_PRECISION ) > $precision ) {
+        $precision = absint( MASVIDEOS_ROUNDING_PRECISION );
+    }
+    return $precision;
+}
+
+/**
+ * Add precision to a number and return a number.
+ *
+ * @since  1.0.0
+ * @param  float $value Number to add precision to.
+ * @param  bool  $round If should round after adding precision.
+ * @return int|float
+ */
+function masvideos_add_number_precision( $value, $round = true ) {
+    $cent_precision = pow( 10, masvideos_get_price_decimals() );
+    $value          = $value * $cent_precision;
+    return $round ? round( $value, masvideos_get_rounding_precision() - masvideos_get_price_decimals() ) : $value;
+}
+
+/**
+ * Remove precision from a number and return a float.
+ *
+ * @since  1.0.0
+ * @param  float $value Number to add precision to.
+ * @return float
+ */
+function masvideos_remove_number_precision( $value ) {
+    $cent_precision = pow( 10, masvideos_get_price_decimals() );
+    return $value / $cent_precision;
+}
+
+/**
+ * Add precision to an array of number and return an array of int.
+ *
+ * @since  1.0.0
+ * @param  array $value Number to add precision to.
+ * @param  bool  $round Should we round after adding precision?.
+ * @return int
+ */
+function masvideos_add_number_precision_deep( $value, $round = true ) {
+    if ( is_array( $value ) ) {
+        foreach ( $value as $key => $subvalue ) {
+            $value[ $key ] = masvideos_add_number_precision_deep( $subvalue, $round );
+        }
+    } else {
+        $value = masvideos_add_number_precision( $value, $round );
+    }
+    return $value;
+}
+
+/**
+ * Remove precision from an array of number and return an array of int.
+ *
+ * @since  1.0.0
+ * @param  array $value Number to add precision to.
+ * @return int
+ */
+function masvideos_remove_number_precision_deep( $value ) {
+    if ( is_array( $value ) ) {
+        foreach ( $value as $key => $subvalue ) {
+            $value[ $key ] = masvideos_remove_number_precision_deep( $subvalue );
+        }
+    } else {
+        $value = masvideos_remove_number_precision( $value );
+    }
+    return $value;
+}
+
+/**
  * Get permalink settings for things like videos and taxonomies.
  *
  * This is more inline with WP core behavior which does not localize slugs.
