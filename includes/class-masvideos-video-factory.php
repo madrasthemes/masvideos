@@ -2,7 +2,7 @@
 /**
  * Video Factory
  *
- * The MasVideos movie factory creating the right movie object.
+ * The MasVideos video factory creating the right video object.
  *
  * @package MasVideos/Classes
  * @version 1.0.0
@@ -16,36 +16,36 @@ defined( 'ABSPATH' ) || exit;
 class MasVideos_Video_Factory {
 
     /**
-     * Get a movie.
+     * Get a video.
      *
-     * @param mixed $movie_id MasVideos_Video|WP_Post|int|bool $movie Video instance, post instance, numeric or false to use global $post.
-     * @return MasVideos_Video|bool Video object or null if the movie cannot be loaded.
+     * @param mixed $video_id MasVideos_Video|WP_Post|int|bool $video Video instance, post instance, numeric or false to use global $post.
+     * @return MasVideos_Video|bool Video object or null if the video cannot be loaded.
      */
-    public function get_movie( $movie_id = false ) {
-        $movie_id = $this->get_movie_id( $movie_id );
+    public function get_video( $video_id = false ) {
+        $video_id = $this->get_video_id( $video_id );
 
-        if ( ! $movie_id ) {
+        if ( ! $video_id ) {
             return false;
         }
 
-        $classname = $this->get_movie_classname( $movie_id );
+        $classname = $this->get_video_classname( $video_id );
 
         try {
-            return new $classname( $movie_id );
+            return new $classname( $video_id );
         } catch ( Exception $e ) {
             return false;
         }
     }
 
     /**
-     * Gets a movie classname and allows filtering. Returns MasVideos_Video if the class does not exist.
+     * Gets a video classname and allows filtering. Returns MasVideos_Video if the class does not exist.
      *
      * @since  1.0.0
-     * @param  int    $movie_id   Video ID.
+     * @param  int    $video_id   Video ID.
      * @return string
      */
-    public static function get_movie_classname( $movie_id ) {
-        $classname = apply_filters( 'masvideos_movie_class', 'MasVideos_Video', $movie_id );
+    public static function get_video_classname( $video_id ) {
+        $classname = apply_filters( 'masvideos_video_class', 'MasVideos_Video', $video_id );
 
         if ( ! $classname || ! class_exists( $classname ) ) {
             $classname = 'MasVideos_Video';
@@ -55,23 +55,23 @@ class MasVideos_Video_Factory {
     }
 
     /**
-     * Get the movie ID depending on what was passed.
+     * Get the video ID depending on what was passed.
      *
      * @since  1.0.0
-     * @param  MasVideos_Video|WP_Post|int|bool $movie Video instance, post instance, numeric or false to use global $post.
+     * @param  MasVideos_Video|WP_Post|int|bool $video Video instance, post instance, numeric or false to use global $post.
      * @return int|bool false on failure
      */
-    private function get_movie_id( $movie ) {
+    private function get_video_id( $video ) {
         global $post;
 
-        if ( false === $movie && isset( $post, $post->ID ) && 'movie' === get_post_type( $post->ID ) ) {
+        if ( false === $video && isset( $post, $post->ID ) && 'video' === get_post_type( $post->ID ) ) {
             return absint( $post->ID );
-        } elseif ( is_numeric( $movie ) ) {
-            return $movie;
-        } elseif ( $movie instanceof MasVideos_Video ) {
-            return $movie->get_id();
-        } elseif ( ! empty( $movie->ID ) ) {
-            return $movie->ID;
+        } elseif ( is_numeric( $video ) ) {
+            return $video;
+        } elseif ( $video instanceof MasVideos_Video ) {
+            return $video->get_id();
+        } elseif ( ! empty( $video->ID ) ) {
+            return $video->ID;
         } else {
             return false;
         }

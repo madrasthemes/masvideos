@@ -48,6 +48,9 @@ class MasVideos_Comments {
      * @return bool
      */
     public static function comments_open( $open, $post_id ) {
+        if ( 'video' === get_post_type( $post_id ) && ! post_type_supports( 'video', 'comments' ) ) {
+            $open = false;
+        }
         if ( 'movie' === get_post_type( $post_id ) && ! post_type_supports( 'movie', 'comments' ) ) {
             $open = false;
         }
@@ -62,8 +65,14 @@ class MasVideos_Comments {
      */
     public static function check_comment_rating( $comment_data ) {
         // If posting a comment (not trackback etc) and not logged in.
-        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'movie' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'woocommerce_enable_review_rating' ) && 'yes' === get_option( 'woocommerce_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
-            wp_die( esc_html__( 'Please rate the movie.', 'woocommerce' ) );
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'video' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+            wp_die( esc_html__( 'Please rate the video.', 'masvideos' ) );
+            exit;
+        }
+
+        // If posting a comment (not trackback etc) and not logged in.
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'movie' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+            wp_die( esc_html__( 'Please rate the movie.', 'masvideos' ) );
             exit;
         }
         return $comment_data;
@@ -98,6 +107,10 @@ class MasVideos_Comments {
     public static function comment_moderation_recipients( $emails, $comment_id ) {
         $comment = get_comment( $comment_id );
 
+        if ( $comment && 'video' === get_post_type( $comment->comment_post_ID ) ) {
+            $emails = array( get_option( 'admin_email' ) );
+        }
+
         if ( $comment && 'movie' === get_post_type( $comment->comment_post_ID ) ) {
             $emails = array( get_option( 'admin_email' ) );
         }
@@ -111,6 +124,13 @@ class MasVideos_Comments {
      * @param int $post_id Post ID.
      */
     public static function clear_transients( $post_id ) {
+
+        if ( 'video' === get_post_type( $post_id ) ) {
+            $video = masvideos_get_video( $post_id );
+            self::get_rating_counts_for_video( $video );
+            self::get_average_rating_for_video( $video );
+            self::get_review_count_for_video( $video );
+        }
 
         if ( 'movie' === get_post_type( $post_id ) ) {
             $movie = masvideos_get_movie( $post_id );
@@ -203,6 +223,110 @@ class MasVideos_Comments {
      */
     public static function add_avatar_for_review_comment_type( $comment_types ) {
         return array_merge( $comment_types, array( 'review' ) );
+    }
+
+    /**
+     * Get video rating for a video. Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Video $video Video instance.
+     * @return float
+     */
+    public static function get_average_rating_for_video( &$video ) {
+        global $wpdb;
+
+        $count = $video->get_rating_count();
+
+        if ( $count ) {
+            $ratings = $wpdb->get_var(
+                $wpdb->prepare(
+                    "
+                SELECT SUM(meta_value) FROM $wpdb->commentmeta
+                LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+                WHERE meta_key = 'rating'
+                AND comment_post_ID = %d
+                AND comment_approved = '1'
+                AND meta_value > 0
+            ", $video->get_id()
+                )
+            );
+            $average = number_format( $ratings / $count, 2, '.', '' );
+        } else {
+            $average = 0;
+        }
+
+        $video->set_average_rating( $average );
+
+        $data_store = $video->get_data_store();
+        $data_store->update_average_rating( $video );
+
+        return $average;
+    }
+
+    /**
+     * Get video review count for a video (not replies). Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Video $video Video instance.
+     * @return int
+     */
+    public static function get_review_count_for_video( &$video ) {
+        global $wpdb;
+
+        $count = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+            SELECT COUNT(*) FROM $wpdb->comments
+            WHERE comment_parent = 0
+            AND comment_post_ID = %d
+            AND comment_approved = '1'
+        ", $video->get_id()
+            )
+        );
+
+        $video->set_review_count( $count );
+
+        $data_store = $video->get_data_store();
+        $data_store->update_review_count( $video );
+
+        return $count;
+    }
+
+    /**
+     * Get video rating count for a video. Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Video $video Video instance.
+     * @return int[]
+     */
+    public static function get_rating_counts_for_video( &$video ) {
+        global $wpdb;
+
+        $counts     = array();
+        $raw_counts = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+            SELECT meta_value, COUNT( * ) as meta_value_count FROM $wpdb->commentmeta
+            LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+            WHERE meta_key = 'rating'
+            AND comment_post_ID = %d
+            AND comment_approved = '1'
+            AND meta_value > 0
+            GROUP BY meta_value
+        ", $video->get_id()
+            )
+        );
+
+        foreach ( $raw_counts as $count ) {
+            $counts[ $count->meta_value ] = absint( $count->meta_value_count ); // WPCS: slow query ok.
+        }
+
+        $video->set_rating_counts( $counts );
+
+        $data_store = $video->get_data_store();
+        $data_store->update_rating_counts( $video );
+
+        return $counts;
     }
 
     /**
