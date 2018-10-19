@@ -41,6 +41,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
         public $movie_query = null;
 
         /**
+         * Video factory instance.
+         *
+         * @var MasVideos_Video_Factory
+         */
+        public $video_factory = null;
+
+        /**
          * Movie factory instance.
          *
          * @var MasVideos_Movie_Factory
@@ -117,6 +124,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
              * Abstract classes.
              */
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-data.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-video.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie.php';
 
             /**
@@ -128,6 +136,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-comments.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-video-factory.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-factory.php';
 
             /**
@@ -135,6 +144,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
              */
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-data-store.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-data-store-wp.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-video-data-store-cpt.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-movie-data-store-cpt.php';
 
             if ( $this->is_request( 'admin' ) ) {
@@ -181,6 +191,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->load_plugin_textdomain();
 
             // Load class instances.
+            $this->video_factory                     = new MasVideos_Video_Factory();
             $this->movie_factory                     = new MasVideos_Movie_Factory();
             // $this->structured_data                     = new WC_Structured_Data();
 
