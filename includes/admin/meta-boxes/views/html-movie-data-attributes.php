@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="movie_attributes masvideos-metaboxes">
         <?php
-        // Product attributes - taxonomies and custom, ordered, with visibility.
+        // Movie attributes - taxonomies and custom, ordered, with visibility.
         $attributes = $movie_object->get_attributes( 'edit' );
         $i          = -1;
 

@@ -101,6 +101,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->define( 'MASVIDEOS_ABSPATH', dirname( MASVIDEOS_PLUGIN_FILE ) . '/' );
             $this->define( 'MASVIDEOS_PLUGIN_BASENAME', plugin_basename( MASVIDEOS_PLUGIN_FILE ) );
             $this->define( 'MASVIDEOS_VERSION', $this->version );
+            $this->define( 'MASVIDEOS_DELIMITER', '|' );
             $this->define( 'MASVIDEOS_TEMPLATE_DEBUG_MODE', false );
         }
 

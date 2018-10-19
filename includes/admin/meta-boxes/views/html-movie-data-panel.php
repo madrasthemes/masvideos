@@ -1,6 +1,6 @@
 <?php
 /**
- * Product data meta box.
+ * Movie data meta box.
  *
  * @package MasVideos/Admin
  */
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <a href="#<?php echo esc_attr( $tab['target'] ); ?>"><span><?php echo esc_html( $tab['label'] ); ?></span></a>
             </li>
         <?php endforeach; ?>
-        <?php do_action( 'masvideos_product_write_panel_tabs' ); ?>
+        <?php do_action( 'masvideos_movie_write_panel_tabs' ); ?>
     </ul>
 
     <?php
