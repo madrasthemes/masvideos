@@ -1,6 +1,6 @@
 <?php
 /**
- * Product Data
+ * Movie Data
  *
  * Displays the movie data box, tabbed, with several panels covering price, stock etc.
  *
@@ -108,11 +108,12 @@ class MasVideos_Meta_Box_Movie_Data {
             $data = $_POST;
         }
 
+        $post_type = 'movie';
+
         if ( isset( $data['attribute_names'], $data['attribute_values'] ) ) {
             $attribute_names         = $data['attribute_names'];
             $attribute_values        = $data['attribute_values'];
             $attribute_visibility    = isset( $data['attribute_visibility'] ) ? $data['attribute_visibility'] : array();
-            $attribute_variation     = isset( $data['attribute_variation'] ) ? $data['attribute_variation'] : array();
             $attribute_position      = $data['attribute_position'];
             $attribute_names_max_key = max( array_keys( $attribute_names ) );
 
@@ -121,10 +122,10 @@ class MasVideos_Meta_Box_Movie_Data {
                     continue;
                 }
                 $attribute_id   = 0;
-                $attribute_name = wc_clean( $attribute_names[ $i ] );
+                $attribute_name = masvideos_clean( $attribute_names[ $i ] );
 
-                if ( 'movie_' === substr( $attribute_name, 0, 3 ) ) {
-                    $attribute_id = wc_attribute_taxonomy_id_by_name( $attribute_name );
+                if ( $post_type . '_' === substr( $attribute_name, 0, 6 ) ) {
+                    $attribute_id = masvideos_attribute_taxonomy_id_by_name( $post_type, $attribute_name );
                 }
 
                 $options = isset( $attribute_values[ $i ] ) ? $attribute_values[ $i ] : '';
@@ -134,21 +135,20 @@ class MasVideos_Meta_Box_Movie_Data {
                     $options = wp_parse_id_list( $options );
                 } else {
                     // Terms or text sent in textarea.
-                    $options = 0 < $attribute_id ? wc_sanitize_textarea( wc_sanitize_term_text_based( $options ) ) : wc_sanitize_textarea( $options );
-                    $options = wc_get_text_attributes( $options );
+                    $options = 0 < $attribute_id ? masvideos_sanitize_textarea( masvideos_sanitize_term_text_based( $options ) ) : masvideos_sanitize_textarea( $options );
+                    $options = masvideos_get_text_attributes( $options );
                 }
 
                 if ( empty( $options ) ) {
                     continue;
                 }
 
-                $attribute = new WC_Product_Attribute();
+                $attribute = new MasVideos_Movie_Attribute();
                 $attribute->set_id( $attribute_id );
                 $attribute->set_name( $attribute_name );
                 $attribute->set_options( $options );
                 $attribute->set_position( $attribute_position[ $i ] );
                 $attribute->set_visible( isset( $attribute_visibility[ $i ] ) );
-                $attribute->set_variation( isset( $attribute_variation[ $i ] ) );
                 $attributes[] = $attribute;
             }
         }
@@ -178,10 +178,10 @@ class MasVideos_Meta_Box_Movie_Data {
                     }
 
                     if ( $attribute->is_taxonomy() ) {
-                        // Don't use wc_clean as it destroys sanitized characters.
+                        // Don't use masvideos_clean as it destroys sanitized characters.
                         $value = sanitize_title( $value );
                     } else {
-                        $value = html_entity_decode( wc_clean( $value ), ENT_QUOTES, get_bloginfo( 'charset' ) ); // WPCS: sanitization ok.
+                        $value = html_entity_decode( masvideos_clean( $value ), ENT_QUOTES, get_bloginfo( 'charset' ) ); // WPCS: sanitization ok.
                     }
 
                     $attributes[ $attribute_key ] = $value;
@@ -200,21 +200,10 @@ class MasVideos_Meta_Box_Movie_Data {
      */
     public static function save( $post_id, $post ) {
         // Process movie type first so we have the correct class to run setters.
-        $movie_type = empty( $_POST['movie-type'] ) ? WC_Product_Factory::get_movie_type( $post_id ) : sanitize_title( stripslashes( $_POST['movie-type'] ) );
-        $classname    = WC_Product_Factory::get_movie_classname( $post_id );
+        $movie_type = empty( $_POST['movie-type'] ) ? MasVideos_Movie_Factory::get_movie_type( $post_id ) : sanitize_title( stripslashes( $_POST['movie-type'] ) );
+        $classname    = MasVideos_Movie_Factory::get_movie_classname( $post_id );
         $movie      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();
-        $stock        = null;
-
-        // Handle stock changes.
-        if ( isset( $_POST['_stock'] ) ) {
-            if ( isset( $_POST['_original_stock'] ) && wc_stock_amount( $movie->get_stock_quantity( 'edit' ) ) !== wc_stock_amount( $_POST['_original_stock'] ) ) {
-                /* translators: 1: movie ID 2: quantity in stock */
-                MasVideos_Admin_Meta_Boxes::add_error( sprintf( __( 'The stock has not been updated because the value has changed since editing. Product %1$d has %2$d units in stock.', 'masvideos' ), $movie->get_id(), $movie->get_stock_quantity( 'edit' ) ) );
-            } else {
-                $stock = wc_stock_amount( wp_unslash( $_POST['_stock'] ) );
-            }
-        }
 
         $errors = $movie->set_props(
             array(

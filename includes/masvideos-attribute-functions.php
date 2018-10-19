@@ -1,9 +1,9 @@
 <?php
 /**
- * WooCommerce Attribute Functions
+ * MasVideos Attribute Functions
  *
- * @package WooCommerce/Functions
- * @version 2.1.0
+ * @package MasVideos/Functions
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -11,18 +11,18 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Gets text attributes from a string.
  *
- * @since  2.4
+ * @since  1.0.0
  * @param string $raw_attributes Raw attributes.
  * @return array
  */
 function masvideos_get_text_attributes( $raw_attributes ) {
-    return array_filter( array_map( 'trim', explode( WC_DELIMITER, html_entity_decode( $raw_attributes, ENT_QUOTES, get_bloginfo( 'charset' ) ) ) ), 'masvideos_get_text_attributes_filter_callback' );
+    return array_filter( array_map( 'trim', explode( MASVIDEOS_DELIMITER, html_entity_decode( $raw_attributes, ENT_QUOTES, get_bloginfo( 'charset' ) ) ) ), 'masvideos_get_text_attributes_filter_callback' );
 }
 
 /**
  * See if an attribute is actually valid.
  *
- * @since  3.0.0
+ * @since  1.0.0
  * @param  string $value Value.
  * @return bool
  */
@@ -31,14 +31,14 @@ function masvideos_get_text_attributes_filter_callback( $value ) {
 }
 
 /**
- * Implode an array of attributes using WC_DELIMITER.
+ * Implode an array of attributes using MASVIDEOS_DELIMITER.
  *
- * @since  3.0.0
+ * @since  1.0.0
  * @param  array $attributes Attributes list.
  * @return string
  */
 function masvideos_implode_text_attributes( $attributes ) {
-    return implode( ' ' . WC_DELIMITER . ' ', $attributes );
+    return implode( ' ' . MASVIDEOS_DELIMITER . ' ', $attributes );
 }
 
 /**
@@ -79,20 +79,9 @@ function masvideos_attribute_taxonomy_name( $post_type, $attribute_name ) {
 }
 
 /**
- * Get the attribute name used when storing values in post meta.
+ * Get a attribute name by ID.
  *
- * @since 2.6.0
- * @param string $attribute_name Attribute name.
- * @return string
- */
-function masvideos_variation_attribute_name( $attribute_name ) {
-    return 'attribute_' . sanitize_title( $attribute_name );
-}
-
-/**
- * Get a product attribute name by ID.
- *
- * @since  2.4.0
+ * @since  1.0.0
  * @param int $attribute_id Attribute ID.
  * @return string Return an empty string if attribute doesn't exist.
  */
@@ -119,39 +108,40 @@ function masvideos_attribute_taxonomy_name_by_id( $attribute_id ) {
 }
 
 /**
- * Get a product attribute ID by name.
+ * Get a attribute ID by name.
  *
- * @since  2.6.0
+ * @since  1.0.0
+ * @param string $post_type post type name.
  * @param string $name Attribute name.
  * @return int
  */
-function masvideos_attribute_taxonomy_id_by_name( $name ) {
-    $name       = str_replace( 'mas_', '', masvideos_sanitize_taxonomy_name( $name ) );
-    $taxonomies = wp_list_pluck( masvideos_get_attribute_taxonomies(), 'attribute_id', 'attribute_name' );
+function masvideos_attribute_taxonomy_id_by_name( $post_type, $name ) {
+    $name       = str_replace( $post_type . '_', '', masvideos_sanitize_taxonomy_name( $name ) );
+    $taxonomies = wp_list_pluck( masvideos_get_attribute_taxonomies( $post_type ), 'attribute_id', 'attribute_name' );
 
     return isset( $taxonomies[ $name ] ) ? (int) $taxonomies[ $name ] : 0;
 }
 
 /**
- * Get a product attributes label.
+ * Get a movie attributes label.
  *
- * @param string     $name    Attribute name.
- * @param WC_Product $product Product data.
+ * @param string $name Attribute name.
+ * @param MasVideos_Movie $movie Product data.
  * @return string
  */
-function masvideos_attribute_label( $name, $product = '' ) {
-    if ( taxonomy_is_product_attribute( $name ) ) {
-        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'mas_', '', $name ) );
-        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies(), 'attribute_label', 'attribute_name' );
+function masvideos_movie_attribute_label( $name, $movie = '' ) {
+    if ( taxonomy_is_movie_attribute( $name ) ) {
+        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'movie_', '', $name ) );
+        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'movie' ), 'attribute_label', 'attribute_name' );
         $label      = isset( $all_labels[ $name ] ) ? $all_labels[ $name ] : $name;
-    } elseif ( $product ) {
+    } elseif ( $movie ) {
         $attributes = array();
 
-        if ( false !== $product ) {
-            $attributes = $product->get_attributes();
+        if ( false !== $movie ) {
+            $attributes = $movie->get_attributes();
         }
 
-        // Attempt to get label from product, as entered by the user.
+        // Attempt to get label from movie, as entered by the user.
         if ( $attributes && isset( $attributes[ sanitize_title( $name ) ] ) ) {
             $label = $attributes[ sanitize_title( $name ) ]->get_name();
         } else {
@@ -161,37 +151,70 @@ function masvideos_attribute_label( $name, $product = '' ) {
         $label = $name;
     }
 
-    return apply_filters( 'masvideos_attribute_label', $label, $name, $product );
+    return apply_filters( 'masvideos_movie_attribute_label', $label, $name, $movie );
 }
 
 /**
- * Get a product attributes orderby setting.
+ * Get a video attributes label.
  *
+ * @param string $name Attribute name.
+ * @param MasVideos_Video $video Product data.
+ * @return string
+ */
+function masvideos_video_attribute_label( $name, $video = '' ) {
+    if ( taxonomy_is_video_attribute( $name ) ) {
+        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'video_', '', $name ) );
+        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'video' ), 'attribute_label', 'attribute_name' );
+        $label      = isset( $all_labels[ $name ] ) ? $all_labels[ $name ] : $name;
+    } elseif ( $video ) {
+        $attributes = array();
+
+        if ( false !== $video ) {
+            $attributes = $video->get_attributes();
+        }
+
+        // Attempt to get label from video, as entered by the user.
+        if ( $attributes && isset( $attributes[ sanitize_title( $name ) ] ) ) {
+            $label = $attributes[ sanitize_title( $name ) ]->get_name();
+        } else {
+            $label = $name;
+        }
+    } else {
+        $label = $name;
+    }
+
+    return apply_filters( 'masvideos_video_attribute_label', $label, $name, $video );
+}
+
+/**
+ * Get a attribute orderby setting.
+ *
+ * @param string $post_type post type name.
  * @param string $name Attribute name.
  * @return string
  */
-function masvideos_attribute_orderby( $name ) {
+function masvideos_attribute_orderby( $post_type, $name ) {
     global $masvideos_attributes, $wpdb;
 
-    $name = str_replace( 'mas_', '', sanitize_title( $name ) );
+    $name = str_replace( $post_type . '_', '', sanitize_title( $name ) );
 
-    if ( isset( $masvideos_attributes[ 'mas_' . $name ] ) ) {
-        $orderby = $masvideos_attributes[ 'mas_' . $name ]->attribute_orderby;
+    if ( isset( $masvideos_attributes[ $post_type . '_' . $name ] ) ) {
+        $orderby = $masvideos_attributes[ $post_type . '_' . $name ]->attribute_orderby;
     } else {
-        $orderby = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_orderby FROM {$wpdb->prefix}masvideos_attribute_taxonomies WHERE attribute_name = %s;", $name ) );
+        $orderby = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_orderby FROM {$wpdb->prefix}masvideos_attribute_taxonomies WHERE post_type = %s AND attribute_name = %s;", $post_type, $name ) );
     }
 
     return apply_filters( 'masvideos_attribute_orderby', $orderby, $name );
 }
 
 /**
- * Get an array of product attribute taxonomies.
+ * Get an array of attribute taxonomies.
  *
  * @return array
  */
-function masvideos_get_attribute_taxonomy_names() {
+function masvideos_get_attribute_taxonomy_names( $post_type = '' ) {
     $taxonomy_names       = array();
-    $attribute_taxonomies = masvideos_get_attribute_taxonomies();
+    $attribute_taxonomies = masvideos_get_attribute_taxonomies( $post_type );
     if ( ! empty( $attribute_taxonomies ) ) {
         foreach ( $attribute_taxonomies as $tax ) {
             $taxonomy_names[] = masvideos_attribute_taxonomy_name( $tax->post_type, $tax->attribute_name );
@@ -203,13 +226,13 @@ function masvideos_get_attribute_taxonomy_names() {
 /**
  * Get attribute types.
  *
- * @since  2.4.0
+ * @since  1.0.0
  * @return array
  */
 function masvideos_get_attribute_types() {
     return (array) apply_filters(
         'masvideos_attributes_type_selector', array(
-            'select' => __( 'Select', 'masvideos' ),
+            'select' => esc_html__( 'Select', 'masvideos' ),
         )
     );
 }
@@ -217,7 +240,7 @@ function masvideos_get_attribute_types() {
 /**
  * Check if there are custom attribute types.
  *
- * @since  3.3.2
+ * @since  1.0.0
  * @return bool True if there are custom types, otherwise false.
  */
 function masvideos_has_custom_attribute_types() {
@@ -229,21 +252,21 @@ function masvideos_has_custom_attribute_types() {
 /**
  * Get attribute type label.
  *
- * @since  3.0.0
+ * @since  1.0.0
  * @param  string $type Attribute type slug.
  * @return string
  */
 function masvideos_get_attribute_type_label( $type ) {
     $types = masvideos_get_attribute_types();
 
-    return isset( $types[ $type ] ) ? $types[ $type ] : __( 'Select', 'masvideos' );
+    return isset( $types[ $type ] ) ? $types[ $type ] : esc_html__( 'Select', 'masvideos' );
 }
 
 /**
  * Check if attribute name is reserved.
  * https://codex.wordpress.org/Function_Reference/register_taxonomy#Reserved_Terms.
  *
- * @since  2.4.0
+ * @since  1.0.0
  * @param  string $attribute_name Attribute name.
  * @return bool
  */
@@ -332,43 +355,30 @@ function masvideos_check_if_attribute_name_is_reserved( $attribute_name ) {
 /**
  * Callback for array filter to get visible only.
  *
- * @since  3.0.0
- * @param  WC_Product_Attribute $attribute Attribute data.
+ * @since  1.0.0
+ * @param  MasVideos_Movie_Attribute $attribute Attribute data.
  * @return bool
  */
-function masvideos_attributes_array_filter_visible( $attribute ) {
-    return $attribute && is_a( $attribute, 'WC_Product_Attribute' ) && $attribute->get_visible() && ( ! $attribute->is_taxonomy() || taxonomy_exists( $attribute->get_name() ) );
-}
-
-/**
- * Callback for array filter to get variation attributes only.
- *
- * @since  3.0.0
- * @param  WC_Product_Attribute $attribute Attribute data.
- * @return bool
- */
-function masvideos_attributes_array_filter_variation( $attribute ) {
-    return $attribute && is_a( $attribute, 'WC_Product_Attribute' ) && $attribute->get_variation();
-}
-
-/**
- * Check if an attribute is included in the attributes area of a variation name.
- *
- * @since  3.0.2
- * @param  string $attribute Attribute value to check for.
- * @param  string $name      Product name to check in.
- * @return bool
- */
-function masvideos_is_attribute_in_product_name( $attribute, $name ) {
-    $is_in_name = stristr( $name, ' ' . $attribute . ',' ) || 0 === stripos( strrev( $name ), strrev( ' ' . $attribute ) );
-    return apply_filters( 'masvideos_is_attribute_in_product_name', $is_in_name, $attribute, $name );
+function masvideos_attributes_array_filter_visible( $post_type, $attribute ) {
+    switch ( $post_type ) {
+        case 'video':
+            $class_name = 'MasVideos_Video_Attribute';
+            break;
+        case 'movie':
+            $class_name = 'MasVideos_Movie_Attribute';
+            break;
+        default:
+            $class_name = false;
+            break;
+    }
+    return $class_name && $attribute && is_a( $attribute, $class_name ) && $attribute->get_visible() && ( ! $attribute->is_taxonomy() || taxonomy_exists( $attribute->get_name() ) );
 }
 
 /**
  * Callback for array filter to get default attributes.  Will allow for '0' string values, but regard all other
  * class PHP FALSE equivalents normally.
  *
- * @since 3.1.0
+ * @since 1.0.0
  * @param mixed $attribute Attribute being considered for exclusion from parent array.
  * @return bool
  */
@@ -379,7 +389,7 @@ function masvideos_array_filter_default_attributes( $attribute ) {
 /**
  * Get attribute data by ID.
  *
- * @since  3.2.0
+ * @since  1.0.0
  * @param  int $id Attribute ID.
  * @return stdClass|null
  */
@@ -415,7 +425,7 @@ function masvideos_get_attribute( $id ) {
 /**
  * Create attribute.
  *
- * @since  3.2.0
+ * @since  1.0.0
  * @param  array $args Attribute arguments {
  *     Array of attribute parameters.
  *
@@ -581,7 +591,7 @@ function masvideos_create_attribute( $args ) {
  *
  * For available args see masvideos_create_attribute().
  *
- * @since  3.2.0
+ * @since  1.0.0
  * @param  int   $id   Attribute ID.
  * @param  array $args Attribute arguments.
  * @return int|WP_Error
@@ -613,7 +623,7 @@ function masvideos_update_attribute( $id, $args ) {
 /**
  * Delete attribute by ID.
  *
- * @since  3.2.0
+ * @since  1.0.0
  * @param  int $id Attribute ID.
  * @return bool
  */

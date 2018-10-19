@@ -288,6 +288,17 @@ function masvideos_timezone_offset() {
 }
 
 /**
+ * Sanitize terms from an attribute text based.
+ *
+ * @since  1.0.0
+ * @param  string $term Term value.
+ * @return string
+ */
+function masvideos_sanitize_term_text_based( $term ) {
+    return trim( wp_unslash( strip_tags( $term ) ) );
+}
+
+/**
  * Get the price format depending on the currency position.
  *
  * @return string
