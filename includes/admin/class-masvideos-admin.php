@@ -39,9 +39,11 @@ class MasVideos_Admin {
      * Include any classes we need within admin.
      */
     public function includes() {
+        include_once dirname( __FILE__ ) . '/masvideos-admin-functions.php';
         include_once dirname( __FILE__ ) . '/masvideos-meta-box-functions.php';
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-post-types.php';
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-menus.php';
+        include_once dirname( __FILE__ ) . '/class-masvideos-admin-assets.php';
     }
 
     /**

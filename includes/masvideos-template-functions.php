@@ -309,6 +309,16 @@ function masvideos_generator_tag( $gen, $type ) {
 }
 
 /**
+ * Get the placeholder image URL for products etc.
+ *
+ * @access public
+ * @return string
+ */
+function masvideos_placeholder_img_src() {
+    return apply_filters( 'masvideos_placeholder_img_src', MasVideos()->plugin_url() . '/assets/images/placeholder.png' );
+}
+
+/**
  * Display the classes for the video div.
  *
  * @since 1.0.0
