@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <span class="expand-close">
             <a href="#" class="expand_all"><?php esc_html_e( 'Expand', 'masvideos' ); ?></a> / <a href="#" class="close_all"><?php esc_html_e( 'Close', 'masvideos' ); ?></a>
         </span>
-        <button type="button" class="button save_attributes button-primary"><?php esc_html_e( 'Save attributes', 'masvideos' ); ?></button>
+        <button type="button" class="button save_attributes_video button-primary"><?php esc_html_e( 'Save attributes', 'masvideos' ); ?></button>
     </div>
     <?php do_action( 'masvideos_video_options_attributes' ); ?>
 </div>
