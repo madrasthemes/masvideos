@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Include core functions (available in both admin and frontend).
 require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';

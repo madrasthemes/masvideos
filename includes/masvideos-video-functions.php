@@ -57,3 +57,48 @@ function masvideos_get_video( $the_video = false ) {
     }
     return MasVideos()->video_factory->get_video( $the_video );
 }
+
+/**
+ * Clear all transients cache for video data.
+ *
+ * @param int $post_id (default: 0).
+ */
+function masvideos_delete_video_transients( $post_id = 0 ) {
+    // Core transients.
+    $transients_to_clear = array(
+        'masvideos_videos_onsale',
+        'masvideos_featured_videos',
+        'masvideos_count_comments',
+    );
+
+    // Transient names that include an ID.
+    $post_transient_names = array(
+        'masvideos_video_children_',
+        'masvideos_related_',
+    );
+
+    if ( $post_id > 0 ) {
+        foreach ( $post_transient_names as $transient ) {
+            $transients_to_clear[] = $transient . $post_id;
+        }
+
+        // Does this video have a parent?
+        $video = masvideos_get_video( $post_id );
+
+        if ( $video ) {
+            if ( $video->get_parent_id() > 0 ) {
+                masvideos_delete_video_transients( $video->get_parent_id() );
+            }
+        }
+    }
+
+    // Delete transients.
+    foreach ( $transients_to_clear as $transient ) {
+        delete_transient( $transient );
+    }
+
+    // Increments the transient version to invalidate cache.
+    MasVideos_Cache_Helper::get_transient_version( 'video', true );
+
+    do_action( 'masvideos_delete_video_transients', $post_id );
+}

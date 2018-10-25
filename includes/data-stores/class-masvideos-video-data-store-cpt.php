@@ -336,7 +336,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                     if ( ! taxonomy_exists( $meta_value['name'] ) ) {
                         continue;
                     }
-                    $id      = masvideos_attribute_taxonomy_id_by_name( $meta_value['name'] );
+                    $id      = masvideos_attribute_taxonomy_id_by_name( 'video', $meta_value['name'] );
                     $options = masvideos_get_object_terms( $video->get_id(), $meta_value['name'], 'term_id' );
                 } else {
                     $id      = 0;

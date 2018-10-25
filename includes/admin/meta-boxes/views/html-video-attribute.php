@@ -74,13 +74,6 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <label><input type="checkbox" class="checkbox" <?php checked( $attribute->get_visible(), true ); ?> name="attribute_visibility[<?php echo esc_attr( $i ); ?>]" value="1" /> <?php esc_html_e( 'Visible on the video page', 'masvideos' ); ?></label>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="enable_variation show_if_variable">
-                            <label><input type="checkbox" class="checkbox" <?php checked( $attribute->get_variation(), true ); ?> name="attribute_variation[<?php echo esc_attr( $i ); ?>]" value="1" /> <?php esc_html_e( 'Used for variations', 'masvideos' ); ?></label>
-                        </div>
-                    </td>
-                </tr>
                 <?php do_action( 'masvideos_after_video_attribute_settings', $attribute, $i ); ?>
             </tbody>
         </table>

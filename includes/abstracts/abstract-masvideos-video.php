@@ -469,7 +469,7 @@ class MasVideos_Video extends MasVideos_Data {
             }
         }
 
-        uasort( $attributes, 'masvideos_video_attribute_uasort_comparison' );
+        uasort( $attributes, 'masvideos_attribute_uasort_comparison' );
         $this->set_prop( 'attributes', $attributes );
     }
 

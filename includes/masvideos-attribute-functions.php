@@ -679,3 +679,18 @@ function masvideos_delete_attribute( $id ) {
 
     return false;
 }
+
+/**
+ * Used to sort products attributes with uasort.
+ *
+ * @since 1.0.0
+ * @param array $a First attribute to compare.
+ * @param array $b Second attribute to compare.
+ * @return int
+ */
+function masvideos_attribute_uasort_comparison( $a, $b ) {
+    if ( $a['position'] === $b['position'] ) {
+        return 0;
+    }
+    return ( $a['position'] < $b['position'] ) ? -1 : 1;
+}
