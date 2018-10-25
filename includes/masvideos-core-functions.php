@@ -237,6 +237,28 @@ function masvideos_remove_number_precision_deep( $value ) {
 }
 
 /**
+ * Wrapper for set_time_limit to see if it is enabled.
+ *
+ * @since 1.0.0
+ * @param int $limit Time limit.
+ */
+function masvideos_set_time_limit( $limit = 0 ) {
+    if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.PHP.DeprecatedIniDirectives.safe_modeDeprecatedRemoved
+        @set_time_limit( $limit ); // @codingStandardsIgnoreLine
+    }
+}
+
+/**
+ * Wrapper for nocache_headers which also disables page caching.
+ *
+ * @since 1.0.0
+ */
+function masvideos_nocache_headers() {
+    MasVideos_Cache_Helper::set_nocache_constants();
+    nocache_headers();
+}
+
+/**
  * Get permalink settings for things like videos and taxonomies.
  *
  * This is more inline with WP core behavior which does not localize slugs.

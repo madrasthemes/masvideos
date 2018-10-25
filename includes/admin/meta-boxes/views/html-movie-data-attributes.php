@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             }
             ?>
         </select>
-        <button type="button" class="button add_attribute"><?php esc_html_e( 'Add', 'masvideos' ); ?></button>
+        <button type="button" class="button add_attribute_movie"><?php esc_html_e( 'Add', 'masvideos' ); ?></button>
     </div>
     <div class="movie_attributes masvideos-metaboxes">
         <?php
