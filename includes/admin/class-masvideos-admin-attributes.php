@@ -339,7 +339,7 @@ class MasVideos_Admin_Attributes {
                                                     $taxonomy = masvideos_attribute_taxonomy_name( $tax->post_type, $tax->attribute_name );
 
                                                     if ( taxonomy_exists( $taxonomy ) ) {
-                                                        if ( 'menu_order' === masvideos_attribute_orderby( $taxonomy ) ) {
+                                                        if ( 'menu_order' === masvideos_attribute_orderby( $tax->post_type, $taxonomy ) ) {
                                                             $terms = get_terms( $taxonomy, 'hide_empty=0&menu_order=ASC' );
                                                         } else {
                                                             $terms = get_terms( $taxonomy, 'hide_empty=0&menu_order=false' );

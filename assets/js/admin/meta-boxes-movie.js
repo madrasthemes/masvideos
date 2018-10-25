@@ -278,7 +278,7 @@ jQuery( function( $ ) {
         $( '.movie_attributes' ).append( el );
     });
 
-    function attribute_row_indexes() {
+    function movie_attribute_row_indexes() {
         $( '.movie_attributes .masvideos_attribute' ).each( function( index, el ) {
             $( '.attribute_position', el ).val( parseInt( $( el ).index( '.movie_attributes .masvideos_attribute' ), 10 ) );
         });
@@ -291,39 +291,34 @@ jQuery( function( $ ) {
     });
 
     // Add rows.
-    $( 'button.add_attribute' ).on( 'click', function() {
+    $( 'button.add_attribute_movie' ).on( 'click', function() {
         var size         = $( '.movie_attributes .masvideos_attribute' ).length;
         var attribute    = $( 'select.attribute_taxonomy' ).val();
         var $wrapper     = $( this ).closest( '#movie_attributes' );
         var $attributes  = $wrapper.find( '.movie_attributes' );
-        var movie_type = $( 'select#movie-type' ).val();
         var data         = {
-            action:   'masvideos_add_attribute',
+            action:   'masvideos_add_attribute_movie',
             taxonomy: attribute,
             i:        size,
-            security: masvideos_admin_meta_boxes.add_attribute_nonce
+            security: masvideos_admin_meta_boxes.add_attribute_movie_nonce
         };
 
-        $wrapper.block({
-            message: null,
-            overlayCSS: {
-                background: '#fff',
-                opacity: 0.6
-            }
-        });
+        // $wrapper.block({
+        //     message: null,
+        //     overlayCSS: {
+        //         background: '#fff',
+        //         opacity: 0.6
+        //     }
+        // });
 
         $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
             $attributes.append( response );
 
-            if ( 'variable' !== movie_type ) {
-                $attributes.find( '.enable_variation' ).hide();
-            }
-
             $( document.body ).trigger( 'masvideos-enhanced-select-init' );
-            attribute_row_indexes();
-            $wrapper.unblock();
+            movie_attribute_row_indexes();
+            // $wrapper.unblock();
 
-            $( document.body ).trigger( 'masvideos_added_attribute' );
+            $( document.body ).trigger( 'masvideos_added_attribute_movie' );
         });
 
         if ( attribute ) {
@@ -361,7 +356,7 @@ jQuery( function( $ ) {
             } else {
                 $parent.find( 'select, input[type=text]' ).val( '' );
                 $parent.hide();
-                attribute_row_indexes();
+                movie_attribute_row_indexes();
             }
         }
         return false;
@@ -383,20 +378,20 @@ jQuery( function( $ ) {
         },
         stop: function( event, ui ) {
             ui.item.removeAttr( 'style' );
-            attribute_row_indexes();
+            movie_attribute_row_indexes();
         }
     });
 
     // Add a new attribute (via ajax).
     $( '.movie_attributes' ).on( 'click', 'button.add_new_attribute', function() {
 
-        $( '.movie_attributes' ).block({
-            message: null,
-            overlayCSS: {
-                background: '#fff',
-                opacity: 0.6
-            }
-        });
+        // $( '.movie_attributes' ).block({
+        //     message: null,
+        //     overlayCSS: {
+        //         background: '#fff',
+        //         opacity: 0.6
+        //     }
+        // });
 
         var $wrapper           = $( this ).closest( '.masvideos_attribute' );
         var attribute          = $wrapper.data( 'taxonomy' );
@@ -405,10 +400,10 @@ jQuery( function( $ ) {
         if ( new_attribute_name ) {
 
             var data = {
-                action:   'masvideos_add_new_attribute',
+                action:   'masvideos_add_new_attribute_movie',
                 taxonomy: attribute,
                 term:     new_attribute_name,
-                security: masvideos_admin_meta_boxes.add_attribute_nonce
+                security: masvideos_admin_meta_boxes.add_attribute_movie_nonce
             };
 
             $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
@@ -422,44 +417,38 @@ jQuery( function( $ ) {
                     $wrapper.find( 'select.attribute_values' ).change();
                 }
 
-                $( '.movie_attributes' ).unblock();
+                // $( '.movie_attributes' ).unblock();
             });
 
         } else {
-            $( '.movie_attributes' ).unblock();
+            // $( '.movie_attributes' ).unblock();
         }
 
         return false;
     });
 
     // Save attributes and update variations.
-    $( '.save_attributes' ).on( 'click', function() {
+    $( '.save_attributes_movie' ).on( 'click', function() {
 
-        $( '#masvideos-movie-data' ).block({
-            message: null,
-            overlayCSS: {
-                background: '#fff',
-                opacity: 0.6
-            }
-        });
+        // $( '#masvideos-movie-data' ).block({
+        //     message: null,
+        //     overlayCSS: {
+        //         background: '#fff',
+        //         opacity: 0.6
+        //     }
+        // });
 
         var data = {
             post_id     : masvideos_admin_meta_boxes.post_id,
-            movie_type: $( '#movie-type' ).val(),
             data        : $( '.movie_attributes' ).find( 'input, select, textarea' ).serialize(),
-            action      : 'masvideos_save_attributes',
-            security    : masvideos_admin_meta_boxes.save_attributes_nonce
+            action      : 'masvideos_save_attributes_movie',
+            security    : masvideos_admin_meta_boxes.save_attributes_movie_nonce
         };
 
         $.post( masvideos_admin_meta_boxes.ajax_url, data, function() {
             // Reload variations panel.
             var this_page = window.location.toString();
             this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
-
-            // Load variations panel.
-            $( '#variable_movie_options' ).load( this_page + ' #variable_movie_options_inner', function() {
-                $( '#variable_movie_options' ).trigger( 'reload' );
-            });
         });
     });
 

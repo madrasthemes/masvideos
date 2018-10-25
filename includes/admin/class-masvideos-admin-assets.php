@@ -222,7 +222,7 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
 
                 wp_localize_script( 'wc-admin-variation-meta-boxes', 'masvideos_admin_meta_boxes_variations', $params );
             }
-            if ( in_array( str_replace( 'edit-', '', $screen_id ), array( 'product' ) ) ) {
+            if ( in_array( str_replace( 'edit-', '', $screen_id ), array( 'video', 'movie' ) ) ) {
                 $post_id            = isset( $post->ID ) ? $post->ID : '';
                 $currency           = '';
                 $remove_item_notice = __( 'Are you sure you want to remove the selected items?', 'masvideos' );
@@ -230,9 +230,9 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                 $params = array(
                     'remove_item_notice'            => $remove_item_notice,
                     'i18n_select_items'             => __( 'Please select some items.', 'masvideos' ),
-                    'i18n_do_refund'                => __( 'Are you sure you wish to process this refund? This action cannot be undone.', 'masvideos' ),
-                    'i18n_delete_refund'            => __( 'Are you sure you wish to delete this refund? This action cannot be undone.', 'masvideos' ),
-                    'i18n_delete_tax'               => __( 'Are you sure you wish to delete this tax column? This action cannot be undone.', 'masvideos' ),
+                    // 'i18n_do_refund'                => __( 'Are you sure you wish to process this refund? This action cannot be undone.', 'masvideos' ),
+                    // 'i18n_delete_refund'            => __( 'Are you sure you wish to delete this refund? This action cannot be undone.', 'masvideos' ),
+                    // 'i18n_delete_tax'               => __( 'Are you sure you wish to delete this tax column? This action cannot be undone.', 'masvideos' ),
                     'remove_item_meta'              => __( 'Remove this item meta?', 'masvideos' ),
                     'remove_attribute'              => __( 'Remove this attribute?', 'masvideos' ),
                     'name_label'                    => __( 'Name', 'masvideos' ),
@@ -241,32 +241,32 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'values_label'                  => __( 'Value(s)', 'masvideos' ),
                     'text_attribute_tip'            => __( 'Enter some text, or some attributes by pipe (|) separating values.', 'masvideos' ),
                     'visible_label'                 => __( 'Visible on the product page', 'masvideos' ),
-                    'used_for_variations_label'     => __( 'Used for variations', 'masvideos' ),
+                    // 'used_for_variations_label'     => __( 'Used for variations', 'masvideos' ),
                     'new_attribute_prompt'          => __( 'Enter a name for the new attribute term:', 'masvideos' ),
-                    'calc_totals'                   => __( 'Recalculate totals? This will calculate taxes based on the customers country (or the store base country) and update totals.', 'masvideos' ),
-                    'copy_billing'                  => __( 'Copy billing information to shipping information? This will remove any currently entered shipping information.', 'masvideos' ),
-                    'load_billing'                  => __( "Load the customer's billing information? This will remove any currently entered billing information.", 'masvideos' ),
-                    'load_shipping'                 => __( "Load the customer's shipping information? This will remove any currently entered shipping information.", 'masvideos' ),
+                    // 'calc_totals'                   => __( 'Recalculate totals? This will calculate taxes based on the customers country (or the store base country) and update totals.', 'masvideos' ),
+                    // 'copy_billing'                  => __( 'Copy billing information to shipping information? This will remove any currently entered shipping information.', 'masvideos' ),
+                    // 'load_billing'                  => __( "Load the customer's billing information? This will remove any currently entered billing information.", 'masvideos' ),
+                    // 'load_shipping'                 => __( "Load the customer's shipping information? This will remove any currently entered shipping information.", 'masvideos' ),
                     'featured_label'                => __( 'Featured', 'masvideos' ),
-                    'prices_include_tax'            => esc_attr( get_option( 'masvideos_prices_include_tax' ) ),
-                    'tax_based_on'                  => esc_attr( get_option( 'masvideos_tax_based_on' ) ),
-                    'round_at_subtotal'             => esc_attr( get_option( 'masvideos_tax_round_at_subtotal' ) ),
-                    'no_customer_selected'          => __( 'No customer selected', 'masvideos' ),
+                    // 'prices_include_tax'            => esc_attr( get_option( 'masvideos_prices_include_tax' ) ),
+                    // 'tax_based_on'                  => esc_attr( get_option( 'masvideos_tax_based_on' ) ),
+                    // 'round_at_subtotal'             => esc_attr( get_option( 'masvideos_tax_round_at_subtotal' ) ),
+                    // 'no_customer_selected'          => __( 'No customer selected', 'masvideos' ),
                     'plugin_url'                    => MasVideos()->plugin_url(),
                     'ajax_url'                      => admin_url( 'admin-ajax.php' ),
-                    'order_item_nonce'              => wp_create_nonce( 'order-item' ),
-                    'add_attribute_nonce'           => wp_create_nonce( 'add-attribute' ),
-                    'save_attributes_nonce'         => wp_create_nonce( 'save-attributes' ),
-                    'calc_totals_nonce'             => wp_create_nonce( 'calc-totals' ),
-                    'get_customer_details_nonce'    => wp_create_nonce( 'get-customer-details' ),
-                    'search_products_nonce'         => wp_create_nonce( 'search-products' ),
-                    'grant_access_nonce'            => wp_create_nonce( 'grant-access' ),
-                    'revoke_access_nonce'           => wp_create_nonce( 'revoke-access' ),
-                    'add_order_note_nonce'          => wp_create_nonce( 'add-order-note' ),
-                    'delete_order_note_nonce'       => wp_create_nonce( 'delete-order-note' ),
-                    'calendar_image'                => MasVideos()->plugin_url() . '/assets/images/calendar.png',
+                    // 'order_item_nonce'              => wp_create_nonce( 'order-item' ),
+                    'add_attribute_movie_nonce'     => wp_create_nonce( 'add-attribute-movie' ),
+                    'save_attributes_movie_nonce'   => wp_create_nonce( 'save-attributes-movie' ),
+                    // 'calc_totals_nonce'             => wp_create_nonce( 'calc-totals' ),
+                    // 'get_customer_details_nonce'    => wp_create_nonce( 'get-customer-details' ),
+                    'search_movies_nonce'         => wp_create_nonce( 'search-movies' ),
+                    // 'grant_access_nonce'            => wp_create_nonce( 'grant-access' ),
+                    // 'revoke_access_nonce'           => wp_create_nonce( 'revoke-access' ),
+                    // 'add_order_note_nonce'          => wp_create_nonce( 'add-order-note' ),
+                    // 'delete_order_note_nonce'       => wp_create_nonce( 'delete-order-note' ),
+                    // 'calendar_image'                => MasVideos()->plugin_url() . '/assets/images/calendar.png',
                     'post_id'                       => isset( $post->ID ) ? $post->ID : '',
-                    'base_country'                  => MasVideos()->countries->get_base_country(),
+                    // 'base_country'                  => MasVideos()->countries->get_base_country(),
                     // 'currency_format_num_decimals'  => wc_get_price_decimals(),
                     // 'currency_format_symbol'        => get_masvideos_currency_symbol( $currency ),
                     // 'currency_format_decimal_sep'   => esc_attr( wc_get_price_decimal_separator() ),
@@ -275,15 +275,15 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     // 'rounding_precision'            => wc_get_rounding_precision(),
                     // 'tax_rounding_mode'             => wc_get_tax_rounding_mode(),
                     // 'product_types'                 => array_unique( array_merge( array( 'simple', 'grouped', 'variable', 'external' ), array_keys( wc_get_product_types() ) ) ),
-                    'i18n_download_permission_fail' => __( 'Could not grant access - the user may already have permission for this file or billing email is not set. Ensure the billing email is set, and the order has been saved.', 'masvideos' ),
-                    'i18n_permission_revoke'        => __( 'Are you sure you want to revoke access to this download?', 'masvideos' ),
-                    'i18n_tax_rate_already_exists'  => __( 'You cannot add the same tax rate twice!', 'masvideos' ),
-                    'i18n_delete_note'              => __( 'Are you sure you wish to delete this note? This action cannot be undone.', 'masvideos' ),
-                    'i18n_apply_coupon'             => __( 'Enter a coupon code to apply to this order.', 'masvideos' ),
-                    'i18n_add_fee'                  => __( 'Enter a fixed amount or percentage to apply as a fee.', 'masvideos' ),
+                    // 'i18n_download_permission_fail' => __( 'Could not grant access - the user may already have permission for this file or billing email is not set. Ensure the billing email is set, and the order has been saved.', 'masvideos' ),
+                    // 'i18n_permission_revoke'        => __( 'Are you sure you want to revoke access to this download?', 'masvideos' ),
+                    // 'i18n_tax_rate_already_exists'  => __( 'You cannot add the same tax rate twice!', 'masvideos' ),
+                    // 'i18n_delete_note'              => __( 'Are you sure you wish to delete this note? This action cannot be undone.', 'masvideos' ),
+                    // 'i18n_apply_coupon'             => __( 'Enter a coupon code to apply to this order.', 'masvideos' ),
+                    // 'i18n_add_fee'                  => __( 'Enter a fixed amount or percentage to apply as a fee.', 'masvideos' ),
                 );
 
-                wp_localize_script( 'wc-admin-meta-boxes', 'masvideos_admin_meta_boxes', $params );
+                wp_localize_script( 'masvideos-admin-meta-boxes', 'masvideos_admin_meta_boxes', $params );
             }
 
             // Term ordering - only when sorting by term_order.
