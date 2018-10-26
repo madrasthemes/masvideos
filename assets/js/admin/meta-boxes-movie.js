@@ -43,204 +43,6 @@ jQuery( function( $ ) {
         });
     });
 
-    // Catalog Visibility.
-    $( '#catalog-visibility' ).find( '.edit-catalog-visibility' ).click( function() {
-        if ( $( '#catalog-visibility-select' ).is( ':hidden' ) ) {
-            $( '#catalog-visibility-select' ).slideDown( 'fast' );
-            $( this ).hide();
-        }
-        return false;
-    });
-    $( '#catalog-visibility' ).find( '.save-post-visibility' ).click( function() {
-        $( '#catalog-visibility-select' ).slideUp( 'fast' );
-        $( '#catalog-visibility' ).find( '.edit-catalog-visibility' ).show();
-
-        var label = $( 'input[name=_visibility]:checked' ).attr( 'data-label' );
-
-        if ( $( 'input[name=_featured]' ).is( ':checked' ) ) {
-            label = label + ', ' + masvideos_admin_meta_boxes.featured_label;
-            $( 'input[name=_featured]' ).attr( 'checked', 'checked' );
-        }
-
-        $( '#catalog-visibility-display' ).text( label );
-        return false;
-    });
-    $( '#catalog-visibility' ).find( '.cancel-post-visibility' ).click( function() {
-        $( '#catalog-visibility-select' ).slideUp( 'fast' );
-        $( '#catalog-visibility' ).find( '.edit-catalog-visibility' ).show();
-
-        var current_visibility = $( '#current_visibility' ).val();
-        var current_featured   = $( '#current_featured' ).val();
-
-        $( 'input[name=_visibility]' ).removeAttr( 'checked' );
-        $( 'input[name=_visibility][value=' + current_visibility + ']' ).attr( 'checked', 'checked' );
-
-        var label = $( 'input[name=_visibility]:checked' ).attr( 'data-label' );
-
-        if ( 'yes' === current_featured ) {
-            label = label + ', ' + masvideos_admin_meta_boxes.featured_label;
-            $( 'input[name=_featured]' ).attr( 'checked', 'checked' );
-        } else {
-            $( 'input[name=_featured]' ).removeAttr( 'checked' );
-        }
-
-        $( '#catalog-visibility-display' ).text( label );
-        return false;
-    });
-
-    // Product type specific options.
-    $( 'select#movie-type' ).change( function() {
-
-        // Get value.
-        var select_val = $( this ).val();
-
-        if ( 'variable' === select_val ) {
-            $( 'input#_manage_stock' ).change();
-            $( 'input#_downloadable' ).prop( 'checked', false );
-            $( 'input#_virtual' ).removeAttr( 'checked' );
-        } else if ( 'grouped' === select_val ) {
-            $( 'input#_downloadable' ).prop( 'checked', false );
-            $( 'input#_virtual' ).removeAttr( 'checked' );
-        } else if ( 'external' === select_val ) {
-            $( 'input#_downloadable' ).prop( 'checked', false );
-            $( 'input#_virtual' ).removeAttr( 'checked' );
-        }
-
-        show_and_hide_panels();
-
-        $( 'ul.masvideos-tabs li:visible' ).eq( 0 ).find( 'a' ).click();
-
-        $( document.body ).trigger( 'masvideos-movie-type-change', select_val, $( this ) );
-
-    }).change();
-
-    $( 'input#_downloadable, input#_virtual' ).change( function() {
-        show_and_hide_panels();
-    });
-
-    function show_and_hide_panels() {
-        var movie_type    = $( 'select#movie-type' ).val();
-        var is_virtual      = $( 'input#_virtual:checked' ).length;
-        var is_downloadable = $( 'input#_downloadable:checked' ).length;
-
-        // Hide/Show all with rules.
-        var hide_classes = '.hide_if_downloadable, .hide_if_virtual';
-        var show_classes = '.show_if_downloadable, .show_if_virtual';
-
-        $.each( masvideos_admin_meta_boxes.movie_types, function( index, value ) {
-            hide_classes = hide_classes + ', .hide_if_' + value;
-            show_classes = show_classes + ', .show_if_' + value;
-        });
-
-        $( hide_classes ).show();
-        $( show_classes ).hide();
-
-        // Shows rules.
-        if ( is_downloadable ) {
-            $( '.show_if_downloadable' ).show();
-        }
-        if ( is_virtual ) {
-            $( '.show_if_virtual' ).show();
-        }
-
-        $( '.show_if_' + movie_type ).show();
-
-        // Hide rules.
-        if ( is_downloadable ) {
-            $( '.hide_if_downloadable' ).hide();
-        }
-        if ( is_virtual ) {
-            $( '.hide_if_virtual' ).hide();
-        }
-
-        $( '.hide_if_' + movie_type ).hide();
-
-        $( 'input#_manage_stock' ).change();
-
-        // Hide empty panels/tabs after display.
-        $( '.masvideos_options_panel' ).each( function() {
-            var $children = $( this ).children( '.options_group' );
-
-            if ( 0 === $children.length ) {
-                return;
-            }
-
-            var $invisble = $children.filter( function() {
-                return 'none' === $( this ).css( 'display' );
-            });
-
-            // Hide panel.
-            if ( $invisble.length === $children.length ) {
-                var $id = $( this ).prop( 'id' );
-                $( '.movie_data_tabs' ).find( 'li a[href="#' + $id + '"]' ).parent().hide();
-            }
-        });
-    }
-
-    // Sale price schedule.
-    $( '.sale_price_dates_fields' ).each( function() {
-        var $these_sale_dates = $( this );
-        var sale_schedule_set = false;
-        var $wrap = $these_sale_dates.closest( 'div, table' );
-
-        $these_sale_dates.find( 'input' ).each( function() {
-            if ( '' !== $( this ).val() ) {
-                sale_schedule_set = true;
-            }
-        });
-
-        if ( sale_schedule_set ) {
-            $wrap.find( '.sale_schedule' ).hide();
-            $wrap.find( '.sale_price_dates_fields' ).show();
-        } else {
-            $wrap.find( '.sale_schedule' ).show();
-            $wrap.find( '.sale_price_dates_fields' ).hide();
-        }
-    });
-
-    $( '#masvideos-movie-data' ).on( 'click', '.sale_schedule', function() {
-        var $wrap = $( this ).closest( 'div, table' );
-
-        $( this ).hide();
-        $wrap.find( '.cancel_sale_schedule' ).show();
-        $wrap.find( '.sale_price_dates_fields' ).show();
-
-        return false;
-    });
-    $( '#masvideos-movie-data' ).on( 'click', '.cancel_sale_schedule', function() {
-        var $wrap = $( this ).closest( 'div, table' );
-
-        $( this ).hide();
-        $wrap.find( '.sale_schedule' ).show();
-        $wrap.find( '.sale_price_dates_fields' ).hide();
-        $wrap.find( '.sale_price_dates_fields' ).find( 'input' ).val('');
-
-        return false;
-    });
-
-    // File inputs.
-    $( '#masvideos-movie-data' ).on( 'click','.downloadable_files a.insert', function() {
-        $( this ).closest( '.downloadable_files' ).find( 'tbody' ).append( $( this ).data( 'row' ) );
-        return false;
-    });
-    $( '#masvideos-movie-data' ).on( 'click','.downloadable_files a.delete',function() {
-        $( this ).closest( 'tr' ).remove();
-        return false;
-    });
-
-    // Stock options.
-    $( 'input#_manage_stock' ).change( function() {
-        if ( $( this ).is( ':checked' ) ) {
-            $( 'div.stock_fields' ).show();
-            $( 'p.stock_status_field' ).hide();
-        } else {
-            var movie_type = $( 'select#movie-type' ).val();
-
-            $( 'div.stock_fields' ).hide();
-            $( 'p.stock_status_field:not( .hide_if_' + movie_type + ' )' ).show();
-        }
-    }).change();
-
     // Date picker fields.
     function date_picker_select( datepicker ) {
         var option         = $( datepicker ).next().is( '.hasDatepicker' ) ? 'minDate' : 'maxDate',
@@ -251,18 +53,18 @@ jQuery( function( $ ) {
         $( datepicker ).change();
     }
 
-    $( '.sale_price_dates_fields' ).each( function() {
-        $( this ).find( 'input' ).datepicker({
-            defaultDate: '',
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths: 1,
-            showButtonPanel: true,
-            onSelect: function() {
-                date_picker_select( $( this ) );
-            }
-        });
-        $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
-    });
+    // $( '.sale_price_dates_fields' ).each( function() {
+    //     $( this ).find( 'input' ).datepicker({
+    //         defaultDate: '',
+    //         dateFormat: 'yy-mm-dd',
+    //         numberOfMonths: 1,
+    //         showButtonPanel: true,
+    //         onSelect: function() {
+    //             date_picker_select( $( this ) );
+    //         }
+    //     });
+    //     $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
+    // });
 
     // Attribute Tables.
 
@@ -450,86 +252,6 @@ jQuery( function( $ ) {
             var this_page = window.location.toString();
             this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
         });
-    });
-
-    // Uploading files.
-    var downloadable_file_frame;
-    var file_path_field;
-
-    $( document.body ).on( 'click', '.upload_file_button', function( event ) {
-        var $el = $( this );
-
-        file_path_field = $el.closest( 'tr' ).find( 'td.file_url input' );
-
-        event.preventDefault();
-
-        // If the media frame already exists, reopen it.
-        if ( downloadable_file_frame ) {
-            downloadable_file_frame.open();
-            return;
-        }
-
-        var downloadable_file_states = [
-            // Main states.
-            new wp.media.controller.Library({
-                library:   wp.media.query(),
-                multiple:  true,
-                title:     $el.data('choose'),
-                priority:  20,
-                filterable: 'uploaded'
-            })
-        ];
-
-        // Create the media frame.
-        downloadable_file_frame = wp.media.frames.downloadable_file = wp.media({
-            // Set the title of the modal.
-            title: $el.data('choose'),
-            library: {
-                type: ''
-            },
-            button: {
-                text: $el.data('update')
-            },
-            multiple: true,
-            states: downloadable_file_states
-        });
-
-        // When an image is selected, run a callback.
-        downloadable_file_frame.on( 'select', function() {
-            var file_path = '';
-            var selection = downloadable_file_frame.state().get( 'selection' );
-
-            selection.map( function( attachment ) {
-                attachment = attachment.toJSON();
-                if ( attachment.url ) {
-                    file_path = attachment.url;
-                }
-            });
-
-            file_path_field.val( file_path ).change();
-        });
-
-        // Set post to 0 and set our custom type.
-        downloadable_file_frame.on( 'ready', function() {
-            downloadable_file_frame.uploader.options.uploader.params = {
-                type: 'downloadable_movie'
-            };
-        });
-
-        // Finally, open the modal.
-        downloadable_file_frame.open();
-    });
-
-    // Download ordering.
-    $( '.downloadable_files tbody' ).sortable({
-        items: 'tr',
-        cursor: 'move',
-        axis: 'y',
-        handle: 'td.sort',
-        scrollSensitivity: 40,
-        forcePlaceholderSize: true,
-        helper: 'clone',
-        opacity: 0.65
     });
 
     // Product gallery file uploads.
