@@ -117,7 +117,7 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'ajax_url'                  => admin_url( 'admin-ajax.php' ),
                     'search_videos_nonce'       => wp_create_nonce( 'search-videos' ),
                     'search_movies_nonce'       => wp_create_nonce( 'search-movies' ),
-                    'search_categories_nonce'   => wp_create_nonce( 'search-categories' ),
+                    // 'search_categories_nonce'   => wp_create_nonce( 'search-categories' ),
                 )
             );
 
@@ -188,40 +188,17 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
             // }
 
             // Meta boxes.
+            if ( in_array( $screen_id, array( 'video', 'edit-video' ) ) ) {
+                wp_enqueue_media();
+                wp_register_script( 'masvideos-admin-video-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-video' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models' ), MASVIDEOS_VERSION );
+                wp_enqueue_script( 'masvideos-admin-video-meta-boxes' );
+            }
             if ( in_array( $screen_id, array( 'movie', 'edit-movie' ) ) ) {
                 wp_enqueue_media();
                 wp_register_script( 'masvideos-admin-movie-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-movie' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models' ), MASVIDEOS_VERSION );
-                // wp_register_script( 'wc-admin-variation-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-product-variation' . $suffix . '.js', array( 'wc-admin-meta-boxes', 'serializejson', 'media-models' ), MASVIDEOS_VERSION );
-
                 wp_enqueue_script( 'masvideos-admin-movie-meta-boxes' );
-                // wp_enqueue_script( 'wc-admin-variation-meta-boxes' );
-
-                $params = array(
-                    'post_id'                             => isset( $post->ID ) ? $post->ID : '',
-                    'plugin_url'                          => MasVideos()->plugin_url(),
-                    'ajax_url'                            => admin_url( 'admin-ajax.php' ),
-                    'masvideos_placeholder_img_src'       => masvideos_placeholder_img_src(),
-                    'i18n_enter_a_value'                  => esc_js( __( 'Enter a value', 'masvideos' ) ),
-                    'i18n_enter_menu_order'               => esc_js( __( 'Variation menu order (determines position in the list of variations)', 'masvideos' ) ),
-                    'i18n_enter_a_value_fixed_or_percent' => esc_js( __( 'Enter a value (fixed or %)', 'masvideos' ) ),
-                    'i18n_delete_all_variations'          => esc_js( __( 'Are you sure you want to delete all variations? This cannot be undone.', 'masvideos' ) ),
-                    'i18n_last_warning'                   => esc_js( __( 'Last warning, are you sure?', 'masvideos' ) ),
-                    'i18n_choose_image'                   => esc_js( __( 'Choose an image', 'masvideos' ) ),
-                    'i18n_set_image'                      => esc_js( __( 'Set variation image', 'masvideos' ) ),
-                    'i18n_variation_added'                => esc_js( __( 'variation added', 'masvideos' ) ),
-                    'i18n_variations_added'               => esc_js( __( 'variations added', 'masvideos' ) ),
-                    'i18n_no_variations_added'            => esc_js( __( 'No variations added', 'masvideos' ) ),
-                    'i18n_remove_variation'               => esc_js( __( 'Are you sure you want to remove this variation?', 'masvideos' ) ),
-                    'i18n_scheduled_sale_start'           => esc_js( __( 'Sale start date (YYYY-MM-DD format or leave blank)', 'masvideos' ) ),
-                    'i18n_scheduled_sale_end'             => esc_js( __( 'Sale end date (YYYY-MM-DD format or leave blank)', 'masvideos' ) ),
-                    'i18n_edited_variations'              => esc_js( __( 'Save changes before changing page?', 'masvideos' ) ),
-                    'i18n_variation_count_single'         => esc_js( __( '%qty% variation', 'masvideos' ) ),
-                    'i18n_variation_count_plural'         => esc_js( __( '%qty% variations', 'masvideos' ) ),
-                    'variations_per_page'                 => absint( apply_filters( 'masvideos_admin_meta_boxes_variations_per_page', 15 ) ),
-                );
-
-                wp_localize_script( 'wc-admin-variation-meta-boxes', 'masvideos_admin_meta_boxes_variations', $params );
             }
+
             if ( in_array( str_replace( 'edit-', '', $screen_id ), array( 'video', 'movie' ) ) ) {
                 $post_id            = isset( $post->ID ) ? $post->ID : '';
                 $currency           = '';
@@ -255,11 +232,14 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'plugin_url'                    => MasVideos()->plugin_url(),
                     'ajax_url'                      => admin_url( 'admin-ajax.php' ),
                     // 'order_item_nonce'              => wp_create_nonce( 'order-item' ),
+                    'add_attribute_video_nonce'     => wp_create_nonce( 'add-attribute-video' ),
+                    'save_attributes_video_nonce'   => wp_create_nonce( 'save-attributes-video' ),
+                    'search_videos_nonce'           => wp_create_nonce( 'search-videos' ),
                     'add_attribute_movie_nonce'     => wp_create_nonce( 'add-attribute-movie' ),
                     'save_attributes_movie_nonce'   => wp_create_nonce( 'save-attributes-movie' ),
+                    'search_movies_nonce'           => wp_create_nonce( 'search-movies' ),
                     // 'calc_totals_nonce'             => wp_create_nonce( 'calc-totals' ),
                     // 'get_customer_details_nonce'    => wp_create_nonce( 'get-customer-details' ),
-                    'search_movies_nonce'         => wp_create_nonce( 'search-movies' ),
                     // 'grant_access_nonce'            => wp_create_nonce( 'grant-access' ),
                     // 'revoke_access_nonce'           => wp_create_nonce( 'revoke-access' ),
                     // 'add_order_note_nonce'          => wp_create_nonce( 'add-order-note' ),
