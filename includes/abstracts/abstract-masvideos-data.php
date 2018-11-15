@@ -295,7 +295,7 @@ abstract class MasVideos_Data {
             return false;
         }
         /* translators: %s: $key Key to check */
-        masvideos_doing_it_wrong( __FUNCTION__, sprintf( __( 'Generic add/update/get meta methods should not be used for internal meta data, including "%s". Use getters and setters.', 'masvideos' ), $key ), '3.2.0' );
+        _doing_it_wrong( __FUNCTION__, sprintf( __( 'Generic add/update/get meta methods should not be used for internal meta data, including "%s". Use getters and setters.', 'masvideos' ), $key ), '3.2.0' );
 
         return true;
     }
