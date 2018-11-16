@@ -63,6 +63,7 @@ class MasVideos_Video extends MasVideos_Data {
         'category_ids'       => array(),
         'tag_ids'            => array(),
         'image_id'           => '',
+        'video_id'           => '',
         'gallery_image_ids'  => array(),
         'rating_counts'      => array(),
         'average_rating'     => 0,
@@ -292,6 +293,17 @@ class MasVideos_Video extends MasVideos_Data {
      */
     public function get_image_id( $context = 'view' ) {
         return $this->get_prop( 'image_id', $context );
+    }
+
+    /**
+     * Get main image ID.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_video_id( $context = 'view' ) {
+        return $this->get_prop( 'video_id', $context );
     }
 
     /**

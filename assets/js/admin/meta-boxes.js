@@ -76,4 +76,69 @@ jQuery( function ( $ ) {
     $( '.masvideos-metabox.closed' ).each( function() {
         $( this ).find( '.masvideos-metabox-content' ).hide();
     });
+
+    $( '.show_hide_select' ).on( 'change', function() {
+        
+        var shortcode_select = $(this).val(), 
+            $masvideos_wp_shortcode = $(this).parents( '.options_group' );
+
+        $masvideos_wp_shortcode.find( '.hide' ).hide();
+        $masvideos_wp_shortcode.find( '.show_if_' + shortcode_select ).show();
+    }).change();
+
+    // Uploading Media
+    if ( ! $('.upload_video_id').val() ) {
+        $('.masvideos_remove_video_button').hide();
+    }
+
+    $(document).on( 'click', '.masvideos_upload_video_button', function( event ){
+        var $this = $(this);
+        var current_block = $(this).parent('.form-field').attr('id');
+
+        if( typeof file_frame == 'undefined' ) {
+            var file_frame;
+        }
+
+        event.preventDefault();
+
+        // If the media frame already exists, reopen it.
+        if ( file_frame ) {
+            file_frame.open();
+            return;
+        }
+
+        // Create the media frame.
+        file_frame = wp.media.frames.downloadable_file = wp.media({
+            title: 'Choose an video',
+            button: {
+                text: 'Use video',
+            },
+            multiple: false
+        });
+
+        // When an video is selected, run a callback.
+        file_frame.on( 'select', function() {
+            attachment = file_frame.state().get('selection').first().toJSON();
+
+            $('#'+current_block+' .upload_video_id').val( attachment.id );
+            $('#'+current_block+' img.upload_video_preview').attr('src', attachment.url );
+            $('#'+current_block+' .masvideos_remove_video_button').show();
+            $this.closest( '.widget-inside' ).find( '.widget-control-save' ).prop( 'disabled', false );
+        });
+
+        // Finally, open the modal.
+        file_frame.open();
+    });
+
+    $(document).on( 'click', '.masvideos_remove_video_button', function( event ){
+        var $this = $(this);
+        var current_block = $(this).parent('.form-field').attr('id');
+
+        $('#'+current_block+' video.upload_video_preview').attr('src', $('#'+current_block+' video.upload_video_preview').data('placeholder-src'));
+        $('#'+current_block+' .upload_video_id').val('');
+        $('#'+current_block+' .masvideos_remove_video_button').hide();
+        $this.closest( '.widget-inside' ).find( '.widget-control-save' ).prop( 'disabled', false );
+
+        return false;
+    });
 });

@@ -269,3 +269,36 @@ function masvideos_wp_radio( $field ) {
 
     echo '</fieldset>';
 }
+
+/**
+ * Outputs Upload Video
+ */
+function masvideos_wp_upload_video( $field ) {
+    global $thepostid, $post;
+
+    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+    $field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+    $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+    $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : false;
+
+    $placeholder_src = function_exists( 'masvideos_placeholder_img_src' ) ? masvideos_placeholder_img_src() : '';
+    if ( absint( $field['value'] ) ) {
+        $video = wp_get_attachment_thumb_url( $field['value'] );
+    } elseif ( $field['placeholder'] ) {
+        $video = $placeholder_src;
+    } else {
+        $video = '';
+    }
+
+    echo '<p id="' . esc_attr( $field['id'] ) . '_field" class="form-field media-option ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
+    ?>
+        <?php if ( isset ( $video ) ) :
+            echo do_shortcode('[video src="' . $video . '"]');
+        endif; ?>
+        <input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>" class="upload_video_id" value="<?php echo esc_attr( $field['value'] ); ?>" />
+        <a href="#" class="button masvideos_upload_video_button tips"><?php echo esc_html__( 'Upload/Add video', 'masvideos' ); ?></a>
+        <a href="#" class="button masvideos_remove_video_button tips"><?php echo esc_html__( 'Remove this video', 'masvideos' ); ?></a>
+    </p>
+    <?php
+}

@@ -200,13 +200,14 @@ class MasVideos_Meta_Box_Video_Data {
      */
     public static function save( $post_id, $post ) {
         // Process video type first so we have the correct class to run setters.
-        $video_type = empty( $_POST['video-type'] ) ? MasVideos_Video_Factory::get_video_type( $post_id ) : sanitize_title( stripslashes( $_POST['video-type'] ) );
+        // $video_type = empty( $_POST['video-type'] ) ? MasVideos_Video_Factory::get_video_type( $post_id ) : sanitize_title( stripslashes( $_POST['video-type'] ) );
         $classname    = MasVideos_Video_Factory::get_video_classname( $post_id );
         $video      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();
 
         $errors = $video->set_props(
             array(
+                'video_id'           => isset( $_POST['_video_id'] ) ? masvideos_clean( $_POST['_video_id'] ) : null,
                 'attributes'         => $attributes,
                 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
@@ -222,7 +223,5 @@ class MasVideos_Meta_Box_Video_Data {
         do_action( 'masvideos_admin_process_video_object', $video );
 
         $video->save();
-
-        do_action( 'masvideos_process_video_meta', $post_id );
     }
 }
