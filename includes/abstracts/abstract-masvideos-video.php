@@ -46,28 +46,29 @@ class MasVideos_Video extends MasVideos_Data {
      * @var array
      */
     protected $data = array(
-        'name'               => '',
-        'slug'               => '',
-        'date_created'       => null,
-        'date_modified'      => null,
-        'status'             => false,
-        'featured'           => false,
-        'catalog_visibility' => 'visible',
-        'description'        => '',
-        'short_description'  => '',
-        'parent_id'          => 0,
-        'reviews_allowed'    => true,
-        'attributes'         => array(),
-        'default_attributes' => array(),
-        'menu_order'         => 0,
-        'category_ids'       => array(),
-        'tag_ids'            => array(),
-        'image_id'           => '',
-        'video_id'           => '',
-        'gallery_image_ids'  => array(),
-        'rating_counts'      => array(),
-        'average_rating'     => 0,
-        'review_count'       => 0,
+        'name'                  => '',
+        'slug'                  => '',
+        'date_created'          => null,
+        'date_modified'         => null,
+        'status'                => false,
+        'featured'              => false,
+        'catalog_visibility'    => 'visible',
+        'description'           => '',
+        'short_description'     => '',
+        'parent_id'             => 0,
+        'reviews_allowed'       => true,
+        'attributes'            => array(),
+        'default_attributes'    => array(),
+        'menu_order'            => 0,
+        'category_ids'          => array(),
+        'tag_ids'               => array(),
+        'image_id'              => '',
+        'video_attachment_id'   => '',
+        'video_embed_content'   => '',
+        'gallery_image_ids'     => array(),
+        'rating_counts'         => array(),
+        'average_rating'        => 0,
+        'review_count'          => 0,
     );
 
     /**
@@ -296,14 +297,25 @@ class MasVideos_Video extends MasVideos_Data {
     }
 
     /**
-     * Get main video ID.
+     * Get main video attachment ID.
      *
      * @since 1.0.0
      * @param  string $context What the value is for. Valid values are view and edit.
      * @return string
      */
-    public function get_video_id( $context = 'view' ) {
-        return $this->get_prop( 'video_id', $context );
+    public function get_video_attachment_id( $context = 'view' ) {
+        return $this->get_prop( 'video_attachment_id', $context );
+    }
+
+    /**
+     * Get main video embed content.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_video_embed_content( $context = 'view' ) {
+        return $this->get_prop( 'video_embed_content', $context );
     }
 
     /**
@@ -552,13 +564,23 @@ class MasVideos_Video extends MasVideos_Data {
     }
 
     /**
-     * Set main video ID.
+     * Set main video attachment ID.
      *
      * @since 1.0.0
-     * @param int|string $video_id Video video id.
+     * @param int|string $video_attachment_id Video attachment id.
      */
-    public function set_video_id( $video_id = '' ) {
-        $this->set_prop( 'video_id', $video_id );
+    public function set_video_attachment_id( $video_attachment_id = '' ) {
+        $this->set_prop( 'video_attachment_id', $video_attachment_id );
+    }
+
+    /**
+     * Set main video embed content.
+     *
+     * @since 1.0.0
+     * @param int|string $video_embed_content Video embed content.
+     */
+    public function set_video_embed_content( $video_embed_content = '' ) {
+        $this->set_prop( 'video_embed_content', $video_embed_content );
     }
 
     /**

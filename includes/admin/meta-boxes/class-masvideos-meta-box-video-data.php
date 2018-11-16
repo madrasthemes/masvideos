@@ -207,9 +207,10 @@ class MasVideos_Meta_Box_Video_Data {
 
         $errors = $video->set_props(
             array(
-                'video_id'           => isset( $_POST['_video_id'] ) ? masvideos_clean( $_POST['_video_id'] ) : null,
-                'attributes'         => $attributes,
-                // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
+                'video_attachment_id'       => isset( $_POST['_video_attachment_id'] ) ? masvideos_clean( $_POST['_video_attachment_id'] ) : null,
+                'video_embed_content'       => isset( $_POST['_video_embed_content'] ) ? masvideos_clean( $_POST['_video_embed_content'] ) : null,
+                'attributes'                => $attributes,
+                // 'default_attributes'     => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );
 

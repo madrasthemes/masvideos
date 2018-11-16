@@ -21,8 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         masvideos_wp_upload_video(
             array(
-                'id'          => '_video_id',
-                'value'       => is_callable( array( $video_object, 'get_video_id' ) ) ? $video_object->get_video_id( 'edit' ) : '',
+                'id'          => '_video_attachment_id',
+                'value'       => is_callable( array( $video_object, 'get_video_attachment_id' ) ) ? $video_object->get_video_attachment_id( 'edit' ) : '',
                 'label'       => __( 'Upload Video', 'masvideos' ),
                 'placeholder' => 'Upload your video file',
                 'description' => __( 'Upload your video file', 'masvideos' ),
@@ -32,8 +32,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         masvideos_wp_text_input(
             array(
-                'id'          => '_video_url',
-                // 'value'       => is_callable( array( $video_object, 'get_video_url' ) ) ? $video_object->get_video_url( 'edit' ) : '',
+                'id'          => '_video_embed_content',
+                'value'       => is_callable( array( $video_object, 'get_video_embed_content' ) ) ? $video_object->get_video_embed_content( 'edit' ) : '',
                 'label'       => __( 'Video URL', 'masvideos' ),
                 'placeholder' => 'http://',
                 'description' => __( 'Enter the external URL to the video.', 'masvideos' ),
