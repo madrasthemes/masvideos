@@ -209,7 +209,7 @@ class MasVideos_Meta_Box_Video_Data {
             array(
                 'video_id'           => isset( $_POST['_video_id'] ) ? masvideos_clean( $_POST['_video_id'] ) : null,
                 'attributes'         => $attributes,
-                'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
+                // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );
 

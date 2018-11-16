@@ -296,7 +296,7 @@ class MasVideos_Video extends MasVideos_Data {
     }
 
     /**
-     * Get main image ID.
+     * Get main video ID.
      *
      * @since 1.0.0
      * @param  string $context What the value is for. Valid values are view and edit.
@@ -549,6 +549,16 @@ class MasVideos_Video extends MasVideos_Data {
      */
     public function set_image_id( $image_id = '' ) {
         $this->set_prop( 'image_id', $image_id );
+    }
+
+    /**
+     * Set main video ID.
+     *
+     * @since 1.0.0
+     * @param int|string $video_id Video video id.
+     */
+    public function set_video_id( $video_id = '' ) {
+        $this->set_prop( 'video_id', $video_id );
     }
 
     /**

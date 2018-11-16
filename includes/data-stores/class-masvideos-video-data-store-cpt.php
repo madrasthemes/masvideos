@@ -30,6 +30,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         '_masvideos_average_rating',
         '_masvideos_review_count',
         '_thumbnail_id',
+        '_video_id',
         '_file_paths',
         '_video_image_gallery',
         '_video_version',
@@ -291,6 +292,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'tag_ids'            => $this->get_term_ids( $video, 'video_tag' ),
                 'gallery_image_ids'  => array_filter( explode( ',', get_post_meta( $id, '_video_image_gallery', true ) ) ),
                 'image_id'           => get_post_thumbnail_id( $id ),
+                'video_id'           => get_post_meta( $id, '_video_id', true ),
             )
         );
     }
@@ -367,6 +369,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             '_default_attributes'           => 'default_attributes',
             '_video_image_gallery'          => 'gallery_image_ids',
             '_thumbnail_id'                 => 'image_id',
+            '_video_id'                     => 'video_id',
             '_masvideos_average_rating'     => 'average_rating',
             '_masvideos_rating_count'       => 'rating_counts',
             '_masvideos_review_count'       => 'review_count',
