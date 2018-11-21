@@ -783,7 +783,8 @@
     }
 
     .form-field.media-attachment-video .wp-video,
-    .form-field.media-video-url .wp-video {
+    .form-field.media-video-url .wp-video,
+    .form-field.media-embed-video .wp-video {
         margin-top: 10px;
         margin-bottom: 10px;
     }
@@ -814,12 +815,17 @@
 
     .form-field.media-embed-video {
         textarea {
-            margin-bottom: 15px;
+            float: none;
+        }
+
+        .wp-video {
+            max-width: 640px;
+            max-height: 360px;
         }
 
         iframe {
-            max-width: 640px;
-            max-height: 360px;
+            max-width: 100%;
+            max-height: 100%;
         }
     }
 
@@ -1125,23 +1131,24 @@
 }
 
 @media only screen and (max-width: 500px) {
-    .masvideos_options_panel label,
-    .masvideos_options_panel legend {
-        float: none;
-        width: auto;
-        display: block;
-        margin: 0;
-    }
+    .masvideos_options_panel {
+        label,
+        legend {
+            float: none;
+            width: auto;
+            display: block;
+            margin: 0;
+        }
 
-    .masvideos_options_panel fieldset.form-field,
-    .masvideos_options_panel p.form-field,
-    .masvideos_options_panel .form-field.media-attachment-video,
-    .masvideos_options_panel .form-field.media-video-url,
-    .masvideos_options_panel .form-field.media-embed-video {
-        padding: 5px 20px !important;
+        fieldset.form-field,
+        p.form-field,
+        .form-field.media-attachment-video,
+        .form-field.media-video-url,
+        .form-field.media-embed-video {
+            padding: 5px 20px !important;
+        }
     }
 }
-
 /**
 * Select2 elements.
 */
