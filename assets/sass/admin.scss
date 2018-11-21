@@ -735,7 +735,10 @@
 }
 
 .masvideos_options_panel p,
-.masvideos_options_panel fieldset.form-field {
+.masvideos_options_panel fieldset.form-field,
+.masvideos_options_panel .form-field.media-attachment-video,
+.masvideos_options_panel .form-field.media-video-url,
+.masvideos_options_panel .form-field.media-embed-video {
     margin: 0 0 9px;
     font-size: 12px;
     padding: 5px 9px;
@@ -772,8 +775,52 @@
     }
 
     p.form-field,
-    fieldset.form-field {
+    fieldset.form-field,
+    .form-field.media-attachment-video,
+    .form-field.media-video-url,
+    .form-field.media-embed-video {
         padding: 5px 20px 5px 162px !important; /** Padding for aligning labels left - 12px + 150 label width **/
+    }
+
+    .form-field.media-attachment-video .wp-video,
+    .form-field.media-video-url .wp-video {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .form-field.media-attachment-video {
+        .wp-video {
+            div.wp-video-shortcode:not(.mejs-container-fullscreen),
+            .wp-video-shortcode:not(.mejs-container-fullscreen) video {
+                max-width: 640px;
+                max-height: 360px;
+            }
+        }
+    }
+
+    .form-field.media-video-url {
+        .wp-video {
+            div.wp-video-shortcode:not(.mejs-container-fullscreen),
+            .wp-video-shortcode:not(.mejs-container-fullscreen) iframe {
+                max-width: 640px;
+                max-height: 360px;
+            }
+        }
+
+        .media-video-url-box {
+            float: none;
+        }
+    }
+
+    .form-field.media-embed-video {
+        textarea {
+            margin-bottom: 15px;
+        }
+
+        iframe {
+            max-width: 640px;
+            max-height: 360px;
+        }
     }
 
     label,
@@ -914,7 +961,10 @@
         float: left;
     }
 
-    p.form-field.hide {
+    p.form-field.hide,
+    .form-field.media-attachment-video,
+    .form-field.media-video-url,
+    .form-field.media-embed-video {
         display: none;
     }
 }
@@ -975,6 +1025,11 @@
             width: 100%;
         }
     }
+
+    .masvideos_options_panel .form-field.media-embed-video iframe {
+        max-width: 100%;
+        height: auto;
+    }
 }
 
 /**
@@ -1013,6 +1068,10 @@
             width: 100%;
             height: 40px;
         }
+    }
+
+    .masvideos_options_panel .form-field.media-embed-video iframe {
+        height: 100%;
     }
 }
 
@@ -1075,7 +1134,10 @@
     }
 
     .masvideos_options_panel fieldset.form-field,
-    .masvideos_options_panel p.form-field {
+    .masvideos_options_panel p.form-field,
+    .masvideos_options_panel .form-field.media-attachment-video,
+    .masvideos_options_panel .form-field.media-video-url,
+    .masvideos_options_panel .form-field.media-embed-video {
         padding: 5px 20px !important;
     }
 }

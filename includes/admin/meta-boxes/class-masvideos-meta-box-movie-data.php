@@ -200,15 +200,19 @@ class MasVideos_Meta_Box_Movie_Data {
      */
     public static function save( $post_id, $post ) {
         // Process movie type first so we have the correct class to run setters.
-        $movie_type = empty( $_POST['movie-type'] ) ? MasVideos_Movie_Factory::get_movie_type( $post_id ) : sanitize_title( stripslashes( $_POST['movie-type'] ) );
+        // $movie_type = empty( $_POST['movie-type'] ) ? MasVideos_Movie_Factory::get_movie_type( $post_id ) : sanitize_title( stripslashes( $_POST['movie-type'] ) );
         $classname    = MasVideos_Movie_Factory::get_movie_classname( $post_id );
         $movie      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();
 
         $errors = $movie->set_props(
             array(
-                'attributes'         => $attributes,
-                'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
+                'movie_choice'              => isset( $_POST['_movie_choice'] ) ? masvideos_clean( $_POST['_movie_choice'] ) : null,
+                'movie_attachment_id'       => isset( $_POST['_movie_attachment_id'] ) ? masvideos_clean( $_POST['_movie_attachment_id'] ) : null,
+                'movie_embed_content'       => isset( $_POST['_movie_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_movie_embed_content'] ) : null,
+                'movie_url_link'            => isset( $_POST['_movie_url_link'] ) ? masvideos_clean( $_POST['_movie_url_link'] ) : null,
+                'attributes'                => $attributes,
+                // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );
 
@@ -222,7 +226,5 @@ class MasVideos_Meta_Box_Movie_Data {
         do_action( 'masvideos_admin_process_movie_object', $movie );
 
         $movie->save();
-
-        do_action( 'masvideos_process_movie_meta', $post_id );
     }
 }

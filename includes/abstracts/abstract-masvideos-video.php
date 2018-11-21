@@ -63,8 +63,10 @@ class MasVideos_Video extends MasVideos_Data {
         'category_ids'          => array(),
         'tag_ids'               => array(),
         'image_id'              => '',
+        'video_choice'          => '',
         'video_attachment_id'   => '',
         'video_embed_content'   => '',
+        'video_url_link'        => '',
         'gallery_image_ids'     => array(),
         'rating_counts'         => array(),
         'average_rating'        => 0,
@@ -297,6 +299,17 @@ class MasVideos_Video extends MasVideos_Data {
     }
 
     /**
+     * Get main video choice
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_video_choice( $context = 'view' ) {
+        return $this->get_prop( 'video_choice', $context );
+    }
+
+    /**
      * Get main video attachment ID.
      *
      * @since 1.0.0
@@ -317,6 +330,18 @@ class MasVideos_Video extends MasVideos_Data {
     public function get_video_embed_content( $context = 'view' ) {
         return $this->get_prop( 'video_embed_content', $context );
     }
+
+    /**
+     * Get main video url.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_video_url_link( $context = 'view' ) {
+        return $this->get_prop( 'video_url_link', $context );
+    }
+
 
     /**
      * Get rating count.
@@ -564,6 +589,16 @@ class MasVideos_Video extends MasVideos_Data {
     }
 
     /**
+     * Set main video choice
+     *
+     * @since 1.0.0
+     * @param int|string $video_choice Video attachment id.
+     */
+    public function set_video_choice( $video_choice = '' ) {
+        $this->set_prop( 'video_choice', $video_choice );
+    }
+
+    /**
      * Set main video attachment ID.
      *
      * @since 1.0.0
@@ -581,6 +616,16 @@ class MasVideos_Video extends MasVideos_Data {
      */
     public function set_video_embed_content( $video_embed_content = '' ) {
         $this->set_prop( 'video_embed_content', $video_embed_content );
+    }
+
+    /**
+     * Set main video url.
+     *
+     * @since 1.0.0
+     * @param int|string $video_url_link Video embed content.
+     */
+    public function set_video_url_link( $video_url_link = '' ) {
+        $this->set_prop( 'video_url_link', $video_url_link );
     }
 
     /**

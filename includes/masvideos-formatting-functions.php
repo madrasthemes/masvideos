@@ -108,6 +108,26 @@ function masvideos_sanitize_textarea( $var ) {
 }
 
 /**
+ * Run textarea with iframe.
+ *
+ * @since  1.0.0
+ * @param  string $var Data to sanitize.
+ * @return string
+ */
+function masvideos_sanitize_textarea_iframe( $var ) {
+    $allowed_tags = wp_kses_allowed_html( 'post' );
+    // iframe
+    $allowed_tags['iframe'] = array(
+        'src'             => array(),
+        'height'          => array(),
+        'width'           => array(),
+        'frameborder'     => array(),
+        'allowfullscreen' => array(),
+    );
+    return wp_kses( $var, $allowed_tags );
+}
+
+/**
  * Sanitize a string destined to be a tooltip.
  *
  * @since  1.0.0 Tooltips are encoded with htmlspecialchars to prevent XSS. Should not be used in conjunction with esc_attr()

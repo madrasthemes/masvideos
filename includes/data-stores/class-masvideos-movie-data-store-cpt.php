@@ -30,6 +30,10 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         '_masvideos_average_rating',
         '_masvideos_review_count',
         '_thumbnail_id',
+        '_movie_choice',
+        '_movie_attachment_id',
+        '_movie_embed_content',
+        '_movie_url_link',
         '_file_paths',
         '_movie_image_gallery',
         '_movie_version',
@@ -286,11 +290,15 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $movie->set_props(
             array(
-                'default_attributes' => get_post_meta( $id, '_default_attributes', true ),
-                'category_ids'       => $this->get_term_ids( $movie, 'movie_cat' ),
-                'tag_ids'            => $this->get_term_ids( $movie, 'movie_tag' ),
-                'gallery_image_ids'  => array_filter( explode( ',', get_post_meta( $id, '_movie_image_gallery', true ) ) ),
-                'image_id'           => get_post_thumbnail_id( $id ),
+                'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
+                'category_ids'          => $this->get_term_ids( $movie, 'movie_cat' ),
+                'tag_ids'               => $this->get_term_ids( $movie, 'movie_tag' ),
+                'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_movie_image_gallery', true ) ) ),
+                'image_id'              => get_post_thumbnail_id( $id ),
+                'movie_choice'          => get_post_meta( $id, '_movie_choice', true ),
+                'movie_attachment_id'   => get_post_meta( $id, '_movie_attachment_id', true ),
+                'movie_embed_content'   => get_post_meta( $id, '_movie_embed_content', true ),
+                'movie_url_link'        => get_post_meta( $id, '_movie_url_link', true ),
             )
         );
     }
@@ -367,6 +375,10 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             '_default_attributes'           => 'default_attributes',
             '_movie_image_gallery'          => 'gallery_image_ids',
             '_thumbnail_id'                 => 'image_id',
+            '_movie_choice'                 => 'movie_choice',
+            '_movie_attachment_id'          => 'movie_attachment_id',
+            '_movie_embed_content'          => 'movie_embed_content',
+            '_movie_url_link'               => 'movie_url_link',
             '_masvideos_average_rating'     => 'average_rating',
             '_masvideos_rating_count'       => 'rating_counts',
             '_masvideos_review_count'       => 'review_count',

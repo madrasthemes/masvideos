@@ -121,7 +121,6 @@ jQuery( function ( $ ) {
             attachment = file_frame.state().get('selection').first().toJSON();
 
             $('#'+current_block+' .upload_video_id').val( attachment.id );
-            $('#'+current_block+' img.upload_video_preview').attr('src', attachment.url );
             $('#'+current_block+' .masvideos_remove_video_button').show();
             $this.closest( '.widget-inside' ).find( '.widget-control-save' ).prop( 'disabled', false );
         });
@@ -134,7 +133,7 @@ jQuery( function ( $ ) {
         var $this = $(this);
         var current_block = $(this).parent('.form-field').attr('id');
 
-        $('#'+current_block+' video.upload_video_preview').attr('src', $('#'+current_block+' video.upload_video_preview').data('placeholder-src'));
+        $('#'+current_block+' div.wp-video').remove();
         $('#'+current_block+' .upload_video_id').val('');
         $('#'+current_block+' .masvideos_remove_video_button').hide();
         $this.closest( '.widget-inside' ).find( '.widget-control-save' ).prop( 'disabled', false );

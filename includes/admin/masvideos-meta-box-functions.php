@@ -282,23 +282,92 @@ function masvideos_wp_upload_video( $field ) {
     $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
     $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : false;
 
-    $placeholder_src = function_exists( 'masvideos_placeholder_img_src' ) ? masvideos_placeholder_img_src() : '';
-    if ( absint( $field['value'] ) ) {
-        $video = wp_get_attachment_thumb_url( $field['value'] );
-    } elseif ( $field['placeholder'] ) {
-        $video = $placeholder_src;
-    } else {
-        $video = '';
-    }
-
-    echo '<p id="' . esc_attr( $field['id'] ) . '_field" class="form-field media-option ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
+    echo '<div id="' . esc_attr( $field['id'] ) . '_field" class="form-field media-attachment-video media-option ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
     ?>
-        <?php if ( isset ( $video ) ) :
-            echo do_shortcode('[video src="' . $video . '"]');
-        endif; ?>
+        <?php
+        if ( absint( $field['value'] ) ) {
+            $video_src = wp_get_attachment_url( $field['value'] );
+            echo do_shortcode('[video src="' . $video_src . '"]');
+        }
+        ?>
         <input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>" class="upload_video_id" value="<?php echo esc_attr( $field['value'] ); ?>" />
         <a href="#" class="button masvideos_upload_video_button tips"><?php echo esc_html__( 'Upload/Add video', 'masvideos' ); ?></a>
         <a href="#" class="button masvideos_remove_video_button tips"><?php echo esc_html__( 'Remove this video', 'masvideos' ); ?></a>
-    </p>
+    </div>
     <?php
 }
+
+/**
+ * Outputs Embed Video
+ */
+function masvideos_wp_embed_video( $field ) {
+    global $thepostid, $post;
+
+    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
+    $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
+    $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+    $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+    $field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+    $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+    $field['rows']          = isset( $field['rows'] ) ? $field['rows'] : 1;
+    $field['cols']          = isset( $field['cols'] ) ? $field['cols'] : 20;
+
+    // Custom attribute handling
+    $custom_attributes = array();
+
+    if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+
+        foreach ( $field['custom_attributes'] as $attribute => $value ) {
+            $custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
+        }
+    }
+
+    echo '<div class="form-field media-embed-video ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '">
+        <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
+
+        echo '<textarea class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '"  name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" rows="' . esc_attr( $field['rows'] ) . '" cols="' . esc_attr( $field['cols'] ) . '" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
+
+        if ( ! empty( $field['value'] ) ) {
+            echo $field['value'];
+        }
+
+    echo '</div>';
+}
+
+/**
+ * Outputs Video URL
+ */
+function masvideos_wp_video_url( $field ) {
+    global $thepostid, $post;
+
+    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
+    $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
+    $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+    $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+    $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+    $field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
+    $field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+
+    // Custom attribute handling
+    $custom_attributes = array();
+
+    if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+
+        foreach ( $field['custom_attributes'] as $attribute => $value ){
+            $custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
+        }
+    }
+
+    echo '<div class="form-field media-video-url ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
+
+        echo '<input type="' . esc_attr( $field['type'] ) . '" class="media-video-url-box ' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
+
+        if ( ! empty( $field['value'] ) ) {
+            echo do_shortcode('[video src="' . $field['value'] . '"]');
+        }
+    echo '</div>';
+}
+
+

@@ -46,27 +46,31 @@ class MasVideos_Movie extends MasVideos_Data {
      * @var array
      */
     protected $data = array(
-        'name'               => '',
-        'slug'               => '',
-        'date_created'       => null,
-        'date_modified'      => null,
-        'status'             => false,
-        'featured'           => false,
-        'catalog_visibility' => 'visible',
-        'description'        => '',
-        'short_description'  => '',
-        'parent_id'          => 0,
-        'reviews_allowed'    => true,
-        'attributes'         => array(),
-        'default_attributes' => array(),
-        'menu_order'         => 0,
-        'category_ids'       => array(),
-        'tag_ids'            => array(),
-        'image_id'           => '',
-        'gallery_image_ids'  => array(),
-        'rating_counts'      => array(),
-        'average_rating'     => 0,
-        'review_count'       => 0,
+        'name'                  => '',
+        'slug'                  => '',
+        'date_created'          => null,
+        'date_modified'         => null,
+        'status'                => false,
+        'featured'              => false,
+        'catalog_visibility'    => 'visible',
+        'description'           => '',
+        'short_description'     => '',
+        'parent_id'             => 0,
+        'reviews_allowed'       => true,
+        'attributes'            => array(),
+        'default_attributes'    => array(),
+        'menu_order'            => 0,
+        'category_ids'          => array(),
+        'tag_ids'               => array(),
+        'image_id'              => '',
+        'movie_choice'          => '',
+        'movie_attachment_id'   => '',
+        'movie_embed_content'   => '',
+        'movie_url_link'        => '',
+        'gallery_image_ids'     => array(),
+        'rating_counts'         => array(),
+        'average_rating'        => 0,
+        'review_count'          => 0,
     );
 
     /**
@@ -292,6 +296,50 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function get_image_id( $context = 'view' ) {
         return $this->get_prop( 'image_id', $context );
+    }
+
+    /**
+     * Get main movie choice.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_movie_choice( $context = 'view' ) {
+        return $this->get_prop( 'movie_choice', $context );
+    }
+
+    /**
+     * Get main movie attachment ID.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_movie_attachment_id( $context = 'view' ) {
+        return $this->get_prop( 'movie_attachment_id', $context );
+    }
+
+    /**
+     * Get main movie embed content.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_movie_embed_content( $context = 'view' ) {
+        return $this->get_prop( 'movie_embed_content', $context );
+    }
+
+    /**
+     * Get main movie url.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_movie_url_link( $context = 'view' ) {
+        return $this->get_prop( 'movie_url_link', $context );
     }
 
     /**
@@ -537,6 +585,46 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_image_id( $image_id = '' ) {
         $this->set_prop( 'image_id', $image_id );
+    }
+
+    /**
+     * Set main movie choice
+     *
+     * @since 1.0.0
+     * @param int|string $movie_choice Video attachment id.
+     */
+    public function set_movie_choice( $movie_choice = '' ) {
+        $this->set_prop( 'movie_choice', $movie_choice );
+    }
+
+    /**
+     * Set main movie attachment ID.
+     *
+     * @since 1.0.0
+     * @param int|string $movie_attachment_id Video attachment id.
+     */
+    public function set_movie_attachment_id( $movie_attachment_id = '' ) {
+        $this->set_prop( 'movie_attachment_id', $movie_attachment_id );
+    }
+
+    /**
+     * Set main movie embed content.
+     *
+     * @since 1.0.0
+     * @param int|string $movie_embed_content Video embed content.
+     */
+    public function set_movie_embed_content( $movie_embed_content = '' ) {
+        $this->set_prop( 'movie_embed_content', $movie_embed_content );
+    }
+
+    /**
+     * Set main movie url.
+     *
+     * @since 1.0.0
+     * @param int|string $movie_url_link Video embed content.
+     */
+    public function set_movie_url_link( $movie_url_link = '' ) {
+        $this->set_prop( 'movie_url_link', $movie_url_link );
     }
 
     /**
