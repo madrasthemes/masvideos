@@ -102,3 +102,43 @@ function masvideos_delete_video_transients( $post_id = 0 ) {
 
     do_action( 'masvideos_delete_video_transients', $post_id );
 }
+
+if ( ! function_exists ( 'masvideos_the_video' ) ) {
+    function masvideos_the_video( $post = null ) {
+        global $post;
+        $thepostid = $post->ID;
+        $video_object = $thepostid ? masvideos_get_video( $thepostid ) : new MasVideos_Video();
+        $video_src = masvideos_get_the_video( $video_object );
+        $video_choice = $video_object->get_video_choice();
+
+        if ( ! empty ( $video_src ) ) {
+            if ( $video_choice == 'video_file' ) {
+                echo do_shortcode('[video src="' . $video_src . '"]');
+            } elseif ( $video_choice == 'video_embed' ) {
+                echo '<div class="wp-video">' . $video_src . '</div>';
+            } elseif ( $video_choice == 'video_url' ) {
+                echo do_shortcode('[video src="' . $video_src . '"]');
+            }
+        }
+    }
+}
+
+if ( ! function_exists ( 'masvideos_get_the_video' ) ) {
+    function masvideos_get_the_video( $post = null ) {
+        global $post;
+        $thepostid = $post->ID;
+        $video_object = $thepostid ? masvideos_get_video( $thepostid ) : new MasVideos_Video();
+        $video_src = '';
+        $video_choice = $video_object->get_video_choice();
+
+        if ( $video_choice == 'video_file' ) {
+            $video_src =  wp_get_attachment_url( $video_object->get_video_attachment_id() );
+        } elseif ( $video_choice == 'video_embed' ) {
+            $video_src = $video_object->get_video_embed_content();
+        } elseif ( $video_choice == 'video_url' ) {
+            $video_src = $video_object->get_video_url_link();
+        }
+
+        return $video_src;
+    }
+}

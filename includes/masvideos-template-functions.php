@@ -632,6 +632,15 @@ if ( ! function_exists( 'masvideos_template_loop_category_link_close' ) ) {
 /**
  * Single
  */
+if ( ! function_exists( 'masvideos_template_single_video_video' ) ) {
+
+    /**
+     * Output the video title.
+     */
+    function masvideos_template_single_video_video() {
+        masvideos_the_video();
+    }
+}
 
 if ( ! function_exists( 'masvideos_template_single_video_title' ) ) {
 
@@ -642,6 +651,8 @@ if ( ! function_exists( 'masvideos_template_single_video_title' ) ) {
         the_title( '<h1 class="video_title entry-title">', '</h1>' );
     }
 }
+
+
 
 if ( ! function_exists( 'masvideos_template_single_movie_title' ) ) {
 
