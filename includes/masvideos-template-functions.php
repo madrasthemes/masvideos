@@ -342,6 +342,50 @@ function masvideos_movie_class( $class = '', $movie_id = null ) {
     post_class();
 }
 
+/**
+ * Outputs hidden form inputs for each query string variable.
+ *
+ * @since 1.0.0
+ * @param string|array $values Name value pairs, or a URL to parse.
+ * @param array        $exclude Keys to exclude.
+ * @param string       $current_key Current key we are outputting.
+ * @param bool         $return Whether to return.
+ * @return string
+ */
+function masvideos_query_string_form_fields( $values = null, $exclude = array(), $current_key = '', $return = false ) {
+    if ( is_null( $values ) ) {
+        $values = $_GET; // WPCS: input var ok, CSRF ok.
+    } elseif ( is_string( $values ) ) {
+        $url_parts = wp_parse_url( $values );
+        $values    = array();
+
+        if ( ! empty( $url_parts['query'] ) ) {
+            parse_str( $url_parts['query'], $values );
+        }
+    }
+    $html = '';
+
+    foreach ( $values as $key => $value ) {
+        if ( in_array( $key, $exclude, true ) ) {
+            continue;
+        }
+        if ( $current_key ) {
+            $key = $current_key . '[' . $key . ']';
+        }
+        if ( is_array( $value ) ) {
+            $html .= masvideos_query_string_form_fields( $value, $exclude, $key, true );
+        } else {
+            $html .= '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( wp_unslash( $value ) ) . '" />';
+        }
+    }
+
+    if ( $return ) {
+        return $html;
+    }
+
+    echo $html; // WPCS: XSS ok.
+}
+
 
 /**
  * Loop

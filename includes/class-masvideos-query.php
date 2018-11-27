@@ -97,7 +97,7 @@ class MasVideos_Videos_Query {
             }
 
             // Define a variable so we know this is the front page videos later on.
-            masvideos_maybe_define_constant( 'MOVIES_ON_FRONT', true );
+            masvideos_maybe_define_constant( 'VIDEOS_ON_FRONT', true );
 
             // Get the actual WP page to avoid errors and let us use is_front_page().
             // This is hacky but works. Awaiting https://core.trac.wordpress.org/ticket/21096.
