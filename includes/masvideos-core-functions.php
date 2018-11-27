@@ -19,6 +19,7 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-widget-functions.php';
 
 /**
  * Define a constant if it is not already defined.
