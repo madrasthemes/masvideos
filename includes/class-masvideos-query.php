@@ -21,11 +21,11 @@ class MasVideos_Videos_Query {
     private static $video_query;
 
     /**
-     * Stores chosen taxonomies.
+     * Chosen attributes.
      *
      * @var array
      */
-    private static $_chosen_taxonomies;
+    private static $_chosen_attributes;
 
     public function __construct() {
         if ( ! is_admin() ) {
@@ -53,16 +53,115 @@ class MasVideos_Videos_Query {
         return absint( get_option( 'page_on_front' ) ) === absint( $page_id );
     }
 
+    /**
+     * Hook into pre_get_posts to do the main video query.
+     *
+     * @param WP_Query $q Query instance.
+     */
     public function pre_get_posts( $q ) {
-        if ( ! $q->is_main_query() ){
+        // We only want to affect the main query.
+        if ( ! $q->is_main_query() ) {
             return;
         }
 
-        if ( ! $q->is_post_type_archive( 'video' ) && ! $q->is_tax( get_object_taxonomies( 'video' ) ) ) {
-            // Only apply to video categories, the video post archive, the videos page, and video taxonomies.
+        // When orderby is set, WordPress shows posts on the front-page. Get around that here.
+        if ( $this->is_showing_page_on_front( $q ) && $this->page_on_front_is( masvideos_get_page_id( 'videos' ) ) ) {
+            $_query = wp_parse_args( $q->query );
+            if ( empty( $_query ) || ! array_diff( array_keys( $_query ), array( 'preview', 'page', 'paged', 'cpage', 'orderby' ) ) ) {
+                $q->set( 'page_id', (int) get_option( 'page_on_front' ) );
+                $q->is_page = true;
+                $q->is_home = false;
+
+                // WP supporting themes show post type archive.
+                if ( current_theme_supports( 'masvideos' ) ) {
+                    $q->set( 'post_type', 'video' );
+                } else {
+                    $q->is_singular = true;
+                }
+            }
+        }
+
+        // Fix video feeds.
+        if ( $q->is_feed() && $q->is_post_type_archive( 'video' ) ) {
+            $q->is_comment_feed = false;
+        }
+
+        // Special check for videos with the PRODUCT POST TYPE ARCHIVE on front.
+        if ( current_theme_supports( 'masvideos' ) && $q->is_page() && 'page' === get_option( 'show_on_front' ) && absint( $q->get( 'page_id' ) ) === masvideos_get_page_id( 'videos' ) ) {
+            // This is a front-page videos.
+            $q->set( 'post_type', 'video' );
+            $q->set( 'page_id', '' );
+
+            if ( isset( $q->query['paged'] ) ) {
+                $q->set( 'paged', $q->query['paged'] );
+            }
+
+            // Define a variable so we know this is the front page videos later on.
+            masvideos_maybe_define_constant( 'MOVIES_ON_FRONT', true );
+
+            // Get the actual WP page to avoid errors and let us use is_front_page().
+            // This is hacky but works. Awaiting https://core.trac.wordpress.org/ticket/21096.
+            global $wp_post_types;
+
+            $videos_page = get_post( masvideos_get_page_id( 'videos' ) );
+
+            $wp_post_types['video']->ID         = $videos_page->ID;
+            $wp_post_types['video']->post_title = $videos_page->post_title;
+            $wp_post_types['video']->post_name  = $videos_page->post_name;
+            $wp_post_types['video']->post_type  = $videos_page->post_type;
+            $wp_post_types['video']->ancestors  = get_ancestors( $videos_page->ID, $videos_page->post_type );
+
+            // Fix conditional Functions like is_front_page.
+            $q->is_singular          = false;
+            $q->is_post_type_archive = true;
+            $q->is_archive           = true;
+            $q->is_page              = true;
+
+            // Remove post type archive name from front page title tag.
+            add_filter( 'post_type_archive_title', '__return_empty_string', 5 );
+
+            // Fix WP SEO.
+            if ( class_exists( 'WPSEO_Meta' ) ) {
+                add_filter( 'wpseo_metadesc', array( $this, 'wpseo_metadesc' ) );
+                add_filter( 'wpseo_metakey', array( $this, 'wpseo_metakey' ) );
+            }
+        } elseif ( ! $q->is_post_type_archive( 'video' ) && ! $q->is_tax( get_object_taxonomies( 'video' ) ) ) {
+            // Only apply to video categories, the video post archive, the videos page, video tags, and video attribute taxonomies.
             return;
         }
 
+        $this->video_query( $q );
+    }
+
+    /**
+     * WP SEO meta description.
+     *
+     * Hooked into wpseo_ hook already, so no need for function_exist.
+     *
+     * @return string
+     */
+    public function wpseo_metadesc() {
+        return WPSEO_Meta::get_value( 'metadesc', masvideos_get_page_id( 'videos' ) );
+    }
+
+    /**
+     * WP SEO meta key.
+     *
+     * Hooked into wpseo_ hook already, so no need for function_exist.
+     *
+     * @return string
+     */
+    public function wpseo_metakey() {
+        return WPSEO_Meta::get_value( 'metakey', masvideos_get_page_id( 'videos' ) );
+    }
+
+    /**
+     * Query the videos, applying sorting/ordering etc.
+     * This applies to the main WordPress loop.
+     *
+     * @param WP_Query $q Query instance.
+     */
+    public function video_query( $q ) {
         if ( ! is_feed() ) {
             $ordering = $this->get_catalog_ordering_args();
             $q->set( 'orderby', $ordering['orderby'] );
@@ -74,153 +173,25 @@ class MasVideos_Videos_Query {
         }
 
         // Query vars that affect posts shown.
-        // $this->get_search_query( $q );
-        // $q->set( 'meta_query', $this->get_meta_query( $q->get( 'meta_query' ), true ) );
-        // $q->set( 'tax_query', $this->get_tax_query( $q->get( 'tax_query' ), true ) );
-        // $q->set( 'date_query', $this->get_date_query( $q->get( 'date_query' ), true ) );
+        $q->set( 'meta_query', $this->get_meta_query( $q->get( 'meta_query' ), true ) );
+        $q->set( 'tax_query', $this->get_tax_query( $q->get( 'tax_query' ), true ) );
         $q->set( 'masvideos_video_query', 'video_query' );
-        $q->set( 'posts_per_page', $this->get_posts_per_page( $q->get( 'posts_per_page' ), true ) );
+        $q->set( 'post__in', array_unique( (array) apply_filters( 'loop_videos_post_in', array() ) ) );
+
+        // Work out how many videos to query.
+        $q->set( 'posts_per_page', $q->get( 'posts_per_page' ) ? $q->get( 'posts_per_page' ) : apply_filters( 'masvideos_video_query_posts_per_page', 10 ) );
 
         // Store reference to this query.
         self::$video_query = $q;
+
+        do_action( 'masvideos_video_query', $q, $this );
     }
 
     /**
-     * Appends meta queries to an array.
-     *
-     * @param  array $meta_query Meta query.
-     * @param  bool  $main_query If is main query.
-     * @return array
+     * Remove the query.
      */
-    public function get_search_query( $q ) {
-        if ( ! empty( $_GET['s'] ) ) {
-            global $job_manager_keyword;
-            $job_manager_keyword = sanitize_text_field( $_GET['s'] );
-
-            if ( ! empty( $job_manager_keyword ) ) {
-                add_filter( 'posts_search', 'get_job_listings_keyword_search' );
-            }
-        }
-    }
-
-    /**
-     * Appends meta queries to an array.
-     *
-     * @param  array $meta_query Meta query.
-     * @param  bool  $main_query If is main query.
-     * @return array
-     */
-    public function get_meta_query( $meta_query = array(), $main_query = false ) {
-        if ( ! is_array( $meta_query ) ) {
-            $meta_query = array();
-        }
-        $meta_query['search_location_filter'] = $this->search_location_filter_meta_query();
-        return array_filter( apply_filters( 'masvideos_video_query_meta_query', $meta_query, $this ) );
-    }
-
-    /**
-     * Appends tax queries to an array.
-     *
-     * @param  array $tax_query  Tax query.
-     * @param  bool  $main_query If is main query.
-     * @return array
-     */
-    public function get_tax_query( $tax_query = array(), $main_query = false ) {
-        if ( ! is_array( $tax_query ) ) {
-            $tax_query = array(
-                'relation' => 'AND',
-            );
-        }
-
-        // Layered nav filters on terms.
-        if ( $main_query ) {
-            foreach ( $this->get_layered_nav_chosen_taxonomies() as $taxonomy => $data ) {
-                $tax_query[] = array(
-                    'taxonomy'         => $taxonomy,
-                    'field'            => 'slug',
-                    'terms'            => $data['terms'],
-                    'operator'         => 'and' === $data['query_type'] ? 'AND' : 'IN',
-                    'include_children' => false,
-                );
-            }
-        }
-
-        // Filter by category.
-        if ( ! empty( $_GET['search_category'] ) ) {
-            $categories = is_array( $_GET['search_category'] ) ? $_GET['search_category'] : array_filter( array_map( 'trim', explode( ',', $_GET['search_category'] ) ) );
-            $field      = is_numeric( $categories[0] ) ? 'term_id' : 'slug';
-            $operator   = 'all' === get_option( 'job_manager_category_filter_type', 'all' ) && sizeof( $categories ) > 1 ? 'AND' : 'IN';
-            $tax_query[] = array(
-                'taxonomy'         => 'job_listing_category',
-                'field'            => $field,
-                'terms'            => array_values( $categories ),
-                'include_children' => $operator !== 'AND' ,
-                'operator'         => $operator
-            );
-        }
-
-        return array_filter( apply_filters( 'masvideos_video_query_tax_query', $tax_query, $this ) );
-    }
-
-    /**
-     * Appends date queries to an array.
-     *
-     * @param  array $date_query Date query.
-     * @param  bool  $main_query If is main query.
-     * @return array
-     */
-    public function get_date_query( $date_query = array(), $main_query = false ) {
-        if ( ! is_array( $date_query ) ) {
-            $date_query = array();
-        }
-
-        if ( ! empty( $_GET['posted_before'] ) ) {
-            $posted_before  = masvideos_clean( wp_unslash( $_GET['posted_before'] ) );
-            $posted_arr     = explode( '-', $posted_before );
-            $date_query[] = array(
-                'after' => implode( ' ', $posted_arr ) . ' ago'
-            );
-        }
-
-        return array_filter( apply_filters( 'masvideos_video_query_date_query', $date_query, $this ) );
-    }
-
-    /**
-     * Return posts_per_page value.
-     *
-     * @param  int   $per_page posts_per_page value.
-     * @param  bool  $main_query If is main query.
-     * @return int
-     */
-    public function get_posts_per_page( $per_page = 10, $main_query = false ) {
-        if( $main_query ) {
-            $per_page = 10;
-        }
-
-        return intval( apply_filters( 'masvideos_video_query_posts_per_page', $per_page ) );
-    }
-
-    /**
-     * Return a meta query for filtering by location.
-     *
-     * @return array
-     */
-    private function search_location_filter_meta_query() {
-        if ( ! empty( $_GET['search_location'] ) ) {
-            $location_meta_keys = array( 'geolocation_formatted_address', '_job_location', 'geolocation_state_long' );
-            $location_search    = array( 'relation' => 'OR' );
-            foreach ( $location_meta_keys as $meta_key ) {
-                $location_search[] = array(
-                    'key'     => $meta_key,
-                    'value'   => $_GET['search_location'],
-                    'compare' => 'like'
-                );
-            }
-
-            return $location_search;
-        }
-
-        return array();
+    public function remove_video_query() {
+        remove_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
     }
 
     /**
@@ -239,7 +210,7 @@ class MasVideos_Videos_Query {
                 if ( is_search() ) {
                     $orderby_value = 'relevance';
                 } else {
-                    $orderby_value = apply_filters( 'masvideos_video_default_catalog_orderby', 'date' );
+                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'menu_order' ) );
                 }
             }
 
@@ -258,6 +229,9 @@ class MasVideos_Videos_Query {
         );
 
         switch ( $orderby ) {
+            case 'id':
+                $args['orderby'] = 'ID';
+                break;
             case 'menu_order':
                 $args['orderby'] = 'menu_order title';
                 break;
@@ -278,7 +252,51 @@ class MasVideos_Videos_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_video_get_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_catalog_ordering_args', $args );
+    }
+
+    /**
+     * Appends meta queries to an array.
+     *
+     * @param  array $meta_query Meta query.
+     * @param  bool  $main_query If is main query.
+     * @return array
+     */
+    public function get_meta_query( $meta_query = array(), $main_query = false ) {
+        if ( ! is_array( $meta_query ) ) {
+            $meta_query = array();
+        }
+        return array_filter( apply_filters( 'masvideos_video_query_meta_query', $meta_query, $this ) );
+    }
+
+    /**
+     * Appends tax queries to an array.
+     *
+     * @param  array $tax_query  Tax query.
+     * @param  bool  $main_query If is main query.
+     * @return array
+     */
+    public function get_tax_query( $tax_query = array(), $main_query = false ) {
+        if ( ! is_array( $tax_query ) ) {
+            $tax_query = array(
+                'relation' => 'AND',
+            );
+        }
+
+        // Layered nav filters on terms.
+        if ( $main_query ) {
+            foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
+                $tax_query[] = array(
+                    'taxonomy'         => $taxonomy,
+                    'field'            => 'slug',
+                    'terms'            => $data['terms'],
+                    'operator'         => 'and' === $data['query_type'] ? 'AND' : 'IN',
+                    'include_children' => false,
+                );
+            }
+        }
+
+        return array_filter( apply_filters( 'masvideos_video_query_tax_query', $tax_query, $this ) );
     }
 
     /**
@@ -314,23 +332,12 @@ class MasVideos_Videos_Query {
     }
 
     /**
-     * Get the date query which was used by the main query.
-     *
-     * @return array
-     */
-    public static function get_main_date_query() {
-        $date_query = isset( self::$video_query->date_query, self::$video_query->date_query->queries ) ? self::$video_query->date_query->queries : array();
-
-        return $date_query;
-    }
-
-    /**
      * Based on WP_Query::parse_search
      */
     public static function get_main_search_query_sql() {
         global $wpdb;
 
-        $args       = isset( self::$video_query->query_vars ) ? self::$video_query->query_vars : array();
+        $args         = isset( self::$video_query->query_vars ) ? self::$video_query->query_vars : array();
         $search_terms = isset( $args['search_terms'] ) ? $args['search_terms'] : array();
         $sql          = array();
 
@@ -359,31 +366,33 @@ class MasVideos_Videos_Query {
     }
 
     /**
-     * Get an array of taxonomies and terms selected with the layered nav widget.
+     * Get an array of attributes and terms selected with the layered nav widget.
      *
      * @return array
      */
-    public static function get_layered_nav_chosen_taxonomies() {
-        if ( ! is_array( self::$_chosen_taxonomies ) ) {
-            self::$_chosen_taxonomies = array();
-            $taxonomies     = jh_wpjm_get_all_taxonomies();
+    public static function get_layered_nav_chosen_attributes() {
+        if ( ! is_array( self::$_chosen_attributes ) ) {
+            self::$_chosen_attributes = array();
 
-            if ( ! empty( $taxonomies ) ) {
-                foreach ( $taxonomies as $tax ) {
-                    $taxonomy = $tax['taxonomy'];
-                    $filter_terms = ! empty( $_GET[ 'filter_' . $taxonomy ] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET[ 'filter_' . $taxonomy ] ) ) ) : array(); // WPCS: sanitization ok, input var ok, CSRF ok.
+            if ( ! empty( $_GET ) ) { // WPCS: input var ok, CSRF ok.
+                foreach ( $_GET as $key => $value ) { // WPCS: input var ok, CSRF ok.
+                    if ( 0 === strpos( $key, 'filter_' ) ) {
+                        $attribute    = masvideos_sanitize_taxonomy_name( str_replace( 'filter_', '', $key ) );
+                        $taxonomy     = masvideos_attribute_taxonomy_name( 'video', $attribute );
+                        $filter_terms = ! empty( $value ) ? explode( ',', masvideos_clean( wp_unslash( $value ) ) ) : array();
 
-                    if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) ) {
-                        continue;
+                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! masvideos_attribute_taxonomy_id_by_name( 'video', $attribute ) ) {
+                            continue;
+                        }
+
+                        $query_type                                     = ! empty( $_GET[ 'query_type_' . $attribute ] ) && in_array( $_GET[ 'query_type_' . $attribute ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_' . $attribute ] ) ) : ''; // WPCS: sanitization ok, input var ok, CSRF ok.
+                        self::$_chosen_attributes[ $taxonomy ]['terms'] = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
+                        self::$_chosen_attributes[ $taxonomy ]['query_type'] = $query_type ? $query_type : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' );
                     }
-
-                    $query_type                                     = ! empty( $_GET[ 'query_type_' . $taxonomy ] ) && in_array( $_GET[ 'query_type_' . $taxonomy ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_' . $taxonomy ] ) ) : ''; // WPCS: sanitization ok, input var ok, CSRF ok.
-                    self::$_chosen_taxonomies[ $taxonomy ]['terms'] = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
-                    self::$_chosen_taxonomies[ $taxonomy ]['query_type'] = $query_type ? $query_type : apply_filters( 'masvideos_video_layered_nav_default_query_type', 'and' );
                 }
             }
         }
-        return self::$_chosen_taxonomies;
+        return self::$_chosen_attributes;
     }
 }
 
@@ -401,11 +410,11 @@ class MasVideos_Movies_Query {
     private static $movie_query;
 
     /**
-     * Stores chosen taxonomies.
+     * Chosen attributes.
      *
      * @var array
      */
-    private static $_chosen_taxonomies;
+    private static $_chosen_attributes;
 
     public function __construct() {
         if ( ! is_admin() ) {
@@ -433,16 +442,115 @@ class MasVideos_Movies_Query {
         return absint( get_option( 'page_on_front' ) ) === absint( $page_id );
     }
 
+    /**
+     * Hook into pre_get_posts to do the main movie query.
+     *
+     * @param WP_Query $q Query instance.
+     */
     public function pre_get_posts( $q ) {
-        if ( ! $q->is_main_query() ){
+        // We only want to affect the main query.
+        if ( ! $q->is_main_query() ) {
             return;
         }
 
-        if ( ! $q->is_post_type_archive( 'movie' ) && ! $q->is_tax( get_object_taxonomies( 'movie' ) ) ) {
-            // Only apply to movie categories, the movie post archive, the movies page, and movie taxonomies.
+        // When orderby is set, WordPress shows posts on the front-page. Get around that here.
+        if ( $this->is_showing_page_on_front( $q ) && $this->page_on_front_is( masvideos_get_page_id( 'movies' ) ) ) {
+            $_query = wp_parse_args( $q->query );
+            if ( empty( $_query ) || ! array_diff( array_keys( $_query ), array( 'preview', 'page', 'paged', 'cpage', 'orderby' ) ) ) {
+                $q->set( 'page_id', (int) get_option( 'page_on_front' ) );
+                $q->is_page = true;
+                $q->is_home = false;
+
+                // WP supporting themes show post type archive.
+                if ( current_theme_supports( 'masvideos' ) ) {
+                    $q->set( 'post_type', 'movie' );
+                } else {
+                    $q->is_singular = true;
+                }
+            }
+        }
+
+        // Fix movie feeds.
+        if ( $q->is_feed() && $q->is_post_type_archive( 'movie' ) ) {
+            $q->is_comment_feed = false;
+        }
+
+        // Special check for movies with the PRODUCT POST TYPE ARCHIVE on front.
+        if ( current_theme_supports( 'masvideos' ) && $q->is_page() && 'page' === get_option( 'show_on_front' ) && absint( $q->get( 'page_id' ) ) === masvideos_get_page_id( 'movies' ) ) {
+            // This is a front-page movies.
+            $q->set( 'post_type', 'movie' );
+            $q->set( 'page_id', '' );
+
+            if ( isset( $q->query['paged'] ) ) {
+                $q->set( 'paged', $q->query['paged'] );
+            }
+
+            // Define a variable so we know this is the front page movies later on.
+            masvideos_maybe_define_constant( 'MOVIES_ON_FRONT', true );
+
+            // Get the actual WP page to avoid errors and let us use is_front_page().
+            // This is hacky but works. Awaiting https://core.trac.wordpress.org/ticket/21096.
+            global $wp_post_types;
+
+            $movies_page = get_post( masvideos_get_page_id( 'movies' ) );
+
+            $wp_post_types['movie']->ID         = $movies_page->ID;
+            $wp_post_types['movie']->post_title = $movies_page->post_title;
+            $wp_post_types['movie']->post_name  = $movies_page->post_name;
+            $wp_post_types['movie']->post_type  = $movies_page->post_type;
+            $wp_post_types['movie']->ancestors  = get_ancestors( $movies_page->ID, $movies_page->post_type );
+
+            // Fix conditional Functions like is_front_page.
+            $q->is_singular          = false;
+            $q->is_post_type_archive = true;
+            $q->is_archive           = true;
+            $q->is_page              = true;
+
+            // Remove post type archive name from front page title tag.
+            add_filter( 'post_type_archive_title', '__return_empty_string', 5 );
+
+            // Fix WP SEO.
+            if ( class_exists( 'WPSEO_Meta' ) ) {
+                add_filter( 'wpseo_metadesc', array( $this, 'wpseo_metadesc' ) );
+                add_filter( 'wpseo_metakey', array( $this, 'wpseo_metakey' ) );
+            }
+        } elseif ( ! $q->is_post_type_archive( 'movie' ) && ! $q->is_tax( get_object_taxonomies( 'movie' ) ) ) {
+            // Only apply to movie categories, the movie post archive, the movies page, movie tags, and movie attribute taxonomies.
             return;
         }
 
+        $this->movie_query( $q );
+    }
+
+    /**
+     * WP SEO meta description.
+     *
+     * Hooked into wpseo_ hook already, so no need for function_exist.
+     *
+     * @return string
+     */
+    public function wpseo_metadesc() {
+        return WPSEO_Meta::get_value( 'metadesc', masvideos_get_page_id( 'movies' ) );
+    }
+
+    /**
+     * WP SEO meta key.
+     *
+     * Hooked into wpseo_ hook already, so no need for function_exist.
+     *
+     * @return string
+     */
+    public function wpseo_metakey() {
+        return WPSEO_Meta::get_value( 'metakey', masvideos_get_page_id( 'movies' ) );
+    }
+
+    /**
+     * Query the movies, applying sorting/ordering etc.
+     * This applies to the main WordPress loop.
+     *
+     * @param WP_Query $q Query instance.
+     */
+    public function movie_query( $q ) {
         if ( ! is_feed() ) {
             $ordering = $this->get_catalog_ordering_args();
             $q->set( 'orderby', $ordering['orderby'] );
@@ -454,153 +562,25 @@ class MasVideos_Movies_Query {
         }
 
         // Query vars that affect posts shown.
-        // $this->get_search_query( $q );
-        // $q->set( 'meta_query', $this->get_meta_query( $q->get( 'meta_query' ), true ) );
-        // $q->set( 'tax_query', $this->get_tax_query( $q->get( 'tax_query' ), true ) );
-        // $q->set( 'date_query', $this->get_date_query( $q->get( 'date_query' ), true ) );
+        $q->set( 'meta_query', $this->get_meta_query( $q->get( 'meta_query' ), true ) );
+        $q->set( 'tax_query', $this->get_tax_query( $q->get( 'tax_query' ), true ) );
         $q->set( 'masvideos_movie_query', 'movie_query' );
-        $q->set( 'posts_per_page', $this->get_posts_per_page( $q->get( 'posts_per_page' ), true ) );
+        $q->set( 'post__in', array_unique( (array) apply_filters( 'loop_movies_post_in', array() ) ) );
+
+        // Work out how many movies to query.
+        $q->set( 'posts_per_page', $q->get( 'posts_per_page' ) ? $q->get( 'posts_per_page' ) : apply_filters( 'masvideos_video_query_posts_per_page', 10 ) );
 
         // Store reference to this query.
         self::$movie_query = $q;
+
+        do_action( 'masvideos_movie_query', $q, $this );
     }
 
     /**
-     * Appends meta queries to an array.
-     *
-     * @param  array $meta_query Meta query.
-     * @param  bool  $main_query If is main query.
-     * @return array
+     * Remove the query.
      */
-    public function get_search_query( $q ) {
-        if ( ! empty( $_GET['s'] ) ) {
-            global $job_manager_keyword;
-            $job_manager_keyword = sanitize_text_field( $_GET['s'] );
-
-            if ( ! empty( $job_manager_keyword ) ) {
-                add_filter( 'posts_search', 'get_job_listings_keyword_search' );
-            }
-        }
-    }
-
-    /**
-     * Appends meta queries to an array.
-     *
-     * @param  array $meta_query Meta query.
-     * @param  bool  $main_query If is main query.
-     * @return array
-     */
-    public function get_meta_query( $meta_query = array(), $main_query = false ) {
-        if ( ! is_array( $meta_query ) ) {
-            $meta_query = array();
-        }
-        $meta_query['search_location_filter'] = $this->search_location_filter_meta_query();
-        return array_filter( apply_filters( 'masvideos_video_query_meta_query', $meta_query, $this ) );
-    }
-
-    /**
-     * Appends tax queries to an array.
-     *
-     * @param  array $tax_query  Tax query.
-     * @param  bool  $main_query If is main query.
-     * @return array
-     */
-    public function get_tax_query( $tax_query = array(), $main_query = false ) {
-        if ( ! is_array( $tax_query ) ) {
-            $tax_query = array(
-                'relation' => 'AND',
-            );
-        }
-
-        // Layered nav filters on terms.
-        if ( $main_query ) {
-            foreach ( $this->get_layered_nav_chosen_taxonomies() as $taxonomy => $data ) {
-                $tax_query[] = array(
-                    'taxonomy'         => $taxonomy,
-                    'field'            => 'slug',
-                    'terms'            => $data['terms'],
-                    'operator'         => 'and' === $data['query_type'] ? 'AND' : 'IN',
-                    'include_children' => false,
-                );
-            }
-        }
-
-        // Filter by category.
-        if ( ! empty( $_GET['search_category'] ) ) {
-            $categories = is_array( $_GET['search_category'] ) ? $_GET['search_category'] : array_filter( array_map( 'trim', explode( ',', $_GET['search_category'] ) ) );
-            $field      = is_numeric( $categories[0] ) ? 'term_id' : 'slug';
-            $operator   = 'all' === get_option( 'job_manager_category_filter_type', 'all' ) && sizeof( $categories ) > 1 ? 'AND' : 'IN';
-            $tax_query[] = array(
-                'taxonomy'         => 'job_listing_category',
-                'field'            => $field,
-                'terms'            => array_values( $categories ),
-                'include_children' => $operator !== 'AND' ,
-                'operator'         => $operator
-            );
-        }
-
-        return array_filter( apply_filters( 'masvideos_video_query_tax_query', $tax_query, $this ) );
-    }
-
-    /**
-     * Appends date queries to an array.
-     *
-     * @param  array $date_query Date query.
-     * @param  bool  $main_query If is main query.
-     * @return array
-     */
-    public function get_date_query( $date_query = array(), $main_query = false ) {
-        if ( ! is_array( $date_query ) ) {
-            $date_query = array();
-        }
-
-        if ( ! empty( $_GET['posted_before'] ) ) {
-            $posted_before  = masvideos_clean( wp_unslash( $_GET['posted_before'] ) );
-            $posted_arr     = explode( '-', $posted_before );
-            $date_query[] = array(
-                'after' => implode( ' ', $posted_arr ) . ' ago'
-            );
-        }
-
-        return array_filter( apply_filters( 'masvideos_video_query_date_query', $date_query, $this ) );
-    }
-
-    /**
-     * Return posts_per_page value.
-     *
-     * @param  int   $per_page posts_per_page value.
-     * @param  bool  $main_query If is main query.
-     * @return int
-     */
-    public function get_posts_per_page( $per_page = 10, $main_query = false ) {
-        if( $main_query ) {
-            $per_page = 10;
-        }
-
-        return intval( apply_filters( 'masvideos_video_query_posts_per_page', $per_page ) );
-    }
-
-    /**
-     * Return a meta query for filtering by location.
-     *
-     * @return array
-     */
-    private function search_location_filter_meta_query() {
-        if ( ! empty( $_GET['search_location'] ) ) {
-            $location_meta_keys = array( 'geolocation_formatted_address', '_job_location', 'geolocation_state_long' );
-            $location_search    = array( 'relation' => 'OR' );
-            foreach ( $location_meta_keys as $meta_key ) {
-                $location_search[] = array(
-                    'key'     => $meta_key,
-                    'value'   => $_GET['search_location'],
-                    'compare' => 'like'
-                );
-            }
-
-            return $location_search;
-        }
-
-        return array();
+    public function remove_movie_query() {
+        remove_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
     }
 
     /**
@@ -619,7 +599,7 @@ class MasVideos_Movies_Query {
                 if ( is_search() ) {
                     $orderby_value = 'relevance';
                 } else {
-                    $orderby_value = apply_filters( 'masvideos_movie_default_catalog_orderby', 'date' );
+                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'menu_order' ) );
                 }
             }
 
@@ -638,6 +618,9 @@ class MasVideos_Movies_Query {
         );
 
         switch ( $orderby ) {
+            case 'id':
+                $args['orderby'] = 'ID';
+                break;
             case 'menu_order':
                 $args['orderby'] = 'menu_order title';
                 break;
@@ -658,7 +641,51 @@ class MasVideos_Movies_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_movie_get_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_catalog_ordering_args', $args );
+    }
+
+    /**
+     * Appends meta queries to an array.
+     *
+     * @param  array $meta_query Meta query.
+     * @param  bool  $main_query If is main query.
+     * @return array
+     */
+    public function get_meta_query( $meta_query = array(), $main_query = false ) {
+        if ( ! is_array( $meta_query ) ) {
+            $meta_query = array();
+        }
+        return array_filter( apply_filters( 'masvideos_movie_query_meta_query', $meta_query, $this ) );
+    }
+
+    /**
+     * Appends tax queries to an array.
+     *
+     * @param  array $tax_query  Tax query.
+     * @param  bool  $main_query If is main query.
+     * @return array
+     */
+    public function get_tax_query( $tax_query = array(), $main_query = false ) {
+        if ( ! is_array( $tax_query ) ) {
+            $tax_query = array(
+                'relation' => 'AND',
+            );
+        }
+
+        // Layered nav filters on terms.
+        if ( $main_query ) {
+            foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
+                $tax_query[] = array(
+                    'taxonomy'         => $taxonomy,
+                    'field'            => 'slug',
+                    'terms'            => $data['terms'],
+                    'operator'         => 'and' === $data['query_type'] ? 'AND' : 'IN',
+                    'include_children' => false,
+                );
+            }
+        }
+
+        return array_filter( apply_filters( 'masvideos_movie_query_tax_query', $tax_query, $this ) );
     }
 
     /**
@@ -694,23 +721,12 @@ class MasVideos_Movies_Query {
     }
 
     /**
-     * Get the date query which was used by the main query.
-     *
-     * @return array
-     */
-    public static function get_main_date_query() {
-        $date_query = isset( self::$movie_query->date_query, self::$movie_query->date_query->queries ) ? self::$movie_query->date_query->queries : array();
-
-        return $date_query;
-    }
-
-    /**
      * Based on WP_Query::parse_search
      */
     public static function get_main_search_query_sql() {
         global $wpdb;
 
-        $args       = isset( self::$movie_query->query_vars ) ? self::$movie_query->query_vars : array();
+        $args         = isset( self::$movie_query->query_vars ) ? self::$movie_query->query_vars : array();
         $search_terms = isset( $args['search_terms'] ) ? $args['search_terms'] : array();
         $sql          = array();
 
@@ -739,30 +755,32 @@ class MasVideos_Movies_Query {
     }
 
     /**
-     * Get an array of taxonomies and terms selected with the layered nav widget.
+     * Get an array of attributes and terms selected with the layered nav widget.
      *
      * @return array
      */
-    public static function get_layered_nav_chosen_taxonomies() {
-        if ( ! is_array( self::$_chosen_taxonomies ) ) {
-            self::$_chosen_taxonomies = array();
-            $taxonomies     = jh_wpjm_get_all_taxonomies();
+    public static function get_layered_nav_chosen_attributes() {
+        if ( ! is_array( self::$_chosen_attributes ) ) {
+            self::$_chosen_attributes = array();
 
-            if ( ! empty( $taxonomies ) ) {
-                foreach ( $taxonomies as $tax ) {
-                    $taxonomy = $tax['taxonomy'];
-                    $filter_terms = ! empty( $_GET[ 'filter_' . $taxonomy ] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET[ 'filter_' . $taxonomy ] ) ) ) : array(); // WPCS: sanitization ok, input var ok, CSRF ok.
+            if ( ! empty( $_GET ) ) { // WPCS: input var ok, CSRF ok.
+                foreach ( $_GET as $key => $value ) { // WPCS: input var ok, CSRF ok.
+                    if ( 0 === strpos( $key, 'filter_' ) ) {
+                        $attribute    = masvideos_sanitize_taxonomy_name( str_replace( 'filter_', '', $key ) );
+                        $taxonomy     = masvideos_attribute_taxonomy_name( 'movie', $attribute );
+                        $filter_terms = ! empty( $value ) ? explode( ',', masvideos_clean( wp_unslash( $value ) ) ) : array();
 
-                    if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) ) {
-                        continue;
+                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! masvideos_attribute_taxonomy_id_by_name( 'movie', $attribute ) ) {
+                            continue;
+                        }
+
+                        $query_type                                     = ! empty( $_GET[ 'query_type_' . $attribute ] ) && in_array( $_GET[ 'query_type_' . $attribute ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_' . $attribute ] ) ) : ''; // WPCS: sanitization ok, input var ok, CSRF ok.
+                        self::$_chosen_attributes[ $taxonomy ]['terms'] = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
+                        self::$_chosen_attributes[ $taxonomy ]['query_type'] = $query_type ? $query_type : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' );
                     }
-
-                    $query_type                                     = ! empty( $_GET[ 'query_type_' . $taxonomy ] ) && in_array( $_GET[ 'query_type_' . $taxonomy ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_' . $taxonomy ] ) ) : ''; // WPCS: sanitization ok, input var ok, CSRF ok.
-                    self::$_chosen_taxonomies[ $taxonomy ]['terms'] = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
-                    self::$_chosen_taxonomies[ $taxonomy ]['query_type'] = $query_type ? $query_type : apply_filters( 'masvideos_movie_layered_nav_default_query_type', 'and' );
                 }
             }
         }
-        return self::$_chosen_taxonomies;
+        return self::$_chosen_attributes;
     }
 }

@@ -104,7 +104,7 @@ class MasVideos_Template_Loader {
             } else {
                 $default_file = 'archive-video.php';
             }
-        } elseif ( is_post_type_archive( 'video' ) || is_page( masvideos_get_page_id( 'videos' ) ) ) {
+        } elseif ( is_videos() ) {
             $default_file = self::$theme_support ? 'archive-video.php' : '';
         } elseif ( is_singular( 'movie' ) ) {
             $default_file = 'single-movie.php';
@@ -116,7 +116,7 @@ class MasVideos_Template_Loader {
             } else {
                 $default_file = 'archive-movie.php';
             }
-        } elseif ( is_post_type_archive( 'movie' ) || is_page( masvideos_get_page_id( 'movies' ) ) ) {
+        } elseif ( is_movies() ) {
             $default_file = self::$theme_support ? 'archive-movie.php' : '';
         } else {
             $default_file = '';
