@@ -140,6 +140,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-video-factory.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-factory.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-shortcodes.php';
 
             /**
              * Data stores - used to store and retrieve CRUD object data from the database.
@@ -180,6 +181,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             register_activation_hook( MASVIDEOS_PLUGIN_FILE, array( 'MasVideos_Install', 'install' ) );
             add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
             add_action( 'init', array( $this, 'init' ), 0 );
+            add_action( 'init', array( 'MasVideos_Shortcodes', 'init' ) );
         }
 
         /**
