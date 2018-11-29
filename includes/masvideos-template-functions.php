@@ -189,7 +189,7 @@ add_action( 'masvideos_before_movies_loop', 'masvideos_setup_movies_loop' );
 /**
  * Resets the masvideos_videos_loop global.
  *
- * @since 3.3.0
+ * @since 1.0.0
  */
 function masvideos_reset_videos_loop() {
     unset( $GLOBALS['masvideos_videos_loop'] );
@@ -199,7 +199,7 @@ add_action( 'masvideos_after_videos_loop', 'masvideos_reset_videos_loop', 999 );
 /**
  * Resets the masvideos_movies_loop global.
  *
- * @since 3.3.0
+ * @since 1.0.0
  */
 function masvideos_reset_movies_loop() {
     unset( $GLOBALS['masvideos_movies_loop'] );
@@ -309,7 +309,7 @@ function masvideos_generator_tag( $gen, $type ) {
 }
 
 /**
- * Get the placeholder image URL for products etc.
+ * Get the placeholder image URL etc.
  *
  * @access public
  * @return string
@@ -340,6 +340,102 @@ function masvideos_video_class( $class = '', $video_id = null ) {
 function masvideos_movie_class( $class = '', $movie_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_movie_class( $class, $movie_id ) ) ) . '"';
     post_class();
+}
+
+/**
+ * Get the default columns setting - this is how many movies will be shown per row in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_videos_per_row() {
+    $columns      = get_option( 'masvideos_video_columns', 4 );
+    $video_grid   = masvideos_get_theme_support( 'video_grid' );
+    $min_columns  = isset( $video_grid['min_columns'] ) ? absint( $video_grid['min_columns'] ) : 0;
+    $max_columns  = isset( $video_grid['max_columns'] ) ? absint( $video_grid['max_columns'] ) : 0;
+
+    if ( $min_columns && $columns < $min_columns ) {
+        $columns = $min_columns;
+        update_option( 'masvideos_video_columns', $columns );
+    } elseif ( $max_columns && $columns > $max_columns ) {
+        $columns = $max_columns;
+        update_option( 'masvideos_video_columns', $columns );
+    }
+
+    $columns = absint( $columns );
+
+    return max( 1, $columns );
+}
+
+/**
+ * Get the default rows setting - this is how many video rows will be shown in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_video_rows_per_page() {
+    $rows         = absint( get_option( 'masvideos_video_rows', 4 ) );
+    $video_grid   = masvideos_get_theme_support( 'video_grid' );
+    $min_rows     = isset( $video_grid['min_rows'] ) ? absint( $video_grid['min_rows'] ) : 0;
+    $max_rows     = isset( $video_grid['max_rows'] ) ? absint( $video_grid['max_rows'] ) : 0;
+
+    if ( $min_rows && $rows < $min_rows ) {
+        $rows = $min_rows;
+        update_option( 'masvideos_video_rows', $rows );
+    } elseif ( $max_rows && $rows > $max_rows ) {
+        $rows = $max_rows;
+        update_option( 'masvideos_video_rows', $rows );
+    }
+
+    return $rows;
+}
+
+/**
+ * Get the default columns setting - this is how many movies will be shown per row in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_movies_per_row() {
+    $columns      = get_option( 'masvideos_movie_columns', 4 );
+    $movie_grid   = masvideos_get_theme_support( 'movie_grid' );
+    $min_columns  = isset( $movie_grid['min_columns'] ) ? absint( $movie_grid['min_columns'] ) : 0;
+    $max_columns  = isset( $movie_grid['max_columns'] ) ? absint( $movie_grid['max_columns'] ) : 0;
+
+    if ( $min_columns && $columns < $min_columns ) {
+        $columns = $min_columns;
+        update_option( 'masvideos_movie_columns', $columns );
+    } elseif ( $max_columns && $columns > $max_columns ) {
+        $columns = $max_columns;
+        update_option( 'masvideos_movie_columns', $columns );
+    }
+
+    $columns = absint( $columns );
+
+    return max( 1, $columns );
+}
+
+/**
+ * Get the default rows setting - this is how many movie rows will be shown in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_movie_rows_per_page() {
+    $rows         = absint( get_option( 'masvideos_movie_rows', 4 ) );
+    $movie_grid   = masvideos_get_theme_support( 'movie_grid' );
+    $min_rows     = isset( $movie_grid['min_rows'] ) ? absint( $movie_grid['min_rows'] ) : 0;
+    $max_rows     = isset( $movie_grid['max_rows'] ) ? absint( $movie_grid['max_rows'] ) : 0;
+
+    if ( $min_rows && $rows < $min_rows ) {
+        $rows = $min_rows;
+        update_option( 'masvideos_movie_rows', $rows );
+    } elseif ( $max_rows && $rows > $max_rows ) {
+        $rows = $max_rows;
+        update_option( 'masvideos_movie_rows', $rows );
+    }
+
+    return $rows;
 }
 
 /**

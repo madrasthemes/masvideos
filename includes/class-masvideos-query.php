@@ -179,7 +179,7 @@ class MasVideos_Videos_Query {
         $q->set( 'post__in', array_unique( (array) apply_filters( 'loop_videos_post_in', array() ) ) );
 
         // Work out how many videos to query.
-        $q->set( 'posts_per_page', $q->get( 'posts_per_page' ) ? $q->get( 'posts_per_page' ) : apply_filters( 'masvideos_video_query_posts_per_page', 10 ) );
+        $q->set( 'posts_per_page', $q->get( 'posts_per_page' ) ? $q->get( 'posts_per_page' ) : apply_filters( 'masvideos_video_query_posts_per_page', masvideos_get_default_videos_per_row() * masvideos_get_default_video_rows_per_page() ) );
 
         // Store reference to this query.
         self::$video_query = $q;
@@ -192,6 +192,13 @@ class MasVideos_Videos_Query {
      */
     public function remove_video_query() {
         remove_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+    }
+
+    /**
+     * Remove ordering queries.
+     */
+    public function remove_ordering_args() {
+        // remove_filter( 'posts_clauses', array( $this, 'order_by_rating_post_clauses' ) );
     }
 
     /**
@@ -568,7 +575,7 @@ class MasVideos_Movies_Query {
         $q->set( 'post__in', array_unique( (array) apply_filters( 'loop_movies_post_in', array() ) ) );
 
         // Work out how many movies to query.
-        $q->set( 'posts_per_page', $q->get( 'posts_per_page' ) ? $q->get( 'posts_per_page' ) : apply_filters( 'masvideos_video_query_posts_per_page', 10 ) );
+        $q->set( 'posts_per_page', $q->get( 'posts_per_page' ) ? $q->get( 'posts_per_page' ) : apply_filters( 'masvideos_movie_query_posts_per_page', masvideos_get_default_movies_per_row() * masvideos_get_default_movie_rows_per_page() ) );
 
         // Store reference to this query.
         self::$movie_query = $q;
@@ -581,6 +588,13 @@ class MasVideos_Movies_Query {
      */
     public function remove_movie_query() {
         remove_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+    }
+
+    /**
+     * Remove ordering queries.
+     */
+    public function remove_ordering_args() {
+        // remove_filter( 'posts_clauses', array( $this, 'order_by_rating_post_clauses' ) );
     }
 
     /**
