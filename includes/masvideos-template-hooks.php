@@ -29,10 +29,11 @@ add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_l
  * Video Single.
  */
 add_action( 'masvideos_before_single_video_summary', 'masvideos_template_single_video_video', 10 );
-
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_title', 5 );
+add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_meta', 10 );
 
 /**
  * Movie Single.
  */
+add_action( 'masvideos_before_single_movie_summary', 'masvideos_template_single_movie_movie', 10 );
 add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_title', 5 );

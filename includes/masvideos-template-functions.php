@@ -772,10 +772,15 @@ if ( ! function_exists( 'masvideos_template_loop_category_link_close' ) ) {
 /**
  * Single
  */
+
+/**
+ * Video
+ */
+
 if ( ! function_exists( 'masvideos_template_single_video_video' ) ) {
 
     /**
-     * Output the video title.
+     * Output the video.
      */
     function masvideos_template_single_video_video() {
         masvideos_the_video();
@@ -792,7 +797,52 @@ if ( ! function_exists( 'masvideos_template_single_video_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_video_meta' ) ) {
 
+    /**
+     * Output the video meta.
+     */
+    function masvideos_template_single_video_meta() {
+        echo '<p class="single_video_meta">';
+        masvideos_template_single_video_author();
+        masvideos_template_single_video_posted_on();
+        echo '</p>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_author' ) ) {
+
+    /**
+     * Output the video author.
+     */
+    function masvideos_template_single_video_author() {
+        echo '<span class="video_author">' . esc_html( 'by', 'masvideos' ) . '<strong>' . get_the_author() . '</strong></span>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
+
+    /**
+     * Output the video posted on.
+     */
+    function masvideos_template_single_video_posted_on() {
+        echo '<span class="video_posted_on">' . esc_html( 'published on', 'masvideos' ) .  get_the_date() . '</span>';
+    }
+}
+
+/**
+ * Movie
+ */
+
+if ( ! function_exists( 'masvideos_template_single_movie_movie' ) ) {
+
+    /**
+     * Output the movie.
+     */
+    function masvideos_template_single_movie_movie() {
+        masvideos_the_movie();
+    }
+}
 
 if ( ! function_exists( 'masvideos_template_single_movie_title' ) ) {
 
