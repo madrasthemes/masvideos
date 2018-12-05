@@ -20,10 +20,25 @@ add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_l
 /**
  * Movies Loop.
  */
-add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_link_open', 10 );
-add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_title', 10 );
-add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_link_close', 10 );
-
+add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster_open', 10 );
+add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_link_open', 20 );
+add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster', 30 );
+add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_link_close', 40 );
+add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster_close', 50 );
+add_action( 'masvideos_before_movies_loop_item_title', 'masvideos_template_loop_movie_body_open', 10 );
+add_action( 'masvideos_before_movies_loop_item_title', 'masvideos_template_loop_movie_info_open', 20 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_link_open', 10 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_meta', 20 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_title', 30 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_link_close', 40 );
+add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_short_desc', 10 );
+add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_actions', 20 );
+add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_info_close', 30 );
+add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_review_info_open', 10 );
+add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_avg_rating', 20 );
+add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_viewers_count', 30 );
+add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_review_info_close', 40 );
+add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_body_close', 50 );
 
 /**
  * Video Single.

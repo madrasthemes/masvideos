@@ -75,7 +75,7 @@ function masvideos_setup_video_data( $post ) {
 
     return $GLOBALS['video'];
 }
-// add_action( 'the_post', 'masvideos_setup_video_data' );
+add_action( 'the_post', 'masvideos_setup_video_data' );
 
 /**
  * When the_post is called, put movie data into a global.
@@ -100,7 +100,7 @@ function masvideos_setup_movie_data( $post ) {
 
     return $GLOBALS['movie'];
 }
-// add_action( 'the_post', 'masvideos_setup_movie_data' );
+add_action( 'the_post', 'masvideos_setup_movie_data' );
 
 /**
  * Sets up the masvideos_videos_loop global from the passed args or from the main query.
@@ -661,23 +661,229 @@ if ( ! function_exists( 'masvideos_movie_loop_end' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_video_title' ) ) {
+if ( ! function_exists( 'masvideos_template_loop_movie_poster_open' ) ) {
+    /**
+     * movies poster open in the loop.
+     */
+    function masvideos_template_loop_movie_poster_open() {
+        echo '<div class="movie__poster">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for movies in the loop.
+     */
+    function masvideos_template_loop_movie_link_open() {
+        global $movie;
+
+        $link = apply_filters( 'masvideos_loop_movie_link', get_the_permalink(), $movie );
+
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_poster' ) ) {
+    /**
+     * movies poster open in the loop.
+     */
+    function masvideos_template_loop_movie_poster() {
+        echo masvideos_get_product_thumbnail();
+    }
+}
+
+if ( ! function_exists( 'masvideos_get_product_thumbnail' ) ) {
 
     /**
-     * Show the video title in the video loop. By default this is an H2.
+     * Get the masvideos thumbnail, or the placeholder if not set.
+     *
+     * @param string $size (default: 'woocommerce_thumbnail').
+     * @param int    $deprecated1 Deprecated since WooCommerce 2.0 (default: 0).
+     * @param int    $deprecated2 Deprecated since WooCommerce 2.0 (default: 0).
+     * @return string
      */
-    function masvideos_template_loop_video_title() {
-        echo '<h2 class="masvideos-loop-video__title">' . get_the_title() . '</h2>';
+    function masvideos_get_product_thumbnail( $size = 'masvideos_thumbnail', $deprecated1 = 0, $deprecated2 = 0 ) {
+        global $movie;
+
+        $image_size = apply_filters( 'masvideos_movie_archive_thumbnail_size', $size );
+
+        return $movie ? $movie->get_image( $image_size , array( 'class' => 'movie__poster--image' ) ) : '';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for movies in the loop.
+     */
+    function masvideos_template_loop_movie_link_close() {
+        echo '</a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_poster_close' ) ) {
+    /**
+     * movies poster close in the loop.
+     */
+    function masvideos_template_loop_movie_poster_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_body_open' ) ) {
+
+    /**
+     * video body open in the video loop.
+     */
+    function masvideos_template_loop_movie_body_open() {
+        echo '<div class="movie__body">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_info_open' ) ) {
+
+    /**
+     * video info open in the video loop.
+     */
+    function masvideos_template_loop_movie_info_open() {
+        echo '<div class="movie__info">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
+
+    /**
+     * video meta in the video loop.
+     */
+    function masvideos_template_loop_movie_meta() {
+        global $post;
+        $category_list = wp_get_object_terms( $post->ID, 'movie_cat', array( 'fields' => 'names' ) );
+        if( ! empty ( $category_list ) ) {
+            if( is_array( $category_list ) ) {
+                $categories = implode( ', ', $category_list);
+            } else {
+                $categories = $category_list;
+            }
+        }
+
+        echo '<div class="movie__meta">';
+            if( ! empty ( $categories ) ) {
+               echo '<span class="movie__meta--genre">' . $categories . '</span>';
+            }
+            echo '<span class="movie__meta--release-year">' . get_the_date( 'Y' ) . '</span>';
+        echo '</div>';
     }
 }
 
 if ( ! function_exists( 'masvideos_template_loop_movie_title' ) ) {
 
     /**
-     * Show the movie title in the movie loop. By default this is an H2.
+     * Show the movie title in the movie loop. By default this is an H3.
      */
     function masvideos_template_loop_movie_title() {
-        echo '<h2 class="masvideos-loop-movie__title">' . get_the_title() . '</h2>';
+        the_title( '<h3 class="masvideos-loop-movie__title  movie__title">', '</h3>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_short_desc' ) ) {
+
+    /**
+     * video short description in the video loop.
+     */
+    function masvideos_template_loop_movie_short_desc() {
+        global $post;
+
+        $short_description = apply_filters( 'masvideos_template_loop_movie_short_desc', $post->post_excerpt );
+
+        if ( ! $short_description ) {
+            return;
+        }
+
+        ?>
+        <div class="movie__short-description">
+            <?php echo '<p>' . $short_description . '</p>'; ?>
+        </div>
+
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_actions' ) ) {
+
+    /**
+     * video actions in the video loop.
+     */
+    function masvideos_template_loop_movie_actions() {
+        echo '<div class="movie__actions"></div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_info_close' ) ) {
+
+    /**
+     * video info close in the video loop.
+     */
+    function masvideos_template_loop_movie_info_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_review_info_open' ) ) {
+
+    /**
+     * video review info open in the video loop.
+     */
+    function masvideos_template_loop_movie_review_info_open() {
+        echo '<div class="movie__review-info">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_avg_rating' ) ) {
+
+    /**
+     * video avg rating in the video loop.
+     */
+    function masvideos_template_loop_movie_avg_rating() {
+        echo '<a href="#" class="avg-rating"></a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_viewers_count' ) ) {
+
+    /**
+     * video actions in the video loop.
+     */
+    function masvideos_template_loop_movie_viewers_count() {
+        echo '<div class="viewers-count"></div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_review_info_close' ) ) {
+
+    /**
+     * video review info close in the video loop.
+     */
+    function masvideos_template_loop_movie_review_info_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_body_close' ) ) {
+
+    /**
+     * video body close in the video loop.
+     */
+    function masvideos_template_loop_movie_body_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_title' ) ) {
+
+    /**
+     * Show the video title in the video loop. By default this is an H3.
+     */
+    function masvideos_template_loop_video_title() {
+        the_title( '<h3 class="masvideos-loop-video__title">', '</h3>' );
     }
 }
 
@@ -716,33 +922,11 @@ if ( ! function_exists( 'masvideos_template_loop_video_link_open' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_movie_link_open' ) ) {
-    /**
-     * Insert the opening anchor tag for movies in the loop.
-     */
-    function masvideos_template_loop_movie_link_open() {
-        global $movie;
-
-        $link = apply_filters( 'masvideos_loop_movie_link', get_the_permalink(), $movie );
-
-        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopMovie-link masvideos-loop-movie__link">';
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_video_link_close' ) ) {
     /**
      * Insert the opening anchor tag for videos in the loop.
      */
     function masvideos_template_loop_video_link_close() {
-        echo '</a>';
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_loop_movie_link_close' ) ) {
-    /**
-     * Insert the opening anchor tag for movies in the loop.
-     */
-    function masvideos_template_loop_movie_link_close() {
         echo '</a>';
     }
 }
@@ -767,7 +951,6 @@ if ( ! function_exists( 'masvideos_template_loop_category_link_close' ) ) {
         echo '</a>';
     }
 }
-
 
 /**
  * Single
@@ -816,7 +999,7 @@ if ( ! function_exists( 'masvideos_template_single_video_author' ) ) {
      * Output the video author.
      */
     function masvideos_template_single_video_author() {
-        echo '<span class="video_author">' . esc_html( 'by', 'masvideos' ) . '<strong>' . get_the_author() . '</strong></span>';
+        echo '<span class="video_author">' .  apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ) . '<strong>' . get_the_author() . '</strong></span>';
     }
 }
 
@@ -826,7 +1009,7 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
      * Output the video posted on.
      */
     function masvideos_template_single_video_posted_on() {
-        echo '<span class="video_posted_on">' . esc_html( 'published on', 'masvideos' ) .  get_the_date() . '</span>';
+        echo '<span class="video_posted_on">' . apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ) .  get_the_date() . '</span>';
     }
 }
 
