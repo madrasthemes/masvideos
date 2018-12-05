@@ -450,7 +450,10 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param string $visibility Options: 'hidden', 'visible', 'search' and 'catalog'.
      */
     public function set_catalog_visibility( $visibility ) {
-        $visibility = 'visible';
+        $options = array_keys( masvideos_get_movie_visibility_options() );
+        if ( ! in_array( $visibility, $options, true ) ) {
+            $this->error( 'movie_invalid_catalog_visibility', __( 'Invalid catalog visibility option.', 'masvideos' ) );
+        }
         $this->set_prop( 'catalog_visibility', $visibility );
     }
 
