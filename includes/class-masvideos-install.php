@@ -66,6 +66,7 @@ class MasVideos_Install {
         self::create_tables();
         self::create_roles();
         self::setup_environment();
+        self::create_terms();
         self::update_version();
         self::maybe_update_db_version();
 
@@ -83,6 +84,42 @@ class MasVideos_Install {
     private static function setup_environment() {
         MasVideos_Post_Types::register_post_types();
         MasVideos_Post_Types::register_taxonomies();
+    }
+
+    /**
+     * Add the default terms for taxonomies and order statuses. Modify this at your own risk.
+     */
+    public static function create_terms() {
+        $taxonomies = array(
+            'video_visibility' => array(
+                'exclude-from-search',
+                'exclude-from-catalog',
+                'featured',
+                'rated-1',
+                'rated-2',
+                'rated-3',
+                'rated-4',
+                'rated-5',
+            ),
+            'movie_visibility' => array(
+                'exclude-from-search',
+                'exclude-from-catalog',
+                'featured',
+                'rated-1',
+                'rated-2',
+                'rated-3',
+                'rated-4',
+                'rated-5',
+            ),
+        );
+
+        foreach ( $taxonomies as $taxonomy => $terms ) {
+            foreach ( $terms as $term ) {
+                if ( ! get_term_by( 'name', $term, $taxonomy ) ) { // @codingStandardsIgnoreLine.
+                    wp_insert_term( $term, $taxonomy );
+                }
+            }
+        }
     }
 
     /**
