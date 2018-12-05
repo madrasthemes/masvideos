@@ -257,6 +257,13 @@ class MasVideos_Videos_Query {
                 $args['orderby'] = 'date ID';
                 $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
                 break;
+            case 'rating':
+                $args['meta_key'] = '_masvideos_average_rating'; // @codingStandardsIgnoreLine
+                $args['orderby']  = array(
+                    'meta_value_num' => 'DESC',
+                    'ID'             => 'ASC',
+                );
+                break;
         }
 
         return apply_filters( 'masvideos_get_catalog_ordering_args', $args );
@@ -684,6 +691,13 @@ class MasVideos_Movies_Query {
             case 'date':
                 $args['orderby'] = 'date ID';
                 $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
+                break;
+            case 'rating':
+                $args['meta_key'] = '_masvideos_average_rating'; // @codingStandardsIgnoreLine
+                $args['orderby']  = array(
+                    'meta_value_num' => 'DESC',
+                    'ID'             => 'ASC',
+                );
                 break;
         }
 
