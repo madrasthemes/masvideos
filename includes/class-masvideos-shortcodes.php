@@ -65,6 +65,12 @@ class MasVideos_Shortcodes {
     public static function videos( $atts ) {
         $atts = (array) $atts;
         $type = 'videos';
+
+        // Allow list video based on specific cases.
+        if ( isset( $atts['top_rated'] ) && wc_string_to_bool( $atts['top_rated'] ) ) {
+            $type = 'top_rated_videos';
+        }
+
         $shortcode = new MasVideos_Shortcode_Videos( $atts, $type );
 
         return $shortcode->get_content();
@@ -79,6 +85,12 @@ class MasVideos_Shortcodes {
     public static function movies( $atts ) {
         $atts = (array) $atts;
         $type = 'movies';
+
+        // Allow list movie based on specific cases.
+        if ( isset( $atts['top_rated'] ) && wc_string_to_bool( $atts['top_rated'] ) ) {
+            $type = 'top_rated_movies';
+        }
+
         $shortcode = new MasVideos_Shortcode_Movies( $atts, $type );
 
         return $shortcode->get_content();
