@@ -303,6 +303,38 @@ class MasVideos_Videos_Query {
             }
         }
 
+        $video_visibility_terms  = masvideos_get_video_visibility_term_ids();
+		$video_visibility_not_in = array( is_search() && $main_query ? $video_visibility_terms['exclude-from-search'] : $video_visibility_terms['exclude-from-catalog'] );
+
+		// Filter by rating.
+		if ( isset( $_GET['rating_filter'] ) ) { // WPCS: input var ok, CSRF ok.
+			$rating_filter = array_filter( array_map( 'absint', explode( ',', $_GET['rating_filter'] ) ) ); // WPCS: input var ok, CSRF ok, Sanitization ok.
+			$rating_terms  = array();
+			for ( $i = 1; $i <= 5; $i ++ ) {
+				if ( in_array( $i, $rating_filter, true ) && isset( $video_visibility_terms[ 'rated-' . $i ] ) ) {
+					$rating_terms[] = $video_visibility_terms[ 'rated-' . $i ];
+				}
+			}
+			if ( ! empty( $rating_terms ) ) {
+				$tax_query[] = array(
+					'taxonomy'      => 'video_visibility',
+					'field'         => 'term_taxonomy_id',
+					'terms'         => $rating_terms,
+					'operator'      => 'IN',
+					'rating_filter' => true,
+				);
+			}
+		}
+
+		if ( ! empty( $video_visibility_not_in ) ) {
+			$tax_query[] = array(
+				'taxonomy' => 'video_visibility',
+				'field'    => 'term_taxonomy_id',
+				'terms'    => $video_visibility_not_in,
+				'operator' => 'NOT IN',
+			);
+		}
+
         return array_filter( apply_filters( 'masvideos_video_query_tax_query', $tax_query, $this ) );
     }
 
@@ -698,6 +730,38 @@ class MasVideos_Movies_Query {
                 );
             }
         }
+
+        $movie_visibility_terms  = masvideos_get_movie_visibility_term_ids();
+		$movie_visibility_not_in = array( is_search() && $main_query ? $movie_visibility_terms['exclude-from-search'] : $movie_visibility_terms['exclude-from-catalog'] );
+
+		// Filter by rating.
+		if ( isset( $_GET['rating_filter'] ) ) { // WPCS: input var ok, CSRF ok.
+			$rating_filter = array_filter( array_map( 'absint', explode( ',', $_GET['rating_filter'] ) ) ); // WPCS: input var ok, CSRF ok, Sanitization ok.
+			$rating_terms  = array();
+			for ( $i = 1; $i <= 5; $i ++ ) {
+				if ( in_array( $i, $rating_filter, true ) && isset( $movie_visibility_terms[ 'rated-' . $i ] ) ) {
+					$rating_terms[] = $movie_visibility_terms[ 'rated-' . $i ];
+				}
+			}
+			if ( ! empty( $rating_terms ) ) {
+				$tax_query[] = array(
+					'taxonomy'      => 'movie_visibility',
+					'field'         => 'term_taxonomy_id',
+					'terms'         => $rating_terms,
+					'operator'      => 'IN',
+					'rating_filter' => true,
+				);
+			}
+		}
+
+		if ( ! empty( $movie_visibility_not_in ) ) {
+			$tax_query[] = array(
+				'taxonomy' => 'movie_visibility',
+				'field'    => 'term_taxonomy_id',
+				'terms'    => $movie_visibility_not_in,
+				'operator' => 'NOT IN',
+			);
+		}
 
         return array_filter( apply_filters( 'masvideos_movie_query_tax_query', $tax_query, $this ) );
     }
