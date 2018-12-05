@@ -140,7 +140,9 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-comments.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-video-factory.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-video-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-factory.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-shortcodes.php';
 
             /**
@@ -158,6 +160,9 @@ if ( ! class_exists( 'MasVideos' ) ) {
             if ( $this->is_request( 'frontend' ) ) {
                 $this->frontend_includes();
             }
+
+            $this->video_query = new MasVideos_Videos_Query();
+            $this->movie_query = new MasVideos_Movies_Query();
         }
 
         /**
@@ -203,9 +208,6 @@ if ( ! class_exists( 'MasVideos' ) ) {
             // Classes/actions loaded for the frontend and for ajax requests.
             // if ( $this->is_request( 'frontend' ) ) {
             // }
-
-            $this->video_query = new MasVideos_Videos_Query();
-            $this->movie_query = new MasVideos_Movies_Query();
 
             // Init action.
             do_action( 'masvideos_init' );

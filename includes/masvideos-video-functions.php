@@ -37,7 +37,7 @@ function masvideos_get_videos( $args ) {
         }
     }
 
-    $query = new MasVideos_Video_Query( $args ); // WC_Product_Query
+    $query = new MasVideos_Video_Query( $args );
     return $query->get_videos();
 }
 
