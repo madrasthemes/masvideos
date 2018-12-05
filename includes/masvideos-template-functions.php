@@ -75,7 +75,7 @@ function masvideos_setup_video_data( $post ) {
 
     return $GLOBALS['video'];
 }
-// add_action( 'the_post', 'masvideos_setup_video_data' );
+add_action( 'the_post', 'masvideos_setup_video_data' );
 
 /**
  * When the_post is called, put movie data into a global.
@@ -100,7 +100,7 @@ function masvideos_setup_movie_data( $post ) {
 
     return $GLOBALS['movie'];
 }
-// add_action( 'the_post', 'masvideos_setup_movie_data' );
+add_action( 'the_post', 'masvideos_setup_movie_data' );
 
 /**
  * Sets up the masvideos_videos_loop global from the passed args or from the main query.
