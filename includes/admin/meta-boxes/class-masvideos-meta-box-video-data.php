@@ -207,6 +207,8 @@ class MasVideos_Meta_Box_Video_Data {
 
         $errors = $video->set_props(
             array(
+                'featured'                  => isset( $_POST['_featured'] ),
+				'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_visibility'] ) ),
                 'video_choice'              => isset( $_POST['_video_choice'] ) ? masvideos_clean( $_POST['_video_choice'] ) : null,
                 'video_attachment_id'       => isset( $_POST['_video_attachment_id'] ) ? masvideos_clean( $_POST['_video_attachment_id'] ) : null,
                 'video_embed_content'       => isset( $_POST['_video_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_video_embed_content'] ) : null,

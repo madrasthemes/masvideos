@@ -189,6 +189,21 @@ class MasVideos_Post_Types {
         $permalinks = masvideos_get_video_permalink_structure();
 
         register_taxonomy(
+            'video_visibility',
+            apply_filters( 'masvideos_taxonomy_objects_video_visibility', array( 'video' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_video_visibility', array(
+                    'hierarchical'      => false,
+                    'show_ui'           => false,
+                    'show_in_nav_menus' => false,
+                    'query_var'         => is_admin(),
+                    'rewrite'           => false,
+                    'public'            => false,
+                )
+            )
+        );
+
+        register_taxonomy(
             'video_cat',
             apply_filters( 'masvideos_taxonomy_objects_video_cat', array( 'video' ) ),
             apply_filters(
@@ -263,6 +278,21 @@ class MasVideos_Post_Types {
                         'slug'       => $permalinks['video_tag_rewrite_slug'],
                         'with_front' => false,
                     ),
+                )
+            )
+        );
+
+        register_taxonomy(
+            'movie_visibility',
+            apply_filters( 'masvideos_taxonomy_objects_movie_visibility', array( 'movie' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_movie_visibility', array(
+                    'hierarchical'      => false,
+                    'show_ui'           => false,
+                    'show_in_nav_menus' => false,
+                    'query_var'         => is_admin(),
+                    'rewrite'           => false,
+                    'public'            => false,
                 )
             )
         );

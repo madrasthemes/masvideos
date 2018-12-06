@@ -23,6 +23,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      * @var array
      */
     protected $internal_meta_keys = array(
+        '_visibility',
         '_default_attributes',
         '_video_attributes',
         '_featured',
@@ -97,6 +98,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
             $this->update_post_meta( $video, true );
             $this->update_terms( $video, true );
+            $this->update_visibility( $video, true );
             $this->update_attributes( $video, true );
             $this->handle_updated_props( $video );
 
@@ -139,6 +141,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         );
 
         $this->read_attributes( $video );
+        $this->read_visibility( $video );
         $this->read_video_data( $video );
         $this->read_extra_data( $video );
         $video->set_object_read( true );
@@ -210,6 +213,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $this->update_post_meta( $video );
         $this->update_terms( $video );
+        $this->update_visibility( $video );
         $this->update_attributes( $video );
         $this->handle_updated_props( $video );
 
@@ -317,6 +321,38 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             }
         }
     }
+
+    /**
+	 * Convert visibility terms to props.
+	 * Catalog visibility valid values are 'visible', 'catalog', 'search', and 'hidden'.
+	 *
+	 * @param MasVideos_Video $video Video object.
+	 * @since 1.0.0
+	 */
+	protected function read_visibility( &$video ) {
+		$terms           = get_the_terms( $video->get_id(), 'video_visibility' );
+		$term_names      = is_array( $terms ) ? wp_list_pluck( $terms, 'name' ) : array();
+		$featured        = in_array( 'featured', $term_names, true );
+		$exclude_search  = in_array( 'exclude-from-search', $term_names, true );
+		$exclude_catalog = in_array( 'exclude-from-catalog', $term_names, true );
+
+		if ( $exclude_search && $exclude_catalog ) {
+			$catalog_visibility = 'hidden';
+		} elseif ( $exclude_search ) {
+			$catalog_visibility = 'catalog';
+		} elseif ( $exclude_catalog ) {
+			$catalog_visibility = 'search';
+		} else {
+			$catalog_visibility = 'visible';
+		}
+
+		$video->set_props(
+			array(
+				'featured'           => $featured,
+				'catalog_visibility' => $catalog_visibility,
+			)
+		);
+	}
 
     /**
      * Read attributes from post meta.
@@ -476,6 +512,50 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     }
 
     /**
+	 * Update visibility terms based on props.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param MasVideos_Video $video Video object.
+	 * @param bool       $force Force update. Used during create.
+	 */
+	protected function update_visibility( &$video, $force = false ) {
+		$changes = $video->get_changes();
+
+		if ( $force || array_intersect( array( 'featured', 'average_rating', 'catalog_visibility' ), array_keys( $changes ) ) ) {
+			$terms = array();
+
+			if ( $video->get_featured() ) {
+				$terms[] = 'featured';
+			}
+
+			$rating = min( 5, round( $video->get_average_rating(), 0 ) );
+
+			if ( $rating > 0 ) {
+				$terms[] = 'rated-' . $rating;
+			}
+
+			switch ( $video->get_catalog_visibility() ) {
+				case 'hidden':
+					$terms[] = 'exclude-from-search';
+					$terms[] = 'exclude-from-catalog';
+					break;
+				case 'catalog':
+					$terms[] = 'exclude-from-search';
+					break;
+				case 'search':
+					$terms[] = 'exclude-from-catalog';
+					break;
+			}
+
+			if ( ! is_wp_error( wp_set_post_terms( $video->get_id(), $terms, 'video_visibility', false ) ) ) {
+				delete_transient( 'masvideos_featured_videos' );
+				do_action( 'masvideos_video_set_visibility', $video->get_id(), $video->get_catalog_visibility() );
+			}
+		}
+	}
+
+    /**
      * Update attributes which are a mix of terms and meta data.
      *
      * @param MasVideos_Video $video Video object.
@@ -548,15 +628,31 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      * @since 1.0.0
      */
     public function get_featured_video_ids() {
+        $video_visibility_term_ids = masvideos_get_video_visibility_term_ids();
 
-        return get_posts(
-            array(
-                'post_type'      => array( 'video' ),
-                'posts_per_page' => -1,
-                'post_status'    => 'publish',
-                'fields'         => 'id=>parent',
-            )
-        );
+		return get_posts(
+			array(
+				'post_type'      => array( 'video' ),
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+				// phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_tax_query
+				'tax_query'      => array(
+					'relation' => 'AND',
+					array(
+						'taxonomy' => 'video_visibility',
+						'field'    => 'term_taxonomy_id',
+						'terms'    => array( $video_visibility_term_ids['featured'] ),
+					),
+					array(
+						'taxonomy' => 'video_visibility',
+						'field'    => 'term_taxonomy_id',
+						'terms'    => array( $video_visibility_term_ids['exclude-from-catalog'] ),
+						'operator' => 'NOT IN',
+					),
+				),
+				'fields'         => 'id=>parent',
+			)
+		);
     }
 
     /**
@@ -601,39 +697,44 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     public function get_related_videos_query( $cats_array, $tags_array, $exclude_ids, $limit ) {
         global $wpdb;
 
-        $include_term_ids            = array_merge( $cats_array, $tags_array );
-        $exclude_term_ids            = array();
+		$include_term_ids            = array_merge( $cats_array, $tags_array );
+		$exclude_term_ids            = array();
+		$video_visibility_term_ids   = masvideos_get_video_visibility_term_ids();
 
-        $query = array(
-            'fields' => "
-                SELECT DISTINCT ID FROM {$wpdb->posts} p
-            ",
-            'join'   => '',
-            'where'  => "
-                WHERE 1=1
-                AND p.post_status = 'publish'
-                AND p.post_type = 'video'
+		if ( $video_visibility_term_ids['exclude-from-catalog'] ) {
+			$exclude_term_ids[] = $video_visibility_term_ids['exclude-from-catalog'];
+		}
 
-            ",
-            'limits' => '
-                LIMIT ' . absint( $limit ) . '
-            ',
-        );
+		$query = array(
+			'fields' => "
+				SELECT DISTINCT ID FROM {$wpdb->posts} p
+			",
+			'join'   => '',
+			'where'  => "
+				WHERE 1=1
+				AND p.post_status = 'publish'
+				AND p.post_type = 'video'
 
-        if ( count( $exclude_term_ids ) ) {
-            $query['join']  .= " LEFT JOIN ( SELECT object_id FROM {$wpdb->term_relationships} WHERE term_taxonomy_id IN ( " . implode( ',', array_map( 'absint', $exclude_term_ids ) ) . ' ) ) AS exclude_join ON exclude_join.object_id = p.ID';
-            $query['where'] .= ' AND exclude_join.object_id IS NULL';
-        }
+			",
+			'limits' => '
+				LIMIT ' . absint( $limit ) . '
+			',
+		);
 
-        if ( count( $include_term_ids ) ) {
-            $query['join'] .= " INNER JOIN ( SELECT object_id FROM {$wpdb->term_relationships} INNER JOIN {$wpdb->term_taxonomy} using( term_taxonomy_id ) WHERE term_id IN ( " . implode( ',', array_map( 'absint', $include_term_ids ) ) . ' ) ) AS include_join ON include_join.object_id = p.ID';
-        }
+		if ( count( $exclude_term_ids ) ) {
+			$query['join']  .= " LEFT JOIN ( SELECT object_id FROM {$wpdb->term_relationships} WHERE term_taxonomy_id IN ( " . implode( ',', array_map( 'absint', $exclude_term_ids ) ) . ' ) ) AS exclude_join ON exclude_join.object_id = p.ID';
+			$query['where'] .= ' AND exclude_join.object_id IS NULL';
+		}
 
-        if ( count( $exclude_ids ) ) {
-            $query['where'] .= ' AND p.ID NOT IN ( ' . implode( ',', array_map( 'absint', $exclude_ids ) ) . ' )';
-        }
+		if ( count( $include_term_ids ) ) {
+			$query['join'] .= " INNER JOIN ( SELECT object_id FROM {$wpdb->term_relationships} INNER JOIN {$wpdb->term_taxonomy} using( term_taxonomy_id ) WHERE term_id IN ( " . implode( ',', array_map( 'absint', $include_term_ids ) ) . ' ) ) AS include_join ON include_join.object_id = p.ID';
+		}
 
-        return $query;
+		if ( count( $exclude_ids ) ) {
+			$query['where'] .= ' AND p.ID NOT IN ( ' . implode( ',', array_map( 'absint', $exclude_ids ) ) . ' )';
+		}
+
+		return $query;
     }
 
     /**
@@ -644,6 +745,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      */
     public function update_average_rating( $video ) {
         update_post_meta( $video->get_id(), '_masvideos_average_rating', $video->get_average_rating( 'edit' ) );
+		self::update_visibility( $video, true );
     }
 
     /**
@@ -827,7 +929,10 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         }
 
         // These queries cannot be auto-generated so we have to remove them and build them manually.
-        $manual_queries = array();
+        $manual_queries = array(
+			'featured'   => '',
+			'visibility' => '',
+		);
         foreach ( $manual_queries as $key => $manual_query ) {
             if ( isset( $query_vars[ $key ] ) ) {
                 $manual_queries[ $key ] = $query_vars[ $key ];
@@ -863,6 +968,69 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'terms'    => $query_vars['tag'],
             );
         }
+
+        // Handle featured.
+		if ( '' !== $manual_queries['featured'] ) {
+			$video_visibility_term_ids = masvideos_get_video_visibility_term_ids();
+			if ( $manual_queries['featured'] ) {
+				$wp_query_args['tax_query'][] = array(
+					'taxonomy' => 'video_visibility',
+					'field'    => 'term_taxonomy_id',
+					'terms'    => array( $video_visibility_term_ids['featured'] ),
+				);
+				$wp_query_args['tax_query'][] = array(
+					'taxonomy' => 'video_visibility',
+					'field'    => 'term_taxonomy_id',
+					'terms'    => array( $video_visibility_term_ids['exclude-from-catalog'] ),
+					'operator' => 'NOT IN',
+				);
+			} else {
+				$wp_query_args['tax_query'][] = array(
+					'taxonomy' => 'video_visibility',
+					'field'    => 'term_taxonomy_id',
+					'terms'    => array( $video_visibility_term_ids['featured'] ),
+					'operator' => 'NOT IN',
+				);
+			}
+		}
+
+		// Handle visibility.
+		if ( $manual_queries['visibility'] ) {
+			switch ( $manual_queries['visibility'] ) {
+				case 'search':
+					$wp_query_args['tax_query'][] = array(
+						'taxonomy' => 'video_visibility',
+						'field'    => 'slug',
+						'terms'    => array( 'exclude-from-search' ),
+						'operator' => 'NOT IN',
+					);
+					break;
+				case 'catalog':
+					$wp_query_args['tax_query'][] = array(
+						'taxonomy' => 'video_visibility',
+						'field'    => 'slug',
+						'terms'    => array( 'exclude-from-catalog' ),
+						'operator' => 'NOT IN',
+					);
+					break;
+				case 'visible':
+					$wp_query_args['tax_query'][] = array(
+						'taxonomy' => 'video_visibility',
+						'field'    => 'slug',
+						'terms'    => array( 'exclude-from-catalog', 'exclude-from-search' ),
+						'operator' => 'NOT IN',
+					);
+					break;
+				case 'hidden':
+					$wp_query_args['tax_query'][] = array(
+						'taxonomy' => 'video_visibility',
+						'field'    => 'slug',
+						'terms'    => array( 'exclude-from-catalog', 'exclude-from-search' ),
+						'operator' => 'AND',
+					);
+					break;
+			}
+		}
 
         // Handle date queries.
         $date_queries = array(

@@ -37,7 +37,7 @@ function masvideos_get_movies( $args ) {
         }
     }
 
-    $query = new MasVideos_Movie_Query( $args ); // WC_Product_Query
+    $query = new MasVideos_Movie_Query( $args );
     return $query->get_movies();
 }
 
@@ -101,6 +101,23 @@ function masvideos_delete_movie_transients( $post_id = 0 ) {
     MasVideos_Cache_Helper::get_transient_version( 'movie', true );
 
     do_action( 'masvideos_delete_movie_transients', $post_id );
+}
+
+/**
+ * Get movie visibility options.
+ *
+ * @since 1.0.0
+ * @return array
+ */
+function masvideos_get_movie_visibility_options() {
+	return apply_filters(
+		'masvideos_movie_visibility_options', array(
+			'visible' => __( 'Catalog and search results', 'masvideos' ),
+			'catalog' => __( 'Catalog only', 'masvideos' ),
+			'search'  => __( 'Search results only', 'masvideos' ),
+			'hidden'  => __( 'Hidden', 'masvideos' ),
+		)
+	);
 }
 
 if ( ! function_exists ( 'masvideos_the_movie' ) ) {

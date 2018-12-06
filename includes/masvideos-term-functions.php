@@ -31,3 +31,77 @@ function masvideos_get_object_terms( $object_id, $taxonomy, $field = null, $inde
 
     return is_null( $field ) ? $terms : wp_list_pluck( $terms, $field, $index_key );
 }
+
+/**
+ * Get full list of video visibilty term ids.
+ *
+ * @since  1.0.0
+ * @return int[]
+ */
+function masvideos_get_video_visibility_term_ids() {
+	if ( ! taxonomy_exists( 'video_visibility' ) ) {
+		masvideos_doing_it_wrong( __FUNCTION__, 'masvideos_get_video_visibility_term_ids should not be called before taxonomies are registered (masvideos_after_register_post_type action).', '3.1' );
+		return array();
+	}
+	return array_map(
+		'absint', wp_parse_args(
+			wp_list_pluck(
+				get_terms(
+					array(
+						'taxonomy'   => 'video_visibility',
+						'hide_empty' => false,
+					)
+				),
+				'term_taxonomy_id',
+				'name'
+			),
+			array(
+				'exclude-from-catalog' => 0,
+				'exclude-from-search'  => 0,
+				'featured'             => 0,
+				'rated-1'              => 0,
+				'rated-2'              => 0,
+				'rated-3'              => 0,
+				'rated-4'              => 0,
+				'rated-5'              => 0,
+			)
+		)
+	);
+}
+
+/**
+ * Get full list of movie visibilty term ids.
+ *
+ * @since  1.0.0
+ * @return int[]
+ */
+function masvideos_get_movie_visibility_term_ids() {
+	if ( ! taxonomy_exists( 'movie_visibility' ) ) {
+		masvideos_doing_it_wrong( __FUNCTION__, 'masvideos_get_movie_visibility_term_ids should not be called before taxonomies are registered (masvideos_after_register_post_type action).', '3.1' );
+		return array();
+	}
+	return array_map(
+		'absint', wp_parse_args(
+			wp_list_pluck(
+				get_terms(
+					array(
+						'taxonomy'   => 'movie_visibility',
+						'hide_empty' => false,
+					)
+				),
+				'term_taxonomy_id',
+				'name'
+			),
+			array(
+				'exclude-from-catalog' => 0,
+				'exclude-from-search'  => 0,
+				'featured'             => 0,
+				'rated-1'              => 0,
+				'rated-2'              => 0,
+				'rated-3'              => 0,
+				'rated-4'              => 0,
+				'rated-5'              => 0,
+			)
+		)
+	);
+}

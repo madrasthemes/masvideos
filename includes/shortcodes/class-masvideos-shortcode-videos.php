@@ -123,6 +123,7 @@ class MasVideos_Shortcode_Videos {
                 'terms'          => '',        // Comma separated term slugs or ids.
                 'terms_operator' => 'IN',      // Operator to compare terms. Possible values are 'IN', 'NOT IN', 'AND'.
                 'tag'            => '',        // Comma separated tag slugs.
+                'visibility'     => 'visible', // Possible values are 'visible', 'catalog', 'search', 'hidden', 'featured'.
                 'class'          => '',        // HTML class.
                 'page'           => 1,         // Page for pagination.
                 'paginate'       => false,     // Should results be paginated.
@@ -182,7 +183,7 @@ class MasVideos_Shortcode_Videos {
         // @codingStandardsIgnoreEnd
 
         // Visibility.
-        // $this->set_visibility_query_args( $query_args );
+        $this->set_visibility_query_args( $query_args );
 
         // IDs.
         $this->set_ids_query_args( $query_args );
@@ -491,9 +492,9 @@ class MasVideos_Shortcode_Videos {
 
         if ( false === $results ) {
             if ( 'top_rated_videos' === $this->type ) {
-                // add_filter( 'posts_clauses', array( __CLASS__, 'order_by_rating_post_clauses' ) );
+                add_filter( 'posts_clauses', array( __CLASS__, 'order_by_rating_post_clauses' ) );
                 $query = new WP_Query( $this->query_args );
-                // remove_filter( 'posts_clauses', array( __CLASS__, 'order_by_rating_post_clauses' ) );
+                remove_filter( 'posts_clauses', array( __CLASS__, 'order_by_rating_post_clauses' ) );
             } else {
                 $query = new WP_Query( $this->query_args );
             }
