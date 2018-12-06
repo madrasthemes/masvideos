@@ -822,7 +822,7 @@ class MasVideos_Video extends MasVideos_Data {
      */
     public function get_image( $size = 'masvideos_thumbnail', $attr = array(), $placeholder = true ) {
         if ( $this->get_image_id() ) {
-            $image = wp_get_attachment_image( $this->get_image_id(), $size );
+            $image = wp_get_attachment_image( $this->get_image_id(), $size, false, $attr );
         } elseif ( $this->get_parent_id() ) {
             $parent_video = masvideos_get_video( $this->get_parent_id() );
             $image          = $parent_video->get_image();

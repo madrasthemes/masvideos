@@ -125,7 +125,7 @@ if ( ! function_exists ( 'masvideos_the_movie' ) ) {
 if ( ! function_exists ( 'masvideos_get_the_movie' ) ) {
     function masvideos_get_the_movie( $post = null ) {
         global $movie;
-        
+
         $movie_src = '';
         $movie_choice = $movie->get_movie_choice();
 
@@ -138,5 +138,19 @@ if ( ! function_exists ( 'masvideos_get_the_movie' ) ) {
         }
 
         return $movie_src;
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_get_movie_thumbnail' ) ) {
+    /**
+     * Get the masvideos thumbnail, or the placeholder if not set.
+     */
+    function masvideos_get_movie_thumbnail( $size = 'masvideos_thumbnail' ) {
+        global $movie;
+
+        $image_size = apply_filters( 'masvideos_movie_archive_thumbnail_size', $size );
+
+        return $movie ? $movie->get_image( $image_size , array( 'class' => 'movie__poster--image' ) ) : '';
     }
 }

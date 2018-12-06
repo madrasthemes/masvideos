@@ -319,6 +319,18 @@ function masvideos_placeholder_img_src() {
 }
 
 /**
+ * Get the placeholder image.
+ *
+ * @param string $size Image size.
+ * @return string
+ */
+function masvideos_placeholder_img( $size = 'masvideos_thumbnail' ) {
+    $dimensions = masvideos_get_image_size( $size );
+
+    return apply_filters( 'masvideos_placeholder_img', '<img src="' . masvideos_placeholder_img_src( $size ) . '" alt="' . esc_attr__( 'Placeholder', 'masvideos' ) . '" width="' . esc_attr( $dimensions['width'] ) . '" class="masvideos-placeholder wp-post-image" height="' . esc_attr( $dimensions['height'] ) . '" />', $size, $dimensions );
+}
+
+/**
  * Display the classes for the video div.
  *
  * @since 1.0.0
@@ -482,9 +494,12 @@ function masvideos_query_string_form_fields( $values = null, $exclude = array(),
     echo $html; // WPCS: XSS ok.
 }
 
-
 /**
  * Loop
+ */
+
+/*
+ * Videos Loop
  */
 
 if ( ! function_exists( 'masvideos_video_page_title' ) ) {
@@ -526,6 +541,290 @@ if ( ! function_exists( 'masvideos_video_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_video_loop_start' ) ) {
+    /**
+     * Output the start of a video loop. By default this is a UL.
+     *
+     * @param bool $echo Should echo?.
+     * @return string
+     */
+    function masvideos_video_loop_start( $echo = true ) {
+        ob_start();
+
+        masvideos_set_videos_loop_prop( 'loop', 0 );
+
+        ?><div class="videos columns-<?php echo esc_attr( masvideos_get_videos_loop_prop( 'columns' ) ); ?>"><div class="videos__inner"><?php
+
+        $loop_start = apply_filters( 'masvideos_video_loop_start', ob_get_clean() );
+
+        if ( $echo ) {
+            echo $loop_start; // WPCS: XSS ok.
+        } else {
+            return $loop_start;
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_container_open' ) ) {
+    /**
+     * videos container open in the loop.
+     */
+    function masvideos_template_loop_video_container_open() {
+        echo '<div class="video__container">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for videos in the loop.
+     */
+    function masvideos_template_loop_video_link_open() {
+        global $video;
+
+        $link = apply_filters( 'masvideos_loop_video_link', get_the_permalink(), $video );
+
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopMovie-link masvideos-loop-video__link video__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_poster_open' ) ) {
+    /**
+     * videos poster open in the loop.
+     */
+    function masvideos_template_loop_video_poster_open() {
+        echo '<div class="video__poster">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_poster' ) ) {
+    /**
+     * videos poster in the loop.
+     */
+    function masvideos_template_loop_video_poster() {
+        echo masvideos_get_video_thumbnail();
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_poster_close' ) ) {
+    /**
+     * videos poster close in the loop.
+     */
+    function masvideos_template_loop_video_poster_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_duration' ) ) {
+    /**
+     * videos duration in the loop.
+     */
+    function masvideos_template_loop_video_duration() {
+        echo '<span class="video__duration">00:54</span>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for videos in the loop.
+     */
+    function masvideos_template_loop_video_link_close() {
+        echo '</a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_container_close' ) ) {
+    /**
+     * videos container close in the loop.
+     */
+    function masvideos_template_loop_video_container_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_body_open' ) ) {
+
+    /**
+     * video body open in the video loop.
+     */
+    function masvideos_template_loop_video_body_open() {
+        echo '<div class="video__body">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_info_open' ) ) {
+
+    /**
+     * video info open in the video loop.
+     */
+    function masvideos_template_loop_video_info_open() {
+        echo '<div class="video__info">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_title' ) ) {
+
+    /**
+     * Show the video title in the video loop. By default this is an H3.
+     */
+    function masvideos_template_loop_video_title() {
+        the_title( '<h3 class="masvideos-loop-video__title  video__title">', '</h3>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_meta' ) ) {
+
+    /**
+     * video meta in the video loop.
+     */
+    function masvideos_template_loop_video_meta() {
+        echo '<div class="video__meta">';
+            echo '<span class="video__meta--last-seen">' . human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) . '</span>';
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_short_desc' ) ) {
+
+    /**
+     * video short description in the video loop.
+     */
+    function masvideos_template_loop_video_short_desc() {
+        global $post;
+
+        $short_description = apply_filters( 'masvideos_template_loop_video_short_desc', $post->post_excerpt );
+
+        if ( ! $short_description ) {
+            return;
+        }
+
+        ?>
+        <div class="video__short-description">
+            <?php echo '<p>' . $short_description . '</p>'; ?>
+        </div>
+
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_actions' ) ) {
+
+    /**
+     * video actions in the video loop.
+     */
+    function masvideos_template_loop_video_actions() {
+        echo '<div class="video__actions"></div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_info_close' ) ) {
+
+    /**
+     * video info close in the video loop.
+     */
+    function masvideos_template_loop_video_info_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_review_info_open' ) ) {
+
+    /**
+     * video review info open in the video loop.
+     */
+    function masvideos_template_loop_video_review_info_open() {
+        echo '<div class="video__review-info">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_avg_rating' ) ) {
+
+    /**
+     * video avg rating in the video loop.
+     */
+    function masvideos_template_loop_video_avg_rating() {
+        echo '<a href="#" class="avg-rating"></a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_viewers_count' ) ) {
+
+    /**
+     * video actions in the video loop.
+     */
+    function masvideos_template_loop_video_viewers_count() {
+        echo '<div class="viewers-count"></div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_review_info_close' ) ) {
+
+    /**
+     * video review info close in the video loop.
+     */
+    function masvideos_template_loop_video_review_info_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_video_body_close' ) ) {
+
+    /**
+     * video body close in the video loop.
+     */
+    function masvideos_template_loop_video_body_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_category_title' ) ) {
+
+    /**
+     * Show the subcategory title in the loop.
+     *
+     * @param object $category Category object.
+     */
+    function masvideos_template_loop_category_title( $category ) {
+        ?>
+        <h2 class="masvideos-loop-category__title">
+            <?php
+            echo esc_html( $category->name );
+
+            if ( $category->count > 0 ) {
+                echo apply_filters( 'masvideos_subcategory_count_html', ' <mark class="count">(' . esc_html( $category->count ) . ')</mark>', $category ); // WPCS: XSS ok.
+            }
+            ?>
+        </h2>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_video_loop_end' ) ) {
+
+    /**
+     * Output the end of a video loop. By default this is a UL.
+     *
+     * @param bool $echo Should echo?.
+     * @return string
+     */
+    function masvideos_video_loop_end( $echo = true ) {
+        ob_start();
+
+        ?></div></div><?php
+
+        $loop_end = apply_filters( 'masvideos_video_loop_end', ob_get_clean() );
+
+        if ( $echo ) {
+            echo $loop_end; // WPCS: XSS ok.
+        } else {
+            return $loop_end;
+        }
+    }
+}
+
+/*
+ * Movies Loop
+ */
+
 if ( ! function_exists( 'masvideos_movie_page_title' ) ) {
 
     /**
@@ -565,31 +864,6 @@ if ( ! function_exists( 'masvideos_movie_page_title' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_video_loop_start' ) ) {
-
-    /**
-     * Output the start of a video loop. By default this is a UL.
-     *
-     * @param bool $echo Should echo?.
-     * @return string
-     */
-    function masvideos_video_loop_start( $echo = true ) {
-        ob_start();
-
-        masvideos_set_videos_loop_prop( 'loop', 0 );
-
-        ?><div class="videos columns-<?php echo esc_attr( masvideos_get_videos_loop_prop( 'columns' ) ); ?>"><div class="videos__inner"><?php
-
-        $loop_start = apply_filters( 'masvideos_video_loop_start', ob_get_clean() );
-
-        if ( $echo ) {
-            echo $loop_start; // WPCS: XSS ok.
-        } else {
-            return $loop_start;
-        }
-    }
-}
-
 if ( ! function_exists( 'masvideos_movie_loop_start' ) ) {
 
     /**
@@ -611,52 +885,6 @@ if ( ! function_exists( 'masvideos_movie_loop_start' ) ) {
             echo $loop_start; // WPCS: XSS ok.
         } else {
             return $loop_start;
-        }
-    }
-}
-
-if ( ! function_exists( 'masvideos_video_loop_end' ) ) {
-
-    /**
-     * Output the end of a video loop. By default this is a UL.
-     *
-     * @param bool $echo Should echo?.
-     * @return string
-     */
-    function masvideos_video_loop_end( $echo = true ) {
-        ob_start();
-
-        ?></div></div><?php
-
-        $loop_end = apply_filters( 'masvideos_video_loop_end', ob_get_clean() );
-
-        if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
-        } else {
-            return $loop_end;
-        }
-    }
-}
-
-if ( ! function_exists( 'masvideos_movie_loop_end' ) ) {
-
-    /**
-     * Output the end of a movie loop. By default this is a UL.
-     *
-     * @param bool $echo Should echo?.
-     * @return string
-     */
-    function masvideos_movie_loop_end( $echo = true ) {
-        ob_start();
-
-        ?></div></div><?php
-
-        $loop_end = apply_filters( 'masvideos_movie_loop_end', ob_get_clean() );
-
-        if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
-        } else {
-            return $loop_end;
         }
     }
 }
@@ -685,29 +913,10 @@ if ( ! function_exists( 'masvideos_template_loop_movie_link_open' ) ) {
 
 if ( ! function_exists( 'masvideos_template_loop_movie_poster' ) ) {
     /**
-     * movies poster open in the loop.
+     * movies poster in the loop.
      */
     function masvideos_template_loop_movie_poster() {
-        echo masvideos_get_product_thumbnail();
-    }
-}
-
-if ( ! function_exists( 'masvideos_get_product_thumbnail' ) ) {
-
-    /**
-     * Get the masvideos thumbnail, or the placeholder if not set.
-     *
-     * @param string $size (default: 'woocommerce_thumbnail').
-     * @param int    $deprecated1 Deprecated since WooCommerce 2.0 (default: 0).
-     * @param int    $deprecated2 Deprecated since WooCommerce 2.0 (default: 0).
-     * @return string
-     */
-    function masvideos_get_product_thumbnail( $size = 'masvideos_thumbnail', $deprecated1 = 0, $deprecated2 = 0 ) {
-        global $movie;
-
-        $image_size = apply_filters( 'masvideos_movie_archive_thumbnail_size', $size );
-
-        return $movie ? $movie->get_image( $image_size , array( 'class' => 'movie__poster--image' ) ) : '';
+        echo masvideos_get_movie_thumbnail();
     }
 }
 
@@ -877,78 +1086,26 @@ if ( ! function_exists( 'masvideos_template_loop_movie_body_close' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_video_title' ) ) {
+if ( ! function_exists( 'masvideos_movie_loop_end' ) ) {
 
     /**
-     * Show the video title in the video loop. By default this is an H3.
-     */
-    function masvideos_template_loop_video_title() {
-        the_title( '<h3 class="masvideos-loop-video__title">', '</h3>' );
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_loop_category_title' ) ) {
-
-    /**
-     * Show the subcategory title in the loop.
+     * Output the end of a movie loop. By default this is a UL.
      *
-     * @param object $category Category object.
+     * @param bool $echo Should echo?.
+     * @return string
      */
-    function masvideos_template_loop_category_title( $category ) {
-        ?>
-        <h2 class="masvideos-loop-category__title">
-            <?php
-            echo esc_html( $category->name );
+    function masvideos_movie_loop_end( $echo = true ) {
+        ob_start();
 
-            if ( $category->count > 0 ) {
-                echo apply_filters( 'masvideos_subcategory_count_html', ' <mark class="count">(' . esc_html( $category->count ) . ')</mark>', $category ); // WPCS: XSS ok.
-            }
-            ?>
-        </h2>
-        <?php
-    }
-}
+        ?></div></div><?php
 
-if ( ! function_exists( 'masvideos_template_loop_video_link_open' ) ) {
-    /**
-     * Insert the opening anchor tag for videos in the loop.
-     */
-    function masvideos_template_loop_video_link_open() {
-        global $video;
+        $loop_end = apply_filters( 'masvideos_movie_loop_end', ob_get_clean() );
 
-        $link = apply_filters( 'masvideos_loop_video_link', get_the_permalink(), $video );
-
-        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopVideo-link masvideos-loop-video__link">';
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_loop_video_link_close' ) ) {
-    /**
-     * Insert the opening anchor tag for videos in the loop.
-     */
-    function masvideos_template_loop_video_link_close() {
-        echo '</a>';
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_loop_category_link_open' ) ) {
-    /**
-     * Insert the opening anchor tag for categories in the loop.
-     *
-     * @param int|object|string $category Category ID, Object or String.
-     * @param string Taxonomy Name.
-     */
-    function masvideos_template_loop_category_link_open( $category, $taxonomy = 'video_cat' ) {
-        echo '<a href="' . esc_url( get_term_link( $category, $taxonomy ) ) . '">';
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_loop_category_link_close' ) ) {
-    /**
-     * Insert the closing anchor tag for categories in the loop.
-     */
-    function masvideos_template_loop_category_link_close() {
-        echo '</a>';
+        if ( $echo ) {
+            echo $loop_end; // WPCS: XSS ok.
+        } else {
+            return $loop_end;
+        }
     }
 }
 
