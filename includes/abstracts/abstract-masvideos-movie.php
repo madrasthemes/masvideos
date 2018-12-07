@@ -676,7 +676,7 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param int|string $movie_release_date Movie relese date.
      */
     public function set_movie_release_date( $movie_release_date = '' ) {
-        $this->set_prop( 'movie_release_date', $movie_release_date );
+        $this->set_date_prop( 'movie_release_date', $movie_release_date );
     }
 
     /*
