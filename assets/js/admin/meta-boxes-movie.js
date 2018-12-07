@@ -98,7 +98,7 @@ jQuery( function( $ ) {
         $( datepicker ).change();
     }
 
-    $( '.movie_release_date_fields' ).each( function() {
+    $( '._movie_release_date_field' ).each( function() {
         $( this ).find( 'input' ).datepicker({
             defaultDate: '',
             dateFormat: 'yy-mm-dd',

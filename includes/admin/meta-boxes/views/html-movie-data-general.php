@@ -52,17 +52,16 @@ if ( ! defined( 'ABSPATH' ) ) {
                 'wrapper_class' => 'show_if_movie_url hide',
             )
         );
-        ?>
-    </div>
 
-    <div class="options_group">
-        <?php
-        $movie_release_date = $movie_object->get_movie_release_date( 'edit' ) && ( $date = $movie_object->get_movie_release_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '';
+        masvideos_wp_date_picker(
+            array(
+                'id'            => '_movie_release_date',
+                'value'         => $movie_object->get_movie_release_date( 'edit' ) && ( $date = $movie_object->get_movie_release_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '',
+                'label'         => __( 'Movie Release Date', 'masvideos' ),
+                'description'   => __( 'Enter the release date of the movie.', 'masvideos' ),
+            )
+        );
 
-        echo '<p class="form-field movie_release_date_fields">
-                <label for="_movie_release_date">' . esc_html__( 'Movie Release Date', 'masvideos' ) . '</label>
-                <input type="text" class="short" name="_movie_release_date" id="_movie_release_date" value="' . esc_attr( $movie_release_date ) . '" placeholder="' . ' YYYY-MM-DD" maxlength="10" pattern="' . esc_attr( apply_filters( 'masvideos_date_input_html_pattern', '[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' ) ) . '" />
-            </p>';
         ?>
     </div>
 

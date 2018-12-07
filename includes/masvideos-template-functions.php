@@ -979,7 +979,8 @@ if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
      * video meta in the video loop.
      */
     function masvideos_template_loop_movie_meta() {
-        global $post;
+        global $post, $movie;
+
         $category_list = wp_get_object_terms( $post->ID, 'movie_cat', array( 'fields' => 'names' ) );
         if( ! empty ( $category_list ) ) {
             if( is_array( $category_list ) ) {
@@ -989,12 +990,18 @@ if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
             }
         }
 
-        echo '<div class="movie__meta">';
-            if( ! empty ( $categories ) ) {
-               echo '<span class="movie__meta--genre">' . $categories . '</span>';
-            }
-            echo '<span class="movie__meta--release-year">' . get_the_date( 'Y' ) . '</span>';
-        echo '</div>';
+        $release_date = $movie->get_movie_release_date();
+
+        if ( ! empty( $categories ) || ! empty( $release_date ) ) {
+            echo '<div class="movie__meta">';
+                if( ! empty ( $categories ) ) {
+                   echo '<span class="movie__meta--genre">' . $categories . '</span>';
+                }
+                if( ! empty ( $release_date ) ) {
+                    echo '<span class="movie__meta--release-year">' . date_i18n( 'Y', strtotime( $release_date ) ) . '</span>';
+                }
+            echo '</div>';
+        }
     }
 }
 

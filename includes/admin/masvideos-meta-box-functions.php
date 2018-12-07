@@ -370,4 +370,42 @@ function masvideos_wp_video_url( $field ) {
     echo '</div>';
 }
 
+/**
+ * Output a date picker.
+ *
+ * @param array $field
+ */
+function masvideos_wp_date_picker( $field ) {
+    global $thepostid, $post;
 
+    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : 'YYYY-MM-DD';
+    $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
+    $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+    $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+    $field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+    $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+    $field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
+    $field['desc_tip']      = isset( $field['desc_tip'] ) ? $field['desc_tip'] : false;
+
+    // Custom attribute handling
+    $custom_attributes = array();
+
+    if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+
+        foreach ( $field['custom_attributes'] as $attribute => $value ) {
+            $custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
+        }
+    }
+
+    echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '">
+        <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
+
+    echo '<input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" maxlength="10" pattern="' . esc_attr( apply_filters( 'masvideos_date_input_html_pattern', '[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' ) ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
+
+    if ( ! empty( $field['description'] ) && false === $field['desc_tip'] ) {
+        echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+    }
+
+    echo '</p>';
+}
