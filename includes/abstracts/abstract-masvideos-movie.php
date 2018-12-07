@@ -380,8 +380,8 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param  string $context What the value is for. Valid values are view and edit.
      * @return string
      */
-    public function get_movie_relese_date( $context = 'view' ) {
-        return $this->get_prop( 'movie_relese_date', $context );
+    public function get_movie_release_date( $context = 'view' ) {
+        return $this->get_prop( 'movie_release_date', $context );
     }
 
     /*

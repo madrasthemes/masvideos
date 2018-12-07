@@ -57,7 +57,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     <div class="options_group">
         <?php
-        $movie_release_date = $movie_object->get_movie_relese_date( 'edit' ) && ( $date = $movie_object->get_movie_relese_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '';
+        $movie_release_date = $movie_object->get_movie_release_date( 'edit' ) && ( $date = $movie_object->get_movie_release_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '';
 
         echo '<p class="form-field movie_release_date_fields">
                 <label for="_movie_release_date">' . esc_html__( 'Movie Release Date', 'masvideos' ) . '</label>
