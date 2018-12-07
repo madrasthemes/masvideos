@@ -71,6 +71,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'rating_counts'         => array(),
         'average_rating'        => 0,
         'review_count'          => 0,
+        'movie_release_date'    => '',
     );
 
     /**
@@ -372,6 +373,17 @@ class MasVideos_Movie extends MasVideos_Data {
         return $this->get_prop( 'review_count', $context );
     }
 
+    /**
+     * Get main movie release date.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_movie_relese_date( $context = 'view' ) {
+        return $this->get_prop( 'movie_relese_date', $context );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Setters
@@ -655,6 +667,16 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_review_count( $count ) {
         $this->set_prop( 'review_count', absint( $count ) );
+    }
+
+    /**
+     * Set main movie release date content.
+     *
+     * @since 1.0.0
+     * @param int|string $movie_release_date Movie relese date.
+     */
+    public function set_movie_release_date( $movie_release_date = '' ) {
+        $this->set_prop( 'movie_release_date', $movie_release_date );
     }
 
     /*

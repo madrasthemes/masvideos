@@ -55,17 +55,5 @@ if ( ! defined( 'ABSPATH' ) ) {
         ?>
     </div>
 
-    <div class="options_group">
-        <?php
-        masvideos_wp_checkbox(
-            array(
-                'id'            => '_is_featured',
-                'value'         => is_callable( array( $video_object, 'get_is_featured' ) ) ? $video_object->get_is_featured( 'edit' ) : false,
-                'label'         => __( 'Featured', 'masvideos' ),
-            )
-        );
-        ?>
-    </div>
-
     <?php do_action( 'masvideos_video_options_general_video_data' ); ?>
 </div>

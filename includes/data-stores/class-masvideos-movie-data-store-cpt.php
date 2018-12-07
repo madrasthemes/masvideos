@@ -41,6 +41,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         '_wp_old_slug',
         '_edit_last',
         '_edit_lock',
+        '_movie_release_date',
     );
 
     /**
@@ -303,6 +304,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'movie_attachment_id'   => get_post_meta( $id, '_movie_attachment_id', true ),
                 'movie_embed_content'   => get_post_meta( $id, '_movie_embed_content', true ),
                 'movie_url_link'        => get_post_meta( $id, '_movie_url_link', true ),
+                'movie_release_date'    => get_post_meta( $id, '_movie_release_date', true ),
             )
         );
     }
@@ -418,6 +420,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             '_masvideos_average_rating'     => 'average_rating',
             '_masvideos_rating_count'       => 'rating_counts',
             '_masvideos_review_count'       => 'review_count',
+            '_movie_release_date'           => 'movie_release_date',
         );
 
         // Make sure to take extra data (like movie url or text for external movies) into account.

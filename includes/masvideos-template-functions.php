@@ -565,6 +565,21 @@ if ( ! function_exists( 'masvideos_video_loop_start' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_loop_video_feature_badge' ) ) {
+    /**
+     * videos container open in the loop.
+     */
+    function masvideos_template_loop_video_feature_badge() {
+        global $video;
+
+        if ( $video->get_featured() ) {
+            echo '<span class="video__badge">';
+            echo '<span class="video__badge--featured">' . esc_html__( apply_filters( 'masvideos_template_loop_video_feature_badge_text', 'Featured' ), 'masvideos' ) . '</span>';
+            echo '</span>';
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_video_container_open' ) ) {
     /**
      * videos container open in the loop.

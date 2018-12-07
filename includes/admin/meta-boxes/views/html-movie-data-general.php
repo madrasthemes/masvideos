@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                 'value'         => is_callable( array( $movie_object, 'get_movie_choice' ) ) ? $movie_object->get_movie_choice( 'edit' ) : '',
                 'label'         => __( 'Choose Movie Method', 'masvideos' ),
                 'options'       => array(
-                    'movie_file'    => __( 'Upload Movie', 'woocommerce' ),
-                    'movie_embed'   => __( 'Embed Movie', 'woocommerce' ),
+                    'movie_file'    => __( 'Upload Movie', 'masvideos' ),
+                    'movie_embed'   => __( 'Embed Movie', 'masvideos' ),
                     'movie_url'     => __( 'Movie URL', 'masvideos' ),
                 ),
                 'class'         => 'show_hide_select',
@@ -52,6 +52,17 @@ if ( ! defined( 'ABSPATH' ) ) {
                 'wrapper_class' => 'show_if_movie_url hide',
             )
         );
+        ?>
+    </div>
+
+    <div class="options_group">
+        <?php
+        $movie_release_date = $movie_object->get_movie_relese_date( 'edit' ) && ( $date = $movie_object->get_movie_relese_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '';
+
+        echo '<p class="form-field movie_release_date_fields">
+                <label for="_movie_release_date">' . esc_html__( 'Movie Release Date', 'masvideos' ) . '</label>
+                <input type="text" class="short" name="_movie_release_date" id="_movie_release_date" value="' . esc_attr( $movie_release_date ) . '" placeholder="' . ' YYYY-MM-DD" maxlength="10" pattern="' . esc_attr( apply_filters( 'masvideos_date_input_html_pattern', '[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' ) ) . '" />
+            </p>';
         ?>
     </div>
 
