@@ -67,7 +67,7 @@ class MasVideos_Shortcodes {
         $type = 'videos';
 
         // Allow list video based on specific cases.
-        if ( isset( $atts['top_rated'] ) && wc_string_to_bool( $atts['top_rated'] ) ) {
+        if ( isset( $atts['top_rated'] ) && masvideos_string_to_bool( $atts['top_rated'] ) ) {
             $type = 'top_rated_videos';
         }
 
@@ -87,7 +87,7 @@ class MasVideos_Shortcodes {
         $type = 'movies';
 
         // Allow list movie based on specific cases.
-        if ( isset( $atts['top_rated'] ) && wc_string_to_bool( $atts['top_rated'] ) ) {
+        if ( isset( $atts['top_rated'] ) && masvideos_string_to_bool( $atts['top_rated'] ) ) {
             $type = 'top_rated_movies';
         }
 

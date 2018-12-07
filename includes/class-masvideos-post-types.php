@@ -209,7 +209,7 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_video_cat', array(
                     'hierarchical'          => true,
-                    'update_count_callback' => '_wc_term_recount',
+                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Categories', 'masvideos' ),
                     'labels'                => array(
                         'name'              => __( 'Video categories', 'masvideos' ),
@@ -248,7 +248,7 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_video_tag', array(
                     'hierarchical'          => false,
-                    'update_count_callback' => '_wc_term_recount',
+                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Video tags', 'masvideos' ),
                     'labels'                => array(
                         'name'                       => __( 'Video tags', 'masvideos' ),
@@ -303,7 +303,7 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_movie_cat', array(
                     'hierarchical'          => true,
-                    'update_count_callback' => '_wc_term_recount',
+                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Categories', 'masvideos' ),
                     'labels'                => array(
                         'name'              => __( 'Movie categories', 'masvideos' ),
@@ -342,7 +342,7 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_movie_tag', array(
                     'hierarchical'          => false,
-                    'update_count_callback' => '_wc_term_recount',
+                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Movie tags', 'masvideos' ),
                     'labels'                => array(
                         'name'                       => __( 'Movie tags', 'masvideos' ),
