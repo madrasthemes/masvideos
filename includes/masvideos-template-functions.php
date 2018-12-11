@@ -1215,3 +1215,110 @@ if ( ! function_exists( 'masvideos_template_single_movie_title' ) ) {
         the_title( '<h1 class="movie_title entry-title">', '</h1>' );
     }
 }
+
+if ( ! function_exists( 'masvideos_movie_comments' ) ) {
+
+    /**
+     * Output the Review comments template.
+     *
+     * @param WP_Comment $comment Comment object.
+     * @param array      $args Arguments.
+     * @param int        $depth Depth.
+     */
+    function masvideos_movie_comments( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment; // WPCS: override ok.
+        masvideos_get_template( 'single-movie/review.php', array(
+            'comment' => $comment,
+            'args'    => $args,
+            'depth'   => $depth,
+        ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_movie_review_display_gravatar' ) ) {
+    /**
+     * Display the review authors gravatar
+     *
+     * @param array $comment WP_Comment.
+     * @return void
+     */
+    function masvideos_movie_review_display_gravatar( $comment ) {
+        echo get_avatar( $comment, apply_filters( 'masvideos_movie_review_gravatar_size', '60' ), '' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_movie_review_display_rating' ) ) {
+    /**
+     * Display the reviewers star rating
+     *
+     * @return void
+     */
+    function masvideos_movie_review_display_rating() {
+        if ( post_type_supports( 'movie', 'comments' ) ) {
+            masvideos_get_template( 'single-movie/review-rating.php' );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_movie_review_display_meta' ) ) {
+    /**
+     * Display the review authors meta (name, verified owner, review date)
+     *
+     * @return void
+     */
+    function masvideos_movie_review_display_meta() {
+        masvideos_get_template( 'single-movie/review-meta.php' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_movie_review_display_comment_text' ) ) {
+    /**
+     * Display the review content.
+     */
+    function masvideos_movie_review_display_comment_text() {
+        echo '<div class="description">';
+        comment_text();
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_movie_get_rating_html' ) ) {
+    /**
+     * Get HTML for ratings.
+     *
+     * @since  1.0.0
+     * @param  float $rating Rating being shown.
+     * @param  int   $count  Total number of ratings.
+     * @return string
+     */
+    function masvideos_movie_get_rating_html( $rating, $count = 0 ) {
+        $html = 0 < $rating ? '<div class="star-rating">' . masvideos_movie_get_star_rating_html( $rating, $count ) . '</div>' : '';
+        return apply_filters( 'masvideos_movie_get_rating_html', $html, $rating, $count );
+    }
+}
+
+if ( ! function_exists( 'masvideos_movie_get_star_rating_html' ) ) {
+    /**
+     * Get HTML for star rating.
+     *
+     * @since  1.0.0
+     * @param  float $rating Rating being shown.
+     * @param  int   $count  Total number of ratings.
+     * @return string
+     */
+    function masvideos_movie_get_star_rating_html( $rating, $count = 0 ) {
+        $html = '<span style="width:' . ( ( $rating / 5 ) * 100 ) . '%">';
+
+        if ( 0 < $count ) {
+            /* translators: 1: rating 2: rating count */
+            $html .= sprintf( _n( 'Rated %1$s out of 5 based on %2$s customer rating', 'Rated %1$s out of 5 based on %2$s customer ratings', $count, 'masvideos' ), '<strong class="rating">' . esc_html( $rating ) . '</strong>', '<span class="rating">' . esc_html( $count ) . '</span>' );
+        } else {
+            /* translators: %s: rating */
+            $html .= sprintf( esc_html__( 'Rated %s out of 5', 'masvideos' ), '<strong class="rating">' . esc_html( $rating ) . '</strong>' );
+        }
+
+        $html .= '</span>';
+
+        return apply_filters( 'masvideos_movie_get_star_rating_html', $html, $rating, $count );
+    }
+}

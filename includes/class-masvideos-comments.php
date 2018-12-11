@@ -65,13 +65,13 @@ class MasVideos_Comments {
      */
     public static function check_comment_rating( $comment_data ) {
         // If posting a comment (not trackback etc) and not logged in.
-        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'video' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'video' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_video_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
             wp_die( esc_html__( 'Please rate the video.', 'masvideos' ) );
             exit;
         }
 
         // If posting a comment (not trackback etc) and not logged in.
-        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'movie' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'movie' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_movie_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
             wp_die( esc_html__( 'Please rate the movie.', 'masvideos' ) );
             exit;
         }

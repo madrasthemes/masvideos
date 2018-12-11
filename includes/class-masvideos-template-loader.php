@@ -44,6 +44,7 @@ class MasVideos_Template_Loader {
         // Supported themes.
         if ( self::$theme_support ) {
             add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
+            add_filter( 'comments_template', array( __CLASS__, 'comments_template_loader' ) );
         }
     }
 
@@ -177,6 +178,36 @@ class MasVideos_Template_Loader {
         $templates[] = MasVideos()->template_path() . $default_file;
 
         return array_unique( $templates );
+    }
+
+    /**
+     * Load comments template.
+     *
+     * @param string $template template to load.
+     * @return string
+     */
+    public static function comments_template_loader( $template ) {
+        if ( get_post_type() !== 'movie' ) {
+            return $template;
+        }
+
+        $check_dirs = array(
+            trailingslashit( get_stylesheet_directory() ) . MasVideos()->template_path(),
+            trailingslashit( get_template_directory() ) . MasVideos()->template_path(),
+            trailingslashit( get_stylesheet_directory() ),
+            trailingslashit( get_template_directory() ),
+            trailingslashit( MasVideos()->plugin_path() ) . 'templates/',
+        );
+
+        if ( MASVIDEOS_TEMPLATE_DEBUG_MODE ) {
+            $check_dirs = array( array_pop( $check_dirs ) );
+        }
+
+        foreach ( $check_dirs as $dir ) {
+            if ( file_exists( trailingslashit( $dir ) . 'single-movie-reviews.php' ) ) {
+                return trailingslashit( $dir ) . 'single-movie-reviews.php';
+            }
+        }
     }
 }
 
