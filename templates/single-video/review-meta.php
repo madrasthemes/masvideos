@@ -2,7 +2,7 @@
 /**
  * The template to display the reviewers meta data (name, verified owner, review date)
  *
- * This template can be overridden by copying it to yourtheme/masvideos/single-movie/review-meta.php.
+ * This template can be overridden by copying it to yourtheme/masvideos/single-video/review-meta.php.
  *
  * HOWEVER, on occasion WooCommerce will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to

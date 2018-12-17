@@ -4,7 +4,7 @@
  *
  * Closing li is left out on purpose!.
  *
- * This template can be overridden by copying it to yourtheme/masvideos/single-movie/review.php.
+ * This template can be overridden by copying it to yourtheme/masvideos/single-video/review.php.
  *
  * HOWEVER, on occasion MasVideos will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to
@@ -26,41 +26,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         <?php
         /**
-         * The masvideos_movie_review_before hook
+         * The masvideos_video_review_before hook
          *
-         * @hooked masvideos_movie_review_display_gravatar - 10
+         * @hooked masvideos_video_review_display_gravatar - 10
          */
-        do_action( 'masvideos_movie_review_before', $comment );
+        do_action( 'masvideos_video_review_before', $comment );
         ?>
 
         <div class="comment-text">
 
             <?php
             /**
-             * The masvideos_movie_review_before_comment_meta hook.
+             * The masvideos_video_review_before_comment_meta hook.
              *
-             * @hooked masvideos_movie_review_display_rating - 10
+             * @hooked masvideos_video_review_display_rating - 10
              */
-            do_action( 'masvideos_movie_review_before_comment_meta', $comment );
+            do_action( 'masvideos_video_review_before_comment_meta', $comment );
 
             /**
-             * The masvideos_movie_review_meta hook.
+             * The masvideos_video_review_meta hook.
              *
-             * @hooked masvideos_movie_review_display_meta - 10
+             * @hooked masvideos_video_review_display_meta - 10
              * @hooked WC_Structured_Data::generate_review_data() - 20
              */
-            do_action( 'masvideos_movie_review_meta', $comment );
+            do_action( 'masvideos_video_review_meta', $comment );
 
-            do_action( 'masvideos_movie_review_before_comment_text', $comment );
+            do_action( 'masvideos_video_review_before_comment_text', $comment );
 
             /**
-             * The masvideos_movie_review_comment_text hook
+             * The masvideos_video_review_comment_text hook
              *
-             * @hooked masvideos_movie_review_display_comment_text - 10
+             * @hooked masvideos_video_review_display_comment_text - 10
              */
-            do_action( 'masvideos_movie_review_comment_text', $comment );
+            do_action( 'masvideos_video_review_comment_text', $comment );
 
-            do_action( 'masvideos_movie_review_after_comment_text', $comment ); ?>
+            do_action( 'masvideos_video_review_after_comment_text', $comment ); ?>
 
         </div>
     </div>

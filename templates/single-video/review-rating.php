@@ -2,7 +2,7 @@
 /**
  * The template to display the reviewers star rating in reviews
  *
- * This template can be overridden by copying it to yourtheme/masvideos/single-movie/review-rating.php.
+ * This template can be overridden by copying it to yourtheme/masvideos/single-video/review-rating.php.
  *
  * HOWEVER, on occasion MasVideos will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to
@@ -21,6 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $comment;
 $rating = intval( get_comment_meta( $comment->comment_ID, 'rating', true ) );
 
-if ( $rating && 'yes' === get_option( 'masvideos_movie_review_rating_required' ) ) {
-	echo masvideos_movie_get_rating_html( $rating );
+if ( $rating && 'yes' === get_option( 'masvideos_video_review_rating_required' ) ) {
+	echo masvideos_video_get_rating_html( $rating );
 }

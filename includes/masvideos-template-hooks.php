@@ -65,6 +65,7 @@ add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_b
 add_action( 'masvideos_before_single_video_summary', 'masvideos_template_single_video_video', 10 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_title', 5 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_meta', 10 );
+add_action( 'masvideos_after_single_video_summary', 'comments_template', 10 );
 
 /**
  * Movie Single.
@@ -85,3 +86,16 @@ add_action( 'masvideos_movie_review_before', 'masvideos_movie_review_display_gra
 add_action( 'masvideos_movie_review_before_comment_meta', 'masvideos_movie_review_display_rating', 10 );
 add_action( 'masvideos_movie_review_meta', 'masvideos_movie_review_display_meta', 10 );
 add_action( 'masvideos_movie_review_comment_text', 'masvideos_movie_review_display_comment_text', 10 );
+
+/**
+ * Video Reviews
+ *
+ * @see masvideos_video_review_display_gravatar()
+ * @see masvideos_video_review_display_rating()
+ * @see masvideos_video_review_display_meta()
+ * @see masvideos_video_review_display_comment_text()
+ */
+add_action( 'masvideos_video_review_before', 'masvideos_video_review_display_gravatar', 10 );
+add_action( 'masvideos_video_review_before_comment_meta', 'masvideos_video_review_display_rating', 10 );
+add_action( 'masvideos_video_review_meta', 'masvideos_video_review_display_meta', 10 );
+add_action( 'masvideos_video_review_comment_text', 'masvideos_video_review_display_comment_text', 10 );

@@ -187,7 +187,9 @@ class MasVideos_Template_Loader {
      * @return string
      */
     public static function comments_template_loader( $template ) {
-        if ( get_post_type() !== 'movie' ) {
+        $post_type = get_post_type();
+
+        if ( ! in_array( $post_type, array( 'video', 'movie' ) ) ) {
             return $template;
         }
 
@@ -204,8 +206,9 @@ class MasVideos_Template_Loader {
         }
 
         foreach ( $check_dirs as $dir ) {
-            if ( file_exists( trailingslashit( $dir ) . 'single-movie-reviews.php' ) ) {
-                return trailingslashit( $dir ) . 'single-movie-reviews.php';
+            $file_name = $post_type === 'movie' ? 'single-movie-reviews.php' : 'single-video-reviews.php';
+            if ( file_exists( trailingslashit( $dir ) . $file_name ) ) {
+                return trailingslashit( $dir ) . $file_name;
             }
         }
     }
