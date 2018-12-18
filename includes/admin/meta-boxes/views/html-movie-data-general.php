@@ -65,5 +65,28 @@ if ( ! defined( 'ABSPATH' ) ) {
         ?>
     </div>
 
+    <div class="options_group">
+        <?php
+        masvideos_wp_radio(
+            array(
+                'id'            => '_catalog_visibility',
+                'value'         => is_callable( array( $movie_object, 'get_catalog_visibility' ) ) ? $movie_object->get_catalog_visibility() : '',
+                'label'         => __( 'Catalog visibility', 'masvideos' ),
+                'options'       => masvideos_get_movie_visibility_options(),
+                'description'   => __( 'This setting determines which catalog pages movie will be listed on.', 'masvideos' ),
+            )
+        );
+
+        masvideos_wp_checkbox(
+            array(
+                'id'            => '_featured',
+                'value'         => is_callable( array( $movie_object, 'get_featured' ) ) ? masvideos_bool_to_string( $movie_object->get_featured() ) : '',
+                'label'         => __( 'Featured', 'masvideos' ),
+                'description'   => __( 'This is a featured movie.', 'masvideos' ),
+            )
+        );
+        ?>
+    </div>
+
     <?php do_action( 'masvideos_movie_options_general_movie_data' ); ?>
 </div>
