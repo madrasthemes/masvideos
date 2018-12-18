@@ -66,7 +66,6 @@ function masvideos_get_movie( $the_movie = false ) {
 function masvideos_delete_movie_transients( $post_id = 0 ) {
     // Core transients.
     $transients_to_clear = array(
-        'masvideos_movies_onsale',
         'masvideos_featured_movies',
         'masvideos_count_comments',
     );
