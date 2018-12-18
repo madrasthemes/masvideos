@@ -22,5 +22,5 @@ global $comment;
 $rating = intval( get_comment_meta( $comment->comment_ID, 'rating', true ) );
 
 if ( $rating && 'yes' === get_option( 'masvideos_movie_review_rating_required' ) ) {
-	echo masvideos_movie_get_rating_html( $rating );
+	echo masvideos_get_star_rating_html( $rating );
 }
