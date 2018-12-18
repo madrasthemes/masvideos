@@ -171,6 +171,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
         public function frontend_includes() {
             include_once MASVIDEOS_ABSPATH . 'includes/masvideos-template-hooks.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-template-loader.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-frontend-scripts.php';
         }
 
         /**
