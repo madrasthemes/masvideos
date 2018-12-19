@@ -39,6 +39,28 @@ module.exports = function( grunt ) {
         },
 
         // Minify .js files.
+        babel: {
+            options: {
+                sourceMap: false,
+                presets: [
+                    '@babel/preset-env'
+                ]
+            },
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.js %>/blocks/',
+                    src: [
+                        '*.js',
+                        '!*.build.js'
+                    ],
+                    dest: '<%= dirs.js %>/blocks/',
+                    ext: '.build.js'
+                }]
+            }
+        },
+
+        // Minify .js files.
         uglify: {
             options: {
                 ie8: true,
@@ -253,6 +275,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
+    grunt.loadNpmTasks( 'grunt-babel' );
 
     // Register tasks
     grunt.registerTask( 'default', [
@@ -262,6 +285,7 @@ module.exports = function( grunt ) {
 
     grunt.registerTask( 'js', [
         // 'jshint',
+        'babel',
         'uglify'
     ]);
 
