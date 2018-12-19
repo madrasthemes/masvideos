@@ -71,6 +71,11 @@ class MasVideos_Shortcodes {
             $type = 'top_rated_videos';
         }
 
+        if ( isset( $atts['featured'] ) && masvideos_string_to_bool( $atts['featured'] ) ) {
+            $type = 'featured_videos';
+            $atts['visibility'] = 'featured';
+        }
+
         $shortcode = new MasVideos_Shortcode_Videos( $atts, $type );
 
         return $shortcode->get_content();
@@ -89,6 +94,11 @@ class MasVideos_Shortcodes {
         // Allow list movie based on specific cases.
         if ( isset( $atts['top_rated'] ) && masvideos_string_to_bool( $atts['top_rated'] ) ) {
             $type = 'top_rated_movies';
+        }
+
+        if ( isset( $atts['featured'] ) && masvideos_string_to_bool( $atts['featured'] ) ) {
+            $type = 'featured_movies';
+            $atts['visibility'] = 'featured';
         }
 
         $shortcode = new MasVideos_Shortcode_Movies( $atts, $type );
