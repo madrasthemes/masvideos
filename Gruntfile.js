@@ -38,7 +38,7 @@ module.exports = function( grunt ) {
             ]
         },
 
-        // Minify .js files.
+        // Build .js files from .esnext.js files.
         babel: {
             options: {
                 sourceMap: false,
@@ -46,16 +46,15 @@ module.exports = function( grunt ) {
                     '@babel/preset-env'
                 ]
             },
-            dist: {
+            blocks: {
                 files: [{
                     expand: true,
                     cwd: '<%= dirs.js %>/blocks/',
                     src: [
-                        '*.js',
-                        '!*.build.js'
+                        '*.esnext.js',
                     ],
                     dest: '<%= dirs.js %>/blocks/',
-                    ext: '.build.js'
+                    ext: '.js'
                 }]
             }
         },
@@ -80,6 +79,19 @@ module.exports = function( grunt ) {
                         '!*.min.js'
                     ],
                     dest: '<%= dirs.js %>/',
+                    ext: '.min.js'
+                }]
+            },
+            blocks: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.js %>/blocks/',
+                    src: [
+                        '*.js',
+                        '!*.min.js',
+                        '!*.esnext.js'
+                    ],
+                    dest: '<%= dirs.js %>/blocks/',
                     ext: '.min.js'
                 }]
             },
