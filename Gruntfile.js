@@ -13,6 +13,7 @@ module.exports = function( grunt ) {
             sass: 'assets/sass',
             fonts: 'assets/fonts',
             images: 'assets/images',
+            esnext: 'assets/esnext',
             js: 'assets/js'
         },
 
@@ -49,9 +50,9 @@ module.exports = function( grunt ) {
             blocks: {
                 files: [{
                     expand: true,
-                    cwd: '<%= dirs.js %>/blocks/',
+                    cwd: '<%= dirs.esnext %>/blocks/',
                     src: [
-                        '*.esnext.js',
+                        '*.js'
                     ],
                     dest: '<%= dirs.js %>/blocks/',
                     ext: '.js'
@@ -88,8 +89,7 @@ module.exports = function( grunt ) {
                     cwd: '<%= dirs.js %>/blocks/',
                     src: [
                         '*.js',
-                        '!*.min.js',
-                        '!*.esnext.js'
+                        '!*.min.js'
                     ],
                     dest: '<%= dirs.js %>/blocks/',
                     ext: '.min.js'
