@@ -39,13 +39,13 @@ module.exports = function( grunt ) {
             ]
         },
 
-        // Build .js files from .esnext.js files.
-        babel: {
+        // Build .js files from esnext .js files.
+        browserify: {
             options: {
-                sourceMap: false,
-                presets: [
-                    '@babel/preset-env'
-                ]
+                browserifyOptions: { debug: true },
+                transform: [["babelify", { "presets": ["@babel/preset-env"] }]],
+                watch: false,
+                keepAlive: false,
             },
             blocks: {
                 files: [{
@@ -55,6 +55,28 @@ module.exports = function( grunt ) {
                         '*.js'
                     ],
                     dest: '<%= dirs.js %>/blocks/',
+                    ext: '.js'
+                }]
+            },
+            components: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.esnext %>/components/',
+                    src: [
+                        '*.js'
+                    ],
+                    dest: '<%= dirs.js %>/components/',
+                    ext: '.js'
+                }]
+            },
+            utils: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.esnext %>/utils/',
+                    src: [
+                        '*.js'
+                    ],
+                    dest: '<%= dirs.js %>/utils/',
                     ext: '.js'
                 }]
             }
@@ -287,7 +309,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
-    grunt.loadNpmTasks( 'grunt-babel' );
+    grunt.loadNpmTasks( 'grunt-browserify' );
 
     // Register tasks
     grunt.registerTask( 'default', [
@@ -297,7 +319,7 @@ module.exports = function( grunt ) {
 
     grunt.registerTask( 'js', [
         // 'jshint',
-        'babel',
+        'browserify',
         'uglify'
     ]);
 
