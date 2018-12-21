@@ -57,28 +57,6 @@ module.exports = function( grunt ) {
                     dest: '<%= dirs.js %>/blocks/',
                     ext: '.js'
                 }]
-            },
-            components: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= dirs.esnext %>/components/',
-                    src: [
-                        '*.js'
-                    ],
-                    dest: '<%= dirs.js %>/components/',
-                    ext: '.js'
-                }]
-            },
-            utils: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= dirs.esnext %>/utils/',
-                    src: [
-                        '*.js'
-                    ],
-                    dest: '<%= dirs.js %>/utils/',
-                    ext: '.js'
-                }]
             }
         },
 
