@@ -41,7 +41,6 @@ export class PostSelector extends Component {
      */
     componentDidMount() {
         this.setState({
-            // loading: true,
             initialLoading: true,
         });
 
@@ -55,10 +54,6 @@ export class PostSelector extends Component {
                             this.setState({
                                 initialLoading: false,
                             });
-                            // this.getPosts()
-                            //     .then(() => {
-                            //         this.setState({ loading: false })
-                            //     } );
                         })
                 });
             });
