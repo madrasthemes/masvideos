@@ -1,7 +1,10 @@
+import { PostSelector } from '../components/PostSelector';
+
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
 const { ServerSideRender, TextControl, RangeControl, SelectControl, CheckboxControl } = wp.components;
-const { withSelect } = wp.data;
+// const { select } = wp.data;
+// const { addQueryArgs } = wp.url;
 
 registerBlockType( 'masvideos/movies', {
     title: 'Movies Block',
@@ -10,14 +13,34 @@ registerBlockType( 'masvideos/movies', {
 
     category: 'widgets',
 
-    edit: withSelect( ( select ) => {
-        return {
-            movies: select( 'core' ).getEntityRecords( 'postType', 'movie' )
-        };
-    } )( ( props ) => {
-        const { attributes, className, setAttributes, movies } = props;
-        const { limit, columns, orderby, order, featured, top_rated } = attributes;
+    edit: ( ( props ) => {
+        const { attributes, className, setAttributes } = props;
+        const { limit, columns, orderby, order, ids, featured, top_rated } = attributes;
+
+        // let selectedPostIds = ids ? ids.split(',').map(Number) : [];
+
+        // const { getEntity, getEntityRecords } = select( 'core' );
+        // let query = {
+        //     search: "2",
+        //     per_page: -1,
+        // };
+        // const movies = getEntityRecords( 'postType', 'movie', query );
+        // const categories = getEntityRecords( 'taxonomy', 'movie_cat', query );
         // console.log( movies );
+        // console.log( categories );
+
+        // const movies = wp.apiFetch( {
+        //     path: addQueryArgs( '/wp/v2/movie', {
+        //         search: "2",
+        //         per_page: -1,
+        //     } ),
+        // } );
+        // console.log( movies );
+        
+        // const getPostTypes = wp.apiFetch( {
+        //     path: '/wp/v2/types',
+        // } );
+        // console.log( getPostTypes );
 
         const onChangeLimit = newLimit => {
             setAttributes( { limit: newLimit } );
@@ -33,6 +56,10 @@ registerBlockType( 'masvideos/movies', {
 
         const onChangeOrder = newOrder => {
             setAttributes( { order: newOrder } );
+        };
+
+        const onChangeIds = newIds => {
+            setAttributes( { ids: newIds.join(',') } );
         };
 
         const onChangeFeatured = newFeatured => {
@@ -78,6 +105,11 @@ registerBlockType( 'masvideos/movies', {
                         { label: 'DESC', value: 'DESC' },
                     ] }
                     onChange={ onChangeOrder }
+                />
+                <PostSelector
+                    postType = 'movie'
+                    selectedPostIds={ ids ? ids.split(',').map(Number) : [] }
+                    updateSelectedPostIds={ onChangeIds }
                 />
                 <CheckboxControl
                     label="Featured"

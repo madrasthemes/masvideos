@@ -37,6 +37,9 @@ class MasVideos_Gutenberg_Blocks {
                             'type'      => 'string',
                             'default'   => 'DESC'
                         ),
+                        'ids'         => array(
+                            'type'      => 'string',
+                        ),
                         'featured'    => array(
                             'type'      => 'boolean',
                             'default'   => false
@@ -66,6 +69,9 @@ class MasVideos_Gutenberg_Blocks {
                         'order'         => array(
                             'type'      => 'string',
                             'default'   => 'DESC'
+                        ),
+                        'ids'         => array(
+                            'type'      => 'string',
                         ),
                         'featured'    => array(
                             'type'      => 'boolean',
