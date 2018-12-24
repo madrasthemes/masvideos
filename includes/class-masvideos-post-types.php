@@ -238,6 +238,7 @@ class MasVideos_Post_Types {
                         'with_front'   => false,
                         'hierarchical' => true,
                     ),
+                    'show_in_rest'          => true,
                 )
             )
         );
@@ -278,6 +279,7 @@ class MasVideos_Post_Types {
                         'slug'       => $permalinks['video_tag_rewrite_slug'],
                         'with_front' => false,
                     ),
+                    'show_in_rest'          => true,
                 )
             )
         );
@@ -332,6 +334,7 @@ class MasVideos_Post_Types {
                         'with_front'   => false,
                         'hierarchical' => true,
                     ),
+                    'show_in_rest'          => true,
                 )
             )
         );
@@ -372,6 +375,7 @@ class MasVideos_Post_Types {
                         'slug'       => $permalinks['movie_tag_rewrite_slug'],
                         'with_front' => false,
                     ),
+                    'show_in_rest'          => true,
                 )
             )
         );
@@ -433,6 +437,7 @@ class MasVideos_Post_Types {
                             'delete_terms' => "delete_{$tax->post_type}_terms",
                             'assign_terms' => "assign_{$tax->post_type}_terms",
                         ),
+                        'show_in_rest'          => true,
                     );
 
                     if ( 1 === $tax->attribute_public && sanitize_title( $tax->attribute_name ) ) {
