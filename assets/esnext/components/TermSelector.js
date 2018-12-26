@@ -6,11 +6,11 @@ const { Icon } = wp.components;
 const { Component } = wp.element;
 
 /**
- * PostSelector Component
+ * TermSelector Component
  */
-export class PostSelector extends Component {
+export class TermSelector extends Component {
     /**
-     * Constructor for PostSelector Component.
+     * Constructor for TermSelector Component.
      * Sets up state, and creates bindings for functions.
      * @param object props - current component properties.
      */
@@ -19,37 +19,38 @@ export class PostSelector extends Component {
         this.props = props;
 
         this.state = {
-            posts: [],
+            terms: [],
             loading: false,
             type: props.postType || 'post',
-            types: [],
+            taxonomy: props.taxonomy || 'category',
+            taxonomies: [],
             filter: '',
             filterLoading: false,
-            filterPosts: [],
+            filterTerms: [],
             initialLoading: false,
         };
 
-        this.addPost = this.addPost.bind(this);
-        this.removePost = this.removePost.bind(this);
+        this.addTerm = this.addTerm.bind(this);
+        this.removeTerm = this.removeTerm.bind(this);
         this.handleInputFilterChange = this.handleInputFilterChange.bind(this);
-        this.doPostFilter = debounce(this.doPostFilter.bind(this), 300);
+        this.doTermFilter = debounce(this.doTermFilter.bind(this), 300);
     }
 
     /**
      * When the component mounts it calls this function.
-     * Fetches posts types, selected posts then makes first call for posts
+     * Fetches terms taxonomies, selected terms then makes first call for terms
      */
     componentDidMount() {
         this.setState({
             initialLoading: true,
         });
 
-        api.getPostTypes()
+        api.getTaxonomies( { type: this.state.type } )
             .then(( response ) => {
                 this.setState({
-                    types: response
+                    taxonomies: response
                 }, () => {
-                    this.retrieveSelectedPosts()
+                    this.retrieveSelectedTerms()
                         .then(() => {
                             this.setState({
                                 initialLoading: false,
@@ -60,16 +61,17 @@ export class PostSelector extends Component {
     }
 
     /**
-     * GetPosts wrapper, builds the request argument based state and parameters passed/
+     * GetTerms wrapper, builds the request argument based state and parameters passed/
      * @param {object} args - desired arguments (can be empty).
      * @returns {Promise<T>}
      */
-    getPosts(args = {}) {
-        const { selectedPostIds } = this.props;
+    getTerms(args = {}) {
+        const { selectedTermIds } = this.props;
 
         const defaultArgs = {
             per_page: 10,
             type: this.state.type,
+            taxonomy: this.state.taxonomy,
             search: this.state.filter,
         };
 
@@ -78,20 +80,20 @@ export class PostSelector extends Component {
             ...args
         };
 
-        requestArguments.restBase = this.state.types[this.state.type].rest_base;
+        requestArguments.restBase = this.state.taxonomies[this.state.taxonomy].rest_base;
 
-        return api.getPosts(requestArguments)
+        return api.getTerms(requestArguments)
             .then(response => {
                 if (requestArguments.search) {
                     this.setState({
-                        filterPosts: response.filter(({ id }) => selectedPostIds.indexOf(id) === -1),
+                        filterTerms: response.filter(({ id }) => selectedTermIds.indexOf(id) === -1),
                     });
 
                     return response;
                 }
 
                 this.setState({
-                    posts: uniqueById([...this.state.posts, ...response]),
+                    terms: uniqueById([...this.state.terms, ...response]),
                 });
 
                 // return response to continue the chain
@@ -100,16 +102,16 @@ export class PostSelector extends Component {
     }
 
     /**
-     * Gets the selected posts by id from the `posts` state object and sorts them by their position in the selected array.
+     * Gets the selected terms by id from the `terms` state object and sorts them by their position in the selected array.
      * @returns Array of objects.
      */
-    getSelectedPosts() {
-        const { selectedPostIds } = this.props;
-        return this.state.posts
-            .filter(({ id }) => selectedPostIds.indexOf(id) !== -1)
+    getSelectedTerms() {
+        const { selectedTermIds } = this.props;
+        return this.state.terms
+            .filter(({ id }) => selectedTermIds.indexOf(id) !== -1)
             .sort((a, b) => {
-                const aIndex = this.props.selectedPostIds.indexOf(a.id);
-                const bIndex = this.props.selectedPostIds.indexOf(b.id);
+                const aIndex = this.props.selectedTermIds.indexOf(a.id);
+                const bIndex = this.props.selectedTermIds.indexOf(b.id);
 
                 if (aIndex > bIndex) {
                     return 1;
@@ -124,56 +126,56 @@ export class PostSelector extends Component {
     }
 
     /**
-     * Makes the necessary api calls to fetch the selected posts and returns a promise.
+     * Makes the necessary api calls to fetch the selected terms and returns a promise.
      * @returns {*}
      */
-    retrieveSelectedPosts() {
-        const { postType, selectedPostIds } = this.props;
-        const { types } = this.state;
+    retrieveSelectedTerms() {
+        const { termType, selectedTermIds } = this.props;
+        const { taxonomies } = this.state;
 
-        if ( selectedPostIds && !selectedPostIds.length > 0 ) {
+        if ( selectedTermIds && !selectedTermIds.length > 0 ) {
             // return a fake promise that auto resolves.
             return new Promise((resolve) => resolve());
         }
 
-        return this.getPosts({
-            include: this.props.selectedPostIds.join(','),
+        return this.getTerms({
+            include: this.props.selectedTermIds.join(','),
             per_page: 100,
-            postType
+            termType
         });
     }
 
     /**
-     * Adds desired post id to the selectedPostIds List
-     * @param {Integer} post_id
+     * Adds desired term id to the selectedTermIds List
+     * @param {Integer} term_id
      */
-    addPost(post_id) {
+    addTerm(term_id) {
         if (this.state.filter) {
-            const post = this.state.filterPosts.filter(p => p.id === post_id);
-            const posts = uniqueById([
-                ...this.state.posts,
-                ...post
+            const term = this.state.filterTerms.filter(p => p.id === term_id);
+            const terms = uniqueById([
+                ...this.state.terms,
+                ...term
             ]);
 
             this.setState({
-                posts
+                terms
             });
         }
 
-        this.props.updateSelectedPostIds([
-            ...this.props.selectedPostIds,
-            post_id
+        this.props.updateSelectedTermIds([
+            ...this.props.selectedTermIds,
+            term_id
         ]);
     }
 
     /**
-     * Removes desired post id to the selectedPostIds List
-     * @param {Integer} post_id
+     * Removes desired term id to the selectedTermIds List
+     * @param {Integer} term_id
      */
-    removePost(post_id) {
-        this.props.updateSelectedPostIds([
-            ...this.props.selectedPostIds
-        ].filter(id => id !== post_id));
+    removeTerm(term_id) {
+        this.props.updateSelectedTermIds([
+            ...this.props.selectedTermIds
+        ].filter(id => id !== term_id));
     }
 
     /**
@@ -185,18 +187,18 @@ export class PostSelector extends Component {
             filter
         }, () => {
             if (!filter) {
-                // remove filtered posts
-                return this.setState({ filteredPosts: [], filtering: false });
+                // remove filtered terms
+                return this.setState({ filteredTerms: [], filtering: false });
             }
 
-            this.doPostFilter();
+            this.doTermFilter();
         })
     }
 
     /**
      * Actual api call for searching for query, this function is debounced in constructor.
      */
-    doPostFilter() {
+    doTermFilter() {
         const { filter = '' } = this.state;
 
         if (!filter) {
@@ -208,7 +210,7 @@ export class PostSelector extends Component {
             filterLoading: true
         });
 
-        this.getPosts()
+        this.getTerms()
             .then(() => {
                 this.setState({
                     filterLoading: false
@@ -217,18 +219,18 @@ export class PostSelector extends Component {
     }
 
     /**
-     * Renders the PostSelector component.
+     * Renders the TermSelector component.
      */
     render() {
         const isFiltered = this.state.filtering;
-        const postList = isFiltered && !this.state.filterLoading ? this.state.filterPosts : [];
-        const SelectedPostList  = this.getSelectedPosts();
+        const termList = isFiltered && !this.state.filterLoading ? this.state.filterTerms : [];
+        const SelectedTermList  = this.getSelectedTerms();
 
         const addIcon = <Icon icon="plus" />;
         const removeIcon = <Icon icon="minus" />;
 
         return (
-            <div className="components-base-control components-post-selector">
+            <div className="components-base-control components-term-selector">
                 <div className="components-base-control__field">
                     <label htmlFor="searchinput" className="components-base-control__label">
                         <Icon icon="search" />
@@ -242,19 +244,19 @@ export class PostSelector extends Component {
                         onChange={this.handleInputFilterChange}
                     />
                     <ItemList
-                        items={postList}
+                        items={termList}
                         loading={this.state.initialLoading||this.state.loading||this.state.filterLoading}
                         filtered={isFiltered}
-                        action={this.addPost}
+                        action={this.addTerm}
                         icon={addIcon}
                     />
                 </div>
                 <div className="components-base-control__field--selected">
                     <h2>Selected</h2>
                     <ItemList
-                        items={SelectedPostList}
+                        items={SelectedTermList}
                         loading={this.state.initialLoading}
-                        action={this.removePost}
+                        action={this.removeTerm}
                         icon={removeIcon}
                     />
                 </div>

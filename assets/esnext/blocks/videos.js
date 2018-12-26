@@ -1,4 +1,5 @@
 import { PostSelector } from '../components/PostSelector';
+import { TermSelector } from '../components/TermSelector';
 
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
@@ -13,7 +14,7 @@ registerBlockType( 'masvideos/videos', {
 
     edit: ( ( props ) => {
         const { attributes, className, setAttributes } = props;
-        const { limit, columns, orderby, order, ids, featured, top_rated } = attributes;
+        const { limit, columns, orderby, order, ids, category, featured, top_rated } = attributes;
 
         const onChangeLimit = newLimit => {
             setAttributes( { limit: newLimit } );
@@ -33,6 +34,10 @@ registerBlockType( 'masvideos/videos', {
 
         const onChangeIds = newIds => {
             setAttributes( { ids: newIds.join(',') } );
+        };
+
+        const onChangeCategory = newCategory => {
+            setAttributes( { category: newCategory.join(',') } );
         };
 
         const onChangeFeatured = newFeatured => {
@@ -83,6 +88,12 @@ registerBlockType( 'masvideos/videos', {
                     postType = 'video'
                     selectedPostIds={ ids ? ids.split(',').map(Number) : [] }
                     updateSelectedPostIds={ onChangeIds }
+                />
+                <TermSelector
+                    postType = 'video'
+                    taxonomy = 'video_cat'
+                    selectedTermIds={ category ? category.split(',').map(Number) : [] }
+                    updateSelectedTermIds={ onChangeCategory }
                 />
                 <CheckboxControl
                     label="Featured"
