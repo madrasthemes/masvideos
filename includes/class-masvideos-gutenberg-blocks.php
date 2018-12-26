@@ -98,6 +98,20 @@ class MasVideos_Gutenberg_Blocks {
                 wp_register_script( $args['editor_script'], MasVideos()->plugin_url() . '/assets/js/blocks/' . $block . $suffix . '.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ) );
                 register_block_type( 'masvideos/' . $block, $args );
             }
+
+            add_filter( 'block_categories', array( __CLASS__, 'block_categories' ), 10, 2 );
         }
+    }
+
+    public static function block_categories( $categories, $post ) {
+        return array_merge(
+            $categories,
+            array(
+                array(
+                    'slug' => 'masvideos-blocks',
+                    'title' => esc_html__( 'MasVideos Blocks', 'masvideos-blocks' ),
+                ),
+            )
+        );
     }
 }

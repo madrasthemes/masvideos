@@ -8,9 +8,9 @@ const { ServerSideRender, TextControl, RangeControl, SelectControl, CheckboxCont
 registerBlockType( 'masvideos/videos', {
     title: 'Videos Block',
 
-    icon: 'megaphone',
+    icon: 'video-alt3',
 
-    category: 'widgets',
+    category: 'masvideos-blocks',
 
     edit: ( ( props ) => {
         const { attributes, className, setAttributes } = props;
