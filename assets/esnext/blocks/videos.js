@@ -1,14 +1,15 @@
 import { PostSelector } from '../components/PostSelector';
 import { TermSelector } from '../components/TermSelector';
 
+const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
 const { ServerSideRender, TextControl, RangeControl, SelectControl, CheckboxControl } = wp.components;
 
 registerBlockType( 'masvideos/videos', {
-    title: 'Videos Block',
+    title: __('Videos Block', 'masvideos'),
 
-    icon: 'video-alt3',
+    icon: 'format-video',
 
     category: 'masvideos-blocks',
 
@@ -51,36 +52,36 @@ registerBlockType( 'masvideos/videos', {
         return [
             <InspectorControls>
                 <RangeControl
-                    label="Limit"
+                    label={__('Limit', 'masvideos')}
                     value={ limit }
                     onChange={ onChangeLimit }
                     min={ 1 }
                     max={ 50 }
                 />
                 <RangeControl
-                    label="Columns"
+                    label={__('Columns', 'masvideos')}
                     value={ columns }
                     onChange={ onChangeColumns }
                     min={ 1 }
                     max={ 10 }
                 />
                 <SelectControl
-                    label="Orderby"
+                    label={__('Orderby', 'masvideos')}
                     value={ orderby }
                     options={ [
-                        { label: 'Title', value: 'title' },
-                        { label: 'Date', value: 'date' },
-                        { label: 'ID', value: 'id' },
-                        { label: 'Random', value: 'rand' },
+                        { label: __('Title', 'masvideos'), value: 'title' },
+                        { label: __('Date', 'masvideos'), value: 'date' },
+                        { label: __('ID', 'masvideos'), value: 'id' },
+                        { label: __('Random', 'masvideos'), value: 'rand' },
                     ] }
                     onChange={ onChangeOrderby }
                 />
                 <SelectControl
-                    label="Order"
+                    label={__('Order', 'masvideos')}
                     value={ order }
                     options={ [
-                        { label: 'ASC', value: 'ASC' },
-                        { label: 'DESC', value: 'DESC' },
+                        { label: __('ASC', 'masvideos'), value: 'ASC' },
+                        { label: __('DESC', 'masvideos'), value: 'DESC' },
                     ] }
                     onChange={ onChangeOrder }
                 />
@@ -96,14 +97,14 @@ registerBlockType( 'masvideos/videos', {
                     updateSelectedTermIds={ onChangeCategory }
                 />
                 <CheckboxControl
-                    label="Featured"
-                    help="Check to select featured videos."
+                    label={__('Featured', 'masvideos')}
+                    help={__('Check to select featured videos.', 'masvideos')}
                     checked={ featured }
                     onChange={ onChangeFeatured }
                 />
                 <CheckboxControl
-                    label="Top Rated"
-                    help="Check to select top rated videos."
+                    label={__('Top Rated', 'masvideos')}
+                    help={__('Check to select top rated videos.', 'masvideos')}
                     checked={ top_rated }
                     onChange={ onChangeTopRated }
                 />

@@ -2,6 +2,7 @@ import { ItemList } from "./ItemList";
 import * as api from '../utils/api';
 import { uniqueById, debounce } from '../utils/useful-funcs';
 
+const { __ } = wp.i18n;
 const { Icon } = wp.components;
 const { Component } = wp.element;
 
@@ -237,7 +238,7 @@ export class PostSelector extends Component {
                         className="components-text-control__input"
                         id="searchinput"
                         type="search"
-                        placeholder={"Please enter your search query..."}
+                        placeholder={__('Please enter your search query...', 'masvideos')}
                         value={this.state.filter}
                         onChange={this.handleInputFilterChange}
                     />
@@ -250,7 +251,7 @@ export class PostSelector extends Component {
                     />
                 </div>
                 <div className="components-base-control__field--selected">
-                    <h2>Selected</h2>
+                    <h2>{__('Selected', 'masvideos')}</h2>
                     <ItemList
                         items={SelectedPostList}
                         loading={this.state.initialLoading}
