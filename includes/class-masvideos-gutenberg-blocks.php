@@ -109,7 +109,7 @@ class MasVideos_Gutenberg_Blocks {
             array(
                 array(
                     'slug' => 'masvideos-blocks',
-                    'title' => esc_html__( 'MasVideos Blocks', 'masvideos-blocks' ),
+                    'title' => esc_html__( 'MasVideos Blocks', 'masvideos' ),
                 ),
             )
         );
