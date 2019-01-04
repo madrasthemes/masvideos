@@ -232,6 +232,15 @@ export class TermSelector extends Component {
 
         return (
             <div className="components-base-control components-term-selector">
+                <div className="components-base-control__field--selected">
+                    <h2>{__('Search Term', 'masvideos')}</h2>
+                    <ItemList
+                        items={SelectedTermList}
+                        loading={this.state.initialLoading}
+                        action={this.removeTerm}
+                        icon={removeIcon}
+                    />
+                </div>
                 <div className="components-base-control__field">
                     <label htmlFor="searchinput" className="components-base-control__label">
                         <Icon icon="search" />
@@ -250,15 +259,6 @@ export class TermSelector extends Component {
                         filtered={isFiltered}
                         action={this.addTerm}
                         icon={addIcon}
-                    />
-                </div>
-                <div className="components-base-control__field--selected">
-                    <h2>{__('Selected', 'masvideos')}</h2>
-                    <ItemList
-                        items={SelectedTermList}
-                        loading={this.state.initialLoading}
-                        action={this.removeTerm}
-                        icon={removeIcon}
                     />
                 </div>
             </div>

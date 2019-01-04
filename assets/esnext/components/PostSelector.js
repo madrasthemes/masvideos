@@ -230,6 +230,15 @@ export class PostSelector extends Component {
 
         return (
             <div className="components-base-control components-post-selector">
+                <div className="components-base-control__field--selected">
+                    <h2>{__('Search Post', 'masvideos')}</h2>
+                    <ItemList
+                        items={SelectedPostList}
+                        loading={this.state.initialLoading}
+                        action={this.removePost}
+                        icon={removeIcon}
+                    />
+                </div>
                 <div className="components-base-control__field">
                     <label htmlFor="searchinput" className="components-base-control__label">
                         <Icon icon="search" />
@@ -248,15 +257,6 @@ export class PostSelector extends Component {
                         filtered={isFiltered}
                         action={this.addPost}
                         icon={addIcon}
-                    />
-                </div>
-                <div className="components-base-control__field--selected">
-                    <h2>{__('Selected', 'masvideos')}</h2>
-                    <ItemList
-                        items={SelectedPostList}
-                        loading={this.state.initialLoading}
-                        action={this.removePost}
-                        icon={removeIcon}
                     />
                 </div>
             </div>

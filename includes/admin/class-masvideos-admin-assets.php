@@ -23,6 +23,7 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
         public function __construct() {
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+            add_action( 'enqueue_block_editor_assets', array( $this, 'block_editor_assets' ) );
         }
 
         /**
@@ -339,6 +340,11 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
             //         )
             //     );
             // }
+        }
+
+        public function block_editor_assets() {
+            wp_enqueue_style( 'masvideos-editor-block-styles', MasVideos()->plugin_url() . '/assets/css/post-selector.css', false, MASVIDEOS_VERSION, 'all' );
+            wp_style_add_data( 'masvideos-editor-block-styles', 'rtl', 'replace' );
         }
     }
 

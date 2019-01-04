@@ -1,0 +1,113 @@
+/**
+ * Post / Term Selector
+ */
+
+.components-post-selector,
+.components-term-selector {
+    margin-bottom: 16px;
+    border: 1px solid #888;
+    border: 1px solid #888;
+    border-radius: 4px;
+    padding: 5px;
+
+    .components-base-control {
+        &__field {
+            position: relative;
+            margin-bottom: 0;
+
+            .item {
+                padding: 5px 10px;
+                background-color: #fff;
+                margin-bottom: 1px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &-list {
+                    position: absolute;
+                    background-color: #888;
+                    border: 1px solid #888;
+                    border-radius: 4px;
+                    width: 100%;
+                    z-index: 2;
+                    overflow: hidden;
+                    margin-top: 1px;
+                    margin-left: 1px;
+
+                    p {
+                        background-color: #fff;
+                        padding: 5px 10px;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+
+            &--selected {
+                h2 {
+                    margin-top: 0;
+                    margin-bottom: 5px;
+                }
+
+                .item {
+                    display: inline-block;
+                    background-color: #eee;
+                    padding: 5px 10px 5px 25px;
+                    border-radius: 3px;
+                    margin: 2px;
+
+                    &:before {
+                        content: "\f153";
+                        font-family: dashicons;
+                        font-weight: 400;
+                        line-height: 1;
+                        position: absolute;
+                        left: 8px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+
+
+
+                    &-list {
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+        }
+        
+        &__label {
+            position: absolute;
+            left: 5px;
+            top: 7px;
+        }
+    }
+
+    .components-text-control__input {
+        padding-left: 25px !important;
+    }
+
+    .item {
+        position: relative;
+
+        button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        &-title {
+            word-break: break-all;
+            margin-bottom: 0;
+        }
+    }
+
+    .no-items {
+        display: none;
+    }
+}
