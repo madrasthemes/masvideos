@@ -51,6 +51,9 @@ class MasVideos_Gutenberg_Blocks {
                             'type'      => 'boolean',
                             'default'   => false
                         ),
+                        'className'     => array(
+                            'type'      => 'string',
+                        ),
                     ),
                     'editor_script'     => 'masvideos-videos', 
                     'render_callback'   => array( 'MasVideos_Shortcodes', 'videos' ),
@@ -86,6 +89,9 @@ class MasVideos_Gutenberg_Blocks {
                         'top_rated'     => array(
                             'type'      => 'boolean',
                             'default'   => false
+                        ),
+                        'className'     => array(
+                            'type'      => 'string',
                         ),
                     ),
                     'editor_script'   => 'masvideos-movies', 

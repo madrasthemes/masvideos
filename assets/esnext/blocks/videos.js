@@ -4,7 +4,7 @@ const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
 const { Fragment } = wp.element;
-const { ServerSideRender, PanelBody, Disabled } = wp.components;
+const { ServerSideRender, Disabled, PanelBody } = wp.components;
 
 registerBlockType( 'masvideos/videos', {
     title: __('Videos Block', 'masvideos'),
@@ -38,7 +38,7 @@ registerBlockType( 'masvideos/videos', {
                 <Disabled>
                     <ServerSideRender
                         block = "masvideos/videos"
-                        attributes = { _.omit(attributes, ['className']) }
+                        attributes = { attributes }
                     />
                 </Disabled>
             </Fragment>
