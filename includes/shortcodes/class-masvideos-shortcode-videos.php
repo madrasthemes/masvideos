@@ -448,11 +448,7 @@ class MasVideos_Shortcode_Videos {
      * @return array
      */
     protected function get_wrapper_classes( $columns ) {
-        $classes = array( 'masvideos' );
-
-        if ( 'video' !== $this->type ) {
-            $classes[] = 'columns-' . $columns;
-        }
+        $classes = array( 'masvideos', 'masvideos-videos' );
 
         $classes[] = $this->attributes['class'];
 
@@ -595,8 +591,7 @@ class MasVideos_Shortcode_Videos {
             do_action( "masvideos_shortcode_{$this->type}_loop_no_results", $this->attributes );
         }
 
-        // return '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">' . ob_get_clean() . '</div>';
-        return ob_get_clean();
+        return '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">' . ob_get_clean() . '</div>';
     }
 
     /**

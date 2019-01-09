@@ -76,6 +76,11 @@ class MasVideos_Shortcodes {
             $atts['visibility'] = 'featured';
         }
 
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
+        }
+
         $shortcode = new MasVideos_Shortcode_Videos( $atts, $type );
 
         return $shortcode->get_content();
@@ -99,6 +104,11 @@ class MasVideos_Shortcodes {
         if ( isset( $atts['featured'] ) && masvideos_string_to_bool( $atts['featured'] ) ) {
             $type = 'featured_movies';
             $atts['visibility'] = 'featured';
+        }
+
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
         }
 
         $shortcode = new MasVideos_Shortcode_Movies( $atts, $type );
