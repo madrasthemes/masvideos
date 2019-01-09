@@ -3,7 +3,8 @@ import { ShortcodeAtts } from '../components/ShortcodeAtts';
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
-const { ServerSideRender, PanelBody } = wp.components;
+const { Fragment } = wp.element;
+const { ServerSideRender, PanelBody, Disabled } = wp.components;
 
 registerBlockType( 'masvideos/videos', {
     title: __('Videos Block', 'masvideos'),
@@ -19,25 +20,29 @@ registerBlockType( 'masvideos/videos', {
             setAttributes( { ...newShortcodeAtts } );
         };
 
-        return [
-            <InspectorControls>
-                <PanelBody
-                    title={__('Videos Attributes', 'masvideos')}
-                    initialOpen={ true }
-                >
-                    <ShortcodeAtts
-                        postType = 'video'
-                        catTaxonomy = 'video_cat'
-                        attributes = { { ...attributes } }
-                        updateShortcodeAtts = { onChangeShortcodeAtts }
+        return (
+            <Fragment>
+                <InspectorControls>
+                    <PanelBody
+                        title={__('Videos Attributes', 'masvideos')}
+                        initialOpen={ true }
+                    >
+                        <ShortcodeAtts
+                            postType = 'video'
+                            catTaxonomy = 'video_cat'
+                            attributes = { { ...attributes } }
+                            updateShortcodeAtts = { onChangeShortcodeAtts }
+                        />
+                    </PanelBody>
+                </InspectorControls>
+                <Disabled>
+                    <ServerSideRender
+                        block = "masvideos/videos"
+                        attributes = { _.omit(attributes, ['className']) }
                     />
-                </PanelBody>
-            </InspectorControls>,
-            <ServerSideRender
-                block = "masvideos/videos"
-                attributes = { attributes }
-            />
-        ];
+                </Disabled>
+            </Fragment>
+        );
     } ),
 
     save() {
