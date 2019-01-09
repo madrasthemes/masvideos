@@ -43,11 +43,11 @@ class MasVideos_Gutenberg_Blocks {
                         'category'      => array(
                             'type'      => 'string',
                         ),
-                        'featured'    => array(
+                        'featured'      => array(
                             'type'      => 'boolean',
                             'default'   => false
                         ),
-                        'top_rated'    => array(
+                        'top_rated'     => array(
                             'type'      => 'boolean',
                             'default'   => false
                         ),
@@ -79,11 +79,11 @@ class MasVideos_Gutenberg_Blocks {
                         'category'      => array(
                             'type'      => 'string',
                         ),
-                        'featured'    => array(
+                        'featured'      => array(
                             'type'      => 'boolean',
                             'default'   => false
                         ),
-                        'top_rated'    => array(
+                        'top_rated'     => array(
                             'type'      => 'boolean',
                             'default'   => false
                         ),
