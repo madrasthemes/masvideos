@@ -30,56 +30,48 @@ export class ShortcodeAtts extends Component {
 
     onChangeLimit( newLimit ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             limit: newLimit
         });
     }
 
     onChangeColumns( newColumns ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             columns: newColumns
         });
     }
 
     onChangeOrderby( newOrderby ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             orderby: newOrderby
         });
     }
 
     onChangeOrder( newOrder ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             order: newOrder
         });
     }
 
     onChangeIds( newIds ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             ids: newIds.join(',')
         });
     }
 
     onChangeCategory( newCategory ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             category: newCategory.join(',')
         });
     }
 
     onChangeFeatured( newFeatured ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             featured: newFeatured
         });
     }
 
     onChangeTopRated( newTopRated ) {
         this.props.updateShortcodeAtts({
-            ...this.props.attributes,
             top_rated: newTopRated
         });
     }
