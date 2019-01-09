@@ -601,7 +601,7 @@
         .masvideos-radios {
             display: block;
             float: left;
-            margin: 0;
+            margin-left: 150px;
 
             li {
                 display: block;
@@ -973,6 +973,20 @@
     .form-field.media-embed-video {
         display: none;
     }
+
+    .form-field-radio {
+        .description {
+            display: block;
+            clear: both;
+            margin-left: 0;
+        }
+    }
+
+    input[type='checkbox'] + .description {
+        display: inline;
+        clear: none;
+        margin-left: 7px;
+    }
 }
 
 /**
@@ -1003,6 +1017,11 @@
         .dimensions_field .wrap {
             width: 80%;
         }
+
+        .form-field.media-embed-video iframe {
+            max-width: 100%;
+            height: auto;
+        }
     }
 
 
@@ -1030,11 +1049,6 @@
             margin: 0 0 1em;
             width: 100%;
         }
-    }
-
-    .masvideos_options_panel .form-field.media-embed-video iframe {
-        max-width: 100%;
-        height: auto;
     }
 }
 
@@ -1128,6 +1142,14 @@
         text-align: center;
         margin-top: 10px;
     }
+
+    .masvideos_options_panel {
+        fieldset.form-field-radio {
+            input[type='radio'] {
+                width: 25px !important;
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: 500px) {
@@ -1146,6 +1168,16 @@
         .form-field.media-video-url,
         .form-field.media-embed-video {
             padding: 5px 20px !important;
+        }
+    }
+
+    #masvideos-video-data,
+    #masvideos-movie-data {
+        .masvideos_options_panel,
+        .masvideos-metaboxes-wrapper {
+            .masvideos-radios {
+                margin-left: 0;
+            }
         }
     }
 }

@@ -28,66 +28,6 @@ jQuery( function( $ ) {
     // Type box.
     $( '.type_box' ).appendTo( '#masvideos-movie-data .hndle span' );
 
-    $( function() {
-        // Prevent inputs in meta box headings opening/closing contents.
-        $( '#masvideos-movie-data' ).find( '.hndle' ).unbind( 'click.postboxes' );
-
-        $( '#masvideos-movie-data' ).on( 'click', '.hndle', function( event ) {
-
-            // If the user clicks on some form input inside the h3 the box should not be toggled.
-            if ( $( event.target ).filter( 'input, option, label, select' ).length ) {
-                return;
-            }
-
-            $( '#masvideos-movie-data' ).toggleClass( 'closed' );
-        });
-    });
-
-    // Catalog Visibility.
-    $( '#catalog-visibility' ).find( '.edit-catalog-visibility' ).click( function() {
-        if ( $( '#catalog-visibility-select' ).is( ':hidden' ) ) {
-            $( '#catalog-visibility-select' ).slideDown( 'fast' );
-            $( this ).hide();
-        }
-        return false;
-    });
-    $( '#catalog-visibility' ).find( '.save-post-visibility' ).click( function() {
-        $( '#catalog-visibility-select' ).slideUp( 'fast' );
-        $( '#catalog-visibility' ).find( '.edit-catalog-visibility' ).show();
-
-        var label = $( 'input[name=_visibility]:checked' ).attr( 'data-label' );
-
-        if ( $( 'input[name=_featured]' ).is( ':checked' ) ) {
-            label = label + ', ' + masvideos_admin_meta_boxes.featured_label;
-            $( 'input[name=_featured]' ).attr( 'checked', 'checked' );
-        }
-
-        $( '#catalog-visibility-display' ).text( label );
-        return false;
-    });
-    $( '#catalog-visibility' ).find( '.cancel-post-visibility' ).click( function() {
-        $( '#catalog-visibility-select' ).slideUp( 'fast' );
-        $( '#catalog-visibility' ).find( '.edit-catalog-visibility' ).show();
-
-        var current_visibility = $( '#current_visibility' ).val();
-        var current_featured   = $( '#current_featured' ).val();
-
-        $( 'input[name=_visibility]' ).removeAttr( 'checked' );
-        $( 'input[name=_visibility][value=' + current_visibility + ']' ).attr( 'checked', 'checked' );
-
-        var label = $( 'input[name=_visibility]:checked' ).attr( 'data-label' );
-
-        if ( 'yes' === current_featured ) {
-            label = label + ', ' + masvideos_admin_meta_boxes.featured_label;
-            $( 'input[name=_featured]' ).attr( 'checked', 'checked' );
-        } else {
-            $( 'input[name=_featured]' ).removeAttr( 'checked' );
-        }
-
-        $( '#catalog-visibility-display' ).text( label );
-        return false;
-    });
-
     // Date picker fields.
     function date_picker_select( datepicker ) {
         var option         = $( datepicker ).next().is( '.hasDatepicker' ) ? 'minDate' : 'maxDate',

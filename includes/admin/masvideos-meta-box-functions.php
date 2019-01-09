@@ -241,7 +241,7 @@ function masvideos_wp_radio( $field ) {
     $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
     $field['desc_tip']      = isset( $field['desc_tip'] ) ? $field['desc_tip'] : false;
 
-    echo '<fieldset class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><legend>' . wp_kses_post( $field['label'] ) . '</legend>';
+    echo '<fieldset class="form-field form-field-radio ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><legend>' . wp_kses_post( $field['label'] ) . '</legend>';
 
     if ( ! empty( $field['description'] ) && false !== $field['desc_tip'] ) {
         echo masvideos_help_tip( $field['description'] );
