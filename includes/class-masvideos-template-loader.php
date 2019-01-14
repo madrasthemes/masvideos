@@ -112,7 +112,7 @@ class MasVideos_Template_Loader {
         } elseif ( is_movie_taxonomy() ) {
             $object = get_queried_object();
 
-            if ( is_tax( 'movie_cat' ) || is_tax( 'movie_tag' ) ) {
+            if ( is_tax( 'movie_genre' ) || is_tax( 'movie_tag' ) ) {
                 $default_file = 'taxonomy-' . $object->taxonomy . '.php';
             } else {
                 $default_file = 'archive-movie.php';

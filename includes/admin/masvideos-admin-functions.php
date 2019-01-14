@@ -29,7 +29,7 @@ function masvideos_get_screen_ids() {
         'movie_page_movie_attributes',
         'edit-movie',
         'movie',
-        'edit-movie_cat',
+        'edit-movie_genre',
         'edit-movie_tag',
         'profile',
         'user-edit',

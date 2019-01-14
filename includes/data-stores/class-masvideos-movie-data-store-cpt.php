@@ -296,7 +296,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         $movie->set_props(
             array(
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
-                'category_ids'          => $this->get_term_ids( $movie, 'movie_cat' ),
+                'category_ids'          => $this->get_term_ids( $movie, 'movie_genre' ),
                 'tag_ids'               => $this->get_term_ids( $movie, 'movie_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_movie_image_gallery', true ) ) ),
                 'image_id'              => get_post_thumbnail_id( $id ),
@@ -503,11 +503,11 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         if ( $force || array_key_exists( 'category_ids', $changes ) ) {
             $categories = $movie->get_category_ids( 'edit' );
 
-            if ( empty( $categories ) && get_option( 'default_movie_cat', 0 ) ) {
-                $categories = array( get_option( 'default_movie_cat', 0 ) );
+            if ( empty( $categories ) && get_option( 'default_movie_genre', 0 ) ) {
+                $categories = array( get_option( 'default_movie_genre', 0 ) );
             }
 
-            wp_set_post_terms( $movie->get_id(), $categories, 'movie_cat', false );
+            wp_set_post_terms( $movie->get_id(), $categories, 'movie_genre', false );
         }
         if ( $force || array_key_exists( 'tag_ids', $changes ) ) {
             wp_set_post_terms( $movie->get_id(), $movie->get_tag_ids( 'edit' ), 'movie_tag', false );
@@ -956,7 +956,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         // Handle movie categories.
         if ( ! empty( $query_vars['category'] ) ) {
             $wp_query_args['tax_query'][] = array(
-                'taxonomy' => 'movie_cat',
+                'taxonomy' => 'movie_genre',
                 'field'    => 'slug',
                 'terms'    => $query_vars['category'],
             );

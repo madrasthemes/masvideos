@@ -289,7 +289,7 @@ class MasVideos_Shortcode_Movies {
                 $categories = array_map( 'absint', $categories );
                 // Check numeric slugs.
                 foreach ( $categories as $cat ) {
-                    $the_cat = get_term_by( 'slug', $cat, 'movie_cat' );
+                    $the_cat = get_term_by( 'slug', $cat, 'movie_genre' );
                     if ( false !== $the_cat ) {
                         $categories[] = $the_cat->term_id;
                     }
@@ -297,7 +297,7 @@ class MasVideos_Shortcode_Movies {
             }
 
             $query_args['tax_query'][] = array(
-                'taxonomy'         => 'movie_cat',
+                'taxonomy'         => 'movie_genre',
                 'terms'            => $categories,
                 'field'            => $field,
                 'operator'         => $this->attributes['cat_operator'],

@@ -47,7 +47,7 @@ class MasVideos_Data_Store_WP {
      *
      * @since  1.0.0
      * @param  MasVideos_Data|integer $object MasVideos_Data object or object ID.
-     * @param  string          $taxonomy Taxonomy name e.g. movie_cat.
+     * @param  string          $taxonomy Taxonomy name e.g. movie_tag.
      * @return array of terms
      */
     protected function get_term_ids( $object, $taxonomy ) {

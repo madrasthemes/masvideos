@@ -126,16 +126,16 @@ if ( ! function_exists( 'is_movie_taxonomy' ) ) {
     }
 }
 
-if ( ! function_exists( 'is_movie_category' ) ) {
+if ( ! function_exists( 'is_movie_genre' ) ) {
 
     /**
-     * Is_movie_category - Returns true when viewing a movie category.
+     * Is_movie_genre - Returns true when viewing a movie category.
      *
      * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
      * @return bool
      */
-    function is_movie_category( $term = '' ) {
-        return is_tax( 'movie_cat', $term );
+    function is_movie_genre( $term = '' ) {
+        return is_tax( 'movie_genre', $term );
     }
 }
 

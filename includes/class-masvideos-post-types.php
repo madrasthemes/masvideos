@@ -109,7 +109,7 @@ class MasVideos_Post_Types {
             )
         );
 
-        // For Videos
+        // For Movies
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $movies_page_id = 0;
 
@@ -300,26 +300,26 @@ class MasVideos_Post_Types {
         );
 
         register_taxonomy(
-            'movie_cat',
-            apply_filters( 'masvideos_taxonomy_objects_movie_cat', array( 'movie' ) ),
+            'movie_genre',
+            apply_filters( 'masvideos_taxonomy_objects_movie_genre', array( 'movie' ) ),
             apply_filters(
-                'masvideos_taxonomy_args_movie_cat', array(
+                'masvideos_taxonomy_args_movie_genre', array(
                     'hierarchical'          => true,
                     // 'update_count_callback' => '_wc_term_recount',
-                    'label'                 => __( 'Categories', 'masvideos' ),
+                    'label'                 => __( 'Genres', 'masvideos' ),
                     'labels'                => array(
-                        'name'              => __( 'Movie categories', 'masvideos' ),
-                        'singular_name'     => __( 'Category', 'masvideos' ),
-                        'menu_name'         => _x( 'Categories', 'Admin menu name', 'masvideos' ),
-                        'search_items'      => __( 'Search categories', 'masvideos' ),
-                        'all_items'         => __( 'All categories', 'masvideos' ),
-                        'parent_item'       => __( 'Parent category', 'masvideos' ),
-                        'parent_item_colon' => __( 'Parent category:', 'masvideos' ),
-                        'edit_item'         => __( 'Edit category', 'masvideos' ),
-                        'update_item'       => __( 'Update category', 'masvideos' ),
-                        'add_new_item'      => __( 'Add new category', 'masvideos' ),
-                        'new_item_name'     => __( 'New category name', 'masvideos' ),
-                        'not_found'         => __( 'No categories found', 'masvideos' ),
+                        'name'              => __( 'Movie genres', 'masvideos' ),
+                        'singular_name'     => __( 'Genre', 'masvideos' ),
+                        'menu_name'         => _x( 'Genres', 'Admin menu name', 'masvideos' ),
+                        'search_items'      => __( 'Search genres', 'masvideos' ),
+                        'all_items'         => __( 'All genres', 'masvideos' ),
+                        'parent_item'       => __( 'Parent genre', 'masvideos' ),
+                        'parent_item_colon' => __( 'Parent genre:', 'masvideos' ),
+                        'edit_item'         => __( 'Edit genre', 'masvideos' ),
+                        'update_item'       => __( 'Update genre', 'masvideos' ),
+                        'add_new_item'      => __( 'Add new genre', 'masvideos' ),
+                        'new_item_name'     => __( 'New genre name', 'masvideos' ),
+                        'not_found'         => __( 'No genres found', 'masvideos' ),
                     ),
                     'show_ui'               => true,
                     'query_var'             => true,
@@ -330,7 +330,7 @@ class MasVideos_Post_Types {
                         'assign_terms' => 'assign_movie_terms',
                     ),
                     'rewrite'               => array(
-                        'slug'         => $permalinks['movie_category_rewrite_slug'],
+                        'slug'         => $permalinks['movie_genre_rewrite_slug'],
                         'with_front'   => false,
                         'hierarchical' => true,
                     ),

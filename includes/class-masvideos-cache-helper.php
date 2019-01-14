@@ -164,7 +164,7 @@ class MasVideos_Cache_Helper {
      * @param string    $taxonomy Taxonomy name.
      */
     public static function clean_term_cache( $ids, $taxonomy ) {
-        if ( 'video_cat' === $taxonomy || 'movie_cat' === $taxonomy ) {
+        if ( 'video_cat' === $taxonomy || 'movie_genre' === $taxonomy ) {
             $ids = is_array( $ids ) ? $ids : array( $ids );
 
             $clear_ids = array( 0 );
@@ -177,7 +177,7 @@ class MasVideos_Cache_Helper {
             $clear_ids = array_unique( $clear_ids );
 
             foreach ( $clear_ids as $id ) {
-                wp_cache_delete( 'product-category-hierarchy-' . $id, $taxonomy );
+                wp_cache_delete( 'masvideos-' . $taxonomy . '-hierarchy-' . $id, $taxonomy );
             }
         }
     }

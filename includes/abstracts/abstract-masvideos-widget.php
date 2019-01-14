@@ -299,8 +299,8 @@ abstract class MasVideos_Widget extends WP_Widget {
             $link = get_term_link( get_query_var( 'video_tag' ), 'video_tag' );
         } elseif ( is_movies() ) {
             $link = get_permalink( masvideos_get_page_id( 'movies' ) );
-        } elseif ( is_movie_category() ) {
-            $link = get_term_link( get_query_var( 'movie_cat' ), 'movie_cat' );
+        } elseif ( is_movie_genre() ) {
+            $link = get_term_link( get_query_var( 'movie_genre' ), 'movie_genre' );
         } elseif ( is_movie_tag() ) {
             $link = get_term_link( get_query_var( 'movie_tag' ), 'movie_tag' );
         } else {

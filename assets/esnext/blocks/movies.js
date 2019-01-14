@@ -29,7 +29,7 @@ registerBlockType( 'masvideos/movies', {
                     >
                         <ShortcodeAtts
                             postType = 'movie'
-                            catTaxonomy = 'movie_cat'
+                            catTaxonomy = 'movie_genre'
                             attributes = { { ...attributes } }
                             updateShortcodeAtts = { onChangeShortcodeAtts }
                         />
