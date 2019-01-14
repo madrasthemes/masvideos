@@ -421,35 +421,36 @@ function masvideos_get_image_size( $image_size ) {
     } else {
         $image_size = str_replace( 'masvideos_', '', $image_size );
 
-        if ( 'single' === $image_size ) {
-            $size['width']  = absint( masvideos_get_theme_support( 'single_image_width', get_option( 'masvideos_single_image_width', 600 ) ) );
-            $size['height'] = '';
-            $size['crop']   = 0;
+        if ( 'video_large' === $image_size ) {
+            $size['width']  = absint( masvideos_get_theme_support( 'image_sizes::video_large::width', 600 ) );
+            $size['height'] = absint( masvideos_get_theme_support( 'image_sizes::video_large::height', 600 ) );
+            $size['crop']   = absint( masvideos_get_theme_support( 'image_sizes::video_large::crop', 1 ) );
 
-        } elseif ( 'gallery_thumbnail' === $image_size ) {
-            $size['width']  = absint( masvideos_get_theme_support( 'gallery_thumbnail_image_width', 100 ) );
-            $size['height'] = $size['width'];
-            $size['crop']   = 1;
+        } elseif ( 'video_medium' === $image_size ) {
+            $size['width']  = absint( masvideos_get_theme_support( 'image_sizes::video_medium::width', 300 ) );
+            $size['height'] = absint( masvideos_get_theme_support( 'image_sizes::video_medium::height', 300 ) );
+            $size['crop']   = absint( masvideos_get_theme_support( 'image_sizes::video_medium::crop', 1 ) );
 
-        } elseif ( 'thumbnail' === $image_size ) {
-            $size['width'] = absint( masvideos_get_theme_support( 'thumbnail_image_width', get_option( 'masvideos_thumbnail_image_width', 300 ) ) );
-            $cropping      = get_option( 'masvideos_thumbnail_cropping', '1:1' );
+        } elseif ( 'video_thumbnail' === $image_size ) {
+            $size['width']  = absint( masvideos_get_theme_support( 'image_sizes::video_thumbnail::width', 100 ) );
+            $size['height'] = absint( masvideos_get_theme_support( 'image_sizes::video_thumbnail::height', 100 ) );
+            $size['crop']   = absint( masvideos_get_theme_support( 'image_sizes::video_thumbnail::crop', 1 ) );
 
-            if ( 'uncropped' === $cropping ) {
-                $size['height'] = '';
-                $size['crop']   = 0;
-            } elseif ( 'custom' === $cropping ) {
-                $width          = max( 1, get_option( 'masvideos_thumbnail_cropping_custom_width', '4' ) );
-                $height         = max( 1, get_option( 'masvideos_thumbnail_cropping_custom_height', '3' ) );
-                $size['height'] = absint( round( ( $size['width'] / $width ) * $height ) );
-                $size['crop']   = 1;
-            } else {
-                $cropping_split = explode( ':', $cropping );
-                $width          = max( 1, current( $cropping_split ) );
-                $height         = max( 1, end( $cropping_split ) );
-                $size['height'] = absint( round( ( $size['width'] / $width ) * $height ) );
-                $size['crop']   = 1;
-            }
+        } elseif ( 'movie_large' === $image_size ) {
+            $size['width']  = absint( masvideos_get_theme_support( 'image_sizes::movie_large::width', 600 ) );
+            $size['height'] = absint( masvideos_get_theme_support( 'image_sizes::movie_large::height', 600 ) );
+            $size['crop']   = absint( masvideos_get_theme_support( 'image_sizes::movie_large::crop', 1 ) );
+
+        } elseif ( 'movie_medium' === $image_size ) {
+            $size['width']  = absint( masvideos_get_theme_support( 'image_sizes::movie_medium::width', 300 ) );
+            $size['height'] = absint( masvideos_get_theme_support( 'image_sizes::movie_medium::height', 300 ) );
+            $size['crop']   = absint( masvideos_get_theme_support( 'image_sizes::movie_medium::crop', 1 ) );
+
+        } elseif ( 'movie_thumbnail' === $image_size ) {
+            $size['width']  = absint( masvideos_get_theme_support( 'image_sizes::movie_thumbnail::width', 100 ) );
+            $size['height'] = absint( masvideos_get_theme_support( 'image_sizes::movie_thumbnail::height', 100 ) );
+            $size['crop']   = absint( masvideos_get_theme_support( 'image_sizes::movie_thumbnail::crop', 1 ) );
+
         }
     }
 

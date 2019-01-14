@@ -191,6 +191,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             add_action( 'init', array( $this, 'init' ), 0 );
             add_action( 'init', array( 'MasVideos_Shortcodes', 'init' ) );
             add_action( 'init', array( 'MasVideos_Gutenberg_Blocks', 'init' ) );
+            add_action( 'init', array( $this, 'add_image_sizes' ) );
         }
 
         /**
@@ -232,6 +233,33 @@ if ( ! class_exists( 'MasVideos' ) ) {
             unload_textdomain( 'masvideos' );
             load_textdomain( 'masvideos', WP_LANG_DIR . '/masvideos/masvideos-' . $locale . '.mo' );
             load_plugin_textdomain( 'masvideos', false, plugin_basename( dirname( MASVIDEOS_PLUGIN_FILE ) ) . '/i18n/languages' );
+        }
+
+        /**
+         * Add Image sizes to WP.
+         *
+         * Image sizes can be registered via themes using add_theme_support for masvideos
+         * and defining an array of args. If these are not defined, we will use defaults. This is
+         * handled in masvideos_get_image_size function.
+         *
+         * @since 1.0.0
+         */
+        public function add_image_sizes() {
+            $video_large            = masvideos_get_image_size( 'video_large' );
+            $video_medium           = masvideos_get_image_size( 'video_medium' );
+            $video_thumbnail        = masvideos_get_image_size( 'video_thumbnail' );
+
+            $movie_large            = masvideos_get_image_size( 'movie_large' );
+            $movie_medium           = masvideos_get_image_size( 'movie_medium' );
+            $movie_thumbnail        = masvideos_get_image_size( 'movie_thumbnail' );
+
+            add_image_size( 'masvideos_video_large', $video_large['width'], $video_large['height'], $video_large['crop'] );
+            add_image_size( 'masvideos_video_medium', $video_medium['width'], $video_medium['height'], $video_medium['crop'] );
+            add_image_size( 'masvideos_video_thumbnail', $video_thumbnail['width'], $video_thumbnail['height'], $video_thumbnail['crop'] );
+
+            add_image_size( 'masvideos_movie_large', $movie_large['width'], $movie_large['height'], $movie_large['crop'] );
+            add_image_size( 'masvideos_movie_medium', $movie_medium['width'], $movie_medium['height'], $movie_medium['crop'] );
+            add_image_size( 'masvideos_movie_thumbnail', $movie_thumbnail['width'], $movie_thumbnail['height'], $movie_thumbnail['crop'] );
         }
 
         /**
