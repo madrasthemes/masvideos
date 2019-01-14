@@ -161,7 +161,7 @@ if ( ! function_exists( 'masvideos_get_video_thumbnail' ) ) {
     /**
      * Get the masvideos thumbnail, or the placeholder if not set.
      */
-    function masvideos_get_video_thumbnail( $size = 'masvideos_thumbnail' ) {
+    function masvideos_get_video_thumbnail( $size = 'masvideos_video_medium' ) {
         global $video;
 
         $image_size = apply_filters( 'masvideos_video_archive_thumbnail_size', $size );
