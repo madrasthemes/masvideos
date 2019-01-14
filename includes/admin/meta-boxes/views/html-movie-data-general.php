@@ -62,6 +62,24 @@ if ( ! defined( 'ABSPATH' ) ) {
             )
         );
 
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_movie_run_time',
+                'value'         => is_callable( array( $movie_object, 'get_movie_run_time' ) ) ? $movie_object->get_movie_run_time( 'edit' ) : '',
+                'label'         => __( 'Movie Time Dutration', 'masvideos' ),
+                'description'   => __( 'Enter the movie run time duration.', 'masvideos' ),
+            )
+        );
+
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_movie_censor_rating',
+                'value'         => is_callable( array( $movie_object, 'get_movie_censor_rating' ) ) ? $movie_object->get_movie_censor_rating( 'edit' ) : '',
+                'label'         => __( 'Movie Censore Rating', 'masvideos' ),
+                'description'   => __( 'Enter the movie censore rating.', 'masvideos' ),
+            )
+        );
+
         ?>
     </div>
 
