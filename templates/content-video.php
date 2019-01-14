@@ -16,12 +16,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// global $video;
+global $video;
 
-// // Ensure visibility.
-// if ( empty( $video ) || ! $video->is_visible() ) {
-//     return;
-// }
+// Ensure visibility.
+if ( empty( $video ) || ! $video->is_visible() ) {
+    return;
+}
 ?>
 <div <?php masvideos_video_class(); ?>>
     <?php

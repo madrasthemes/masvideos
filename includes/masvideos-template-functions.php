@@ -1001,9 +1001,9 @@ if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
      * video meta in the video loop.
      */
     function masvideos_template_loop_movie_meta() {
-        global $post, $movie;
+        global $movie;
 
-        $category_list = wp_get_object_terms( $post->ID, 'movie_genre', array( 'fields' => 'names' ) );
+        $category_list = wp_get_object_terms( $movie->get_id(), 'movie_genre', array( 'fields' => 'names' ) );
         if( ! empty ( $category_list ) ) {
             if( is_array( $category_list ) ) {
                 $categories = implode( ', ', $category_list);
