@@ -72,6 +72,8 @@ class MasVideos_Movie extends MasVideos_Data {
         'average_rating'        => 0,
         'review_count'          => 0,
         'movie_release_date'    => '',
+        'movie_run_time'        => '',
+        'movie_censor_rating'   => '',
     );
 
     /**
@@ -384,6 +386,28 @@ class MasVideos_Movie extends MasVideos_Data {
         return $this->get_prop( 'movie_release_date', $context );
     }
 
+    /**
+     * Get main movie run time.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_movie_run_time( $context = 'view' ) {
+        return $this->get_prop( 'movie_run_time', $context );
+    }
+
+    /**
+     * Get main movie censor rating.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_movie_censor_rating( $context = 'view' ) {
+        return $this->get_prop( 'movie_censor_rating', $context );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Setters
@@ -677,6 +701,26 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_movie_release_date( $movie_release_date = '' ) {
         $this->set_date_prop( 'movie_release_date', $movie_release_date );
+    }
+
+    /**
+     * Set main movie run time content.
+     *
+     * @since 1.0.0
+     * @param int|string $movie_run_time Movie run time.
+     */
+    public function set_movie_run_time( $movie_run_time = '' ) {
+        $this->set_prop( 'movie_run_time', $movie_run_time );
+    }
+
+    /**
+     * Set main movie censor rating content.
+     *
+     * @since 1.0.0
+     * @param int|string $movie_censor_rating Movie censor rating.
+     */
+    public function set_movie_censor_rating( $movie_censor_rating = '' ) {
+        $this->set_prop( 'movie_censor_rating', $movie_censor_rating );
     }
 
     /*
