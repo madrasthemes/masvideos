@@ -105,6 +105,7 @@ class MasVideos_Post_Types {
                     'has_archive'         => $has_archive,
                     'show_in_nav_menus'   => true,
                     'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-video-alt2'
                 )
             )
         );
@@ -168,6 +169,7 @@ class MasVideos_Post_Types {
                     'has_archive'         => $has_archive,
                     'show_in_nav_menus'   => true,
                     'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-editor-video'
                 )
             )
         );
