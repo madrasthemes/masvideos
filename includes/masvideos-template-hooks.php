@@ -46,10 +46,12 @@ add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster_close', 50 );
 add_action( 'masvideos_before_movies_loop_item_title', 'masvideos_template_loop_movie_body_open', 10 );
 add_action( 'masvideos_before_movies_loop_item_title', 'masvideos_template_loop_movie_info_open', 20 );
-add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_link_open', 10 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_info_head_open', 10 );
 add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_meta', 20 );
-add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_title', 30 );
-add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_link_close', 40 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_link_open', 30 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_title', 40 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_link_close', 50 );
+add_action( 'masvideos_movies_loop_item_title', 'masvideos_template_loop_movie_info_head_close', 60 );
 add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_short_desc', 10 );
 add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_actions', 20 );
 add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_info_close', 30 );
