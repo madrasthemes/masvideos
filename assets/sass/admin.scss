@@ -820,7 +820,11 @@
 
         .wp-video {
             max-width: 640px;
-            max-height: 360px;
+            min-height: 260px;
+
+            iframe body {
+                overflow: hidden;
+            }
         }
 
         iframe {
