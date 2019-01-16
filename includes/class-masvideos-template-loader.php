@@ -112,11 +112,11 @@ class MasVideos_Template_Loader {
         } elseif ( is_movie_taxonomy() ) {
             $object = get_queried_object();
 
-            if ( is_tax( 'movie_genre' ) || is_tax( 'movie_tag' ) ) {
-                $default_file = 'taxonomy-' . $object->taxonomy . '.php';
-            } else {
+            // if ( is_tax( 'movie_genre' ) || is_tax( 'movie_tag' ) ) {
+            //     $default_file = 'taxonomy-' . $object->taxonomy . '.php';
+            // } else {
                 $default_file = 'archive-movie.php';
-            }
+            // }
         } elseif ( is_movies() ) {
             $default_file = self::$theme_support ? 'archive-movie.php' : '';
         } else {

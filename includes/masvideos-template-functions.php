@@ -638,7 +638,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_poster' ) ) {
      * videos poster in the loop.
      */
     function masvideos_template_loop_video_poster() {
-        echo masvideos_get_video_thumbnail( 'masvideos_video_medium' );
+        echo masvideos_get_video_thumbnail();
     }
 }
 
@@ -953,7 +953,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_poster' ) ) {
      * movies poster in the loop.
      */
     function masvideos_template_loop_movie_poster() {
-        echo masvideos_get_movie_thumbnail( 'masvideos_movie_medium' );
+        echo masvideos_get_movie_thumbnail();
     }
 }
 
@@ -995,23 +995,25 @@ if ( ! function_exists( 'masvideos_template_loop_movie_info_open' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_loop_movie_info_head_open' ) ) {
+
+    /**
+     * video info body open in the video loop.
+     */
+    function masvideos_template_loop_movie_info_head_open() {
+        echo '<div class="movie__info--head">';
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
 
     /**
      * video meta in the video loop.
      */
     function masvideos_template_loop_movie_meta() {
-        global $movie;
+        global $post, $movie;
 
-        $category_list = wp_get_object_terms( $movie->get_id(), 'movie_genre', array( 'fields' => 'names' ) );
-        if( ! empty ( $category_list ) ) {
-            if( is_array( $category_list ) ) {
-                $categories = implode( ', ', $category_list);
-            } else {
-                $categories = $category_list;
-            }
-        }
-
+        $categories = get_the_term_list( $post->ID, 'movie_genre' );
         $release_date = $movie->get_movie_release_date();
 
         if ( ! empty( $categories ) || ! empty( $release_date ) ) {
@@ -1057,6 +1059,16 @@ if ( ! function_exists( 'masvideos_template_loop_movie_short_desc' ) ) {
         </div>
 
         <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_info_head_close' ) ) {
+
+    /**
+     * video info body close in the video loop.
+     */
+    function masvideos_template_loop_movie_info_head_close() {
+        echo '</div>';
     }
 }
 
