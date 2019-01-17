@@ -1049,8 +1049,8 @@ if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
     function masvideos_template_loop_movie_meta() {
         global $post, $movie;
 
-        $categories = get_the_term_list( $post->ID, 'movie_genre' );
-        $relaese_year = get_the_term_list( $post->ID, 'movie_release-year' );
+        $categories = get_the_term_list( $post->ID, 'movie_genre', '', ', ' );
+        $relaese_year = get_the_term_list( $post->ID, 'movie_release-year', '', ', ' );
 
         if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
             echo '<div class="movie__meta">';
