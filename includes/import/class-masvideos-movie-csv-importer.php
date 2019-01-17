@@ -1,8 +1,8 @@
 <?php
 /**
- * WooCommerce Product CSV importer
+ * MasVideos Movie CSV importer
  *
- * @package  WooCommerce/Import
+ * @package  MasVideos/Import
  * @version  3.1.0
  */
 
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Include dependencies.
  */
-if ( ! class_exists( 'WC_Product_Importer', false ) ) {
-	include_once dirname( __FILE__ ) . '/abstract-wc-product-importer.php';
+if ( ! class_exists( 'MasVideos_Movie_Importer', false ) ) {
+	include_once dirname( __FILE__ ) . '/abstract-masvideos-movie-importer.php';
 }
 
 /**
- * WC_Product_CSV_Importer Class.
+ * MasVideos_Movie_CSV_Importer Class.
  */
-class WC_Product_CSV_Importer extends WC_Product_Importer {
+class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 
 	/**
 	 * Tracks current row being parsed.
@@ -63,8 +63,8 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 	 * Read file.
 	 */
 	protected function read_file() {
-		if ( ! WC_Product_CSV_Importer_Controller::is_file_valid_csv( $this->file ) ) {
-			wp_die( __( 'Invalid file type. The importer supports CSV and TXT file formats.', 'woocommerce' ) );
+		if ( ! MasVideos_Movie_CSV_Importer_Controller::is_file_valid_csv( $this->file ) ) {
+			wp_die( __( 'Invalid file type. The importer supports CSV and TXT file formats.', 'masvideos' ) );
 		}
 
 		$handle = fopen( $this->file, 'r' ); // @codingStandardsIgnoreLine.
@@ -134,14 +134,14 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 	}
 
 	/**
-	 * Parse relative field and return product ID.
+	 * Parse relative field and return movie ID.
 	 *
 	 * Handles `id:xx` and SKUs.
 	 *
-	 * If mapping to an id: and the product ID does not exist, this link is not
+	 * If mapping to an id: and the movie ID does not exist, this link is not
 	 * valid.
 	 *
-	 * If mapping to a SKU and the product ID does not exist, a temporary object
+	 * If mapping to a SKU and the movie ID does not exist, a temporary object
 	 * will be created so it can be updated later.
 	 *
 	 * @param  string $value Field value.
@@ -165,37 +165,30 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 				return absint( $original_id );
 			}
 
-			// See if the given ID maps to a valid product allready.
-			$existing_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ( 'product', 'product_variation' ) AND ID = %d;", $id ) ); // WPCS: db call ok, cache ok.
+			// See if the given ID maps to a valid movie allready.
+			$existing_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ( 'movie' ) AND ID = %d;", $id ) ); // WPCS: db call ok, cache ok.
 
 			if ( $existing_id ) {
 				return absint( $existing_id );
 			}
 
-			// If we're not updating existing posts, we may need a placeholder product to map to.
+			// If we're not updating existing posts, we may need a placeholder movie to map to.
 			if ( ! $this->params['update_existing'] ) {
-				$product = new WC_Product_Simple();
-				$product->set_name( 'Import placeholder for ' . $id );
-				$product->set_status( 'importing' );
-				$product->add_meta_data( '_original_id', $id, true );
-				$id = $product->save();
+				$movie = new MasVideos_Movie();
+				$movie->set_name( 'Import placeholder for ' . $id );
+				$movie->set_status( 'importing' );
+				$movie->add_meta_data( '_original_id', $id, true );
+				$id = $movie->save();
 			}
 
 			return $id;
 		}
 
-		$id = wc_get_product_id_by_sku( $value );
-
-		if ( $id ) {
-			return $id;
-		}
-
 		try {
-			$product = new WC_Product_Simple();
-			$product->set_name( 'Import placeholder for ' . $value );
-			$product->set_status( 'importing' );
-			$product->set_sku( $value );
-			$id = $product->save();
+			$movie = new MasVideos_Movie();
+			$movie->set_name( 'Import placeholder for ' . $value );
+			$movie->set_status( 'importing' );
+			$id = $movie->save();
 
 			if ( $id && ! is_wp_error( $id ) ) {
 				return $id;
@@ -210,7 +203,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 	/**
 	 * Parse the ID field.
 	 *
-	 * If we're not doing an update, create a placeholder product so mapping works
+	 * If we're not doing an update, create a placeholder movie so mapping works
 	 * for rows following this one.
 	 *
 	 * @param  string $value Field value.
@@ -244,16 +237,11 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 				return $id_from_sku;
 			}
 
-			$product = new WC_Product_Simple();
-			$product->set_name( 'Import placeholder for ' . $id );
-			$product->set_status( 'importing' );
-			$product->add_meta_data( '_original_id', $id, true );
-
-			// If row has a SKU, make sure placeholder has it too.
-			if ( $row_sku ) {
-				$product->set_sku( $row_sku );
-			}
-			$id = $product->save();
+			$movie = new MasVideos_Movie();
+			$movie->set_name( 'Import placeholder for ' . $id );
+			$movie->set_status( 'importing' );
+			$movie->add_meta_data( '_original_id', $id, true );
+			$id = $movie->save();
 		}
 
 		return $id && ! is_wp_error( $id ) ? $id : 0;
@@ -284,7 +272,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 			return array();
 		}
 
-		return array_map( 'wc_clean', $this->explode_values( $value ) );
+		return array_map( 'masvideos_clean', $this->explode_values( $value ) );
 	}
 
 	/**
@@ -303,7 +291,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 		}
 
 		// Don't return explicit true or false for empty fields or values like 'notify'.
-		return wc_clean( $value );
+		return masvideos_clean( $value );
 	}
 
 	/**
@@ -321,23 +309,6 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 		$value = $this->unescape_negative_number( $value );
 
 		return floatval( $value );
-	}
-
-	/**
-	 * Parse the stock qty field.
-	 *
-	 * @param string $value Field value.
-	 * @return float|string
-	 */
-	public function parse_stock_quantity_field( $value ) {
-		if ( '' === $value ) {
-			return $value;
-		}
-
-		// Remove the ' prepended to fields that start with - if needed.
-		$value = $this->unescape_negative_number( $value );
-
-		return wc_stock_amount( $value );
 	}
 
 	/**
@@ -362,15 +333,15 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 
 			foreach ( $_terms as $index => $_term ) {
 				// Check if category exists. Parent must be empty string or null if doesn't exists.
-				$term = term_exists( $_term, 'product_cat', $parent );
+				$term = term_exists( $_term, 'movie_cat', $parent );
 
 				if ( is_array( $term ) ) {
 					$term_id = $term['term_id'];
 					// Don't allow users without capabilities to create new categories.
-				} elseif ( ! current_user_can( 'manage_product_terms' ) ) {
+				} elseif ( ! current_user_can( 'manage_movie_terms' ) ) {
 					break;
 				} else {
-					$term = wp_insert_term( $_term, 'product_cat', array( 'parent' => intval( $parent ) ) );
+					$term = wp_insert_term( $_term, 'movie_cat', array( 'parent' => intval( $parent ) ) );
 
 					if ( is_wp_error( $term ) ) {
 						break; // We cannot continue if the term cannot be inserted.
@@ -407,10 +378,10 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 		$tags  = array();
 
 		foreach ( $names as $name ) {
-			$term = get_term_by( 'name', $name, 'product_tag' );
+			$term = get_term_by( 'name', $name, 'movie_tag' );
 
 			if ( ! $term || is_wp_error( $term ) ) {
-				$term = (object) wp_insert_term( $name, 'product_tag' );
+				$term = (object) wp_insert_term( $name, 'movie_tag' );
 			}
 
 			if ( ! is_wp_error( $term ) ) {
@@ -419,30 +390,6 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 		}
 
 		return $tags;
-	}
-
-	/**
-	 * Parse a shipping class field from a CSV.
-	 *
-	 * @param  string $value Field value.
-	 * @return int
-	 */
-	public function parse_shipping_class_field( $value ) {
-		if ( empty( $value ) ) {
-			return 0;
-		}
-
-		$term = get_term_by( 'name', $value, 'product_shipping_class' );
-
-		if ( ! $term || is_wp_error( $term ) ) {
-			$term = (object) wp_insert_term( $value, 'product_shipping_class' );
-		}
-
-		if ( is_wp_error( $term ) ) {
-			return 0;
-		}
-
-		return $term->term_id;
 	}
 
 	/**
@@ -490,28 +437,6 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 	}
 
 	/**
-	 * Parse backorders from a CSV.
-	 *
-	 * @param  string $value Field value.
-	 * @return string
-	 */
-	public function parse_backorders_field( $value ) {
-		if ( empty( $value ) ) {
-			return 'no';
-		}
-
-		$value = $this->parse_bool_field( $value );
-
-		if ( 'notify' === $value ) {
-			return 'notify';
-		} elseif ( is_bool( $value ) ) {
-			return $value ? 'yes' : 'no';
-		}
-
-		return 'no';
-	}
-
-	/**
 	 * Just skip current field.
 	 *
 	 * By default is applied wc_clean() to all not listed fields
@@ -524,22 +449,6 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 		return $value;
 	}
 
-	/**
-	 * Parse download file urls, we should allow shortcodes here.
-	 *
-	 * Allow shortcodes if present, othersiwe esc_url the value.
-	 *
-	 * @param string $value Field value.
-	 * @return string
-	 */
-	public function parse_download_file_field( $value ) {
-		// Absolute file paths.
-		if ( 0 === strpos( $value, 'http' ) ) {
-			return esc_url_raw( $value );
-		}
-		// Relative and shortcode paths.
-		return wc_clean( $value );
-	}
 
 	/**
 	 * Parse an int value field
@@ -570,35 +479,14 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 			'type'              => array( $this, 'parse_comma_field' ),
 			'published'         => array( $this, 'parse_float_field' ),
 			'featured'          => array( $this, 'parse_bool_field' ),
-			'date_on_sale_from' => array( $this, 'parse_date_field' ),
-			'date_on_sale_to'   => array( $this, 'parse_date_field' ),
 			'name'              => array( $this, 'parse_skip_field' ),
 			'short_description' => array( $this, 'parse_skip_field' ),
 			'description'       => array( $this, 'parse_skip_field' ),
-			'manage_stock'      => array( $this, 'parse_bool_field' ),
-			'low_stock_amount'  => array( $this, 'parse_stock_quantity_field' ),
-			'backorders'        => array( $this, 'parse_backorders_field' ),
-			'stock_status'      => array( $this, 'parse_bool_field' ),
-			'sold_individually' => array( $this, 'parse_bool_field' ),
-			'width'             => array( $this, 'parse_float_field' ),
-			'length'            => array( $this, 'parse_float_field' ),
-			'height'            => array( $this, 'parse_float_field' ),
-			'weight'            => array( $this, 'parse_float_field' ),
 			'reviews_allowed'   => array( $this, 'parse_bool_field' ),
-			'purchase_note'     => 'wp_filter_post_kses',
-			'price'             => 'wc_format_decimal',
-			'regular_price'     => 'wc_format_decimal',
-			'stock_quantity'    => array( $this, 'parse_stock_quantity_field' ),
 			'category_ids'      => array( $this, 'parse_categories_field' ),
 			'tag_ids'           => array( $this, 'parse_tags_field' ),
-			'shipping_class_id' => array( $this, 'parse_shipping_class_field' ),
 			'images'            => array( $this, 'parse_images_field' ),
 			'parent_id'         => array( $this, 'parse_relative_field' ),
-			'grouped_products'  => array( $this, 'parse_relative_comma_field' ),
-			'upsell_ids'        => array( $this, 'parse_relative_comma_field' ),
-			'cross_sell_ids'    => array( $this, 'parse_relative_comma_field' ),
-			'download_limit'    => array( $this, 'parse_int_field' ),
-			'download_expiry'   => array( $this, 'parse_int_field' ),
 			'product_url'       => 'esc_url_raw',
 			'menu_order'        => 'intval',
 		);
@@ -618,7 +506,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 
 		// Figure out the parse function for each column.
 		foreach ( $this->get_mapped_keys() as $index => $heading ) {
-			$callback = 'wc_clean';
+			$callback = 'masvideos_clean';
 
 			if ( isset( $data_formatting[ $heading ] ) ) {
 				$callback = $data_formatting[ $heading ];
@@ -634,7 +522,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 			$callbacks[] = $callback;
 		}
 
-		return apply_filters( 'woocommerce_product_importer_formatting_callbacks', $callbacks, $this );
+		return apply_filters( 'masvideos_movie_importer_formatting_callbacks', $callbacks, $this );
 	}
 
 	/**
@@ -655,7 +543,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 	 * @return array
 	 */
 	protected function expand_data( $data ) {
-		$data = apply_filters( 'woocommerce_product_importer_pre_expand_data', $data );
+		$data = apply_filters( 'masvideos_movie_importer_pre_expand_data', $data );
 
 		// Images field maps to image and gallery id fields.
 		if ( isset( $data['images'] ) ) {
@@ -690,33 +578,8 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 			unset( $data['published'] );
 		}
 
-		if ( isset( $data['stock_quantity'] ) ) {
-			if ( '' === $data['stock_quantity'] ) {
-				$data['manage_stock'] = false;
-				$data['stock_status'] = isset( $data['stock_status'] ) ? $data['stock_status'] : true;
-			} else {
-				$data['manage_stock'] = true;
-			}
-		}
-
-		// Stock is bool or 'backorder'.
-		if ( isset( $data['stock_status'] ) ) {
-			if ( 'backorder' === $data['stock_status'] ) {
-				$data['stock_status'] = 'onbackorder';
-			} else {
-				$data['stock_status'] = $data['stock_status'] ? 'instock' : 'outofstock';
-			}
-		}
-
-		// Prepare grouped products.
-		if ( isset( $data['grouped_products'] ) ) {
-			$data['children'] = $data['grouped_products'];
-			unset( $data['grouped_products'] );
-		}
-
 		// Handle special column names which span multiple columns.
 		$attributes = array();
-		$downloads  = array();
 		$meta_data  = array();
 
 		foreach ( $data as $key => $value ) {
@@ -744,18 +607,6 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 				}
 				unset( $data[ $key ] );
 
-			} elseif ( $this->starts_with( $key, 'downloads:name' ) ) {
-				if ( ! empty( $value ) ) {
-					$downloads[ str_replace( 'downloads:name', '', $key ) ]['name'] = $value;
-				}
-				unset( $data[ $key ] );
-
-			} elseif ( $this->starts_with( $key, 'downloads:url' ) ) {
-				if ( ! empty( $value ) ) {
-					$downloads[ str_replace( 'downloads:url', '', $key ) ]['url'] = $value;
-				}
-				unset( $data[ $key ] );
-
 			} elseif ( $this->starts_with( $key, 'meta:' ) ) {
 				$meta_data[] = array(
 					'key'   => str_replace( 'meta:', '', $key ),
@@ -773,21 +624,6 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 				}
 
 				$data['raw_attributes'][] = $attribute;
-			}
-		}
-
-		if ( ! empty( $downloads ) ) {
-			$data['downloads'] = array();
-
-			foreach ( $downloads as $key => $file ) {
-				if ( empty( $file['url'] ) ) {
-					continue;
-				}
-
-				$data['downloads'][] = array(
-					'name' => $file['name'] ? $file['name'] : wc_get_filename_from_url( $file['url'] ),
-					'file' => $file['url'],
-				);
 			}
 		}
 
@@ -817,7 +653,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 
 			$data = array();
 
-			do_action( 'woocommerce_product_importer_before_set_parsed_data', $row, $mapped_keys );
+			do_action( 'masvideos_movie_importer_before_set_parsed_data', $row, $mapped_keys );
 
 			foreach ( $row as $id => $value ) {
 				// Skip ignored columns.
@@ -840,7 +676,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 				$data[ $mapped_keys[ $id ] ] = call_user_func( $parse_functions[ $id ], $value );
 			}
 
-			$this->parsed_data[] = apply_filters( 'woocommerce_product_importer_parsed_data', $this->expand_data( $data ), $this );
+			$this->parsed_data[] = apply_filters( 'masvideos_movie_importer_parsed_data', $this->expand_data( $data ), $this );
 		}
 	}
 
@@ -852,7 +688,6 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 	 */
 	protected function get_row_id( $parsed_data ) {
 		$id       = isset( $parsed_data['id'] ) ? absint( $parsed_data['id'] ) : 0;
-		$sku      = isset( $parsed_data['sku'] ) ? esc_attr( $parsed_data['sku'] ) : '';
 		$name     = isset( $parsed_data['name'] ) ? esc_attr( $parsed_data['name'] ) : '';
 		$row_data = array();
 
@@ -861,11 +696,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 		}
 		if ( $id ) {
 			/* translators: %d: product ID */
-			$row_data[] = sprintf( __( 'ID %d', 'woocommerce' ), $id );
-		}
-		if ( $sku ) {
-			/* translators: %s: product SKU */
-			$row_data[] = sprintf( __( 'SKU %s', 'woocommerce' ), $sku );
+			$row_data[] = sprintf( __( 'ID %d', 'masvideos' ), $id );
 		}
 
 		return implode( ', ', $row_data );
@@ -892,7 +723,7 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 		);
 
 		foreach ( $this->parsed_data as $parsed_data_key => $parsed_data ) {
-			do_action( 'woocommerce_product_import_before_import', $parsed_data );
+			do_action( 'masvideos_movie_import_before_import', $parsed_data );
 
 			$id         = isset( $parsed_data['id'] ) ? absint( $parsed_data['id'] ) : 0;
 			$sku        = isset( $parsed_data['sku'] ) ? esc_attr( $parsed_data['sku'] ) : '';
@@ -900,34 +731,20 @@ class WC_Product_CSV_Importer extends WC_Product_Importer {
 			$sku_exists = false;
 
 			if ( $id ) {
-				$product   = wc_get_product( $id );
+				$product   = masvideos_get_movie( $id );
 				$id_exists = $product && 'importing' !== $product->get_status();
 			}
 
-			if ( $sku ) {
-				$id_from_sku = wc_get_product_id_by_sku( $sku );
-				$product     = $id_from_sku ? wc_get_product( $id_from_sku ) : false;
-				$sku_exists  = $product && 'importing' !== $product->get_status();
-			}
-
 			if ( $id_exists && ! $update_existing ) {
-				$data['skipped'][] = new WP_Error( 'woocommerce_product_importer_error', __( 'A product with this ID already exists.', 'woocommerce' ), array(
+				$data['skipped'][] = new WP_Error( 'masvideos_movie_importer_error', __( 'A product with this ID already exists.', 'woocommerce' ), array(
 					'id'  => $id,
 					'row' => $this->get_row_id( $parsed_data ),
 				) );
 				continue;
 			}
 
-			if ( $sku_exists && ! $update_existing ) {
-				$data['skipped'][] = new WP_Error( 'woocommerce_product_importer_error', __( 'A product with this SKU already exists.', 'woocommerce' ), array(
-					'sku' => $sku,
-					'row' => $this->get_row_id( $parsed_data ),
-				) );
-				continue;
-			}
-
 			if ( $update_existing && ( $id || $sku ) && ! $id_exists && ! $sku_exists ) {
-				$data['skipped'][] = new WP_Error( 'woocommerce_product_importer_error', __( 'No matching product exists to update.', 'woocommerce' ), array(
+				$data['skipped'][] = new WP_Error( 'masvideos_movie_importer_error', __( 'No matching product exists to update.', 'woocommerce' ), array(
 					'id'  => $id,
 					'sku' => $sku,
 					'row' => $this->get_row_id( $parsed_data ),
