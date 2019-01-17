@@ -534,7 +534,7 @@ if ( ! function_exists( 'masvideos_template_loop_content_area_close' ) ) {
      * Content Area open in the loop.
      */
     function masvideos_template_loop_content_area_close() {
-        echo '</div>';
+        echo '</div><!-- /.content-area -->';
     }
 }
 
