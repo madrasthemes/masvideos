@@ -6,7 +6,6 @@
  * Version: 0.0.24
  * Author: MadrasThemes
  * Author URI: https://madrasthemes.com/
- * Network: true
  * Requires at least: 4.8
  * Tested up to: 4.8
  *

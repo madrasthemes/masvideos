@@ -665,7 +665,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_poster' ) ) {
      * videos poster in the loop.
      */
     function masvideos_template_loop_video_poster() {
-        echo masvideos_get_video_thumbnail();
+        echo masvideos_get_video_thumbnail( 'masvideos_video_medium' );
     }
 }
 
@@ -989,7 +989,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_poster' ) ) {
      * movies poster in the loop.
      */
     function masvideos_template_loop_movie_poster() {
-        echo masvideos_get_movie_thumbnail();
+        echo masvideos_get_movie_thumbnail( 'masvideos_movie_medium' );
     }
 }
 
