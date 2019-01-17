@@ -1050,15 +1050,15 @@ if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
         global $post, $movie;
 
         $categories = get_the_term_list( $post->ID, 'movie_genre' );
-        $release_date = $movie->get_movie_release_date();
+        $relaese_year = get_the_term_list( $post->ID, 'movie_release-year' );
 
-        if ( ! empty( $categories ) || ! empty( $release_date ) ) {
+        if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
             echo '<div class="movie__meta">';
                 if( ! empty ( $categories ) ) {
                    echo '<span class="movie__meta--genre">' . $categories . '</span>';
                 }
-                if( ! empty ( $release_date ) ) {
-                    echo '<span class="movie__meta--release-year">' . date_i18n( 'Y', strtotime( $release_date ) ) . '</span>';
+                if( ! empty ( $relaese_year ) ) {
+                    echo '<span class="movie__meta--release-year">' . $relaese_year . '</span>';
                 }
             echo '</div>';
         }
