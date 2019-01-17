@@ -31,7 +31,7 @@ class MasVideos_Admin_Importers {
 		add_action( 'admin_init', array( $this, 'register_importers' ) );
 		add_action( 'admin_head', array( $this, 'hide_from_menus' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		add_action( 'wp_ajax_masvideos_do_ajax_product_import', array( $this, 'do_ajax_product_import' ) );
+		add_action( 'wp_ajax_masvideos_do_ajax_movie_import', array( $this, 'do_ajax_movie_import' ) );
 
 		// Register MasVideos importers.
 		$this->importers['movie_importer'] = array(
@@ -48,7 +48,7 @@ class MasVideos_Admin_Importers {
 	 * @return bool Whether current user can perform imports.
 	 */
 	protected function import_allowed() {
-		return current_user_can( 'edit_products' ) && current_user_can( 'import' );
+		return current_user_can( 'edit_movies' ) && current_user_can( 'import' );
 	}
 
 	/**
@@ -177,7 +177,7 @@ class MasVideos_Admin_Importers {
 								// Register the taxonomy now so that the import works!
 								register_taxonomy(
 									$term['domain'],
-									apply_filters( 'masvideos_taxonomy_objects_' . $term['domain'], array( 'product' ) ),
+									apply_filters( 'masvideos_taxonomy_objects_' . $term['domain'], array( 'movie' ) ),
 									apply_filters(
 										'masvideos_taxonomy_args_' . $term['domain'], array(
 											'hierarchical' => true,
@@ -198,7 +198,7 @@ class MasVideos_Admin_Importers {
 	/**
 	 * Ajax callback for importing one batch of movies from a CSV.
 	 */
-	public function do_ajax_product_import() {
+	public function do_ajax_movie_import() {
 		global $wpdb;
 
 		check_ajax_referer( 'masvideos-movie-import', 'security' );
@@ -210,11 +210,11 @@ class MasVideos_Admin_Importers {
 		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-movie-csv-importer-controller.php';
 		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-movie-csv-importer.php';
 
-		$file   = wc_clean( wp_unslash( $_POST['file'] ) ); // PHPCS: input var ok.
+		$file   = masvideos_clean( wp_unslash( $_POST['file'] ) ); // PHPCS: input var ok.
 		$params = array(
-			'delimiter'       => ! empty( $_POST['delimiter'] ) ? wc_clean( wp_unslash( $_POST['delimiter'] ) ) : ',', // PHPCS: input var ok.
+			'delimiter'       => ! empty( $_POST['delimiter'] ) ? masvideos_clean( wp_unslash( $_POST['delimiter'] ) ) : ',', // PHPCS: input var ok.
 			'start_pos'       => isset( $_POST['position'] ) ? absint( $_POST['position'] ) : 0, // PHPCS: input var ok.
-			'mapping'         => isset( $_POST['mapping'] ) ? (array) wc_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
+			'mapping'         => isset( $_POST['mapping'] ) ? (array) masvideos_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
 			'update_existing' => isset( $_POST['update_existing'] ) ? (bool) $_POST['update_existing'] : false, // PHPCS: input var ok.
 			'lines'           => apply_filters( 'masvideos_movie_import_batch_size', 30 ),
 			'parse'           => true,
@@ -241,18 +241,9 @@ class MasVideos_Admin_Importers {
 				'post_type'   => 'movie',
 				'post_status' => 'importing',
 			) );
-			$wpdb->delete( $wpdb->posts, array(
-				'post_type'   => 'product_variation',
-				'post_status' => 'importing',
-			) );
 			// @codingStandardsIgnoreEnd.
 
 			// Clean up orphaned data.
-			$wpdb->query( "
-				DELETE {$wpdb->posts}.* FROM {$wpdb->posts}
-				LEFT JOIN {$wpdb->posts} wp ON wp.ID = {$wpdb->posts}.post_parent
-				WHERE wp.ID IS NULL AND {$wpdb->posts}.post_type = 'product_variation'
-			" );
 			$wpdb->query( "
 				DELETE {$wpdb->postmeta}.* FROM {$wpdb->postmeta}
 				LEFT JOIN {$wpdb->posts} wp ON wp.ID = {$wpdb->postmeta}.post_id

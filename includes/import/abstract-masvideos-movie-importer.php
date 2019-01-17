@@ -190,7 +190,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	 *
 	 * @throws Exception If item cannot be processed.
 	 * @param  array $data Raw CSV data.
-	 * @return array|WC_Error
+	 * @return array|MasVideos_Error
 	 */
 	protected function process_item( $data ) {
 		try {

@@ -227,16 +227,6 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 
 		// Not updating? Make sure we have a new placeholder for this ID.
 		if ( ! $this->params['update_existing'] ) {
-			$mapped_keys      = $this->get_mapped_keys();
-			$sku_column_index = absint( array_search( 'sku', $mapped_keys, true ) );
-			$row_sku          = isset( $this->raw_data[ $this->parsing_raw_data_index ][ $sku_column_index ] ) ? $this->raw_data[ $this->parsing_raw_data_index ][ $sku_column_index ] : '';
-			$id_from_sku      = $row_sku ? wc_get_product_id_by_sku( $row_sku ) : '';
-
-			// If row has a SKU, make sure placeholder was not made already.
-			if ( $id_from_sku ) {
-				return $id_from_sku;
-			}
-
 			$movie = new MasVideos_Movie();
 			$movie->set_name( 'Import placeholder for ' . $id );
 			$movie->set_status( 'importing' );
@@ -439,7 +429,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 	/**
 	 * Just skip current field.
 	 *
-	 * By default is applied wc_clean() to all not listed fields
+	 * By default is applied masvideos_clean() to all not listed fields
 	 * in self::get_formating_callback(), use this method to skip any formating.
 	 *
 	 * @param  string $value Field value.
@@ -471,7 +461,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 	protected function get_formating_callback() {
 
 		/**
-		 * Columns not mentioned here will get parsed with 'wc_clean'.
+		 * Columns not mentioned here will get parsed with 'masvideos_clean'.
 		 * column_name => callback.
 		 */
 		$data_formatting = array(
@@ -594,11 +584,11 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 				unset( $data[ $key ] );
 
 			} elseif ( $this->starts_with( $key, 'attributes:taxonomy' ) ) {
-				$attributes[ str_replace( 'attributes:taxonomy', '', $key ) ]['taxonomy'] = wc_string_to_bool( $value );
+				$attributes[ str_replace( 'attributes:taxonomy', '', $key ) ]['taxonomy'] = masvideos_string_to_bool( $value );
 				unset( $data[ $key ] );
 
 			} elseif ( $this->starts_with( $key, 'attributes:visible' ) ) {
-				$attributes[ str_replace( 'attributes:visible', '', $key ) ]['visible'] = wc_string_to_bool( $value );
+				$attributes[ str_replace( 'attributes:visible', '', $key ) ]['visible'] = masvideos_string_to_bool( $value );
 				unset( $data[ $key ] );
 
 			} elseif ( $this->starts_with( $key, 'attributes:default' ) ) {
@@ -726,9 +716,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			do_action( 'masvideos_movie_import_before_import', $parsed_data );
 
 			$id         = isset( $parsed_data['id'] ) ? absint( $parsed_data['id'] ) : 0;
-			$sku        = isset( $parsed_data['sku'] ) ? esc_attr( $parsed_data['sku'] ) : '';
 			$id_exists  = false;
-			$sku_exists = false;
 
 			if ( $id ) {
 				$product   = masvideos_get_movie( $id );
@@ -743,10 +731,9 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 				continue;
 			}
 
-			if ( $update_existing && ( $id || $sku ) && ! $id_exists && ! $sku_exists ) {
+			if ( $update_existing && $id  && ! $id_exists ) {
 				$data['skipped'][] = new WP_Error( 'masvideos_movie_importer_error', __( 'No matching product exists to update.', 'woocommerce' ), array(
 					'id'  => $id,
-					'sku' => $sku,
 					'row' => $this->get_row_id( $parsed_data ),
 				) );
 				continue;
