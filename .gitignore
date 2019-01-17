@@ -40,3 +40,6 @@ tests/cli/vendor
 
 # Composer
 /vendor/
+
+/masvideos/
+masvideo*.zip
