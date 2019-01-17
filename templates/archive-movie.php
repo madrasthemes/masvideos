@@ -58,8 +58,6 @@ if ( masvideos_movies_loop() ) {
              * @hooked masvideos_movies_loop_content() - 20
              */
             do_action( 'masvideos_movies_loop' );
-
-            masvideos_get_template_part( 'content', 'movie' );
         }
     }
 
