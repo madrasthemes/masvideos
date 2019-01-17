@@ -105,3 +105,38 @@ function masvideos_get_movie_visibility_term_ids() {
 		)
 	);
 }
+
+/**
+ * MasVideos Dropdown categories.
+ *
+ * @param array $args Args to control display of dropdown.
+ */
+function masvideos_movie_dropdown_categories( $args = array() ) {
+	global $wp_query;
+
+	$args = wp_parse_args(
+		$args, array(
+			'pad_counts'         => 1,
+			'show_count'         => 1,
+			'hierarchical'       => 1,
+			'hide_empty'         => 1,
+			'show_uncategorized' => 1,
+			'orderby'            => 'name',
+			'selected'           => isset( $wp_query->query_vars['movie_genre'] ) ? $wp_query->query_vars['movie_genre'] : '',
+			'menu_order'         => false,
+			'show_option_none'   => __( 'Select a category', 'masvideos' ),
+			'option_none_value'  => '',
+			'value_field'        => 'slug',
+			'taxonomy'           => 'movie_genre',
+			'name'               => 'movie_genre',
+			'class'              => 'dropdown_movie_cat',
+		)
+	);
+
+	if ( 'order' === $args['orderby'] ) {
+		$args['menu_order'] = 'asc';
+		$args['orderby']    = 'name';
+	}
+
+	wp_dropdown_categories( $args );
+}
