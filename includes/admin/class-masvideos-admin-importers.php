@@ -82,7 +82,7 @@ class MasVideos_Admin_Importers {
 	 */
 	public function admin_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( 'masvideos-movie-import', WC()->plugin_url() . '/assets/js/admin/masvideos-movie-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
+		wp_register_script( 'masvideos-movie-import', MASVIDEOS()->plugin_url() . '/assets/js/admin/masvideos-movie-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
 	}
 
 	/**
@@ -97,8 +97,8 @@ class MasVideos_Admin_Importers {
 			exit;
 		}
 
-		include_once WC_ABSPATH . 'includes/import/class-masvideos-movie-csv-importer.php';
-		include_once WC_ABSPATH . 'includes/admin/importers/class-masvideos-movie-csv-importer-controller.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-movie-csv-importer.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-movie-csv-importer-controller.php';
 
 		$importer = new MasVideos_Movie_CSV_Importer_Controller();
 		$importer->dispatch();
@@ -110,8 +110,8 @@ class MasVideos_Admin_Importers {
 	public function register_importers() {
 		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
 			add_action( 'import_start', array( $this, 'post_importer_compatibility' ) );
-			register_importer( 'masvideos_movie_csv', __( 'MasVideos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your store via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
-			register_importer( 'masvideos_video_csv', __( 'MasVideos Videos rates (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your store via a csv file.', 'masvideos' ), array( $this, 'videos_importer' ) );
+			register_importer( 'masvideos_movie_csv', __( 'MasVideos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
+			register_importer( 'masvideos_video_csv', __( 'MasVideos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'videos_importer' ) );
 		}
 	}
 
@@ -159,11 +159,11 @@ class MasVideos_Admin_Importers {
 					foreach ( $post['terms'] as $term ) {
 						if ( strstr( $term['domain'], 'movie_' ) ) {
 							if ( ! taxonomy_exists( $term['domain'] ) ) {
-								$attribute_name = wc_sanitize_taxonomy_name( str_replace( 'movie_', '', $term['domain'] ) );
+								$attribute_name = masvideos_sanitize_taxonomy_name( str_replace( 'movie_', '', $term['domain'] ) );
 
 								// Create the taxonomy.
-								if ( ! in_array( $attribute_name, wc_get_attribute_taxonomies(), true ) ) {
-									wc_create_attribute(
+								if ( ! in_array( $attribute_name, masvideos_get_attribute_taxonomies(), true ) ) {
+									masvideos_create_attribute(
 										array(
 											'name'         => $attribute_name,
 											'slug'         => $attribute_name,
@@ -177,9 +177,9 @@ class MasVideos_Admin_Importers {
 								// Register the taxonomy now so that the import works!
 								register_taxonomy(
 									$term['domain'],
-									apply_filters( 'woocommerce_taxonomy_objects_' . $term['domain'], array( 'product' ) ),
+									apply_filters( 'masvideos_taxonomy_objects_' . $term['domain'], array( 'product' ) ),
 									apply_filters(
-										'woocommerce_taxonomy_args_' . $term['domain'], array(
+										'masvideos_taxonomy_args_' . $term['domain'], array(
 											'hierarchical' => true,
 											'show_ui'      => false,
 											'query_var'    => true,
@@ -207,8 +207,8 @@ class MasVideos_Admin_Importers {
 			wp_send_json_error( array( 'message' => __( 'Insufficient privileges to import movies.', 'masvideos' ) ) );
 		}
 
-		include_once WC_ABSPATH . 'includes/admin/importers/class-masvideos-movie-csv-importer-controller.php';
-		include_once WC_ABSPATH . 'includes/import/class-masvideos-movie-csv-importer.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-movie-csv-importer-controller.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-movie-csv-importer.php';
 
 		$file   = wc_clean( wp_unslash( $_POST['file'] ) ); // PHPCS: input var ok.
 		$params = array(
