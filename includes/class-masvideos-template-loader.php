@@ -98,25 +98,13 @@ class MasVideos_Template_Loader {
         if ( is_singular( 'video' ) ) {
             $default_file = 'single-video.php';
         } elseif ( is_video_taxonomy() ) {
-            $object = get_queried_object();
-
-            if ( is_tax( 'video_cat' ) || is_tax( 'video_tag' ) ) {
-                $default_file = 'taxonomy-' . $object->taxonomy . '.php';
-            } else {
-                $default_file = 'archive-video.php';
-            }
+            $default_file = self::$theme_support ? 'archive-video.php' : '';
         } elseif ( is_videos() ) {
             $default_file = self::$theme_support ? 'archive-video.php' : '';
         } elseif ( is_singular( 'movie' ) ) {
             $default_file = 'single-movie.php';
         } elseif ( is_movie_taxonomy() ) {
-            $object = get_queried_object();
-
-            // if ( is_tax( 'movie_genre' ) || is_tax( 'movie_tag' ) ) {
-            //     $default_file = 'taxonomy-' . $object->taxonomy . '.php';
-            // } else {
-                $default_file = 'archive-movie.php';
-            // }
+            $default_file = self::$theme_support ? 'archive-movie.php' : '';
         } elseif ( is_movies() ) {
             $default_file = self::$theme_support ? 'archive-movie.php' : '';
         } else {
