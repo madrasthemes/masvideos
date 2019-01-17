@@ -520,6 +520,24 @@ function masvideos_query_string_form_fields( $values = null, $exclude = array(),
  * Loop
  */
 
+if ( ! function_exists( 'masvideos_template_loop_content_area_open' ) ) {
+    /**
+     * Content Area open in the loop.
+     */
+    function masvideos_template_loop_content_area_open() {
+        echo '<div id="primary" class="content-area">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_content_area_close' ) ) {
+    /**
+     * Content Area open in the loop.
+     */
+    function masvideos_template_loop_content_area_close() {
+        echo '</div>';
+    }
+}
+
 /*
  * Videos Loop
  */
@@ -560,6 +578,15 @@ if ( ! function_exists( 'masvideos_video_page_title' ) ) {
         } else {
             return $page_title;
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_videos_loop_content' ) ) {
+    /*
+     * Output the video loop. By default this is a UL.
+     */
+    function masvideos_videos_loop_content() {
+        masvideos_get_template_part( 'content', 'video' );
     }
 }
 
@@ -901,6 +928,15 @@ if ( ! function_exists( 'masvideos_movie_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_movies_loop_content' ) ) {
+    /*
+     * Output the movie loop. By default this is a UL.
+     */
+    function masvideos_movies_loop_content() {
+        masvideos_get_template_part( 'content', 'movie' );
+    }
+}
+
 if ( ! function_exists( 'masvideos_movie_loop_start' ) ) {
 
     /**
@@ -1078,7 +1114,11 @@ if ( ! function_exists( 'masvideos_template_loop_movie_actions' ) ) {
      * video actions in the video loop.
      */
     function masvideos_template_loop_movie_actions() {
-        echo '<div class="movie__actions"></div>';
+        global $movie;
+        echo '<div class="movie__actions">';
+            echo '<a href="' . esc_url( get_permalink( $movie ) ) . '" class="movie-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
+            echo '<a href="#" class="movie-actions--link_add-to-playlist">' . esc_html__( '+ Playlist', 'masvideos' ) . '</a>';
+        echo '</div>';
     }
 }
 

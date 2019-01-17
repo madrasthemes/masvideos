@@ -55,6 +55,7 @@ if ( masvideos_movies_loop() ) {
              * Hook: masvideos_movies_loop.
              *
              * @hooked WC_Structured_Data::generate_movie_data() - 10
+             * @hooked masvideos_movies_loop_content() - 20
              */
             do_action( 'masvideos_movies_loop' );
 
