@@ -548,52 +548,6 @@ if ( ! function_exists( 'masvideos_template_loop_content_area_open' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_movies_pagination' ) ) {
-    /**
-     * Display Paginagion.
-     */
-    function masvideos_movies_pagination() {
-        if ( ! masvideos_get_movies_loop_prop( 'is_paginated' ) || ! masvideos_movies_will_display() ) {
-            return;
-        }
-
-        $args = array(
-            'total'   => masvideos_get_movies_loop_prop( 'total_pages' ),
-            'current' => masvideos_get_movies_loop_prop( 'current_page' ),
-            'base'    => esc_url_raw( add_query_arg( 'movie-page', '%#%', false ) ),
-            'format'  => '?movie-page=%#%',
-        );
-
-        if ( ! masvideos_get_movies_loop_prop( 'is_shortcode' ) ) {
-            $args['format'] = '';
-            $args['base']   = esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) );
-        }
-
-        if (  $args['total'] <= 1 ) {
-            return;
-        }
-        ?>
-
-        <nav class="masvideos-pagination masvideos-movies-pagination">
-            <?php
-                echo paginate_links( apply_filters( 'masvideos_movies_pagination_args', array( // WPCS: XSS ok.
-                    'base'         => $args['base'],
-                    'format'       => $args['format'],
-                    'add_args'     => false,
-                    'current'      => max( 1, $args['current'] ),
-                    'total'        => $args['total'],
-                    'prev_text'    => '&larr;',
-                    'next_text'    => '&rarr;',
-                    'type'         => 'list',
-                    'end_size'     => 3,
-                    'mid_size'     => 3,
-                ) ) );
-            ?>
-        </nav>
-        <?php
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_content_area_close' ) ) {
     /**
      * Content Area open in the loop.
@@ -993,6 +947,236 @@ if ( ! function_exists( 'masvideos_movie_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_movies_control_bar' ) ) {
+    /**
+     * Display Control Bar.
+     */
+    function masvideos_movies_control_bar() {
+        echo '<div class="masvideos-control-bar masvideos-movies-control-bar">';
+            masviseos_movies_per_page();
+            masvideos_movies_catalog_ordering();
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masviseos_movies_per_page' ) ) {
+    /**
+     * Outputs a dropdown for user to select how many movies to show per page
+     */
+    function masviseos_movies_per_page() {
+
+        global $wp_query;
+
+        $action             = '';
+        $cat                = '';
+        $cat                = $wp_query->get_queried_object();
+        $method             = apply_filters( 'masviseos_movies_mpp_method', 'post' );
+        $return_to_first    = apply_filters( 'masviseos_movies_mpp_return_to_first', false );
+        $total              = $wp_query->found_posts;
+        $per_page           = $wp_query->get( 'posts_per_page' );
+        $_per_page          = 2;
+
+        // Generate per page options
+        $movies_per_page_options = array();
+        while( $_per_page < $total ) {
+            $movies_per_page_options[] = $_per_page;
+            $_per_page = $_per_page * 2;
+        }
+
+        if ( empty( $movies_per_page_options ) ) {
+            return;
+        }
+
+        $movies_per_page_options[] = -1;
+
+        // Set action url if option behaviour is true
+        // Paste QUERY string after for filter and orderby support
+        $query_string = ! empty( $_SERVER['QUERY_STRING'] ) ? '?' . add_query_arg( array( 'mpp' => false ), $_SERVER['QUERY_STRING'] ) : null;
+
+        if ( isset( $cat->term_id ) && isset( $cat->taxonomy ) && $return_to_first ) :
+            $action = get_term_link( $cat->term_id, $cat->taxonomy ) . $query_string;
+        elseif ( $return_to_first ) :
+            $action = get_permalink( masviseos_get_page_id( 'movies' ) ) . $query_string;
+        endif;
+
+        // Only show on movie categories
+        if ( ! masvideos_movies_will_display() ) :
+            return;
+        endif;
+
+        do_action( 'masviseos_mpp_before_dropdown_form' );
+
+        ?><form method="POST" action="<?php echo esc_url( $action ); ?>" class="form-masviseos-mpp"><?php
+
+             do_action( 'masviseos_mpp_before_dropdown' );
+
+            ?><select name="mpp" onchange="this.form.submit()" class="masviseos-mmpp-select c-select"><?php
+
+                foreach( $movies_per_page_options as $key => $value ) :
+
+                    ?><option value="<?php echo esc_attr( $value ); ?>" <?php selected( $value, $per_page ); ?>><?php
+                        $mpp_text = apply_filters( 'masviseos_mpp_text', __( 'Show %s', 'masvideos' ), $value );
+                        esc_html( printf( $mpp_text, $value == -1 ? __( 'All', 'masvideos' ) : $value ) ); // Set to 'All' when value is -1
+                    ?></option><?php
+
+                endforeach;
+
+            ?></select><?php
+
+            // Keep query string vars intact
+            foreach ( $_GET as $key => $val ) :
+
+                if ( 'mpp' === $key || 'submit' === $key ) :
+                    continue;
+                endif;
+                if ( is_array( $val ) ) :
+                    foreach( $val as $inner_val ) :
+                        ?><input type="hidden" name="<?php echo esc_attr( $key ); ?>[]" value="<?php echo esc_attr( $inner_val ); ?>" /><?php
+                    endforeach;
+                else :
+                    ?><input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $val ); ?>" /><?php
+                endif;
+            endforeach;
+
+            do_action( 'masviseos_mpp_after_dropdown' );
+
+        ?></form><?php
+
+        do_action( 'masviseos_mpp_after_dropdown_form' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_movies_catalog_ordering' ) ) {
+    function masvideos_movies_catalog_ordering() {
+        if ( ! masvideos_get_movies_loop_prop( 'is_paginated' ) || ! masvideos_movies_will_display() ) {
+            return;
+        }
+
+        $catalog_orderby_options = apply_filters( 'masvideos_movies_catalog_orderby', array(
+            'title-asc'  => esc_html__( 'Name: Ascending', 'masvideos' ),
+            'title-desc' => esc_html__( 'Name: Descending', 'masvideos' ),
+            'date'       => esc_html__( 'Latest', 'masvideos' ),
+            'menu_order' => esc_html__( 'Menu Order', 'masvideos' ),
+            'rating'     => esc_html__( 'Rating', 'masvideos' ),
+        ) );
+
+        $default_orderby = masvideos_get_movies_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_movies_default_catalog_orderby', 'date' );
+        $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
+
+        if ( masvideos_get_movies_loop_prop( 'is_search' ) ) {
+            $catalog_orderby_options = array_merge( array( 'relevance' => esc_html__( 'Relevance', 'masvideos' ) ), $catalog_orderby_options );
+
+            unset( $catalog_orderby_options['menu_order'] );
+        }
+
+        if ( ! array_key_exists( $orderby, $catalog_orderby_options ) ) {
+            $orderby = current( array_keys( $catalog_orderby_options ) );
+        }
+
+        ?>
+        <form method="get">
+            <select name="orderby" class="orderby" onchange="this.form.submit();">
+                <?php foreach ( $catalog_orderby_options as $id => $name ) : ?>
+                    <option value="<?php echo esc_attr( $id ); ?>" <?php selected( $orderby, $id ); ?>><?php echo esc_html( $name ); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="hidden" name="paged" value="1" />
+        </form>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_movies_page_control_bar' ) ) {
+    /**
+     * Display Page Control Bar.
+     */
+    function masvideos_movies_page_control_bar() {
+        echo '<div class="masvideos-page-control-bar masvideos-movies-page-control-bar">';
+            masvideos_movies_count();
+            masvideos_movies_pagination();
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_movies_count' ) ) {
+
+    /**
+     * Output the result count text (Showing x - x of x results).
+     */
+    function masvideos_movies_count() {
+        if ( ! masvideos_get_movies_loop_prop( 'is_paginated' ) || ! masvideos_movies_will_display() ) {
+            return;
+        }
+        $args = array(
+            'total'    => masvideos_get_movies_loop_prop( 'total' ),
+            'per_page' => masvideos_get_movies_loop_prop( 'per_page' ),
+            'current'  => masvideos_get_movies_loop_prop( 'current_page' ),
+        );
+
+        ?>
+        <p class="masvideos-result-count masvideos-movies-result-count">
+            <?php
+            if ( $args['total'] <= $args['per_page'] || -1 === $args['per_page'] ) {
+                /* translators: %d: total results */
+                printf( _n( 'Showing the single result', 'Showing all %d results', $args['total'], 'masvideos' ), $args['total'] );
+            } else {
+                $first = ( $args['per_page'] * $args['current'] ) - $args['per_page'] + 1;
+                $last  = min( $args['total'], $args['per_page'] * $args['current'] );
+                /* translators: 1: first result 2: last result 3: total results */
+                printf( _nx( 'Showing the single result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), $first, $last, $args['total'] );
+            }
+            ?>
+        </p>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_movies_pagination' ) ) {
+    /**
+     * Display Pagination.
+     */
+    function masvideos_movies_pagination() {
+        if ( ! masvideos_get_movies_loop_prop( 'is_paginated' ) || ! masvideos_movies_will_display() ) {
+            return;
+        }
+
+        $args = array(
+            'total'   => masvideos_get_movies_loop_prop( 'total_pages' ),
+            'current' => masvideos_get_movies_loop_prop( 'current_page' ),
+            'base'    => esc_url_raw( add_query_arg( 'movie-page', '%#%', false ) ),
+            'format'  => '?movie-page=%#%',
+        );
+
+        if ( ! masvideos_get_movies_loop_prop( 'is_shortcode' ) ) {
+            $args['format'] = '';
+            $args['base']   = esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) );
+        }
+
+        if (  $args['total'] <= 1 ) {
+            return;
+        }
+        ?>
+
+        <nav class="masvideos-pagination masvideos-movies-pagination">
+            <?php
+                echo paginate_links( apply_filters( 'masvideos_movies_pagination_args', array( // WPCS: XSS ok.
+                    'base'         => $args['base'],
+                    'format'       => $args['format'],
+                    'add_args'     => false,
+                    'current'      => max( 1, $args['current'] ),
+                    'total'        => $args['total'],
+                    'prev_text'    => '&larr;',
+                    'next_text'    => '&rarr;',
+                    'type'         => 'list',
+                    'end_size'     => 3,
+                    'mid_size'     => 3,
+                ) ) );
+            ?>
+        </nav>
+        <?php
+    }
+}
+
 if ( ! function_exists( 'masvideos_movies_loop_content' ) ) {
     /*
      * Output the movie loop. By default this is a UL.
@@ -1210,10 +1394,13 @@ if ( ! function_exists( 'masvideos_template_loop_movie_review_info_open' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_avg_rating' ) ) {
 
     /**
-     * video avg rating in the video loop.
+     * movie avg rating in the movie loop.
      */
     function masvideos_template_loop_movie_avg_rating() {
-        echo '<a href="#" class="avg-rating"></a>';
+        global $movie;
+        echo '<a href="#" class="avg-rating">';
+        echo '<span class="avg-rating-number">' . $movie->get_average_rating() . '</span>';
+        echo '</a>';
     }
 }
 
