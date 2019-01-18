@@ -1673,3 +1673,27 @@ if ( ! function_exists( 'masvideos_video_review_display_comment_text' ) ) {
         echo '</div>';
     }
 }
+
+/**
+ * Get HTML for star rating.
+ *
+ * @since  1.0.0
+ * @param  float $rating Rating being shown.
+ * @param  int   $count  Total number of ratings.
+ * @return string
+ */
+function masvideos_get_star_rating_html( $rating, $count = 0 ) {
+    $html = '<span style="width:' . ( ( $rating / 5 ) * 100 ) . '%">';
+
+    if ( 0 < $count ) {
+        /* translators: 1: rating 2: rating count */
+        $html .= sprintf( _n( 'Rated %1$s out of 5 based on %2$s customer rating', 'Rated %1$s out of 5 based on %2$s customer ratings', $count, 'masvideos' ), '<strong class="rating">' . esc_html( $rating ) . '</strong>', '<span class="rating">' . esc_html( $count ) . '</span>' );
+    } else {
+        /* translators: %s: rating */
+        $html .= sprintf( esc_html__( 'Rated %s out of 5', 'masvideos' ), '<strong class="rating">' . esc_html( $rating ) . '</strong>' );
+    }
+
+    $html .= '</span>';
+
+    return apply_filters( 'masvideos_get_star_rating_html', $html, $rating, $count );
+}
