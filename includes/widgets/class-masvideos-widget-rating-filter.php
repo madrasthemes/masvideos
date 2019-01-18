@@ -91,7 +91,7 @@ class MasVideos_Widget_Movies_Rating_Filter extends MasVideos_Widget {
 			return;
 		}
 
-		if ( ! masvideos()->query->get_main_query()->post_count ) {
+		if ( ! MasVideos()->movie_query->get_main_query()->post_count ) {
 			return;
 		}
 
