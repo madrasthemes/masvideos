@@ -456,3 +456,18 @@ function masvideos_get_image_size( $image_size ) {
 
     return apply_filters( 'masvideos_get_image_size_' . $image_size, $size );
 }
+
+/**
+ * Queue some JavaScript code to be output in the footer.
+ *
+ * @param string $code Code.
+ */
+function masvideos_enqueue_js( $code ) {
+    global $masvideos_queued_js;
+
+    if ( empty( $masvideos_queued_js ) ) {
+        $masvideos_queued_js = '';
+    }
+
+    $masvideos_queued_js .= "\n" . $code . "\n";
+}

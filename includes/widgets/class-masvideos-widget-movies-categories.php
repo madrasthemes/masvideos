@@ -248,7 +248,7 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 						}
 						location.href = this_page;
 					} else {
-						location.href = '" . esc_js( masvideos_get_page_permalink( 'shop' ) ) . "';
+						location.href = '" . esc_js( masvideos_get_page_permalink( 'movies' ) ) . "';
 					}
 				});
 
