@@ -17,6 +17,7 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-page-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-widget-functions.php';
@@ -302,18 +303,6 @@ function masvideos_get_video_permalink_structure() {
 }
 
 /**
- * Retrieve page ids.
- *
- * @param string $page Page slug.
- * @return int
- */
-function masvideos_get_page_id( $page ) {
-    $page = apply_filters( 'masvideos_get_' . $page . '_page_id', get_option( 'masvideos_' . $page . '_page_id' ) );
-
-    return $page ? absint( $page ) : -1;
-}
-
-/**
  * Return the html selected attribute if stringified $value is found in array of stringified $options
  * or if stringified $value is the same as scalar stringified $options.
  *
@@ -455,4 +444,19 @@ function masvideos_get_image_size( $image_size ) {
     }
 
     return apply_filters( 'masvideos_get_image_size_' . $image_size, $size );
+}
+
+/**
+ * Queue some JavaScript code to be output in the footer.
+ *
+ * @param string $code Code.
+ */
+function masvideos_enqueue_js( $code ) {
+    global $masvideos_queued_js;
+
+    if ( empty( $masvideos_queued_js ) ) {
+        $masvideos_queued_js = '';
+    }
+
+    $masvideos_queued_js .= "\n" . $code . "\n";
 }
