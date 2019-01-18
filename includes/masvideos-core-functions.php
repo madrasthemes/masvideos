@@ -17,6 +17,7 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-page-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-widget-functions.php';
@@ -299,18 +300,6 @@ function masvideos_get_video_permalink_structure() {
     $permalinks['movie_attribute_rewrite_slug'] = untrailingslashit( $permalinks['movie_attribute_base'] );
 
     return $permalinks;
-}
-
-/**
- * Retrieve page ids.
- *
- * @param string $page Page slug.
- * @return int
- */
-function masvideos_get_page_id( $page ) {
-    $page = apply_filters( 'masvideos_get_' . $page . '_page_id', get_option( 'masvideos_' . $page . '_page_id' ) );
-
-    return $page ? absint( $page ) : -1;
 }
 
 /**
