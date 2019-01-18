@@ -263,6 +263,25 @@ function masvideos_set_movies_loop_prop( $prop, $value = '' ) {
 }
 
 /**
+ * Check if we will be showing videos.
+ *
+ * @return bool
+ */
+function masvideos_videos_will_display() {
+    return 0 < masvideos_get_videos_loop_prop( 'total', 0 );
+}
+
+
+/**
+ * Check if we will be showing movies.
+ *
+ * @return bool
+ */
+function masvideos_movies_will_display() {
+    return 0 < masvideos_get_movies_loop_prop( 'total', 0 );
+}
+
+/**
  * Should the MasVideos loop be displayed?
  *
  * This will return true if we have posts (videos) or if we have subcats to display.
@@ -526,6 +545,52 @@ if ( ! function_exists( 'masvideos_template_loop_content_area_open' ) ) {
      */
     function masvideos_template_loop_content_area_open() {
         echo '<div id="primary" class="content-area">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_movies_pagination' ) ) {
+    /**
+     * Display Paginagion.
+     */
+    function masvideos_movies_pagination() {
+        if ( ! masvideos_get_movies_loop_prop( 'is_paginated' ) || ! masvideos_movies_will_display() ) {
+            return;
+        }
+
+        $args = array(
+            'total'   => masvideos_get_movies_loop_prop( 'total_pages' ),
+            'current' => masvideos_get_movies_loop_prop( 'current_page' ),
+            'base'    => esc_url_raw( add_query_arg( 'movie-page', '%#%', false ) ),
+            'format'  => '?movie-page=%#%',
+        );
+
+        if ( ! masvideos_get_movies_loop_prop( 'is_shortcode' ) ) {
+            $args['format'] = '';
+            $args['base']   = esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) );
+        }
+
+        if (  $args['total'] <= 1 ) {
+            return;
+        }
+        ?>
+
+        <nav class="masvideos-pagination masvideos-movies-pagination">
+            <?php
+                echo paginate_links( apply_filters( 'masvideos_movies_pagination_args', array( // WPCS: XSS ok.
+                    'base'         => $args['base'],
+                    'format'       => $args['format'],
+                    'add_args'     => false,
+                    'current'      => max( 1, $args['current'] ),
+                    'total'        => $args['total'],
+                    'prev_text'    => '&larr;',
+                    'next_text'    => '&rarr;',
+                    'type'         => 'list',
+                    'end_size'     => 3,
+                    'mid_size'     => 3,
+                ) ) );
+            ?>
+        </nav>
+        <?php
     }
 }
 

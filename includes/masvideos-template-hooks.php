@@ -11,6 +11,7 @@
 defined( 'ABSPATH' ) || exit;
 
 add_action( 'masvideos_before_main_content', 'masvideos_template_loop_content_area_open', 10 );
+add_action( 'masvideos_after_movies_loop', 'masvideos_movies_pagination', 10 );
 add_action( 'masvideos_after_main_content', 'masvideos_template_loop_content_area_close', 999 );
 
 /**
