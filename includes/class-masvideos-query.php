@@ -297,6 +297,20 @@ class MasVideos_Videos_Query {
             );
         }
 
+        // Category Filters.
+        if ( $main_query ) {
+            $query_type = ! empty( $_GET[ 'query_type_cat' ] ) && in_array( $_GET[ 'query_type_cat' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_cat' ] ) ) : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' ); // WPCS: sanitization ok, input var ok, CSRF ok.
+            $filter_terms = ! empty( $_GET['filter_cat'] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET['filter_cat'] ) ) ) : array();
+            $terms = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
+            $tax_query[] = array(
+                'taxonomy'         => 'video_cat',
+                'field'            => 'slug',
+                'terms'            => $terms,
+                'operator'         => 'and' === $query_type ? 'AND' : 'IN',
+                'include_children' => false,
+            );
+        }
+
         // Layered nav filters on terms.
         if ( $main_query ) {
             foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
@@ -729,6 +743,20 @@ class MasVideos_Movies_Query {
         if ( ! is_array( $tax_query ) ) {
             $tax_query = array(
                 'relation' => 'AND',
+            );
+        }
+
+        // Category Filters.
+        if ( $main_query ) {
+            $query_type = ! empty( $_GET[ 'query_type_genre' ] ) && in_array( $_GET[ 'query_type_genre' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_genre' ] ) ) : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' ); // WPCS: sanitization ok, input var ok, CSRF ok.
+            $filter_terms = ! empty( $_GET['filter_genre'] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET['filter_genre'] ) ) ) : array();
+            $terms = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
+            $tax_query[] = array(
+                'taxonomy'         => 'movie_genre',
+                'field'            => 'slug',
+                'terms'            => $terms,
+                'operator'         => 'and' === $query_type ? 'AND' : 'IN',
+                'include_children' => false,
             );
         }
 
