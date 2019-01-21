@@ -39,7 +39,7 @@ class MasVideos_Post_Types {
 
         do_action( 'masvideos_register_post_type' );
 
-        $permalinks = masvideos_get_video_permalink_structure();
+        $permalinks = masvideos_get_permalink_structure();
 
         // For Videos
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
@@ -188,7 +188,7 @@ class MasVideos_Post_Types {
 
         do_action( 'masvideos_register_taxonomy' );
 
-        $permalinks = masvideos_get_video_permalink_structure();
+        $permalinks = masvideos_get_permalink_structure();
 
         register_taxonomy(
             'video_visibility',

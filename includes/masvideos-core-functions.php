@@ -269,8 +269,8 @@ function masvideos_nocache_headers() {
  * @since  1.0.0
  * @return array
  */
-function masvideos_get_video_permalink_structure() {
-    $saved_permalinks = (array) get_option( 'masvideos_video_permalinks', array() );
+function masvideos_get_permalink_structure() {
+    $saved_permalinks = (array) get_option( 'masvideos_permalinks', array() );
     $permalinks       = wp_parse_args(
         array_filter( $saved_permalinks ), array(
             'video_base'                   => _x( 'video', 'slug', 'masvideos' ),
@@ -286,7 +286,7 @@ function masvideos_get_video_permalink_structure() {
     );
 
     if ( $saved_permalinks !== $permalinks ) {
-        update_option( 'masvideos_video_permalinks', $permalinks );
+        update_option( 'masvideos_permalinks', $permalinks );
     }
 
     $permalinks['video_rewrite_slug']           = untrailingslashit( $permalinks['video_base'] );
