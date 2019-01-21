@@ -74,7 +74,7 @@ class MasVideos_Breadcrumb {
 			'is_tax',
 		);
 
-		if ( ( ! is_front_page() && ! ( is_post_type_archive() && intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'videos' ) ) && masvideos_get_page_id( 'movies' ) ) ) || is_paged() ) {
+		if ( ( ! is_front_page() && ! ( is_post_type_archive() && intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'videos' ) ) ) || is_paged() ) {
 			foreach ( $conditionals as $conditional ) {
 				if ( call_user_func( $conditional ) ) {
 					call_user_func( array( $this, 'add_crumbs_' . substr( $conditional, 3 ) ) );

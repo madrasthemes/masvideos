@@ -1717,6 +1717,6 @@ if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
          */
         do_action( 'masvideos_breadcrumb', $breadcrumbs, $args );
 
-        wc_get_template( 'global/breadcrumb.php', $args );
+        masvideos_get_template( 'global/breadcrumb.php', $args );
     }
 }
