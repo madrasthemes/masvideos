@@ -176,7 +176,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
         }
 
         /**
-         * Function used to Init WooCommerce Template Functions - This makes them pluggable by plugins and themes.
+         * Function used to Init Masvideos Template Functions - This makes them pluggable by plugins and themes.
          */
         public function include_template_functions() {
             include_once MASVIDEOS_ABSPATH . 'includes/masvideos-template-functions.php';
@@ -195,7 +195,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
         }
 
         /**
-         * Init WooCommerce when WordPress Initialises.
+         * Init Masvideos when WordPress Initialises.
          */
         public function init() {
             // Before init action.

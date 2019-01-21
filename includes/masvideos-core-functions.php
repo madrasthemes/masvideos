@@ -320,7 +320,7 @@ function masvideos_selected( $value, $options ) {
 }
 
 /**
- * Display a WooCommerce help tip.
+ * Display a MasVideos help tip.
  *
  * @since  1.0.0
  *

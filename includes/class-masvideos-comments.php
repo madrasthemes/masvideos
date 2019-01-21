@@ -4,7 +4,7 @@
  *
  * Handle comments (reviews and order notes).
  *
- * @package WooCommerce/Classes/Movies
+ * @package MasVideos/Classes
  * @version 1.0.0
  */
 
