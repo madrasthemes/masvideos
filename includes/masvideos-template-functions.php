@@ -1354,7 +1354,11 @@ if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
         global $post, $movie;
 
         $categories = get_the_term_list( $post->ID, 'movie_genre', '', ', ' );
-        $relaese_year = get_the_term_list( $post->ID, 'movie_release-year', '', ', ' );
+        if( taxonomy_exists( 'movie_release-year' ) ) {
+            $relaese_year = get_the_term_list( $post->ID, 'movie_release-year', '', ', ' );
+        } else {
+            $relaese_year = '';
+        }
 
         if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
             echo '<div class="movie__meta">';
@@ -1453,9 +1457,16 @@ if ( ! function_exists( 'masvideos_template_loop_movie_avg_rating' ) ) {
      */
     function masvideos_template_loop_movie_avg_rating() {
         global $movie;
-        echo '<a href="#" class="avg-rating">';
-        echo '<span class="avg-rating-number">' . $movie->get_average_rating() . '</span>';
-        echo '</a>';
+        if ( !empty( $movie->get_review_count() ) && $movie->get_review_count() > 0 ) {
+            ?>
+            <a href="<?php echo esc_url( get_permalink( $movie->get_id() ) ); ?>/#reviews" class="avg-rating">
+                <span class="avg-rating-number"> <?php echo number_format( $movie->get_average_rating(), 1, '.', '' ); ?></span>
+                <span class="avg-rating-text">
+                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $movie->get_review_count(), 'masvideos' ), $movie->get_review_count() ) ) ; ?>
+                </span>
+            </a>
+            <?php
+        }
     }
 }
 
@@ -1726,5 +1737,41 @@ if ( ! function_exists( 'masvideos_video_review_display_comment_text' ) ) {
         echo '<div class="description">';
         comment_text();
         echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
+
+    /**
+     * Output the Masvideos Breadcrumb.
+     *
+     * @param array $args Arguments.
+     */
+    function masvideos_breadcrumb( $args = array() ) {
+        $args = wp_parse_args( $args, apply_filters( 'masvideos_breadcrumb_defaults', array(
+            'delimiter'   => '&nbsp;&#47;&nbsp;',
+            'wrap_before' => '<nav class="masvideos-breadcrumb">',
+            'wrap_after'  => '</nav>',
+            'before'      => '',
+            'after'       => '',
+            'home'        => _x( 'Home', 'breadcrumb', 'masvideos' ),
+        ) ) );
+
+        $breadcrumbs = new MasVideos_Breadcrumb();
+
+        if ( ! empty( $args['home'] ) ) {
+            $breadcrumbs->add_crumb( $args['home'], apply_filters( 'masvideos_breadcrumb_home_url', home_url() ) );
+        }
+
+        $args['breadcrumb'] = $breadcrumbs->generate();
+
+        /**
+         * Masvideos Breadcrumb hook
+         *
+         * @hooked MasVideos_Structured_Data::generate_breadcrumblist_data() - 10
+         */
+        do_action( 'masvideos_breadcrumb', $breadcrumbs, $args );
+
+        masvideos_get_template( 'global/breadcrumb.php', $args );
     }
 }

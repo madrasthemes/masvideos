@@ -145,6 +145,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-shortcodes.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-gutenberg-blocks.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-structured-data.php';
 
             /**
              * Data stores - used to store and retrieve CRUD object data from the database.

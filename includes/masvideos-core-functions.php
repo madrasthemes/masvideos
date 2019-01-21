@@ -460,3 +460,13 @@ function masvideos_enqueue_js( $code ) {
 
     $masvideos_queued_js .= "\n" . $code . "\n";
 }
+
+/**
+ * Outputs a "back" link so admin screens can easily jump back a page.
+ *
+ * @param string $label Title of the page to return to.
+ * @param string $url   URL of the page to return to.
+ */
+function masvideos_back_link( $label, $url ) {
+    echo '<small class="masvideos-admin-breadcrumb"><a href="' . esc_url( $url ) . '" aria-label="' . esc_attr( $label ) . '">&#x2934;</a></small>';
+}
