@@ -3,7 +3,7 @@
  * MasVideos_Breadcrumb class.
  *
  * @package MasVideos/Classes
- * @version 2.3.0
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -94,12 +94,12 @@ class MasVideos_Breadcrumb {
 	/**
 	 * Prepend the archive page to archive breadcrumbs.
 	 */
-	private function prepend_shop_page() {
+	private function prepend_movies_page() {
 		$permalinks 	= masvideos_get_permalink_structure();
-		$movies_page_id = wc_get_page_id( 'movies' );
+		$movies_page_id = masvideos_get_page_id( 'movies' );
 		$movies_page 	= get_post( $movies_page_id );
 
-		// If permalinks contain the movie page in the URI prepend the breadcrumb with shop.
+		// If permalinks contain the movie page in the URI prepend the breadcrumb with movies.
 		if ( $movies_page_id && $movies_page && isset( $permalinks['movie_base'] ) && strstr( $permalinks['movie_base'], '/' . $movies_page->post_name ) && intval( get_option( 'page_on_front' ) ) !== $movies_page_id ) {
 			$this->add_crumb( get_the_title( $movies_page ), get_permalink( $movies_page ) );
 		}
@@ -147,7 +147,7 @@ class MasVideos_Breadcrumb {
 		}
 
 		if ( 'movie' === get_post_type( $post ) ) {
-			$this->prepend_shop_page();
+			$this->prepend_movies_page();
 
 			$terms = masvideos_get_movie_terms(
 				$post->ID, 'movie_genre', apply_filters(
@@ -208,44 +208,44 @@ class MasVideos_Breadcrumb {
 	}
 
 	/**
-	 * Product category trail.
+	 * movie category trail.
 	 */
 	private function add_crumbs_movie_category() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
-		$this->prepend_shop_page();
-		$this->term_ancestors( $current_term->term_id, 'product_cat' );
-		$this->add_crumb( $current_term->name, get_term_link( $current_term, 'product_cat' ) );
+		$this->prepend_movie_page();
+		$this->term_ancestors( $current_term->term_id, 'movie_genre' );
+		$this->add_crumb( $current_term->name, get_term_link( $current_term, 'movie_genre' ) );
 	}
 
 	/**
-	 * Product tag trail.
+	 * movie tag trail.
 	 */
-	private function add_crumbs_product_tag() {
+	private function add_crumbs_movie_tag() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
-		$this->prepend_shop_page();
+		$this->prepend_movie_page();
 
-		/* translators: %s: product tag */
-		$this->add_crumb( sprintf( __( 'Products tagged &ldquo;%s&rdquo;', 'masvideos' ), $current_term->name ), get_term_link( $current_term, 'product_tag' ) );
+		/* translators: %s: movie tag */
+		$this->add_crumb( sprintf( __( 'Movies tagged &ldquo;%s&rdquo;', 'masvideos' ), $current_term->name ), get_term_link( $current_term, 'movie_genre' ) );
 	}
 
 	/**
-	 * Shop breadcrumb.
+	 * Movies breadcrumb.
 	 */
-	private function add_crumbs_shop() {
-		if ( intval( get_option( 'page_on_front' ) ) === wc_get_page_id( 'shop' ) ) {
+	private function add_crumbs_movies() {
+		if ( intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'movie' ) ) {
 			return;
 		}
 
-		$_name = wc_get_page_id( 'shop' ) ? get_the_title( wc_get_page_id( 'shop' ) ) : '';
+		$_name = masvideos_get_page_id( 'movie' ) ? get_the_title( masvideos_get_page_id( 'movie' ) ) : '';
 
 		if ( ! $_name ) {
-			$product_post_type = get_post_type_object( 'product' );
-			$_name             = $product_post_type->labels->singular_name;
+			$movie_post_type = get_post_type_object( 'movie' );
+			$_name             = $movie_post_type->labels->singular_name;
 		}
 
-		$this->add_crumb( $_name, get_post_type_archive_link( 'product' ) );
+		$this->add_crumb( $_name, get_post_type_archive_link( 'movie' ) );
 	}
 
 	/**
@@ -348,8 +348,8 @@ class MasVideos_Breadcrumb {
 	 * Endpoints.
 	 */
 	private function endpoint_trail() {
-		$endpoint       = is_wc_endpoint_url() ? WC()->query->get_current_endpoint() : '';
-		$endpoint_title = $endpoint ? WC()->query->get_endpoint_title( $endpoint ) : '';
+		$endpoint       = is_masvideos_endpoint_url() ? MasVideos()->movie_query->get_current_endpoint() : '';
+		$endpoint_title = $endpoint ? MasVideos()->movie_query->get_endpoint_title( $endpoint ) : '';
 
 		if ( $endpoint_title ) {
 			$this->add_crumb( $endpoint_title );

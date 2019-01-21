@@ -1684,3 +1684,39 @@ if ( ! function_exists( 'masvideos_video_review_display_comment_text' ) ) {
         echo '</div>';
     }
 }
+
+if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
+
+    /**
+     * Output the Masvideos Breadcrumb.
+     *
+     * @param array $args Arguments.
+     */
+    function masvideos_breadcrumb( $args = array() ) {
+        $args = wp_parse_args( $args, apply_filters( 'masvideos_breadcrumb_defaults', array(
+            'delimiter'   => '&nbsp;&#47;&nbsp;',
+            'wrap_before' => '<nav class="masvideos-breadcrumb">',
+            'wrap_after'  => '</nav>',
+            'before'      => '',
+            'after'       => '',
+            'home'        => _x( 'Home', 'breadcrumb', 'masvideos' ),
+        ) ) );
+
+        $breadcrumbs = new MasVideos_Breadcrumb();
+
+        if ( ! empty( $args['home'] ) ) {
+            $breadcrumbs->add_crumb( $args['home'], apply_filters( 'masvideos_breadcrumb_home_url', home_url() ) );
+        }
+
+        $args['breadcrumb'] = $breadcrumbs->generate();
+
+        /**
+         * Masvideos Breadcrumb hook
+         *
+         * @hooked MasVideos_Structured_Data::generate_breadcrumblist_data() - 10
+         */
+        do_action( 'masvideos_breadcrumb', $breadcrumbs, $args );
+
+        wc_get_template( 'global/breadcrumb.php', $args );
+    }
+}
