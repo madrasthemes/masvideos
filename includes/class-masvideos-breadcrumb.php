@@ -245,7 +245,7 @@ class MasVideos_Breadcrumb {
 	private function add_crumbs_video_category() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
-		$this->prepend_video_page();
+		$this->prepend_videos_page();
 		$this->term_ancestors( $current_term->term_id, 'video_genre' );
 		$this->add_crumb( $current_term->name, get_term_link( $current_term, 'video_genre' ) );
 	}
@@ -256,7 +256,7 @@ class MasVideos_Breadcrumb {
 	private function add_crumbs_video_tag() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
-		$this->prepend_video_page();
+		$this->prepend_videos_page();
 
 		/* translators: %s: video tag */
 		$this->add_crumb( sprintf( __( 'Videos tagged &ldquo;%s&rdquo;', 'masvideos' ), $current_term->name ), get_term_link( $current_term, 'video_genre' ) );
@@ -286,7 +286,7 @@ class MasVideos_Breadcrumb {
 	private function add_crumbs_movie_genre() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
-		$this->prepend_movie_page();
+		$this->prepend_movies_page();
 		$this->term_ancestors( $current_term->term_id, 'movie_genre' );
 		$this->add_crumb( $current_term->name, get_term_link( $current_term, 'movie_genre' ) );
 	}
@@ -297,7 +297,7 @@ class MasVideos_Breadcrumb {
 	private function add_crumbs_movie_tag() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
-		$this->prepend_movie_page();
+		$this->prepend_movies_page();
 
 		/* translators: %s: movie tag */
 		$this->add_crumb( sprintf( __( 'Movies tagged &ldquo;%s&rdquo;', 'masvideos' ), $current_term->name ), get_term_link( $current_term, 'movie_genre' ) );
