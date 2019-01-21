@@ -331,7 +331,7 @@ class MasVideos_Videos_Query {
 		if ( isset( $_GET['rating_filter'] ) ) { // WPCS: input var ok, CSRF ok.
 			$rating_filter = array_filter( array_map( 'absint', explode( ',', $_GET['rating_filter'] ) ) ); // WPCS: input var ok, CSRF ok, Sanitization ok.
 			$rating_terms  = array();
-			for ( $i = 1; $i <= 5; $i ++ ) {
+			for ( $i = 1; $i <= 10; $i ++ ) {
 				if ( in_array( $i, $rating_filter, true ) && isset( $video_visibility_terms[ 'rated-' . $i ] ) ) {
 					$rating_terms[] = $video_visibility_terms[ 'rated-' . $i ];
 				}
@@ -780,7 +780,7 @@ class MasVideos_Movies_Query {
 		if ( isset( $_GET['rating_filter'] ) ) { // WPCS: input var ok, CSRF ok.
 			$rating_filter = array_filter( array_map( 'absint', explode( ',', $_GET['rating_filter'] ) ) ); // WPCS: input var ok, CSRF ok, Sanitization ok.
 			$rating_terms  = array();
-			for ( $i = 1; $i <= 5; $i ++ ) {
+			for ( $i = 1; $i <= 10; $i ++ ) {
 				if ( in_array( $i, $rating_filter, true ) && isset( $movie_visibility_terms[ 'rated-' . $i ] ) ) {
 					$rating_terms[] = $movie_visibility_terms[ 'rated-' . $i ];
 				}

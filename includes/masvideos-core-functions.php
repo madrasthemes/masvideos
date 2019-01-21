@@ -106,7 +106,7 @@ function masvideos_get_template( $template_name, $args = array(), $template_path
  * Like masvideos_get_template, but returns the HTML instead of outputting.
  *
  * @see masvideos_get_template
- * @since 2.5.0
+ * @since 1.0.0
  * @param string $template_name Template name.
  * @param array  $args          Arguments. (default: array).
  * @param string $template_path Template path. (default: '').
@@ -322,7 +322,7 @@ function masvideos_selected( $value, $options ) {
 /**
  * Display a WooCommerce help tip.
  *
- * @since  2.5.0
+ * @since  1.0.0
  *
  * @param  string $tip        Help tip text.
  * @param  bool   $allow_html Allow sanitized HTML if true or escape.

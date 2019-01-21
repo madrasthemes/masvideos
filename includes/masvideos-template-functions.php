@@ -349,6 +349,62 @@ function masvideos_placeholder_img( $size = 'masvideos_thumbnail' ) {
     return apply_filters( 'masvideos_placeholder_img', '<img src="' . masvideos_placeholder_img_src( $size ) . '" alt="' . esc_attr__( 'Placeholder', 'masvideos' ) . '" width="' . esc_attr( $dimensions['width'] ) . '" class="masvideos-placeholder wp-post-image" height="' . esc_attr( $dimensions['height'] ) . '" />', $size, $dimensions );
 }
 
+if ( ! function_exists( 'masvideos_star_rating' ) ) {
+    /**
+     * Output a HTML element with a star rating for a given rating.
+     *
+     * This is a clone of wp_star_rating().
+     * 
+     * @since 1.0.0
+     * @param array $args Array of star ratings arguments.
+     * @return string Star rating HTML.
+     */
+    function masvideos_star_rating( $args = array() ) {
+        $defaults = array(
+            'rating' => 0,
+            'type'   => 'rating',
+            'number' => 0,
+            'echo'   => true,
+        );
+        $r = wp_parse_args( $args, $defaults );
+     
+        // Non-English decimal places when the $rating is coming from a string
+        $rating = (float) str_replace( ',', '.', $r['rating'] );
+     
+        // Convert Percentage to star rating, 0..5 in .5 increments
+        if ( 'percent' === $r['type'] ) {
+            $rating = round( $rating / 10, 0 ) / 2;
+        }
+     
+        // Calculate the number of each type of star needed
+        $full_stars = floor( $rating );
+        $half_stars = ceil( $rating - $full_stars );
+        $empty_stars = 10 - $full_stars - $half_stars;
+     
+        if ( $r['number'] ) {
+            /* translators: 1: The rating, 2: The number of ratings */
+            $format = _n( '%1$s rating based on %2$s rating', '%1$s rating based on %2$s ratings', $r['number'] );
+            $title = sprintf( $format, number_format_i18n( $rating, 1 ), number_format_i18n( $r['number'] ) );
+        } else {
+            /* translators: 1: The rating */
+            $title = sprintf( __( '%s rating' ), number_format_i18n( $rating, 1 ) );
+        }
+     
+        $output = '<div class="star-rating">';
+        $output .= '<span class="screen-reader-text">' . $title . '</span>';
+        $output .= str_repeat( '<div class="star star-full" aria-hidden="true"></div>', $full_stars );
+        $output .= str_repeat( '<div class="star star-half" aria-hidden="true"></div>', $half_stars );
+        $output .= str_repeat( '<div class="star star-empty" aria-hidden="true"></div>', $empty_stars );
+        $output .= '</div>';
+     
+        if ( $r['echo'] ) {
+            echo $output;
+        }
+     
+        return $output;
+    }
+}
+
 if ( ! function_exists( 'masvideos_get_star_rating_html' ) ) {
     /**
      * Get HTML for star rating.
@@ -359,14 +415,13 @@ if ( ! function_exists( 'masvideos_get_star_rating_html' ) ) {
      * @return string
      */
     function masvideos_get_star_rating_html( $rating, $count = 0 ) {
-        require_once ABSPATH . 'wp-admin/includes/template.php';
         $args = array(
             'rating'    => $rating,
             'type'      => 'rating',
             'number'    => $count,
             'echo'      => false,
         );
-        $html = 0 < $rating ? wp_star_rating( $args ) : '';
+        $html = 0 < $rating ? masvideos_star_rating( $args ) : '';
         return apply_filters( 'masvideos_get_star_rating_html', $html, $rating, $count );
     }
 }

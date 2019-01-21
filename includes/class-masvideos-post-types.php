@@ -4,8 +4,8 @@
  *
  * Registers post types and taxonomies.
  *
- * @package WooCommerce/Classes/Videos
- * @version 2.5.0
+ * @package MasVideos/Classes/Videos
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;

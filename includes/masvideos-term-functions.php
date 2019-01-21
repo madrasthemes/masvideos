@@ -199,6 +199,11 @@ function masvideos_get_movie_visibility_term_ids() {
 				'rated-3'              => 0,
 				'rated-4'              => 0,
 				'rated-5'              => 0,
+				'rated-6'              => 0,
+				'rated-7'              => 0,
+				'rated-8'              => 0,
+				'rated-9'              => 0,
+				'rated-10'             => 0,
 			)
 		)
 	);
@@ -406,6 +411,11 @@ function masvideos_get_video_visibility_term_ids() {
                 'rated-3'              => 0,
                 'rated-4'              => 0,
                 'rated-5'              => 0,
+                'rated-6'              => 0,
+                'rated-7'              => 0,
+                'rated-8'              => 0,
+                'rated-9'              => 0,
+                'rated-10'             => 0,
             )
         )
     );

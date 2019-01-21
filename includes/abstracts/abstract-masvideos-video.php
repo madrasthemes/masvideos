@@ -710,7 +710,7 @@ class MasVideos_Video extends MasVideos_Data {
      *
      * @param string $feature string The name of a feature to test support for.
      * @return bool True if the video supports the feature, false otherwise.
-     * @since 2.5.0
+     * @since 1.0.0
      */
     public function supports( $feature ) {
         return apply_filters( 'masvideos_video_supports', in_array( $feature, $this->supports ), $feature, $this );

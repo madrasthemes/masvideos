@@ -2,8 +2,8 @@
 /**
  * Masvideos_Movie_Cat_List_Walker class
  *
- * @package Masvideos/Classes/Walkers
- * @version 3.4.0
+ * @package MasVideos/Classes/Walkers
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ if ( class_exists( 'Masvideos_Movie_Cat_List_Walker', false ) ) {
 }
 
 /**
- * Masvideos Movies cat list walker class.
+ * MasVideos Movies cat list walker class.
  */
 class Masvideos_Movie_Cat_List_Walker extends Walker {
 
@@ -39,7 +39,7 @@ class Masvideos_Movie_Cat_List_Walker extends Walker {
 	 * Starts the list before the elements are added.
 	 *
 	 * @see Walker::start_lvl()
-	 * @since 2.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
 	 * @param int    $depth Depth of category. Used for tab indentation.
@@ -58,7 +58,7 @@ class Masvideos_Movie_Cat_List_Walker extends Walker {
 	 * Ends the list of after the elements are added.
 	 *
 	 * @see Walker::end_lvl()
-	 * @since 2.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
 	 * @param int    $depth Depth of category. Used for tab indentation.
@@ -77,7 +77,7 @@ class Masvideos_Movie_Cat_List_Walker extends Walker {
 	 * Start the element output.
 	 *
 	 * @see Walker::start_el()
-	 * @since 2.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string  $output            Passed by reference. Used to append additional content.
 	 * @param object  $cat               Category.
@@ -113,7 +113,7 @@ class Masvideos_Movie_Cat_List_Walker extends Walker {
 	 * Ends the element output, if needed.
 	 *
 	 * @see Walker::end_el()
-	 * @since 2.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
 	 * @param object $cat    Category.
@@ -134,7 +134,7 @@ class Masvideos_Movie_Cat_List_Walker extends Walker {
 	 *
 	 * This method shouldn't be called directly, use the walk() method instead.
 	 *
-	 * @since 2.5.0
+	 * @since 1.0.0
 	 *
 	 * @param object $element           Data object.
 	 * @param array  $children_elements List of elements to continue traversing.

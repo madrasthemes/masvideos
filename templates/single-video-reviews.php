@@ -87,11 +87,16 @@ if ( ! comments_open() ) {
                 if ( get_option( 'masvideos_video_review_rating_required' ) === 'yes' ) {
                     $comment_form['comment_field'] = '<div class="comment-form-rating"><label for="rating">' . esc_html__( 'Your rating', 'masvideos' ) . '</label><select name="rating" id="rating" required>
                         <option value="">' . esc_html__( 'Rate&hellip;', 'masvideos' ) . '</option>
-                        <option value="5">' . esc_html__( 'Perfect', 'masvideos' ) . '</option>
-                        <option value="4">' . esc_html__( 'Good', 'masvideos' ) . '</option>
-                        <option value="3">' . esc_html__( 'Average', 'masvideos' ) . '</option>
-                        <option value="2">' . esc_html__( 'Not that bad', 'masvideos' ) . '</option>
-                        <option value="1">' . esc_html__( 'Very poor', 'masvideos' ) . '</option>
+                        <option value="10">10</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
                     </select></div>';
                 }
 
