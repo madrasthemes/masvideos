@@ -1,6 +1,6 @@
 <?php
 /**
- * Masvideos breadcrumb
+ * MasVideos breadcrumb
  *
  *
  * @package MasVideos/Templates

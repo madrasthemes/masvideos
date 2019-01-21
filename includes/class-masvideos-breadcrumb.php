@@ -74,7 +74,7 @@ class MasVideos_Breadcrumb {
 			'is_tax',
 		);
 
-		if ( ( ! is_front_page() && ! ( is_post_type_archive() && intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'videos' ) ) ) || is_paged() ) {
+		if ( ( ! is_front_page() && ! ( is_post_type_archive() && ( intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'videos' ) || intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'movies' ) ) ) ) || is_paged() ) {
 			foreach ( $conditionals as $conditional ) {
 				if ( call_user_func( $conditional ) ) {
 					call_user_func( array( $this, 'add_crumbs_' . substr( $conditional, 3 ) ) );
@@ -89,6 +89,20 @@ class MasVideos_Breadcrumb {
 		}
 
 		return array();
+	}
+
+	/**
+	 * Prepend the archive page to archive breadcrumbs.
+	 */
+	private function prepend_videos_page() {
+		$permalinks 	= masvideos_get_permalink_structure();
+		$videos_page_id = masvideos_get_page_id( 'videos' );
+		$videos_page 	= get_post( $videos_page_id );
+
+		// If permalinks contain the video page in the URI prepend the breadcrumb with videos.
+		if ( $videos_page_id && $videos_page && isset( $permalinks['video_base'] ) && strstr( $permalinks['video_base'], '/' . $videos_page->post_name ) && intval( get_option( 'page_on_front' ) ) !== $videos_page_id ) {
+			$this->add_crumb( get_the_title( $videos_page ), get_permalink( $videos_page ) );
+		}
 	}
 
 	/**
@@ -146,7 +160,24 @@ class MasVideos_Breadcrumb {
 			$permalink = get_permalink( $post );
 		}
 
-		if ( 'movie' === get_post_type( $post ) ) {
+		if ( 'video' === get_post_type( $post ) ) {
+			$this->prepend_videos_page();
+
+			$terms = masvideos_get_video_terms(
+				$post->ID, 'video_cat', apply_filters(
+					'masvideos_breadcrumb_video_terms_args', array(
+						'orderby' => 'parent',
+						'order'   => 'DESC',
+					)
+				)
+			);
+
+			if ( $terms ) {
+				$main_term = apply_filters( 'masvideos_breadcrumb_main_term', $terms[0], $terms );
+				$this->term_ancestors( $main_term->term_id, 'video_cat' );
+				$this->add_crumb( $main_term->name, get_term_link( $main_term ) );
+			}
+		} elseif ( 'movie' === get_post_type( $post ) ) {
 			$this->prepend_movies_page();
 
 			$terms = masvideos_get_movie_terms(
@@ -208,7 +239,48 @@ class MasVideos_Breadcrumb {
 	}
 
 	/**
-	 * movie category trail.
+	 * Video category trail.
+	 */
+	private function add_crumbs_video_category() {
+		$current_term = $GLOBALS['wp_query']->get_queried_object();
+
+		$this->prepend_video_page();
+		$this->term_ancestors( $current_term->term_id, 'video_genre' );
+		$this->add_crumb( $current_term->name, get_term_link( $current_term, 'video_genre' ) );
+	}
+
+	/**
+	 * Video tag trail.
+	 */
+	private function add_crumbs_video_tag() {
+		$current_term = $GLOBALS['wp_query']->get_queried_object();
+
+		$this->prepend_video_page();
+
+		/* translators: %s: video tag */
+		$this->add_crumb( sprintf( __( 'Videos tagged &ldquo;%s&rdquo;', 'masvideos' ), $current_term->name ), get_term_link( $current_term, 'video_genre' ) );
+	}
+
+	/**
+	 * Movies breadcrumb.
+	 */
+	private function add_crumbs_videos() {
+		if ( intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'videos' ) ) {
+			return;
+		}
+
+		$_name = masvideos_get_page_id( 'videos' ) ? get_the_title( masvideos_get_page_id( 'videos' ) ) : '';
+
+		if ( ! $_name ) {
+			$video_post_type = get_post_type_object( 'video' );
+			$_name             = $video_post_type->labels->singular_name;
+		}
+
+		$this->add_crumb( $_name, get_post_type_archive_link( 'video' ) );
+	}
+
+	/**
+	 * Movie category trail.
 	 */
 	private function add_crumbs_movie_category() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
@@ -219,7 +291,7 @@ class MasVideos_Breadcrumb {
 	}
 
 	/**
-	 * movie tag trail.
+	 * Movie tag trail.
 	 */
 	private function add_crumbs_movie_tag() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
@@ -234,11 +306,11 @@ class MasVideos_Breadcrumb {
 	 * Movies breadcrumb.
 	 */
 	private function add_crumbs_movies() {
-		if ( intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'movie' ) ) {
+		if ( intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'movies' ) ) {
 			return;
 		}
 
-		$_name = masvideos_get_page_id( 'movie' ) ? get_the_title( masvideos_get_page_id( 'movie' ) ) : '';
+		$_name = masvideos_get_page_id( 'movies' ) ? get_the_title( masvideos_get_page_id( 'movies' ) ) : '';
 
 		if ( ! $_name ) {
 			$movie_post_type = get_post_type_object( 'movie' );

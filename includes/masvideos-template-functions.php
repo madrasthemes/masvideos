@@ -1743,7 +1743,7 @@ if ( ! function_exists( 'masvideos_video_review_display_comment_text' ) ) {
 if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
 
     /**
-     * Output the Masvideos Breadcrumb.
+     * Output the MasVideos Breadcrumb.
      *
      * @param array $args Arguments.
      */
@@ -1766,7 +1766,7 @@ if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
         $args['breadcrumb'] = $breadcrumbs->generate();
 
         /**
-         * Masvideos Breadcrumb hook
+         * MasVideos Breadcrumb hook
          *
          * @hooked MasVideos_Structured_Data::generate_breadcrumblist_data() - 10
          */
