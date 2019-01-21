@@ -1299,7 +1299,11 @@ if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
         global $post, $movie;
 
         $categories = get_the_term_list( $post->ID, 'movie_genre', '', ', ' );
-        $relaese_year = get_the_term_list( $post->ID, 'movie_release-year', '', ', ' );
+        if( taxonomy_exists( 'movie_release-year' ) ) {
+            $relaese_year = get_the_term_list( $post->ID, 'movie_release-year', '', ', ' );
+        } else {
+            $relaese_year = '';
+        }
 
         if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
             echo '<div class="movie__meta">';
@@ -1398,9 +1402,16 @@ if ( ! function_exists( 'masvideos_template_loop_movie_avg_rating' ) ) {
      */
     function masvideos_template_loop_movie_avg_rating() {
         global $movie;
-        echo '<a href="#" class="avg-rating">';
-        echo '<span class="avg-rating-number">' . $movie->get_average_rating() . '</span>';
-        echo '</a>';
+        if ( !empty( $movie->get_review_count() ) && $movie->get_review_count() > 0 ) {
+            ?>
+            <a href="<?php echo esc_url( get_permalink( $movie->get_id() ) ); ?>/#reviews" class="avg-rating">
+                <span class="avg-rating-number"> <?php echo number_format( $movie->get_average_rating(), 1, '.', '' ); ?></span>
+                <span class="avg-rating-text">
+                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $movie->get_review_count(), 'masvideos' ), $movie->get_review_count() ) ) ; ?>
+                </span>
+            </a>
+            <?php
+        }
     }
 }
 
