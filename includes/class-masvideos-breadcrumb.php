@@ -59,12 +59,13 @@ class MasVideos_Breadcrumb {
 			'is_home',
 			'is_404',
 			'is_attachment',
-			'is_singular',
+			'is_single',
 			'is_video_category',
-			'is_movie_genre',
 			'is_video_tag',
+			'is_videos',
+			'is_movie_genre',
 			'is_movie_tag',
-			'is_video',
+			'is_movies',
 			'is_page',
 			'is_post_type_archive',
 			'is_category',
@@ -282,7 +283,7 @@ class MasVideos_Breadcrumb {
 	/**
 	 * Movie category trail.
 	 */
-	private function add_crumbs_movie_category() {
+	private function add_crumbs_movie_genre() {
 		$current_term = $GLOBALS['wp_query']->get_queried_object();
 
 		$this->prepend_movie_page();
