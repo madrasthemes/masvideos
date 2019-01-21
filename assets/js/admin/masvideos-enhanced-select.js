@@ -257,7 +257,7 @@ jQuery( function( $ ) {
 				});
 			})
 
-			// Masvideos Backbone Modal
+			// MasVideos Backbone Modal
 			.on( 'masvideos_backbone_modal_before_remove', function() {
 				$( '.masvideos-enhanced-select, :input.masvideos-movie-search, :input.masvideos-customer-search' ).filter( '.select2-hidden-accessible' ).selectWoo( 'close' );
 			})

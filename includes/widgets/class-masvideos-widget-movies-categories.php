@@ -271,9 +271,9 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 			"
 			);
 		} else {
-			include_once Masvideos()->plugin_path() . '/includes/walkers/class-masvideos-movies-cat-list-walker.php';
+			include_once MasVideos()->plugin_path() . '/includes/walkers/class-masvideos-movies-cat-list-walker.php';
 
-			$list_args['walker']                     = new Masvideos_Movie_Cat_List_Walker();
+			$list_args['walker']                     = new MasVideos_Movie_Cat_List_Walker();
 			$list_args['title_li']                   = '';
 			$list_args['pad_counts']                 = 1;
 			$list_args['show_option_none']           = __( 'No movies categories exist.', 'masvideos' );

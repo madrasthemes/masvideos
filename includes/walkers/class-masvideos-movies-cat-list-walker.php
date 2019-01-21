@@ -1,6 +1,6 @@
 <?php
 /**
- * Masvideos_Movie_Cat_List_Walker class
+ * MasVideos_Movie_Cat_List_Walker class
  *
  * @package MasVideos/Classes/Walkers
  * @version 1.0.0
@@ -8,14 +8,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'Masvideos_Movie_Cat_List_Walker', false ) ) {
+if ( class_exists( 'MasVideos_Movie_Cat_List_Walker', false ) ) {
 	return;
 }
 
 /**
  * MasVideos Movies cat list walker class.
  */
-class Masvideos_Movie_Cat_List_Walker extends Walker {
+class MasVideos_Movie_Cat_List_Walker extends Walker {
 
 	/**
 	 * What the class handles.
