@@ -73,17 +73,9 @@ if ( ! comments_open() ) {
             ?>
         </div>
     </div>
-    
-    <div id="comments">
-        <h2 class="masvideos-Reviews-title"><?php
-            if ( get_option( 'masvideos_video_review_rating_required' ) === 'yes' && ( $count = $video->get_review_count() ) ) {
-                /* translators: 1: reviews count 2: video name */
-                printf( esc_html( _n( '%1$s review for %2$s', '%1$s reviews for %2$s', $count, 'masvideos' ) ), esc_html( $count ), '<span>' . get_the_title() . '</span>' );
-            } else {
-                _e( 'Reviews', 'masvideos' );
-            }
-        ?></h2>
 
+    <div id="comments">
+        
         <?php if ( have_comments() ) : ?>
 
             <ol class="commentlist">

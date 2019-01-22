@@ -37,13 +37,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             <?php
             /**
-             * The masvideos_video_review_before_comment_meta hook.
-             *
-             * @hooked masvideos_video_review_display_rating - 10
-             */
-            do_action( 'masvideos_video_review_before_comment_meta', $comment );
-
-            /**
              * The masvideos_video_review_meta hook.
              *
              * @hooked masvideos_video_review_display_meta - 10
@@ -60,7 +53,14 @@ if ( ! defined( 'ABSPATH' ) ) {
              */
             do_action( 'masvideos_video_review_comment_text', $comment );
 
-            do_action( 'masvideos_video_review_after_comment_text', $comment ); ?>
+            do_action( 'masvideos_video_review_after_comment_text', $comment ); 
+
+            /**
+             * The masvideos_video_review_before_comment_meta hook.
+             *
+             * @hooked masvideos_video_review_display_rating - 10
+             */
+            do_action( 'masvideos_video_review_before_comment_meta', $comment );?>
 
         </div>
     </div>

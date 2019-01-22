@@ -30,7 +30,7 @@ if ( '0' === $comment->comment_approved ) { ?>
 
 	<p class="meta">
 		<strong class="masvideos-review__author"><?php comment_author(); ?> </strong>
-		<span class="masvideos-review__dash">&ndash;</span> <time class="masvideos-review__published-date" datetime="<?php echo esc_attr( get_comment_date( 'c' ) ); ?>"><?php echo esc_html( get_comment_date( masvideos_date_format() ) ); ?></time>
+		<time class="masvideos-review__published-date" datetime="<?php echo esc_attr( get_comment_date( 'c' ) ); ?>"><?php echo esc_html( get_comment_date( masvideos_date_format() ) ); ?></time>
 	</p>
 
 <?php
