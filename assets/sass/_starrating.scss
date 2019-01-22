@@ -39,8 +39,16 @@
     width: 20px;
 }
 
+.comment-form {
+    .comment-form-rating > label {
+        display: block;
+    }
+}
+
 p.stars {
     line-height: 1;
+    font-size: 20px;
+    display: inline-block;
     
     a {
         position: relative;
