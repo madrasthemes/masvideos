@@ -25,39 +25,6 @@ if ( ! comments_open() ) {
 
 ?>
 <div id="reviews" class="masvideos-Reviews">
-    <div id="comments">
-        <h2 class="masvideos-Reviews-title"><?php
-            if ( get_option( 'masvideos_video_review_rating_required' ) === 'yes' && ( $count = $video->get_review_count() ) ) {
-                /* translators: 1: reviews count 2: video name */
-                printf( esc_html( _n( '%1$s review for %2$s', '%1$s reviews for %2$s', $count, 'masvideos' ) ), esc_html( $count ), '<span>' . get_the_title() . '</span>' );
-            } else {
-                _e( 'Reviews', 'masvideos' );
-            }
-        ?></h2>
-
-        <?php if ( have_comments() ) : ?>
-
-            <ol class="commentlist">
-                <?php wp_list_comments( apply_filters( 'masvideos_video_review_list_args', array( 'callback' => 'masvideos_video_comments' ) ) ); ?>
-            </ol>
-
-            <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) :
-                echo '<nav class="masvideos-pagination">';
-                paginate_comments_links( apply_filters( 'masvideos_comment_pagination_args', array(
-                    'prev_text' => '&larr;',
-                    'next_text' => '&rarr;',
-                    'type'      => 'list',
-                ) ) );
-                echo '</nav>';
-            endif; ?>
-
-        <?php else : ?>
-
-            <p class="masvideos-noreviews"><?php _e( 'There are no reviews yet.', 'masvideos' ); ?></p>
-
-        <?php endif; ?>
-    </div>
-
     <div id="review_form_wrapper">
         <div id="review_form">
             <?php
@@ -105,6 +72,39 @@ if ( ! comments_open() ) {
                 comment_form( apply_filters( 'masvideos_video_review_comment_form_args', $comment_form ) );
             ?>
         </div>
+    </div>
+    
+    <div id="comments">
+        <h2 class="masvideos-Reviews-title"><?php
+            if ( get_option( 'masvideos_video_review_rating_required' ) === 'yes' && ( $count = $video->get_review_count() ) ) {
+                /* translators: 1: reviews count 2: video name */
+                printf( esc_html( _n( '%1$s review for %2$s', '%1$s reviews for %2$s', $count, 'masvideos' ) ), esc_html( $count ), '<span>' . get_the_title() . '</span>' );
+            } else {
+                _e( 'Reviews', 'masvideos' );
+            }
+        ?></h2>
+
+        <?php if ( have_comments() ) : ?>
+
+            <ol class="commentlist">
+                <?php wp_list_comments( apply_filters( 'masvideos_video_review_list_args', array( 'callback' => 'masvideos_video_comments' ) ) ); ?>
+            </ol>
+
+            <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) :
+                echo '<nav class="masvideos-pagination">';
+                paginate_comments_links( apply_filters( 'masvideos_comment_pagination_args', array(
+                    'prev_text' => '&larr;',
+                    'next_text' => '&rarr;',
+                    'type'      => 'list',
+                ) ) );
+                echo '</nav>';
+            endif; ?>
+
+        <?php else : ?>
+
+            <p class="masvideos-noreviews"><?php _e( 'There are no reviews yet.', 'masvideos' ); ?></p>
+
+        <?php endif; ?>
     </div>
 
     <div class="clear"></div>
