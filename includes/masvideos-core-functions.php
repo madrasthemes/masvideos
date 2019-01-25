@@ -18,6 +18,8 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-page-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-episode-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-widget-functions.php';
@@ -281,6 +283,14 @@ function masvideos_get_permalink_structure() {
             'movie_genre_base'             => _x( 'movie-genre', 'slug', 'masvideos' ),
             'movie_tag_base'               => _x( 'movie-tag', 'slug', 'masvideos' ),
             'movie_attribute_base'         => '',
+            'tv_show_base'                 => _x( 'tv-show', 'slug', 'masvideos' ),
+            'tv_show_genre_base'           => _x( 'tv-show-genre', 'slug', 'masvideos' ),
+            'tv_show_tag_base'             => _x( 'tv-show-tag', 'slug', 'masvideos' ),
+            'tv_show_attribute_base'       => '',
+            'episode_base'                 => _x( 'episode', 'slug', 'masvideos' ),
+            'episode_genre_base'           => _x( 'episode-genre', 'slug', 'masvideos' ),
+            'episode_tag_base'             => _x( 'episode-tag', 'slug', 'masvideos' ),
+            'episode_attribute_base'       => '',
             'use_verbose_page_rules'       => false,
         )
     );
@@ -298,6 +308,16 @@ function masvideos_get_permalink_structure() {
     $permalinks['movie_genre_rewrite_slug']     = untrailingslashit( $permalinks['movie_genre_base'] );
     $permalinks['movie_tag_rewrite_slug']       = untrailingslashit( $permalinks['movie_tag_base'] );
     $permalinks['movie_attribute_rewrite_slug'] = untrailingslashit( $permalinks['movie_attribute_base'] );
+
+    $permalinks['tv_show_rewrite_slug']           = untrailingslashit( $permalinks['tv_show_base'] );
+    $permalinks['tv_show_genre_rewrite_slug']     = untrailingslashit( $permalinks['tv_show_genre_base'] );
+    $permalinks['tv_show_tag_rewrite_slug']       = untrailingslashit( $permalinks['tv_show_tag_base'] );
+    $permalinks['tv_show_attribute_rewrite_slug'] = untrailingslashit( $permalinks['tv_show_attribute_base'] );
+
+    $permalinks['episode_rewrite_slug']           = untrailingslashit( $permalinks['episode_base'] );
+    $permalinks['episode_genre_rewrite_slug']     = untrailingslashit( $permalinks['episode_genre_base'] );
+    $permalinks['episode_tag_rewrite_slug']       = untrailingslashit( $permalinks['episode_tag_base'] );
+    $permalinks['episode_attribute_rewrite_slug'] = untrailingslashit( $permalinks['episode_attribute_base'] );
 
     return $permalinks;
 }
