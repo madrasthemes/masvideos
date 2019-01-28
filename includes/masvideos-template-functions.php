@@ -762,7 +762,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_duration' ) ) {
         $duration = $movie->get_movie_run_time();
         
         if ( ! empty( $duration ) ) {
-            echo '<span class="video__duration">' . $duration . '</span>';
+            echo '<span class="video__duration">' . wp_kses_post( $duration ) . '</span>';
         }
     }
 }
