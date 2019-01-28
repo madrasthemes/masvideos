@@ -47,6 +47,8 @@
         }
     }
 
+    &#episode_attributes .expand-close,
+    &#tv_show_attributes .expand-close,
     &#video_attributes .expand-close,
     &#movie_attributes .expand-close {
         float: right;
@@ -423,6 +425,8 @@
     background: #fff;
 }
 
+#episode_variation-parent #parent_id,
+#tv_show_variation-parent #parent_id,
 #video_variation-parent #parent_id,
 #movie_variation-parent #parent_id {
     width: 100%;
@@ -433,7 +437,9 @@
     max-width: 100%;
 }
 
-#masvideos-video-images .inside
+#masvideos-episode-images .inside,
+#masvideos-tv-show-images .inside,
+#masvideos-video-images .inside,
 #masvideos-movie-images .inside {
     margin: 0;
     padding: 0;
@@ -536,6 +542,8 @@
     }
 }
 
+#masvideos-episode-data,
+#masvideos-season-data,
 #masvideos-video-data,
 #masvideos-movie-data {
     .hndle {
@@ -587,6 +595,8 @@
     }
 }
 
+#masvideos-episode-data,
+#masvideos-season-data,
 #masvideos-video-data,
 #masvideos-movie-data {
     .panel-wrap {
@@ -615,6 +625,8 @@
     }
 }
 
+#masvideos-episode-data,
+#masvideos-season-data,
 #masvideos-video-data,
 #masvideos-movie-data,
 .masvideos {
@@ -724,6 +736,10 @@
     }
 }
 
+#masvideos-episode-data,
+#masvideos-episode-type-options,
+#masvideos-tv-show-data,
+#masvideos-tv-show-type-options,
 #masvideos-video-data,
 #masvideos-video-type-options,
 #masvideos-movie-data,
@@ -1060,6 +1076,10 @@
 * Optimisation for screens 900px and smaller
 */
 @media only screen and (max-width: 900px) {
+    #masvideos-episode-data ul.episode_data_tabs,
+    #masvideos-episode-data .masvideos-tabs-back,
+    #masvideos-tv-show-data ul.tv_show_data_tabs,
+    #masvideos-tv-show-data .masvideos-tabs-back,
     #masvideos-video-data ul.video_data_tabs,
     #masvideos-video-data .masvideos-tabs-back,
     #masvideos-movie-data ul.movie_data_tabs,
@@ -1067,6 +1087,10 @@
         width: 10%;
     }
 
+    #masvideos-episode-data .masvideos-metaboxes-wrapper,
+    #masvideos-episode-data .masvideos_options_panel,
+    #masvideos-tv-show-data .masvideos-metaboxes-wrapper,
+    #masvideos-tv-show-data .masvideos_options_panel,
     #masvideos-video-data .masvideos-metaboxes-wrapper,
     #masvideos-video-data .masvideos_options_panel,
     #masvideos-movie-data .masvideos-metaboxes-wrapper,
@@ -1074,6 +1098,8 @@
         width: 90%;
     }
 
+    #masvideos-episode-data ul.episode_data_tabs li a,
+    #masvideos-tv-show-data ul.tv_show_data_tabs li a,
     #masvideos-video-data ul.video_data_tabs li a,
     #masvideos-movie-data ul.movie_data_tabs li a {
         position: relative;
@@ -1117,6 +1143,8 @@
         margin-bottom: -1px;
     }
 
+    #masvideos-episode-data .checkbox,
+    #masvideos-tv-show-data .checkbox,
     #masvideos-video-data .checkbox,
     #masvideos-movie-data .checkbox {
         width: 25px;
@@ -1175,6 +1203,8 @@
         }
     }
 
+    #masvideos-episode-data,
+    #masvideos-tv-show-data,
     #masvideos-video-data,
     #masvideos-movie-data {
         .masvideos_options_panel,

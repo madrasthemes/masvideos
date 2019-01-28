@@ -130,8 +130,8 @@ class MasVideos_Admin_Meta_Boxes {
 
         // TV Shows.
         add_meta_box( 'postexcerpt', __( 'TV Show short description', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Short_Description::output', 'tv_show', 'normal' );
-        add_meta_box( 'masvideos-tv_show-data', __( 'TV Show data', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Data::output', 'tv_show', 'normal', 'high' );
-        // add_meta_box( 'masvideos-tv_show-images', __( 'TV Show gallery', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Images::output', 'tv_show', 'side', 'low' );
+        add_meta_box( 'masvideos-tv-show-data', __( 'TV Show data', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Data::output', 'tv_show', 'normal', 'high' );
+        // add_meta_box( 'masvideos-tv-show-images', __( 'TV Show gallery', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Images::output', 'tv_show', 'side', 'low' );
 
         // Comment rating.
         if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', $_GET['c'], 'rating' ) ) {
