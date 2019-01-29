@@ -451,6 +451,102 @@ function masvideos_movie_class( $class = '', $movie_id = null ) {
 }
 
 /**
+ * Get the default columns setting - this is how many episodes will be shown per row in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_episodes_per_row() {
+    $columns      = get_option( 'masvideos_episode_columns', 4 );
+    $episode_grid   = masvideos_get_theme_support( 'episode_grid' );
+    $min_columns  = isset( $episode_grid['min_columns'] ) ? absint( $episode_grid['min_columns'] ) : 0;
+    $max_columns  = isset( $episode_grid['max_columns'] ) ? absint( $episode_grid['max_columns'] ) : 0;
+
+    if ( $min_columns && $columns < $min_columns ) {
+        $columns = $min_columns;
+        update_option( 'masvideos_episode_columns', $columns );
+    } elseif ( $max_columns && $columns > $max_columns ) {
+        $columns = $max_columns;
+        update_option( 'masvideos_episode_columns', $columns );
+    }
+
+    $columns = absint( $columns );
+
+    return max( 1, $columns );
+}
+
+/**
+ * Get the default rows setting - this is how many episode rows will be shown in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_episode_rows_per_page() {
+    $rows         = absint( get_option( 'masvideos_episode_rows', 4 ) );
+    $episode_grid   = masvideos_get_theme_support( 'episode_grid' );
+    $min_rows     = isset( $episode_grid['min_rows'] ) ? absint( $episode_grid['min_rows'] ) : 0;
+    $max_rows     = isset( $episode_grid['max_rows'] ) ? absint( $episode_grid['max_rows'] ) : 0;
+
+    if ( $min_rows && $rows < $min_rows ) {
+        $rows = $min_rows;
+        update_option( 'masvideos_episode_rows', $rows );
+    } elseif ( $max_rows && $rows > $max_rows ) {
+        $rows = $max_rows;
+        update_option( 'masvideos_episode_rows', $rows );
+    }
+
+    return $rows;
+}
+
+/**
+ * Get the default columns setting - this is how many tv shows will be shown per row in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_tv_shows_per_row() {
+    $columns      = get_option( 'masvideos_tv_show_columns', 4 );
+    $tv_show_grid   = masvideos_get_theme_support( 'tv_show_grid' );
+    $min_columns  = isset( $tv_show_grid['min_columns'] ) ? absint( $tv_show_grid['min_columns'] ) : 0;
+    $max_columns  = isset( $tv_show_grid['max_columns'] ) ? absint( $tv_show_grid['max_columns'] ) : 0;
+
+    if ( $min_columns && $columns < $min_columns ) {
+        $columns = $min_columns;
+        update_option( 'masvideos_tv_show_columns', $columns );
+    } elseif ( $max_columns && $columns > $max_columns ) {
+        $columns = $max_columns;
+        update_option( 'masvideos_tv_show_columns', $columns );
+    }
+
+    $columns = absint( $columns );
+
+    return max( 1, $columns );
+}
+
+/**
+ * Get the default rows setting - this is how many tv show rows will be shown in loops.
+ *
+ * @since 1.0.0
+ * @return int
+ */
+function masvideos_get_default_tv_show_rows_per_page() {
+    $rows         = absint( get_option( 'masvideos_tv_show_rows', 4 ) );
+    $tv_show_grid   = masvideos_get_theme_support( 'tv_show_grid' );
+    $min_rows     = isset( $tv_show_grid['min_rows'] ) ? absint( $tv_show_grid['min_rows'] ) : 0;
+    $max_rows     = isset( $tv_show_grid['max_rows'] ) ? absint( $tv_show_grid['max_rows'] ) : 0;
+
+    if ( $min_rows && $rows < $min_rows ) {
+        $rows = $min_rows;
+        update_option( 'masvideos_tv_show_rows', $rows );
+    } elseif ( $max_rows && $rows > $max_rows ) {
+        $rows = $max_rows;
+        update_option( 'masvideos_tv_show_rows', $rows );
+    }
+
+    return $rows;
+}
+
+/**
  * Get the default columns setting - this is how many movies will be shown per row in loops.
  *
  * @since 1.0.0
