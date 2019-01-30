@@ -118,3 +118,25 @@ function masvideos_get_tv_show_visibility_options() {
         )
     );
 }
+
+/**
+ * Callback for array filter to get tv shows the user can edit only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_TV_Show $tv_show MasVideos_TV_Show object.
+ * @return bool
+ */
+function masvideos_tv_shows_array_filter_editable( $tv_show ) {
+    return $tv_show && is_a( $tv_show, 'MasVideos_TV_Show' ) && current_user_can( 'edit_tv_show', $tv_show->get_id() );
+}
+
+/**
+ * Callback for array filter to get tv shows the user can view only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_TV_Show $tv_show MasVideos_TV_Show object.
+ * @return bool
+ */
+function masvideos_tv_shows_array_filter_readable( $tv_show ) {
+    return $tv_show && is_a( $tv_show, 'MasVideos_TV_Show' ) && current_user_can( 'read_tv_show', $tv_show->get_id() );
+}

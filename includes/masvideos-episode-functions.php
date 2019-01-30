@@ -118,3 +118,25 @@ function masvideos_get_episode_visibility_options() {
         )
     );
 }
+
+/**
+ * Callback for array filter to get episodes the user can edit only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $episode MasVideos_Episode object.
+ * @return bool
+ */
+function masvideos_episodes_array_filter_editable( $episode ) {
+    return $episode && is_a( $episode, 'MasVideos_Episode' ) && current_user_can( 'edit_episode', $episode->get_id() );
+}
+
+/**
+ * Callback for array filter to get episodes the user can view only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $episode MasVideos_Episode object.
+ * @return bool
+ */
+function masvideos_episodes_array_filter_readable( $episode ) {
+    return $episode && is_a( $episode, 'MasVideos_Episode' ) && current_user_can( 'read_episode', $episode->get_id() );
+}
