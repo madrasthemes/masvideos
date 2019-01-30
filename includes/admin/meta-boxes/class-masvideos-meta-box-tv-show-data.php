@@ -41,6 +41,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
         global $post, $thepostid, $tv_show_object;
 
         include 'views/html-tv-show-data-general.php';
+        include 'views/html-tv-show-data-seasons.php';
         // include 'views/html-tv-show-data-attributes.php';
     }
 
@@ -57,6 +58,12 @@ class MasVideos_Meta_Box_TV_Show_Data {
                     'target'   => 'general_tv_show_data',
                     'class'    => array(),
                     'priority' => 10,
+                ),
+                'seasons'      => array(
+                    'label'    => __( 'Seasons & Episodes', 'masvideos' ),
+                    'target'   => 'tv_show_seasons',
+                    'class'    => array(),
+                    'priority' => 50,
                 ),
                 'attribute'      => array(
                     'label'    => __( 'Attributes', 'masvideos' ),
@@ -92,6 +99,46 @@ class MasVideos_Meta_Box_TV_Show_Data {
         }
 
         return $a['priority'] < $b['priority'] ? -1 : 1;
+    }
+
+    /**
+     * Prepare seasons for save.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public static function prepare_seasons( $data = false ) {
+        $seasons = array();
+
+        if ( ! $data ) {
+            $data = $_POST;
+        }
+
+        if ( isset( $data['season_names'], $data['season_episodes'] ) ) {
+            $season_names         = $data['season_names'];
+            $season_image_id      = $data['season_image_id'];
+            $season_episodes      = $data['season_episodes'];
+            $season_description   = $data['season_description'];
+            $season_position      = $data['season_position'];
+            $season_names_max_key = max( array_keys( $season_names ) );
+
+            for ( $i = 0; $i <= $season_names_max_key; $i++ ) {
+                if ( empty( $season_names[ $i ] ) || ! isset( $season_episodes[ $i ] ) ) {
+                    continue;
+                }
+
+                $season = array(
+                    'name'          => isset( $season_names[ $i ] ) ? masvideos_clean( $season_names[ $i ] ) : '',
+                    'image_id'      => isset( $season_image_id[ $i ] ) ? absint( $season_image_id[ $i ] ) : 0,
+                    'episodes'      => isset( $season_episodes[ $i ] ) ? $season_episodes[ $i ] : array(),
+                    'description'   => isset( $season_description[ $i ] ) ? masvideos_sanitize_textarea( $season_description[ $i ] ) : '',
+                    'position'      => isset( $season_position[ $i ] ) ? absint( $season_position[ $i ] ) : 0
+                );
+                $seasons[] = $season;
+            }
+        }
+        return $seasons;
     }
 
     /**

@@ -59,6 +59,7 @@ class MasVideos_TV_Show extends MasVideos_Data {
         'reviews_allowed'       => true,
         'attributes'            => array(),
         'default_attributes'    => array(),
+        'seasons'               => array(),
         'menu_order'            => 0,
         'category_ids'          => array(),
         'tag_ids'               => array(),
@@ -238,6 +239,17 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function get_default_attributes( $context = 'view' ) {
         return $this->get_prop( 'default_attributes', $context );
+    }
+
+    /**
+     * Get seasons.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_seasons( $context = 'view' ) {
+        return $this->get_prop( 'seasons', $context );
     }
 
     /**
@@ -517,6 +529,16 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function set_default_attributes( $default_attributes ) {
         $this->set_prop( 'default_attributes', array_map( 'strval', array_filter( (array) $default_attributes, 'masvideos_array_filter_default_attributes' ) ) );
+    }
+
+    /**
+     * Set seasons. These will be saved as strings and should map to season values.
+     *
+     * @since 1.0.0
+     * @param array $seasons List of seasons.
+     */
+    public function set_seasons( $seasons ) {
+        $this->set_prop( 'seasons', $seasons );
     }
 
     /**

@@ -25,6 +25,7 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
     protected $internal_meta_keys = array(
         '_visibility',
         '_default_attributes',
+        '_seasons',
         '_tv_show_attributes',
         '_featured',
         '_masvideos_rating_count',
@@ -291,6 +292,7 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
         $tv_show->set_props(
             array(
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
+                'seasons'               => get_post_meta( $id, '_seasons', true ),
                 'category_ids'          => $this->get_term_ids( $tv_show, 'tv_show_genre' ),
                 'tag_ids'               => $this->get_term_ids( $tv_show, 'tv_show_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_tv_show_image_gallery', true ) ) ),
@@ -401,6 +403,7 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
     protected function update_post_meta( &$tv_show, $force = false ) {
         $meta_key_to_props = array(
             '_default_attributes'           => 'default_attributes',
+            '_seasons'                      => 'seasons',
             '_tv_show_image_gallery'        => 'gallery_image_ids',
             '_thumbnail_id'                 => 'image_id',
             '_masvideos_average_rating'     => 'average_rating',

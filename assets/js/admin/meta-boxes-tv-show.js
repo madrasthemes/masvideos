@@ -51,43 +51,35 @@ jQuery( function( $ ) {
         $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
     });
 
-    // Attribute Tables.
+    // Season Tables.
 
     // Initial order.
-    var masvideos_attribute_items = $( '.tv_show_attributes' ).find( '.masvideos_attribute' ).get();
+    var masvideos_season_items = $( '.tv_show_seasons' ).find( '.masvideos_season' ).get();
 
-    masvideos_attribute_items.sort( function( a, b ) {
+    masvideos_season_items.sort( function( a, b ) {
        var compA = parseInt( $( a ).attr( 'rel' ), 10 );
        var compB = parseInt( $( b ).attr( 'rel' ), 10 );
        return ( compA < compB ) ? -1 : ( compA > compB ) ? 1 : 0;
     });
-    $( masvideos_attribute_items ).each( function( index, el ) {
-        $( '.tv_show_attributes' ).append( el );
+    $( masvideos_season_items ).each( function( index, el ) {
+        $( '.tv_show_seasons' ).append( el );
     });
 
-    function tv_show_attribute_row_indexes() {
-        $( '.tv_show_attributes .masvideos_attribute' ).each( function( index, el ) {
-            $( '.attribute_position', el ).val( parseInt( $( el ).index( '.tv_show_attributes .masvideos_attribute' ), 10 ) );
+    function tv_show_season_row_indexes() {
+        $( '.tv_show_seasons .masvideos_season' ).each( function( index, el ) {
+            $( '.season_position', el ).val( parseInt( $( el ).index( '.tv_show_seasons .masvideos_season' ), 10 ) );
         });
     }
 
-    $( '.tv_show_attributes .masvideos_attribute' ).each( function( index, el ) {
-        if ( $( el ).css( 'display' ) !== 'none' && $( el ).is( '.taxonomy' ) ) {
-            $( 'select.attribute_taxonomy' ).find( 'option[value="' + $( el ).data( 'taxonomy' ) + '"]' ).attr( 'disabled', 'disabled' );
-        }
-    });
-
-    // Add rows.
-    $( 'button.add_attribute_movie' ).on( 'click', function() {
-        var size         = $( '.tv_show_attributes .masvideos_attribute' ).length;
-        var attribute    = $( 'select.attribute_taxonomy' ).val();
-        var $wrapper     = $( this ).closest( '#tv_show_attributes' );
-        var $attributes  = $wrapper.find( '.tv_show_attributes' );
+    // Add a new season (via ajax).
+    $( 'button.add_tv_show_season' ).on( 'click', function() {
+        var size         = $( '.tv_show_seasons .masvideos_season' ).length;
+        var $wrapper     = $( this ).closest( '#tv_show_seasons' );
+        var $seasons     = $wrapper.find( '.tv_show_seasons' );
         var data         = {
-            action:   'masvideos_add_attribute_movie',
-            taxonomy: attribute,
+            action:   'masvideos_add_season_tv_show',
             i:        size,
-            security: masvideos_admin_meta_boxes.add_attribute_tv_show_nonce
+            security: masvideos_admin_meta_boxes.add_season_tv_show_nonce
         };
 
         // $wrapper.block({
@@ -99,59 +91,36 @@ jQuery( function( $ ) {
         // });
 
         $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
-            $attributes.append( response );
+            $seasons.append( response );
 
             $( document.body ).trigger( 'masvideos-enhanced-select-init' );
-            tv_show_attribute_row_indexes();
+            tv_show_season_row_indexes();
             // $wrapper.unblock();
 
-            $( document.body ).trigger( 'masvideos_added_attribute_movie' );
+            $( document.body ).trigger( 'masvideos_added_season_tv_show' );
         });
 
-        if ( attribute ) {
-            $( 'select.attribute_taxonomy' ).find( 'option[value="' + attribute + '"]' ).attr( 'disabled','disabled' );
-            $( 'select.attribute_taxonomy' ).val( '' );
-        }
-
         return false;
     });
 
-    $( '.tv_show_attributes' ).on( 'blur', 'input.attribute_name', function() {
-        $( this ).closest( '.masvideos_attribute' ).find( 'strong.attribute_name' ).text( $( this ).val() );
+    $( '.tv_show_seasons' ).on( 'blur', 'input.season_name', function() {
+        $( this ).closest( '.masvideos_season' ).find( 'strong.season_name' ).text( $( this ).val() );
     });
 
-    $( '.tv_show_attributes' ).on( 'click', 'button.select_all_attributes', function() {
-        $( this ).closest( 'td' ).find( 'select option' ).attr( 'selected', 'selected' );
-        $( this ).closest( 'td' ).find( 'select' ).change();
-        return false;
-    });
-
-    $( '.tv_show_attributes' ).on( 'click', 'button.select_no_attributes', function() {
-        $( this ).closest( 'td' ).find( 'select option' ).removeAttr( 'selected' );
-        $( this ).closest( 'td' ).find( 'select' ).change();
-        return false;
-    });
-
-    $( '.tv_show_attributes' ).on( 'click', '.remove_row', function() {
-        if ( window.confirm( masvideos_admin_meta_boxes.remove_attribute ) ) {
+    $( '.tv_show_seasons' ).on( 'click', '.remove_row', function() {
+        if ( window.confirm( masvideos_admin_meta_boxes.remove_season ) ) {
             var $parent = $( this ).parent().parent();
 
-            if ( $parent.is( '.taxonomy' ) ) {
-                $parent.find( 'select, input[type=text]' ).val( '' );
-                $parent.hide();
-                $( 'select.attribute_taxonomy' ).find( 'option[value="' + $parent.data( 'taxonomy' ) + '"]' ).removeAttr( 'disabled' );
-            } else {
-                $parent.find( 'select, input[type=text]' ).val( '' );
-                $parent.hide();
-                tv_show_attribute_row_indexes();
-            }
+            $parent.find( 'select, input[type=text]' ).val( '' );
+            $parent.hide();
+            tv_show_season_row_indexes();
         }
         return false;
     });
 
-    // Attribute ordering.
-    $( '.tv_show_attributes' ).sortable({
-        items: '.masvideos_attribute',
+    // Season ordering.
+    $( '.tv_show_seasons' ).sortable({
+        items: '.masvideos_season',
         cursor: 'move',
         axis: 'y',
         handle: 'h3',
@@ -165,57 +134,12 @@ jQuery( function( $ ) {
         },
         stop: function( event, ui ) {
             ui.item.removeAttr( 'style' );
-            tv_show_attribute_row_indexes();
+            tv_show_season_row_indexes();
         }
     });
 
-    // Add a new attribute (via ajax).
-    $( '.tv_show_attributes' ).on( 'click', 'button.add_new_attribute', function() {
-
-        // $( '.tv_show_attributes' ).block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
-
-        var $wrapper           = $( this ).closest( '.masvideos_attribute' );
-        var attribute          = $wrapper.data( 'taxonomy' );
-        var new_attribute_name = window.prompt( masvideos_admin_meta_boxes.new_attribute_prompt );
-
-        if ( new_attribute_name ) {
-
-            var data = {
-                action:   'masvideos_add_new_attribute_movie',
-                taxonomy: attribute,
-                term:     new_attribute_name,
-                security: masvideos_admin_meta_boxes.add_attribute_tv_show_nonce
-            };
-
-            $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
-
-                if ( response.error ) {
-                    // Error.
-                    window.alert( response.error );
-                } else if ( response.slug ) {
-                    // Success.
-                    $wrapper.find( 'select.attribute_values' ).append( '<option value="' + response.term_id + '" selected="selected">' + response.name + '</option>' );
-                    $wrapper.find( 'select.attribute_values' ).change();
-                }
-
-                // $( '.tv_show_attributes' ).unblock();
-            });
-
-        } else {
-            // $( '.tv_show_attributes' ).unblock();
-        }
-
-        return false;
-    });
-
-    // Save attributes and update variations.
-    $( '.save_attributes_movie' ).on( 'click', function() {
+    // Save seasons and update variations.
+    $( '.save_seasons_tv_show' ).on( 'click', function() {
 
         // $( '#masvideos-tv-show-data' ).block({
         //     message: null,
@@ -227,9 +151,9 @@ jQuery( function( $ ) {
 
         var data = {
             post_id     : masvideos_admin_meta_boxes.post_id,
-            data        : $( '.tv_show_attributes' ).find( 'input, select, textarea' ).serialize(),
-            action      : 'masvideos_save_attributes_movie',
-            security    : masvideos_admin_meta_boxes.save_attributes_tv_show_nonce
+            data        : $( '.tv_show_seasons' ).find( 'input, select, textarea' ).serialize(),
+            action      : 'masvideos_save_seasons_tv_show',
+            security    : masvideos_admin_meta_boxes.save_seasons_tv_show_nonce
         };
 
         $.post( masvideos_admin_meta_boxes.ajax_url, data, function() {
