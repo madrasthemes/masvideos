@@ -91,6 +91,36 @@ class MasVideos_Install {
      */
     public static function create_terms() {
         $taxonomies = array(
+            'episode_visibility' => array(
+                'exclude-from-search',
+                'exclude-from-catalog',
+                'featured',
+                'rated-1',
+                'rated-2',
+                'rated-3',
+                'rated-4',
+                'rated-5',
+                'rated-6',
+                'rated-7',
+                'rated-8',
+                'rated-9',
+                'rated-10',
+            ),
+            'tv_show_visibility' => array(
+                'exclude-from-search',
+                'exclude-from-catalog',
+                'featured',
+                'rated-1',
+                'rated-2',
+                'rated-3',
+                'rated-4',
+                'rated-5',
+                'rated-6',
+                'rated-7',
+                'rated-8',
+                'rated-9',
+                'rated-10',
+            ),
             'video_visibility' => array(
                 'exclude-from-search',
                 'exclude-from-catalog',
