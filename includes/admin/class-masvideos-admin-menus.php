@@ -2,8 +2,8 @@
 /**
  * Setup menus in WP admin.
  *
- * @package WooCommerce\Admin
- * @version 2.5.0
+ * @package MasVideos\Admin
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;

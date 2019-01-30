@@ -3,7 +3,7 @@
  * Installation related functions and actions.
  *
  * @package MasVideos/Classes
- * @version 3.0.0
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -100,6 +100,11 @@ class MasVideos_Install {
                 'rated-3',
                 'rated-4',
                 'rated-5',
+                'rated-6',
+                'rated-7',
+                'rated-8',
+                'rated-9',
+                'rated-10',
             ),
             'movie_visibility' => array(
                 'exclude-from-search',
@@ -110,6 +115,11 @@ class MasVideos_Install {
                 'rated-3',
                 'rated-4',
                 'rated-5',
+                'rated-6',
+                'rated-7',
+                'rated-8',
+                'rated-9',
+                'rated-10',
             ),
         );
 
@@ -362,7 +372,7 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
             'manage_masvideos',
         );
 
-        $capability_types = array( 'video', 'movie' );
+        $capability_types = array( 'video', 'movie', 'tv_show', 'episode' );
 
         foreach ( $capability_types as $capability_type ) {
 

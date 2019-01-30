@@ -16,6 +16,13 @@ add_action( 'masvideos_after_movies_loop', 'masvideos_movies_page_control_bar', 
 add_action( 'masvideos_after_main_content', 'masvideos_template_loop_content_area_close', 999 );
 
 /**
+ * Breadcrumbs.
+ *
+ * @see masvideos_breadcrumb()
+ */
+add_action( 'masvideos_before_main_content', 'masvideos_breadcrumb', 20, 0 );
+
+/**
  * Videos Loop.
  */
 add_action( 'masvideos_videos_loop', 'masvideos_videos_loop_content', 20 );

@@ -62,7 +62,7 @@ class MasVideos_DateTime extends DateTime {
     /**
      * Missing in PHP 5.2 so just here so it can be supported consistently.
      *
-     * @since  3.0.0
+     * @since  1.0.0
      * @return int
      */
     public function getTimestamp() {

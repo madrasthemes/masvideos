@@ -349,6 +349,62 @@ function masvideos_placeholder_img( $size = 'masvideos_thumbnail' ) {
     return apply_filters( 'masvideos_placeholder_img', '<img src="' . masvideos_placeholder_img_src( $size ) . '" alt="' . esc_attr__( 'Placeholder', 'masvideos' ) . '" width="' . esc_attr( $dimensions['width'] ) . '" class="masvideos-placeholder wp-post-image" height="' . esc_attr( $dimensions['height'] ) . '" />', $size, $dimensions );
 }
 
+if ( ! function_exists( 'masvideos_star_rating' ) ) {
+    /**
+     * Output a HTML element with a star rating for a given rating.
+     *
+     * This is a clone of wp_star_rating().
+     * 
+     * @since 1.0.0
+     * @param array $args Array of star ratings arguments.
+     * @return string Star rating HTML.
+     */
+    function masvideos_star_rating( $args = array() ) {
+        $defaults = array(
+            'rating' => 0,
+            'type'   => 'rating',
+            'number' => 0,
+            'echo'   => true,
+        );
+        $r = wp_parse_args( $args, $defaults );
+     
+        // Non-English decimal places when the $rating is coming from a string
+        $rating = (float) str_replace( ',', '.', $r['rating'] );
+     
+        // Convert Percentage to star rating, 0..5 in .5 increments
+        if ( 'percent' === $r['type'] ) {
+            $rating = round( $rating / 10, 0 ) / 2;
+        }
+     
+        // Calculate the number of each type of star needed
+        $full_stars = floor( $rating );
+        $half_stars = ceil( $rating - $full_stars );
+        $empty_stars = 10 - $full_stars - $half_stars;
+     
+        if ( $r['number'] ) {
+            /* translators: 1: The rating, 2: The number of ratings */
+            $format = _n( '%1$s rating based on %2$s rating', '%1$s rating based on %2$s ratings', $r['number'] );
+            $title = sprintf( $format, number_format_i18n( $rating, 1 ), number_format_i18n( $r['number'] ) );
+        } else {
+            /* translators: 1: The rating */
+            $title = sprintf( __( '%s rating' ), number_format_i18n( $rating, 1 ) );
+        }
+     
+        $output = '<div class="star-rating">';
+        $output .= '<span class="screen-reader-text">' . $title . '</span>';
+        $output .= str_repeat( '<div class="star star-full" aria-hidden="true"></div>', $full_stars );
+        $output .= str_repeat( '<div class="star star-half" aria-hidden="true"></div>', $half_stars );
+        $output .= str_repeat( '<div class="star star-empty" aria-hidden="true"></div>', $empty_stars );
+        $output .= '</div>';
+     
+        if ( $r['echo'] ) {
+            echo $output;
+        }
+     
+        return $output;
+    }
+}
+
 if ( ! function_exists( 'masvideos_get_star_rating_html' ) ) {
     /**
      * Get HTML for star rating.
@@ -359,14 +415,13 @@ if ( ! function_exists( 'masvideos_get_star_rating_html' ) ) {
      * @return string
      */
     function masvideos_get_star_rating_html( $rating, $count = 0 ) {
-        require_once ABSPATH . 'wp-admin/includes/template.php';
         $args = array(
             'rating'    => $rating,
             'type'      => 'rating',
             'number'    => $count,
             'echo'      => false,
         );
-        $html = 0 < $rating ? wp_star_rating( $args ) : '';
+        $html = 0 < $rating ? masvideos_star_rating( $args ) : '';
         return apply_filters( 'masvideos_get_star_rating_html', $html, $rating, $count );
     }
 }
@@ -712,7 +767,13 @@ if ( ! function_exists( 'masvideos_template_loop_video_duration' ) ) {
      * videos duration in the loop.
      */
     function masvideos_template_loop_video_duration() {
-        echo '<span class="video__duration">00:54</span>';
+        global $movie;
+
+        $duration = $movie->get_movie_run_time();
+        
+        if ( ! empty( $duration ) ) {
+            echo '<span class="video__duration">' . wp_kses_post( $duration ) . '</span>';
+        }
     }
 }
 
@@ -1423,9 +1484,10 @@ if ( ! function_exists( 'masvideos_template_loop_movie_avg_rating' ) ) {
      */
     function masvideos_template_loop_movie_avg_rating() {
         global $movie;
-        if ( !empty( $movie->get_review_count() ) && $movie->get_review_count() > 0 ) {
+
+        if ( ! empty( $movie->get_review_count() ) && $movie->get_review_count() > 0 ) {
             ?>
-            <a href="<?php echo esc_url( get_permalink( $movie->get_id() ) ); ?>/#reviews" class="avg-rating">
+            <a href="<?php echo esc_url( get_permalink( $movie->get_id() ) . '#reviews' ); ?>" class="avg-rating">
                 <span class="avg-rating-number"> <?php echo number_format( $movie->get_average_rating(), 1, '.', '' ); ?></span>
                 <span class="avg-rating-text">
                     <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $movie->get_review_count(), 'masvideos' ), $movie->get_review_count() ) ) ; ?>
@@ -1703,5 +1765,41 @@ if ( ! function_exists( 'masvideos_video_review_display_comment_text' ) ) {
         echo '<div class="description">';
         comment_text();
         echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
+
+    /**
+     * Output the MasVideos Breadcrumb.
+     *
+     * @param array $args Arguments.
+     */
+    function masvideos_breadcrumb( $args = array() ) {
+        $args = wp_parse_args( $args, apply_filters( 'masvideos_breadcrumb_defaults', array(
+            'delimiter'   => '&nbsp;&#47;&nbsp;',
+            'wrap_before' => '<nav class="masvideos-breadcrumb">',
+            'wrap_after'  => '</nav>',
+            'before'      => '',
+            'after'       => '',
+            'home'        => _x( 'Home', 'breadcrumb', 'masvideos' ),
+        ) ) );
+
+        $breadcrumbs = new MasVideos_Breadcrumb();
+
+        if ( ! empty( $args['home'] ) ) {
+            $breadcrumbs->add_crumb( $args['home'], apply_filters( 'masvideos_breadcrumb_home_url', home_url() ) );
+        }
+
+        $args['breadcrumb'] = $breadcrumbs->generate();
+
+        /**
+         * MasVideos Breadcrumb hook
+         *
+         * @hooked MasVideos_Structured_Data::generate_breadcrumblist_data() - 10
+         */
+        do_action( 'masvideos_breadcrumb', $breadcrumbs, $args );
+
+        masvideos_get_template( 'global/breadcrumb.php', $args );
     }
 }

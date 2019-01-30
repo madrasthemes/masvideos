@@ -104,7 +104,7 @@ class MasVideos_Widget_Movies_Rating_Filter extends MasVideos_Widget {
 
 		echo '<ul>';
 
-		for ( $rating = 5; $rating >= 1; $rating-- ) {
+		for ( $rating = 10; $rating >= 1; $rating-- ) {
 			$count = $this->get_filtered_movie_count( $rating );
 			if ( empty( $count ) ) {
 				continue;

@@ -49,7 +49,7 @@ class MasVideos_AJAX {
     /**
      * Send headers for MasVideos Ajax Requests.
      *
-     * @since 2.5.0
+     * @since 1.0.0
      */
     private static function masvideos_ajax_headers() {
         send_origin_headers();

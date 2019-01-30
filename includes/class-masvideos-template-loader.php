@@ -27,7 +27,7 @@ class MasVideos_Template_Loader {
     private static $movies_page_id = 0;
 
     /**
-     * Is WooCommerce support defined?
+     * Is MasVideos support defined?
      *
      * @var boolean
      */
@@ -72,7 +72,7 @@ class MasVideos_Template_Loader {
 
         if ( $default_file ) {
             /**
-             * Filter hook to choose which files to find before WooCommerce does it's own logic.
+             * Filter hook to choose which files to find before MasVideos does it's own logic.
              *
              * @since 3.0.0
              * @var array

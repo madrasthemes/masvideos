@@ -4,7 +4,7 @@
  *
  * Handle comments (reviews and order notes).
  *
- * @package WooCommerce/Classes/Movies
+ * @package MasVideos/Classes
  * @version 1.0.0
  */
 
@@ -85,7 +85,7 @@ class MasVideos_Comments {
      */
     public static function add_comment_rating( $comment_id ) {
         if ( isset( $_POST['rating'], $_POST['comment_post_ID'] ) && in_array( get_post_type( absint( $_POST['comment_post_ID'] ) ), array( 'video', 'movie' ) ) ) { // WPCS: input var ok, CSRF ok.
-            if ( ! $_POST['rating'] || $_POST['rating'] > 5 || $_POST['rating'] < 0 ) { // WPCS: input var ok, CSRF ok, sanitization ok.
+            if ( ! $_POST['rating'] || $_POST['rating'] > 10 || $_POST['rating'] < 0 ) { // WPCS: input var ok, CSRF ok, sanitization ok.
                 return;
             }
             add_comment_meta( $comment_id, 'rating', intval( $_POST['rating'] ), true ); // WPCS: input var ok, CSRF ok.

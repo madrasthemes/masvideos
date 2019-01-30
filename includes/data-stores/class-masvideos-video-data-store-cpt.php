@@ -529,7 +529,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 				$terms[] = 'featured';
 			}
 
-			$rating = min( 5, round( $video->get_average_rating(), 0 ) );
+			$rating = min( 10, round( $video->get_average_rating(), 0 ) );
 
 			if ( $rating > 0 ) {
 				$terms[] = 'rated-' . $rating;

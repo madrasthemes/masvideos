@@ -26,7 +26,7 @@ class MasVideos_Meta_Box_Video_Reviews {
         ?>
         <select name="rating" id="rating">
             <?php
-            for ( $rating = 1; $rating <= 5; $rating ++ ) {
+            for ( $rating = 1; $rating <= 10; $rating ++ ) {
                 printf( '<option value="%1$s"%2$s>%1$s</option>', $rating, selected( $current, $rating, false ) ); // WPCS: XSS ok.
             }
             ?>
@@ -46,7 +46,7 @@ class MasVideos_Meta_Box_Video_Reviews {
             return $data;
         }
 
-        if ( $_POST['rating'] > 5 || $_POST['rating'] < 0 ) { // WPCS: input var ok.
+        if ( $_POST['rating'] > 10 || $_POST['rating'] < 0 ) { // WPCS: input var ok.
             return $data;
         }
 

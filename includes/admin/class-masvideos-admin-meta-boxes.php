@@ -41,6 +41,20 @@ class MasVideos_Admin_Meta_Boxes {
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 30 );
         add_action( 'save_post', array( $this, 'save_meta_boxes' ), 1, 2 );
 
+        // Save Episode Meta Boxes.
+        add_action( 'masvideos_process_episode_meta', 'MasVideos_Meta_Box_Episode_Data::save', 10, 2 );
+        // add_action( 'masvideos_process_episode_meta', 'MasVideos_Meta_Box_Episode_Images::save', 20, 2 );
+
+        // Save Rating Meta Boxes.
+        add_filter( 'wp_update_comment_data', 'MasVideos_Meta_Box_Episode_Reviews::save', 1 );
+
+        // Save TV Show Meta Boxes.
+        add_action( 'masvideos_process_tv_show_meta', 'MasVideos_Meta_Box_TV_Show_Data::save', 10, 2 );
+        // add_action( 'masvideos_process_tv_show_meta', 'MasVideos_Meta_Box_TV_Show_Images::save', 20, 2 );
+
+        // Save Rating Meta Boxes.
+        add_filter( 'wp_update_comment_data', 'MasVideos_Meta_Box_Video_Reviews::save', 1 );
+
         // Save Video Meta Boxes.
         add_action( 'masvideos_process_video_meta', 'MasVideos_Meta_Box_Video_Data::save', 10, 2 );
         // add_action( 'masvideos_process_video_meta', 'MasVideos_Meta_Box_Video_Images::save', 20, 2 );
@@ -104,6 +118,26 @@ class MasVideos_Admin_Meta_Boxes {
         $screen    = get_current_screen();
         $screen_id = $screen ? $screen->id : '';
 
+        // Episodes.
+        add_meta_box( 'postexcerpt', __( 'Episode short description', 'masvideos' ), 'MasVideos_Meta_Box_Episode_Short_Description::output', 'episode', 'normal' );
+        add_meta_box( 'masvideos-episode-data', __( 'Episode data', 'masvideos' ), 'MasVideos_Meta_Box_Episode_Data::output', 'episode', 'normal', 'high' );
+        // add_meta_box( 'masvideos-episode-images', __( 'Episode gallery', 'masvideos' ), 'MasVideos_Meta_Box_Episode_Images::output', 'episode', 'side', 'low' );
+
+        // Comment rating.
+        if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', $_GET['c'], 'rating' ) ) {
+            add_meta_box( 'masvideos-rating', __( 'Rating', 'masvideos' ), 'MasVideos_Meta_Box_Episode_Reviews::output', 'comment', 'normal', 'high' );
+        }
+
+        // TV Shows.
+        add_meta_box( 'postexcerpt', __( 'TV Show short description', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Short_Description::output', 'tv_show', 'normal' );
+        add_meta_box( 'masvideos-tv_show-data', __( 'TV Show data', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Data::output', 'tv_show', 'normal', 'high' );
+        // add_meta_box( 'masvideos-tv_show-images', __( 'TV Show gallery', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Images::output', 'tv_show', 'side', 'low' );
+
+        // Comment rating.
+        if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', $_GET['c'], 'rating' ) ) {
+            add_meta_box( 'masvideos-rating', __( 'Rating', 'masvideos' ), 'MasVideos_Meta_Box_TV_Show_Reviews::output', 'comment', 'normal', 'high' );
+        }
+
         // Videos.
         add_meta_box( 'postexcerpt', __( 'Video short description', 'masvideos' ), 'MasVideos_Meta_Box_Video_Short_Description::output', 'video', 'normal' );
         add_meta_box( 'masvideos-video-data', __( 'Video data', 'masvideos' ), 'MasVideos_Meta_Box_Video_Data::output', 'video', 'normal', 'high' );
@@ -129,6 +163,18 @@ class MasVideos_Admin_Meta_Boxes {
      * Remove bloat.
      */
     public function remove_meta_boxes() {
+        // Episode
+        remove_meta_box( 'postexcerpt', 'episode', 'normal' );
+        remove_meta_box( 'commentsdiv', 'episode', 'normal' );
+        remove_meta_box( 'commentstatusdiv', 'episode', 'side' );
+        remove_meta_box( 'commentstatusdiv', 'episode', 'normal' );
+
+        // TV Show
+        remove_meta_box( 'postexcerpt', 'tv_show', 'normal' );
+        remove_meta_box( 'commentsdiv', 'tv_show', 'normal' );
+        remove_meta_box( 'commentstatusdiv', 'tv_show', 'side' );
+        remove_meta_box( 'commentstatusdiv', 'tv_show', 'normal' );
+
         // Video
         remove_meta_box( 'postexcerpt', 'video', 'normal' );
         remove_meta_box( 'commentsdiv', 'video', 'normal' );
@@ -147,6 +193,18 @@ class MasVideos_Admin_Meta_Boxes {
      */
     public function rename_meta_boxes() {
         global $post;
+
+        // Comments/Reviews Episode
+        if ( isset( $post ) && ( 'publish' == $post->post_status || 'private' == $post->post_status ) && post_type_supports( 'episode', 'comments' ) ) {
+            remove_meta_box( 'commentsdiv', 'episode', 'normal' );
+            add_meta_box( 'commentsdiv', esc_html__( 'Reviews', 'masvideos' ), 'post_comment_meta_box', 'episode', 'normal' );
+        }
+
+        // Comments/Reviews TV Show
+        if ( isset( $post ) && ( 'publish' == $post->post_status || 'private' == $post->post_status ) && post_type_supports( 'tv_show', 'comments' ) ) {
+            remove_meta_box( 'commentsdiv', 'tv_show', 'normal' );
+            add_meta_box( 'commentsdiv', esc_html__( 'Reviews', 'masvideos' ), 'post_comment_meta_box', 'tv_show', 'normal' );
+        }
 
         // Comments/Reviews Video
         if ( isset( $post ) && ( 'publish' == $post->post_status || 'private' == $post->post_status ) && post_type_supports( 'video', 'comments' ) ) {
