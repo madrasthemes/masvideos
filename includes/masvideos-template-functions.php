@@ -1389,6 +1389,21 @@ if ( ! function_exists( 'masvideos_movie_loop_start' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_loop_movie_feature_badge' ) ) {
+    /**
+     * movies container open in the loop.
+     */
+    function masvideos_template_loop_movie_feature_badge() {
+        global $movie;
+
+        if ( $movie->get_featured() ) {
+            echo '<span class="movie__badge">';
+            echo '<span class="movie__badge--featured">' . esc_html__( apply_filters( 'masvideos_template_loop_movie_feature_badge_text', 'Featured' ), 'masvideos' ) . '</span>';
+            echo '</span>';
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_movie_poster_open' ) ) {
     /**
      * movies poster open in the loop.

@@ -55,6 +55,7 @@ add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_b
  * Movies Loop.
  */
 add_action( 'masvideos_movies_loop', 'masvideos_movies_loop_content', 20 );
+add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_feature_badge', 5 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster_open', 10 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_link_open', 20 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster', 30 );
