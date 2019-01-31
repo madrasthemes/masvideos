@@ -805,7 +805,7 @@ class MasVideos_Post_Types {
      * @return bool
      */
     public static function gutenberg_can_edit_post_type( $can_edit, $post_type ) {
-        return in_array( $post_type, array( 'video', 'movie', 'tv_show', 'episode' ) ) ? false : $can_edit;
+        return in_array( $post_type, array( 'episode', 'tv_show', 'video', 'movie' ) ) ? false : $can_edit;
     }
 
     /**

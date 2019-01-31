@@ -48,6 +48,12 @@ class MasVideos_Comments {
      * @return bool
      */
     public static function comments_open( $open, $post_id ) {
+        if ( 'episode' === get_post_type( $post_id ) && ! post_type_supports( 'episode', 'comments' ) ) {
+            $open = false;
+        }
+        if ( 'tv_show' === get_post_type( $post_id ) && ! post_type_supports( 'tv_show', 'comments' ) ) {
+            $open = false;
+        }
         if ( 'video' === get_post_type( $post_id ) && ! post_type_supports( 'video', 'comments' ) ) {
             $open = false;
         }
@@ -64,6 +70,18 @@ class MasVideos_Comments {
      * @return array
      */
     public static function check_comment_rating( $comment_data ) {
+        // If posting a comment (not trackback etc) and not logged in.
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'episode' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_episode_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+            wp_die( esc_html__( 'Please rate the episode.', 'masvideos' ) );
+            exit;
+        }
+
+        // If posting a comment (not trackback etc) and not logged in.
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'tv_show' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_tv_show_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+            wp_die( esc_html__( 'Please rate the tv show.', 'masvideos' ) );
+            exit;
+        }
+
         // If posting a comment (not trackback etc) and not logged in.
         if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'video' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_video_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
             wp_die( esc_html__( 'Please rate the video.', 'masvideos' ) );
@@ -84,7 +102,7 @@ class MasVideos_Comments {
      * @param int $comment_id Comment ID.
      */
     public static function add_comment_rating( $comment_id ) {
-        if ( isset( $_POST['rating'], $_POST['comment_post_ID'] ) && in_array( get_post_type( absint( $_POST['comment_post_ID'] ) ), array( 'video', 'movie' ) ) ) { // WPCS: input var ok, CSRF ok.
+        if ( isset( $_POST['rating'], $_POST['comment_post_ID'] ) && in_array( get_post_type( absint( $_POST['comment_post_ID'] ) ), array( 'episode', 'tv_show', 'video', 'movie' ) ) ) { // WPCS: input var ok, CSRF ok.
             if ( ! $_POST['rating'] || $_POST['rating'] > 10 || $_POST['rating'] < 0 ) { // WPCS: input var ok, CSRF ok, sanitization ok.
                 return;
             }
@@ -107,11 +125,7 @@ class MasVideos_Comments {
     public static function comment_moderation_recipients( $emails, $comment_id ) {
         $comment = get_comment( $comment_id );
 
-        if ( $comment && 'video' === get_post_type( $comment->comment_post_ID ) ) {
-            $emails = array( get_option( 'admin_email' ) );
-        }
-
-        if ( $comment && 'movie' === get_post_type( $comment->comment_post_ID ) ) {
+        if( $comment && in_array( get_post_type( $comment->comment_post_ID ), array( 'episode', 'tv_show', 'video', 'movie' ) ) ) {
             $emails = array( get_option( 'admin_email' ) );
         }
 

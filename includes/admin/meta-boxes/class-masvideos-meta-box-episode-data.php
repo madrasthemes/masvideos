@@ -214,9 +214,6 @@ class MasVideos_Meta_Box_Episode_Data {
                 'episode_embed_content'       => isset( $_POST['_episode_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_episode_embed_content'] ) : null,
                 'episode_url_link'            => isset( $_POST['_episode_url_link'] ) ? masvideos_clean( $_POST['_episode_url_link'] ) : null,
                 'attributes'                  => $attributes,
-                'episode_release_date'        => isset( $_POST['_episode_release_date'] ) ? masvideos_clean( $_POST['_episode_release_date'] ) : null,
-                'episode_run_time'            => isset( $_POST['_episode_run_time'] ) ? masvideos_clean( $_POST['_episode_run_time'] ) : null,
-                'episode_censor_rating'       => isset( $_POST['_episode_censor_rating'] ) ? masvideos_clean( $_POST['_episode_censor_rating'] ) : null,
                 // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );

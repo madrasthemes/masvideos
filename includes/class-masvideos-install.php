@@ -402,7 +402,7 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
             'manage_masvideos',
         );
 
-        $capability_types = array( 'video', 'movie', 'tv_show', 'episode' );
+        $capability_types = array( 'episode', 'tv_show', 'video', 'movie' );
 
         foreach ( $capability_types as $capability_type ) {
 
