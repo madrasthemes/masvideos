@@ -41,7 +41,7 @@ class MasVideos_Meta_Box_Episode_Data {
         global $post, $thepostid, $episode_object;
 
         include 'views/html-episode-data-general.php';
-        // include 'views/html-episode-data-attributes.php';
+        include 'views/html-episode-data-attributes.php';
     }
 
     /**
@@ -207,13 +207,13 @@ class MasVideos_Meta_Box_Episode_Data {
 
         $errors = $episode->set_props(
             array(
-                'featured'                  => isset( $_POST['_featured'] ),
-                'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
+                'featured'                    => isset( $_POST['_featured'] ),
+                'catalog_visibility'          => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
                 'episode_choice'              => isset( $_POST['_episode_choice'] ) ? masvideos_clean( $_POST['_episode_choice'] ) : null,
                 'episode_attachment_id'       => isset( $_POST['_episode_attachment_id'] ) ? masvideos_clean( $_POST['_episode_attachment_id'] ) : null,
                 'episode_embed_content'       => isset( $_POST['_episode_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_episode_embed_content'] ) : null,
                 'episode_url_link'            => isset( $_POST['_episode_url_link'] ) ? masvideos_clean( $_POST['_episode_url_link'] ) : null,
-                'attributes'                => $attributes,
+                'attributes'                  => $attributes,
                 'episode_release_date'        => isset( $_POST['_episode_release_date'] ) ? masvideos_clean( $_POST['_episode_release_date'] ) : null,
                 'episode_run_time'            => isset( $_POST['_episode_run_time'] ) ? masvideos_clean( $_POST['_episode_run_time'] ) : null,
                 'episode_censor_rating'       => isset( $_POST['_episode_censor_rating'] ) ? masvideos_clean( $_POST['_episode_censor_rating'] ) : null,

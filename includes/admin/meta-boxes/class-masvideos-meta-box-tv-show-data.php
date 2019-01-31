@@ -42,7 +42,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
 
         include 'views/html-tv-show-data-general.php';
         include 'views/html-tv-show-data-seasons.php';
-        // include 'views/html-tv-show-data-attributes.php';
+        include 'views/html-tv-show-data-attributes.php';
     }
 
     /**
@@ -250,7 +250,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
         // $tv_show_type = empty( $_POST['tv_show-type'] ) ? MasVideos_TV_Show_Factory::get_tv_show_type( $post_id ) : sanitize_title( stripslashes( $_POST['tv_show-type'] ) );
         $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $post_id );
         $tv_show      = new $classname( $post_id );
-        // $attributes   = self::prepare_attributes();
+        $attributes   = self::prepare_attributes();
 
         $errors = $tv_show->set_props(
             array(
@@ -260,7 +260,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
                 // 'tv_show_attachment_id'       => isset( $_POST['_tv_show_attachment_id'] ) ? masvideos_clean( $_POST['_tv_show_attachment_id'] ) : null,
                 // 'tv_show_embed_content'       => isset( $_POST['_tv_show_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_tv_show_embed_content'] ) : null,
                 // 'tv_show_url_link'            => isset( $_POST['_tv_show_url_link'] ) ? masvideos_clean( $_POST['_tv_show_url_link'] ) : null,
-                // 'attributes'                => $attributes,
+                'attributes'                => $attributes,
                 // 'tv_show_release_date'        => isset( $_POST['_tv_show_release_date'] ) ? masvideos_clean( $_POST['_tv_show_release_date'] ) : null,
                 // 'tv_show_run_time'            => isset( $_POST['_tv_show_run_time'] ) ? masvideos_clean( $_POST['_tv_show_run_time'] ) : null,
                 // 'tv_show_censor_rating'       => isset( $_POST['_tv_show_censor_rating'] ) ? masvideos_clean( $_POST['_tv_show_censor_rating'] ) : null,

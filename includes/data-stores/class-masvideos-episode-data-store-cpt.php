@@ -303,9 +303,6 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
                 'episode_attachment_id'   => get_post_meta( $id, '_episode_attachment_id', true ),
                 'episode_embed_content'   => get_post_meta( $id, '_episode_embed_content', true ),
                 'episode_url_link'        => get_post_meta( $id, '_episode_url_link', true ),
-                'episode_release_date'    => get_post_meta( $id, '_episode_release_date', true ),
-                'episode_run_time'        => get_post_meta( $id, '_episode_run_time', true ),
-                'episode_censor_rating'   => get_post_meta( $id, '_episode_censor_rating', true ),
             )
         );
     }
@@ -421,9 +418,6 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
             '_masvideos_average_rating'     => 'average_rating',
             '_masvideos_rating_count'       => 'rating_counts',
             '_masvideos_review_count'       => 'review_count',
-            '_episode_release_date'           => 'episode_release_date',
-            '_episode_run_time'               => 'episode_run_time',
-            '_episode_censor_rating'          => 'episode_censor_rating',
         );
 
         // Make sure to take extra data (like episode url or text for external episodes) into account.

@@ -1094,7 +1094,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         if ( isset( $query_vars['paginate'] ) && $query_vars['paginate'] ) {
             return (object) array(
-                'videos'      => $videos,
+                'videos'        => $videos,
                 'total'         => $query->found_posts,
                 'max_num_pages' => $query->max_num_pages,
             );
