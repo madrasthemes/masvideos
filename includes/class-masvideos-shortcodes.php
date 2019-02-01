@@ -18,6 +18,8 @@ class MasVideos_Shortcodes {
      */
     public static function init() {
         $shortcodes = array(
+            'mas_episodes'                 => __CLASS__ . '::episodes',
+            'mas_tv_shows'                 => __CLASS__ . '::tv_shows',
             'mas_videos'                   => __CLASS__ . '::videos',
             'mas_movies'                   => __CLASS__ . '::movies',
         );
@@ -54,6 +56,66 @@ class MasVideos_Shortcodes {
         // @codingStandardsIgnoreEnd
 
         return ob_get_clean();
+    }
+
+    /**
+     * List multiple episodes shortcode.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function episodes( $atts ) {
+        $atts = (array) $atts;
+        $type = 'episodes';
+
+        // Allow list movie based on specific cases.
+        if ( isset( $atts['top_rated'] ) && masvideos_string_to_bool( $atts['top_rated'] ) ) {
+            $type = 'top_rated_episodes';
+        }
+
+        if ( isset( $atts['featured'] ) && masvideos_string_to_bool( $atts['featured'] ) ) {
+            $type = 'featured_episodes';
+            $atts['visibility'] = 'featured';
+        }
+
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
+        }
+
+        $shortcode = new MasVideos_Shortcode_Episodes( $atts, $type );
+
+        return $shortcode->get_content();
+    }
+
+    /**
+     * List multiple tv shows shortcode.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function tv_shows( $atts ) {
+        $atts = (array) $atts;
+        $type = 'tv_shows';
+
+        // Allow list movie based on specific cases.
+        if ( isset( $atts['top_rated'] ) && masvideos_string_to_bool( $atts['top_rated'] ) ) {
+            $type = 'top_rated_tv_shows';
+        }
+
+        if ( isset( $atts['featured'] ) && masvideos_string_to_bool( $atts['featured'] ) ) {
+            $type = 'featured_tv_shows';
+            $atts['visibility'] = 'featured';
+        }
+
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
+        }
+
+        $shortcode = new MasVideos_Shortcode_TV_Shows( $atts, $type );
+
+        return $shortcode->get_content();
     }
 
     /**

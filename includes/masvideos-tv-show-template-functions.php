@@ -230,7 +230,7 @@ if ( ! function_exists( 'masvideos_tv_shows_loop_content' ) ) {
      * Output the tv show loop. By default this is a UL.
      */
     function masvideos_tv_shows_loop_content() {
-        masvideos_get_template_part( 'content', 'tv_show' );
+        masvideos_get_template_part( 'content', 'tv-show' );
     }
 }
 
@@ -254,5 +254,15 @@ if ( ! function_exists( 'masvideos_tv_show_loop_end' ) ) {
         } else {
             return $loop_end;
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_title' ) ) {
+
+    /**
+     * Show the tv show title in the tv show loop. By default this is an H3.
+     */
+    function masvideos_template_loop_tv_show_title() {
+        the_title( '<h3 class="masvideos-loop-tv-show__title  tv-show__title">', '</h3>' );
     }
 }

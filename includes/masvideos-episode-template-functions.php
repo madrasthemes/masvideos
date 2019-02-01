@@ -256,3 +256,13 @@ if ( ! function_exists( 'masvideos_episode_loop_end' ) ) {
         }
     }
 }
+
+if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
+
+    /**
+     * Show the episode title in the episode loop. By default this is an H3.
+     */
+    function masvideos_template_loop_episode_title() {
+        the_title( '<h3 class="masvideos-loop-episode__title  episode__title">', '</h3>' );
+    }
+}
