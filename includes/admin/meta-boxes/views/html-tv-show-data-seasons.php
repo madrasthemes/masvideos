@@ -16,11 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
         $seasons = $tv_show_object->get_seasons( 'edit' );
         $i          = -1;
 
-        foreach ( $seasons as $season ) {
-            $i++;
-            $metabox_class = array();
+        if( is_array( $seasons ) ) {
+            foreach ( $seasons as $season ) {
+                $i++;
+                $metabox_class = array();
 
-            include 'html-tv-show-season.php';
+                include 'html-tv-show-season.php';
+            }
         }
         ?>
     </div>
