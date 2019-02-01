@@ -13,14 +13,28 @@ defined( 'ABSPATH' ) || exit;
 class MasVideos_Template_Loader {
 
     /**
-     * Store the videos page ID.
+     * The episodes page ID.
+     *
+     * @var integer
+     */
+    private static $episodes_page_id = 0;
+
+    /**
+     * The tv shows page ID.
+     *
+     * @var integer
+     */
+    private static $tv_shows_page_id = 0;
+
+    /**
+     * The videos page ID.
      *
      * @var integer
      */
     private static $videos_page_id = 0;
 
     /**
-     * Store the movies page ID.
+     * The movies page ID.
      *
      * @var integer
      */
@@ -38,6 +52,8 @@ class MasVideos_Template_Loader {
      */
     public static function init() {
         self::$theme_support = current_theme_supports( 'masvideos' );
+        self::$episodes_page_id  = masvideos_get_page_id( 'episodes' );
+        self::$tv_shows_page_id  = masvideos_get_page_id( 'tv_shows' );
         self::$videos_page_id  = masvideos_get_page_id( 'videos' );
         self::$movies_page_id  = masvideos_get_page_id( 'movies' );
 
@@ -95,17 +111,21 @@ class MasVideos_Template_Loader {
      * @return string
      */
     private static function get_template_loader_default_file() {
-        if ( is_singular( 'video' ) ) {
+        if ( is_singular( 'episode' ) ) {
+            $default_file = 'single-episode.php';
+        } elseif ( is_episode_taxonomy() || is_episodes() ) {
+            $default_file = self::$theme_support ? 'archive-episode.php' : '';
+        } elseif ( is_singular( 'tv_show' ) ) {
+            $default_file = 'single-tv-show.php';
+        } elseif ( is_tv_show_taxonomy() || is_tv_shows() ) {
+            $default_file = self::$theme_support ? 'archive-tv-show.php' : '';
+        } elseif ( is_singular( 'video' ) ) {
             $default_file = 'single-video.php';
-        } elseif ( is_video_taxonomy() ) {
-            $default_file = self::$theme_support ? 'archive-video.php' : '';
-        } elseif ( is_videos() ) {
+        } elseif ( is_video_taxonomy() || is_videos() ) {
             $default_file = self::$theme_support ? 'archive-video.php' : '';
         } elseif ( is_singular( 'movie' ) ) {
             $default_file = 'single-movie.php';
-        } elseif ( is_movie_taxonomy() ) {
-            $default_file = self::$theme_support ? 'archive-movie.php' : '';
-        } elseif ( is_movies() ) {
+        } elseif ( is_movie_taxonomy() || is_movies() ) {
             $default_file = self::$theme_support ? 'archive-movie.php' : '';
         } else {
             $default_file = '';
@@ -126,6 +146,40 @@ class MasVideos_Template_Loader {
 
         if ( is_page_template() ) {
             $templates[] = get_page_template_slug();
+        }
+
+        if ( is_singular( 'episode' ) ) {
+            $object       = get_queried_object();
+            $name_decoded = urldecode( $object->post_name );
+            if ( $name_decoded !== $object->post_name ) {
+                $templates[] = "single-episode-{$name_decoded}.php";
+            }
+            $templates[] = "single-episode-{$object->post_name}.php";
+        }
+
+        if ( is_episode_taxonomy() ) {
+            $object      = get_queried_object();
+            $templates[] = 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = 'taxonomy-' . $object->taxonomy . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
+        }
+
+        if ( is_singular( 'tv_show' ) ) {
+            $object       = get_queried_object();
+            $name_decoded = urldecode( $object->post_name );
+            if ( $name_decoded !== $object->post_name ) {
+                $templates[] = "single-tv-show-{$name_decoded}.php";
+            }
+            $templates[] = "single-tv-show-{$object->post_name}.php";
+        }
+
+        if ( is_tv_show_taxonomy() ) {
+            $object      = get_queried_object();
+            $templates[] = 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = 'taxonomy-' . $object->taxonomy . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
         }
 
         if ( is_singular( 'video' ) ) {
