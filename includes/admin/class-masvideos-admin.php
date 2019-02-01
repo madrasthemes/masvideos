@@ -44,6 +44,7 @@ class MasVideos_Admin {
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-post-types.php';
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-menus.php';
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-assets.php';
+        include_once dirname( __FILE__ ) . '/class-masvideos-admin-taxonomies.php';
     }
 
     /**
