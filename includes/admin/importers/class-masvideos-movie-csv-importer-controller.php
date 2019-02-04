@@ -492,22 +492,25 @@ class MasVideos_Movie_CSV_Importer_Controller {
 		$default_columns = $this->normalize_columns_names(
 			apply_filters(
 				'masvideos_csv_movie_import_mapping_default_columns', array(
-					__( 'ID', 'masvideos' )             => 'id',
-					__( 'Type', 'masvideos' )           => 'type',
-					__( 'Name', 'masvideos' )           => 'name',
-					__( 'Published', 'masvideos' )      => 'published',
-					__( 'Is featured?', 'masvideos' )   => 'featured',
-					__( 'Visibility in catalog', 'masvideos' ) => 'catalog_visibility',
-					__( 'Short description', 'masvideos' ) => 'short_description',
-					__( 'Description', 'masvideos' )    => 'description',
-					__( 'Allow customer reviews?', 'masvideos' ) => 'reviews_allowed',
-					__( 'Categories', 'masvideos' )     => 'category_ids',
-					__( 'Tags', 'masvideos' )           => 'tag_ids',
-					__( 'Images', 'masvideos' )         => 'images',
-					__( 'Parent', 'masvideos' )         => 'parent_id',
-					__( 'External URL', 'masvideos' )   => 'movie_url',
-					__( 'Button text', 'masvideos' )    => 'button_text',
-					__( 'Position', 'masvideos' )       => 'menu_order',
+					__( 'ID', 'masvideos' )                        => 'id',
+					__( 'Name', 'masvideos' )                      => 'name',
+					__( 'Published', 'masvideos' )                 => 'published',
+					__( 'Is featured?', 'masvideos' )              => 'featured',
+					__( 'Visibility in catalog', 'masvideos' )     => 'catalog_visibility',
+					__( 'Short description', 'masvideos' )         => 'short_description',
+					__( 'Description', 'masvideos' )               => 'description',
+					__( 'Allow customer reviews?', 'masvideos' )   => 'reviews_allowed',
+					__( 'Categories', 'masvideos' )                => 'category_ids',
+					__( 'Tags', 'masvideos' )                      => 'tag_ids',
+					__( 'Images', 'masvideos' )                    => 'images',
+					__( 'Position', 'masvideos' )                  => 'menu_order',
+					__( 'Movie Choice', 'masvideos' )              => 'movie_choice',
+					__( 'Movie Attachment', 'masvideos' )          => 'movie_attachment_id',
+					__( 'Movie Embed Content', 'masvideos' )       => 'movie_embed_content',
+					__( 'Movie Link', 'masvideos' )                => 'movie_url_link',
+					__( 'Movie Release Date', 'masvideos' )        => 'movie_release_date',
+					__( 'Movie Run Time', 'masvideos' )            => 'movie_run_time',
+					__( 'Movie Censor Rating', 'masvideos' )       => 'movie_censor_rating',
 				)
 			)
 		);
@@ -620,25 +623,24 @@ class MasVideos_Movie_CSV_Importer_Controller {
 		$weight_unit    = get_option( 'masvideos_weight_unit' );
 		$dimension_unit = get_option( 'masvideos_dimension_unit' );
 		$options        = array(
-			'id'                 => __( 'ID', 'masvideos' ),
-			'name'               => __( 'Name', 'masvideos' ),
-			'published'          => __( 'Published', 'masvideos' ),
-			'featured'           => __( 'Is featured?', 'masvideos' ),
-			'catalog_visibility' => __( 'Visibility in catalog', 'masvideos' ),
-			'short_description'  => __( 'Short description', 'masvideos' ),
-			'description'        => __( 'Description', 'masvideos' ),
-			'category_ids'       => __( 'Categories', 'masvideos' ),
-			'tag_ids'            => __( 'Tags', 'masvideos' ),
-			'images'             => __( 'Images', 'masvideos' ),
-			'parent_id'          => __( 'Parent', 'masvideos' ),
-			'external'           => array(
-				'name'    => __( 'External movie', 'masvideos' ),
-				'options' => array(
-					'movie_url' => __( 'External URL', 'masvideos' ),
-					'button_text' => __( 'Button text', 'masvideos' ),
-				),
-			),
-			'attributes'         => array(
+			'id'                     => __( 'ID', 'masvideos' ),
+			'name'                   => __( 'Name', 'masvideos' ),
+			'published'              => __( 'Published', 'masvideos' ),
+			'featured'               => __( 'Is featured?', 'masvideos' ),
+			'catalog_visibility'     => __( 'Visibility in catalog', 'masvideos' ),
+			'short_description'      => __( 'Short description', 'masvideos' ),
+			'description'            => __( 'Description', 'masvideos' ),
+			'category_ids'           => __( 'Categories', 'masvideos' ),
+			'tag_ids'                => __( 'Tags', 'masvideos' ),
+			'images'                 => __( 'Images', 'masvideos' ),
+			'movie_choice'           => __( 'Movie Choice', 'masvideos' ),
+			'movie_attachment_id'    => __( 'Movie Attachment', 'masvideos' ),
+			'movie_embed_content'    => __( 'Movie Embed Content', 'masvideos' ),
+			'movie_url_link'         => __( 'Movie Link', 'masvideos' ),
+			'movie_release_date'     => __( 'Movie Release Date', 'masvideos' ),
+			'movie_run_time'         => __( 'Movie Run Time', 'masvideos' ),
+			'movie_censor_rating'    => __( 'Movie Censor Rating', 'masvideos' ),
+			'attributes'             => array(
 				'name'    => __( 'Attributes', 'masvideos' ),
 				'options' => array(
 					'attributes:name' . $index     => __( 'Attribute name', 'masvideos' ),
@@ -648,9 +650,9 @@ class MasVideos_Movie_CSV_Importer_Controller {
 					'attributes:default' . $index  => __( 'Default attribute', 'masvideos' ),
 				),
 			),
-			'reviews_allowed'    => __( 'Allow customer reviews?', 'masvideos' ),
-			'meta:' . $meta      => __( 'Import as meta', 'masvideos' ),
-			'menu_order'         => __( 'Position', 'masvideos' ),
+			'reviews_allowed'        => __( 'Allow customer reviews?', 'masvideos' ),
+			'meta:' . $meta          => __( 'Import as meta', 'masvideos' ),
+			'menu_order'             => __( 'Position', 'masvideos' ),
 		);
 
 		return apply_filters( 'masvideos_csv_movie_import_mapping_options', $options, $item );

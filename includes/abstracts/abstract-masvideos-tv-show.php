@@ -221,6 +221,17 @@ class MasVideos_TV_Show extends MasVideos_Data {
     }
 
     /**
+     * Return if reviews is allowed.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return bool
+     */
+    public function get_reviews_allowed( $context = 'view' ) {
+        return $this->get_prop( 'reviews_allowed', $context );
+    }
+
+    /**
      * Returns tv show attributes.
      *
      * @param  string $context What the value is for. Valid values are view and edit.

@@ -238,7 +238,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 	}
 
 	/**
-	 * Parse relative comma-delineated field and return product ID.
+	 * Parse relative comma-delineated field and return movie ID.
 	 *
 	 * @param string $value Field value.
 	 * @return array
@@ -323,7 +323,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 
 			foreach ( $_terms as $index => $_term ) {
 				// Check if category exists. Parent must be empty string or null if doesn't exists.
-				$term = term_exists( $_term, 'movie_cat', $parent );
+				$term = term_exists( $_term, 'movie_genre', $parent );
 
 				if ( is_array( $term ) ) {
 					$term_id = $term['term_id'];
@@ -331,7 +331,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 				} elseif ( ! current_user_can( 'manage_movie_terms' ) ) {
 					break;
 				} else {
-					$term = wp_insert_term( $_term, 'movie_cat', array( 'parent' => intval( $parent ) ) );
+					$term = wp_insert_term( $_term, 'movie_genre', array( 'parent' => intval( $parent ) ) );
 
 					if ( is_wp_error( $term ) ) {
 						break; // We cannot continue if the term cannot be inserted.
@@ -477,7 +477,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			'tag_ids'           => array( $this, 'parse_tags_field' ),
 			'images'            => array( $this, 'parse_images_field' ),
 			'parent_id'         => array( $this, 'parse_relative_field' ),
-			'product_url'       => 'esc_url_raw',
+			'movie_url'       => 'esc_url_raw',
 			'menu_order'        => 'intval',
 		);
 
@@ -527,7 +527,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 	}
 
 	/**
-	 * Expand special and internal data into the correct formats for the product CRUD.
+	 * Expand special and internal data into the correct formats for the movie CRUD.
 	 *
 	 * @param  array $data Data to import.
 	 * @return array
@@ -544,16 +544,6 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 				$data['raw_gallery_image_ids'] = $images;
 			}
 			unset( $data['images'] );
-		}
-
-		// Type, virtual and downloadable are all stored in the same column.
-		if ( isset( $data['type'] ) ) {
-			$data['type']         = array_map( 'strtolower', $data['type'] );
-			$data['virtual']      = in_array( 'virtual', $data['type'], true );
-			$data['downloadable'] = in_array( 'downloadable', $data['type'], true );
-
-			// Convert type to string.
-			$data['type'] = current( array_diff( $data['type'], array( 'virtual', 'downloadable' ) ) );
 		}
 
 		// Status is mapped from a special published field.
@@ -685,7 +675,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			$row_data[] = $name;
 		}
 		if ( $id ) {
-			/* translators: %d: product ID */
+			/* translators: %d: movie ID */
 			$row_data[] = sprintf( __( 'ID %d', 'masvideos' ), $id );
 		}
 
@@ -695,8 +685,8 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 	/**
 	 * Process importer.
 	 *
-	 * Do not import products with IDs or SKUs that already exist if option
-	 * update existing is false, and likewise, if updating products, do not
+	 * Do not import movies with IDs or SKUs that already exist if option
+	 * update existing is false, and likewise, if updating movies, do not
 	 * process rows which do not exist if an ID/SKU is provided.
 	 *
 	 * @return array
@@ -719,12 +709,12 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			$id_exists  = false;
 
 			if ( $id ) {
-				$product   = masvideos_get_movie( $id );
-				$id_exists = $product && 'importing' !== $product->get_status();
+				$movie   = masvideos_get_movie( $id );
+				$id_exists = $movie && 'importing' !== $movie->get_status();
 			}
 
 			if ( $id_exists && ! $update_existing ) {
-				$data['skipped'][] = new WP_Error( 'masvideos_movie_importer_error', __( 'A product with this ID already exists.', 'woocommerce' ), array(
+				$data['skipped'][] = new WP_Error( 'masvideos_movie_importer_error', __( 'A movie with this ID already exists.', 'woocommerce' ), array(
 					'id'  => $id,
 					'row' => $this->get_row_id( $parsed_data ),
 				) );
@@ -732,7 +722,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			}
 
 			if ( $update_existing && $id  && ! $id_exists ) {
-				$data['skipped'][] = new WP_Error( 'masvideos_movie_importer_error', __( 'No matching product exists to update.', 'woocommerce' ), array(
+				$data['skipped'][] = new WP_Error( 'masvideos_movie_importer_error', __( 'No matching movie exists to update.', 'woocommerce' ), array(
 					'id'  => $id,
 					'row' => $this->get_row_id( $parsed_data ),
 				) );

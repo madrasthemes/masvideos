@@ -82,7 +82,7 @@ class MasVideos_Admin_Importers {
 	 */
 	public function admin_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( 'masvideos-movie-import', MASVIDEOS()->plugin_url() . '/assets/js/admin/masvideos-movie-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
+		wp_register_script( 'masvideos-movie-import', MasVideos()->plugin_url() . '/assets/js/admin/masvideos-movie-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
 	}
 
 	/**

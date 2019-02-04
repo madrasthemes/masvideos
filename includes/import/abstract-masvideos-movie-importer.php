@@ -207,10 +207,6 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 				$updating = true;
 			}
 
-			if ( 'external' === $object->get_type() ) {
-				unset( $data['manage_stock'], $data['stock_status'], $data['backorders'], $data['low_stock_amount'] );
-			}
-
 			if ( 'importing' === $object->get_status() ) {
 				$object->set_status( 'publish' );
 				$object->set_slug( '' );
@@ -287,7 +283,6 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	protected function set_movie_data( &$movie, $data ) {
 		if ( isset( $data['raw_attributes'] ) ) {
 			$attributes          = array();
-			$default_attributes  = array();
 			$existing_attributes = $movie->get_attributes();
 
 			foreach ( $data['raw_attributes'] as $position => $attribute ) {
@@ -328,20 +323,6 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 						$options = array();
 					}
 
-					// Check for default attributes and set "is_variation".
-					if ( ! empty( $attribute['default'] ) && in_array( $attribute['default'], $options, true ) ) {
-						$default_term = get_term_by( 'name', $attribute['default'], $attribute_name );
-
-						if ( $default_term && ! is_wp_error( $default_term ) ) {
-							$default = $default_term->slug;
-						} else {
-							$default = sanitize_title( $attribute['default'] );
-						}
-
-						$default_attributes[ $attribute_name ] = $default;
-						$is_variation                          = 1;
-					}
-
 					if ( ! empty( $options ) ) {
 						$attribute_object = new MasVideos_Movie_Attribute();
 						$attribute_object->set_id( $attribute_id );
@@ -349,32 +330,19 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 						$attribute_object->set_options( $options );
 						$attribute_object->set_position( $position );
 						$attribute_object->set_visible( $is_visible );
-						$attribute_object->set_variation( $is_variation );
 						$attributes[] = $attribute_object;
 					}
 				} elseif ( isset( $attribute['value'] ) ) {
-					// Check for default attributes and set "is_variation".
-					if ( ! empty( $attribute['default'] ) && in_array( $attribute['default'], $attribute['value'], true ) ) {
-						$default_attributes[ sanitize_title( $attribute['name'] ) ] = $attribute['default'];
-						$is_variation = 1;
-					}
-
 					$attribute_object = new MasVideos_Movie_Attribute();
 					$attribute_object->set_name( $attribute['name'] );
 					$attribute_object->set_options( $attribute['value'] );
 					$attribute_object->set_position( $position );
 					$attribute_object->set_visible( $is_visible );
-					$attribute_object->set_variation( $is_variation );
 					$attributes[] = $attribute_object;
 				}
 			}
 
 			$movie->set_attributes( $attributes );
-
-			// Set variable default attributes.
-			if ( $movie->is_type( 'variable' ) ) {
-				$movie->set_default_attributes( $default_attributes );
-			}
 		}
 	}
 
@@ -482,14 +450,14 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 		global $wpdb, $masvideos_movie_attributes;
 
 		// These are exported as labels, so convert the label to a name if possible first.
-		$attribute_labels = wp_list_pluck( masvideos_get_attribute_taxonomies(), 'attribute_label', 'attribute_name' );
+		$attribute_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'movie' ), 'attribute_label', 'attribute_name' );
 		$attribute_name   = array_search( $raw_name, $attribute_labels, true );
 
 		if ( ! $attribute_name ) {
 			$attribute_name = masvideos_sanitize_taxonomy_name( $raw_name );
 		}
 
-		$attribute_id = masvideos_attribute_taxonomy_id_by_name( $attribute_name );
+		$attribute_id = masvideos_attribute_taxonomy_id_by_name( 'movie', $attribute_name );;
 
 		// Get the ID from the name.
 		if ( $attribute_id ) {
@@ -503,6 +471,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 			'type'         => 'select',
 			'order_by'     => 'menu_order',
 			'has_archives' => false,
+			'post_type'    => 'movie',
 		) );
 
 		if ( is_wp_error( $attribute_id ) ) {
@@ -510,7 +479,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 		}
 
 		// Register as taxonomy while importing.
-		$taxonomy_name = masvideos_attribute_taxonomy_name( $attribute_name );
+		$taxonomy_name = masvideos_attribute_taxonomy_name( 'movie', $attribute_name );
 		register_taxonomy(
 			$taxonomy_name,
 			apply_filters( 'masvideos_taxonomy_objects_' . $taxonomy_name, array( 'movie' ) ),
@@ -528,8 +497,8 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 		// Set movie attributes global.
 		$masvideos_movie_attributes = array();
 
-		foreach ( masvideos_get_attribute_taxonomies() as $taxonomy ) {
-			$masvideos_movie_attributes[ masvideos_attribute_taxonomy_name( $taxonomy->attribute_name ) ] = $taxonomy;
+		foreach ( masvideos_get_attribute_taxonomies( 'movie' ) as $taxonomy ) {
+			$masvideos_movie_attributes[ masvideos_attribute_taxonomy_name( $taxonomy->post_type, $taxonomy->attribute_name ) ] = $taxonomy;
 		}
 
 		return $attribute_id;
