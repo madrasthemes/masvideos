@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/masvideos/single-video/review-meta.php.
  *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
+ * HOWEVER, on occasion MasVideos will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to
  * maintain compatibility. We try to do this as little as possible, but it does
  * happen. When this occurs the version of the template file will be bumped and
@@ -30,7 +30,7 @@ if ( '0' === $comment->comment_approved ) { ?>
 
 	<p class="meta">
 		<strong class="masvideos-review__author"><?php comment_author(); ?> </strong>
-		<span class="masvideos-review__dash">&ndash;</span> <time class="masvideos-review__published-date" datetime="<?php echo esc_attr( get_comment_date( 'c' ) ); ?>"><?php echo esc_html( get_comment_date( masvideos_date_format() ) ); ?></time>
+		<time class="masvideos-review__published-date" datetime="<?php echo esc_attr( get_comment_date( 'c' ) ); ?>"><?php echo esc_html( get_comment_date( masvideos_date_format() ) ); ?></time>
 	</p>
 
 <?php

@@ -72,8 +72,8 @@ jQuery( function( $ ) {
 					$( this ).selectWoo( select2_args ).addClass( 'enhanced' );
 				});
 
-				// Ajax movie search box
-				$( ':input.masvideos-movie-search' ).filter( ':not(.enhanced)' ).each( function() {
+				// Ajax enhanced search box
+				$( ':input.masvideos-enhanced-search' ).filter( ':not(.enhanced)' ).each( function() {
 					var select2_args = {
 						allowClear:  $( this ).data( 'allow_clear' ) ? true : false,
 						placeholder: $( this ).data( 'placeholder' ),
@@ -88,8 +88,8 @@ jQuery( function( $ ) {
 							data:        function( params ) {
 								return {
 									term:     params.term,
-									action:   $( this ).data( 'action' ) || 'masvideos_json_search_movies_and_variations',
-									security: masvideos_enhanced_select_params.search_movies_nonce,
+									action:   $( this ).data( 'action' ) || 'masvideos_json_search_videos',
+									security: $( this ).data( 'nonce_key' ) ? masvideos_enhanced_select_params[$( this ).data( 'nonce_key' )] : masvideos_enhanced_select_params.search_movies_nonce,
 									exclude:  $( this ).data( 'exclude' ),
 									include:  $( this ).data( 'include' ),
 									limit:    $( this ).data( 'limit' )
@@ -257,16 +257,16 @@ jQuery( function( $ ) {
 				});
 			})
 
-			// WooCommerce Backbone Modal
+			// MasVideos Backbone Modal
 			.on( 'masvideos_backbone_modal_before_remove', function() {
-				$( '.masvideos-enhanced-select, :input.masvideos-movie-search, :input.masvideos-customer-search' ).filter( '.select2-hidden-accessible' ).selectWoo( 'close' );
+				$( '.masvideos-enhanced-select, :input.masvideos-enhanced-search, :input.masvideos-customer-search' ).filter( '.select2-hidden-accessible' ).selectWoo( 'close' );
 			})
 
 			.trigger( 'masvideos-enhanced-select-init' );
 
 		$( 'html' ).on( 'click', function( event ) {
 			if ( this === event.target ) {
-				$( '.masvideos-enhanced-select, :input.masvideos-movie-search, :input.masvideos-customer-search' ).filter( '.select2-hidden-accessible' ).selectWoo( 'close' );
+				$( '.masvideos-enhanced-select, :input.masvideos-enhanced-search, :input.masvideos-customer-search' ).filter( '.select2-hidden-accessible' ).selectWoo( 'close' );
 			}
 		} );
 	} catch( err ) {

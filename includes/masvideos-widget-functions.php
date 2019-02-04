@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Include widget classes.
 require MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-widget.php';
 require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-movies-layered-nav.php';
+require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-movies-categories.php';
+require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-rating-filter.php';
 
 /**
  * Register Widgets.
@@ -23,5 +25,7 @@ require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-movies-laye
  */
 function masvideos_register_widgets() {
     register_widget( 'MasVideos_Widget_Movies_Layered_Nav' );
+    register_widget( 'MasVideos_Widget_Movies_Categories' );
+    register_widget( 'MasVideos_Widget_Movies_Rating_Filter' );
 }
 add_action( 'widgets_init', 'masvideos_register_widgets' );

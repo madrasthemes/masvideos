@@ -179,3 +179,159 @@ if ( ! function_exists( 'taxonomy_is_movie_attribute' ) ) {
         return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['movie'] );
     }
 }
+
+if ( ! function_exists( 'is_episodes' ) ) {
+
+    /**
+     * Is_shop - Returns true when viewing the episode type archive (shop).
+     *
+     * @return bool
+     */
+    function is_episodes() {
+        return ( is_post_type_archive( 'episode' ) || is_page( masvideos_get_page_id( 'episodes' ) ) );
+    }
+}
+
+if ( ! function_exists( 'is_episode_taxonomy' ) ) {
+
+    /**
+     * Is_episode_taxonomy - Returns true when viewing a episode taxonomy archive.
+     *
+     * @return bool
+     */
+    function is_episode_taxonomy() {
+        return is_tax( get_object_taxonomies( 'episode' ) );
+    }
+}
+
+if ( ! function_exists( 'is_episode_genre' ) ) {
+
+    /**
+     * Is_episode_genre - Returns true when viewing a episode category.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_episode_genre( $term = '' ) {
+        return is_tax( 'episode_genre', $term );
+    }
+}
+
+if ( ! function_exists( 'is_episode_tag' ) ) {
+
+    /**
+     * Is_episode_tag - Returns true when viewing a episode tag.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_episode_tag( $term = '' ) {
+        return is_tax( 'episode_tag', $term );
+    }
+}
+
+if ( ! function_exists( 'is_episode' ) ) {
+
+    /**
+     * Is_episode - Returns true when viewing a single episode.
+     *
+     * @return bool
+     */
+    function is_episode() {
+        return is_singular( array( 'episode' ) );
+    }
+}
+
+if ( ! function_exists( 'taxonomy_is_episode_attribute' ) ) {
+
+    /**
+     * Returns true when the passed taxonomy name is a episode attribute.
+     *
+     * @uses   $masepisodes_attributes global which stores taxonomy names upon registration
+     * @param  string $name of the attribute.
+     * @return bool
+     */
+    function taxonomy_is_episode_attribute( $name ) {
+        global $masvideos_attributes;
+
+        return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['episode'] );
+    }
+}
+
+if ( ! function_exists( 'is_tv_shows' ) ) {
+
+    /**
+     * Is_shop - Returns true when viewing the tv_show type archive (shop).
+     *
+     * @return bool
+     */
+    function is_tv_shows() {
+        return ( is_post_type_archive( 'tv_show' ) || is_page( masvideos_get_page_id( 'tv_shows' ) ) );
+    }
+}
+
+if ( ! function_exists( 'is_tv_show_taxonomy' ) ) {
+
+    /**
+     * Is_tv_show_taxonomy - Returns true when viewing a tv_show taxonomy archive.
+     *
+     * @return bool
+     */
+    function is_tv_show_taxonomy() {
+        return is_tax( get_object_taxonomies( 'tv_show' ) );
+    }
+}
+
+if ( ! function_exists( 'is_tv_show_genre' ) ) {
+
+    /**
+     * Is_tv_show_genre - Returns true when viewing a tv_show category.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_tv_show_genre( $term = '' ) {
+        return is_tax( 'tv_show_genre', $term );
+    }
+}
+
+if ( ! function_exists( 'is_tv_show_tag' ) ) {
+
+    /**
+     * Is_tv_show_tag - Returns true when viewing a tv_show tag.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_tv_show_tag( $term = '' ) {
+        return is_tax( 'tv_show_tag', $term );
+    }
+}
+
+if ( ! function_exists( 'is_tv_show' ) ) {
+
+    /**
+     * Is_tv_show - Returns true when viewing a single tv_show.
+     *
+     * @return bool
+     */
+    function is_tv_show() {
+        return is_singular( array( 'tv_show' ) );
+    }
+}
+
+if ( ! function_exists( 'taxonomy_is_tv_show_attribute' ) ) {
+
+    /**
+     * Returns true when the passed taxonomy name is a tv_show attribute.
+     *
+     * @uses   $mastv_shows_attributes global which stores taxonomy names upon registration
+     * @param  string $name of the attribute.
+     * @return bool
+     */
+    function taxonomy_is_tv_show_attribute( $name ) {
+        global $masvideos_attributes;
+
+        return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['tv_show'] );
+    }
+}

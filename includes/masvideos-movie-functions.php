@@ -119,6 +119,28 @@ function masvideos_get_movie_visibility_options() {
 	);
 }
 
+/**
+ * Callback for array filter to get movies the user can edit only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Movie $movie MasVideos_Movie object.
+ * @return bool
+ */
+function masvideos_movies_array_filter_editable( $movie ) {
+    return $movie && is_a( $movie, 'MasVideos_Movie' ) && current_user_can( 'edit_movie', $movie->get_id() );
+}
+
+/**
+ * Callback for array filter to get movies the user can view only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Movie $movie MasVideos_Movie object.
+ * @return bool
+ */
+function masvideos_movies_array_filter_readable( $movie ) {
+    return $movie && is_a( $movie, 'MasVideos_Movie' ) && current_user_can( 'read_movie', $movie->get_id() );
+}
+
 if ( ! function_exists ( 'masvideos_the_movie' ) ) {
     function masvideos_the_movie( $post = null ) {
         global $movie;

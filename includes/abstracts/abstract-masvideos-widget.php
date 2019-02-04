@@ -308,15 +308,6 @@ abstract class MasVideos_Widget extends WP_Widget {
             $link = get_term_link( $queried_object->slug, $queried_object->taxonomy );
         }
 
-        // Min/Max.
-        if ( isset( $_GET['min_price'] ) ) {
-            $link = add_query_arg( 'min_price', masvideos_clean( wp_unslash( $_GET['min_price'] ) ), $link );
-        }
-
-        if ( isset( $_GET['max_price'] ) ) {
-            $link = add_query_arg( 'max_price', masvideos_clean( wp_unslash( $_GET['max_price'] ) ), $link );
-        }
-
         // Order by.
         if ( isset( $_GET['orderby'] ) ) {
             $link = add_query_arg( 'orderby', masvideos_clean( wp_unslash( $_GET['orderby'] ) ), $link );

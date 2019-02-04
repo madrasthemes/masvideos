@@ -55,10 +55,9 @@ if ( masvideos_videos_loop() ) {
              * Hook: masvideos_videos_loop.
              *
              * @hooked WC_Structured_Data::generate_video_data() - 10
+             * @hooked masvideos_videos_loop_content() - 20
              */
             do_action( 'masvideos_videos_loop' );
-
-            masvideos_get_template_part( 'content', 'video' );
         }
     }
 

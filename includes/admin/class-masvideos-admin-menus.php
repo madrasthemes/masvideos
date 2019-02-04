@@ -2,8 +2,8 @@
 /**
  * Setup menus in WP admin.
  *
- * @package WooCommerce\Admin
- * @version 2.5.0
+ * @package MasVideos\Admin
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -42,6 +42,8 @@ class MasVideos_Admin_Menus {
 
         // add_menu_page( __( 'MasVideos', 'masvideos' ), __( 'MasVideos', 'masvideos' ), 'manage_masvideos', 'masvideos', null, null, '55.5' );
 
+        add_submenu_page( 'edit.php?post_type=episode', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_episode_terms', 'episode_attributes', array( $this, 'attributes_page' ) );
+        add_submenu_page( 'edit.php?post_type=tv_show', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_tv_show_terms', 'tv_show_attributes', array( $this, 'attributes_page' ) );
         add_submenu_page( 'edit.php?post_type=video', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_video_terms', 'video_attributes', array( $this, 'attributes_page' ) );
         add_submenu_page( 'edit.php?post_type=movie', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_movie_terms', 'movie_attributes', array( $this, 'attributes_page' ) );
     }
@@ -56,11 +58,32 @@ class MasVideos_Admin_Menus {
             // case 'masvideos':
             //     $parent_file = 'masvideos'; // WPCS: override ok.
             //     break;
+            case 'episode':
+                $screen = get_current_screen();
+                if ( $screen && taxonomy_is_episode_attribute( $screen->taxonomy ) ) {
+                    $submenu_file = 'episode_attributes'; // WPCS: override ok.
+                    $parent_file  = 'edit.php?post_type=episode'; // WPCS: override ok.
+                }
+                break;
+            case 'tv_show':
+                $screen = get_current_screen();
+                if ( $screen && taxonomy_is_tv_show_attribute( $screen->taxonomy ) ) {
+                    $submenu_file = 'tv_show_attributes'; // WPCS: override ok.
+                    $parent_file  = 'edit.php?post_type=tv_show'; // WPCS: override ok.
+                }
+                break;
             case 'video':
                 $screen = get_current_screen();
                 if ( $screen && taxonomy_is_video_attribute( $screen->taxonomy ) ) {
                     $submenu_file = 'video_attributes'; // WPCS: override ok.
                     $parent_file  = 'edit.php?post_type=video'; // WPCS: override ok.
+                }
+                break;
+            case 'movie':
+                $screen = get_current_screen();
+                if ( $screen && taxonomy_is_movie_attribute( $screen->taxonomy ) ) {
+                    $submenu_file = 'movie_attributes'; // WPCS: override ok.
+                    $parent_file  = 'edit.php?post_type=movie'; // WPCS: override ok.
                 }
                 break;
         }
@@ -79,8 +102,14 @@ class MasVideos_Admin_Menus {
         // Get the index of our custom separator.
         $masvideos_separator = array_search( 'separator-masvideos', $menu_order, true );
 
+        // Get index of episode menu.
+        // $masvideos_episode = array_search( 'edit.php?post_type=episode', $menu_order, true );
+        // Get index of tv_show menu.
+        // $masvideos_tv_show = array_search( 'edit.php?post_type=tv_show', $menu_order, true );
         // Get index of video menu.
         $masvideos_video = array_search( 'edit.php?post_type=video', $menu_order, true );
+        // Get index of movie menu.
+        // $masvideos_movie = array_search( 'edit.php?post_type=movie', $menu_order, true );
 
         // Loop through menu order and do some rearranging.
         foreach ( $menu_order as $index => $item ) {

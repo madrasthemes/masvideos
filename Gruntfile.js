@@ -83,6 +83,18 @@ module.exports = function( grunt ) {
                     ext: '.min.js'
                 }]
             },
+            admin: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.js %>/admin/',
+                    src: [
+                        '*.js',
+                        '!*.min.js'
+                    ],
+                    dest: '<%= dirs.js %>/admin/',
+                    ext: '.min.js'
+                }]
+            },
             blocks: {
                 files: [{
                     expand: true,
@@ -95,15 +107,15 @@ module.exports = function( grunt ) {
                     ext: '.min.js'
                 }]
             },
-            admin: {
+            frontend: {
                 files: [{
                     expand: true,
-                    cwd: '<%= dirs.js %>/admin/',
+                    cwd: '<%= dirs.js %>/frontend/',
                     src: [
                         '*.js',
                         '!*.min.js'
                     ],
-                    dest: '<%= dirs.js %>/admin/',
+                    dest: '<%= dirs.js %>/frontend/',
                     ext: '.min.js'
                 }]
             }
@@ -113,6 +125,7 @@ module.exports = function( grunt ) {
         sass: {
             compile: {
                 options: {
+                    implementation: require('node-sass'),
                     sourceMap: 'none'
                 },
                 files: [{

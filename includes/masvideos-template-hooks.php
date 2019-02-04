@@ -10,23 +10,50 @@
 
 defined( 'ABSPATH' ) || exit;
 
+add_action( 'masvideos_before_main_content', 'masvideos_template_loop_content_area_open', 10 );
+add_action( 'masvideos_before_movies_loop', 'masvideos_movies_control_bar', 10 );
+add_action( 'masvideos_after_movies_loop', 'masvideos_movies_page_control_bar', 10 );
+add_action( 'masvideos_after_main_content', 'masvideos_template_loop_content_area_close', 999 );
+
+/**
+ * Breadcrumbs.
+ *
+ * @see masvideos_breadcrumb()
+ */
+add_action( 'masvideos_before_main_content', 'masvideos_breadcrumb', 20, 0 );
+
+/**
+ * Episodes Loop.
+ */
+add_action( 'masvideos_episodes_loop', 'masvideos_episodes_loop_content', 20 );
+add_action( 'masvideos_episodes_loop_item_title', 'masvideos_template_loop_episode_title', 30 );
+
+/**
+ * TV Shows Loop.
+ */
+add_action( 'masvideos_tv_shows_loop', 'masvideos_tv_shows_loop_content', 20 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_title', 30 );
+
 /**
  * Videos Loop.
  */
+add_action( 'masvideos_videos_loop', 'masvideos_videos_loop_content', 20 );
 add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_feature_badge', 10 );
 add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_container_open', 20 );
-add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_link_open', 30 );
-add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_poster_open', 40 );
+add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_poster_open', 30 );
+add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_link_open', 40 );
 add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_poster', 50 );
-add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_poster_close', 60 );
-add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_link_close', 70 );
+add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_link_close', 60 );
+add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_poster_close', 70 );
 add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_container_close', 80 );
 add_action( 'masvideos_before_videos_loop_item_title', 'masvideos_template_loop_video_body_open', 10 );
 add_action( 'masvideos_before_videos_loop_item_title', 'masvideos_template_loop_video_info_open', 20 );
-add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_link_open', 10 );
+add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_info_head_open', 10 );
+add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_link_open', 20 );
 add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_title', 30 );
-add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_meta', 20 );
 add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_link_close', 40 );
+add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_meta', 50 );
+add_action( 'masvideos_videos_loop_item_title', 'masvideos_template_loop_video_info_head_close', 60 );
 add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_video_short_desc', 10 );
 add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_video_actions', 20 );
 add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_video_info_close', 30 );
@@ -39,6 +66,8 @@ add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_b
 /**
  * Movies Loop.
  */
+add_action( 'masvideos_movies_loop', 'masvideos_movies_loop_content', 20 );
+add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_feature_badge', 5 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster_open', 10 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_link_open', 20 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster', 30 );

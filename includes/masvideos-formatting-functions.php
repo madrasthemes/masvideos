@@ -308,6 +308,50 @@ function masvideos_timezone_offset() {
 }
 
 /**
+ * Wrapper for mb_strtoupper which see's if supported first.
+ *
+ * @since  1.0.0
+ * @param  string $string String to format.
+ * @return string
+ */
+function masvideos_strtoupper( $string ) {
+    return function_exists( 'mb_strtoupper' ) ? mb_strtoupper( $string ) : strtoupper( $string );
+}
+
+/**
+ * Make a string lowercase.
+ * Try to use mb_strtolower() when available.
+ *
+ * @since  1.0.0
+ * @param  string $string String to format.
+ * @return string
+ */
+function masvideos_strtolower( $string ) {
+    return function_exists( 'mb_strtolower' ) ? mb_strtolower( $string ) : strtolower( $string );
+}
+
+/**
+ * Trim a string and append a suffix.
+ *
+ * @param  string  $string String to trim.
+ * @param  integer $chars  Amount of characters.
+ *                         Defaults to 200.
+ * @param  string  $suffix Suffix.
+ *                         Defaults to '...'.
+ * @return string
+ */
+function masvideos_trim_string( $string, $chars = 200, $suffix = '...' ) {
+    if ( strlen( $string ) > $chars ) {
+        if ( function_exists( 'mb_substr' ) ) {
+            $string = mb_substr( $string, 0, ( $chars - mb_strlen( $suffix ) ) ) . $suffix;
+        } else {
+            $string = substr( $string, 0, ( $chars - strlen( $suffix ) ) ) . $suffix;
+        }
+    }
+    return $string;
+}
+
+/**
  * Sanitize terms from an attribute text based.
  *
  * @since  1.0.0

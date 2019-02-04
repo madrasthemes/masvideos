@@ -21,6 +21,16 @@ function masvideos_get_screen_ids() {
     $masvideos_screen_id = sanitize_title( __( 'MasVideos', 'masvideos' ) );
     $screen_ids   = array(
         'toplevel_page_' . $masvideos_screen_id,
+        'episode_page_episode_attributes',
+        'edit-episode',
+        'episode',
+        'edit-episode_genre',
+        'edit-episode_tag',
+        'tv_show_page_tv_show_attributes',
+        'edit-tv_show',
+        'tv_show',
+        'edit-tv_show_genre',
+        'edit-tv_show_tag',
         'video_page_video_attributes',
         'edit-video',
         'video',

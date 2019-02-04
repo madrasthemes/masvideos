@@ -123,25 +123,25 @@ function masvideos_attribute_taxonomy_id_by_name( $post_type, $name ) {
 }
 
 /**
- * Get a movie attributes label.
+ * Get a episode attributes label.
  *
  * @param string $name Attribute name.
- * @param MasVideos_Movie $movie Product data.
+ * @param MasVideos_Episode $episode Product data.
  * @return string
  */
-function masvideos_movie_attribute_label( $name, $movie = '' ) {
-    if ( taxonomy_is_movie_attribute( $name ) ) {
-        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'movie_', '', $name ) );
-        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'movie' ), 'attribute_label', 'attribute_name' );
+function masvideos_episode_attribute_label( $name, $episode = '' ) {
+    if ( taxonomy_is_episode_attribute( $name ) ) {
+        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'episode_', '', $name ) );
+        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'episode' ), 'attribute_label', 'attribute_name' );
         $label      = isset( $all_labels[ $name ] ) ? $all_labels[ $name ] : $name;
-    } elseif ( $movie ) {
+    } elseif ( $episode ) {
         $attributes = array();
 
-        if ( false !== $movie ) {
-            $attributes = $movie->get_attributes();
+        if ( false !== $episode ) {
+            $attributes = $episode->get_attributes();
         }
 
-        // Attempt to get label from movie, as entered by the user.
+        // Attempt to get label from episode, as entered by the user.
         if ( $attributes && isset( $attributes[ sanitize_title( $name ) ] ) ) {
             $label = $attributes[ sanitize_title( $name ) ]->get_name();
         } else {
@@ -151,7 +151,39 @@ function masvideos_movie_attribute_label( $name, $movie = '' ) {
         $label = $name;
     }
 
-    return apply_filters( 'masvideos_movie_attribute_label', $label, $name, $movie );
+    return apply_filters( 'masvideos_episode_attribute_label', $label, $name, $episode );
+}
+
+/**
+ * Get a tv show attributes label.
+ *
+ * @param string $name Attribute name.
+ * @param MasVideos_TV_Show $tv_show Product data.
+ * @return string
+ */
+function masvideos_tv_show_attribute_label( $name, $tv_show = '' ) {
+    if ( taxonomy_is_tv_show_attribute( $name ) ) {
+        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'tv_show_', '', $name ) );
+        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'tv_show' ), 'attribute_label', 'attribute_name' );
+        $label      = isset( $all_labels[ $name ] ) ? $all_labels[ $name ] : $name;
+    } elseif ( $tv_show ) {
+        $attributes = array();
+
+        if ( false !== $tv_show ) {
+            $attributes = $tv_show->get_attributes();
+        }
+
+        // Attempt to get label from tv_show, as entered by the user.
+        if ( $attributes && isset( $attributes[ sanitize_title( $name ) ] ) ) {
+            $label = $attributes[ sanitize_title( $name ) ]->get_name();
+        } else {
+            $label = $name;
+        }
+    } else {
+        $label = $name;
+    }
+
+    return apply_filters( 'masvideos_tv_show_attribute_label', $label, $name, $tv_show );
 }
 
 /**
@@ -184,6 +216,38 @@ function masvideos_video_attribute_label( $name, $video = '' ) {
     }
 
     return apply_filters( 'masvideos_video_attribute_label', $label, $name, $video );
+}
+
+/**
+ * Get a movie attributes label.
+ *
+ * @param string $name Attribute name.
+ * @param MasVideos_Movie $movie Product data.
+ * @return string
+ */
+function masvideos_movie_attribute_label( $name, $movie = '' ) {
+    if ( taxonomy_is_movie_attribute( $name ) ) {
+        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'movie_', '', $name ) );
+        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'movie' ), 'attribute_label', 'attribute_name' );
+        $label      = isset( $all_labels[ $name ] ) ? $all_labels[ $name ] : $name;
+    } elseif ( $movie ) {
+        $attributes = array();
+
+        if ( false !== $movie ) {
+            $attributes = $movie->get_attributes();
+        }
+
+        // Attempt to get label from movie, as entered by the user.
+        if ( $attributes && isset( $attributes[ sanitize_title( $name ) ] ) ) {
+            $label = $attributes[ sanitize_title( $name ) ]->get_name();
+        } else {
+            $label = $name;
+        }
+    } else {
+        $label = $name;
+    }
+
+    return apply_filters( 'masvideos_movie_attribute_label', $label, $name, $movie );
 }
 
 /**
@@ -361,6 +425,12 @@ function masvideos_check_if_attribute_name_is_reserved( $attribute_name ) {
  */
 function masvideos_attributes_array_filter_visible( $post_type, $attribute ) {
     switch ( $post_type ) {
+        case 'episode':
+            $class_name = 'MasVideos_Episode_Attribute';
+            break;
+        case 'tv_show':
+            $class_name = 'MasVideos_TV_Show_Attribute';
+            break;
         case 'video':
             $class_name = 'MasVideos_Video_Attribute';
             break;

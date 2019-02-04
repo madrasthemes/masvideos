@@ -38,3 +38,71 @@
     vertical-align: top;
     width: 20px;
 }
+
+.comment-form {
+    .comment-form-rating > label {
+        display: block;
+    }
+}
+
+p.stars {
+    line-height: 1;
+    font-size: 20px;
+    display: inline-block;
+    
+    a {
+        position: relative;
+        height: 1em;
+        width: 1em;
+        text-indent: -99999px;
+        display: inline-block;
+        text-decoration: none;
+        margin-left: 1px;
+
+        &:before {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 1em;
+            height: 1em;
+            line-height: 1;
+            font-family: dashicons;
+            content: "\f154";
+            text-indent: 0;
+            color: #2c2d33;
+        }
+
+        &:hover {
+            ~ a:before {
+                content: "\f154";
+            }
+        }
+    }
+
+    &:hover {
+        a {
+            &:before {
+                content: "\f155";
+            }
+        }
+    }
+
+    &.selected {
+        a.active {
+            &:before {
+                content: "\f155";
+            }
+
+            ~ a:before {
+                content: "\f154";
+            }
+        }
+
+        a:not(.active) {
+            &:before {
+                content: "\f155";
+            }
+        }
+    }
+}

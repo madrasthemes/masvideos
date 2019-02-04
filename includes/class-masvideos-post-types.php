@@ -4,8 +4,8 @@
  *
  * Registers post types and taxonomies.
  *
- * @package WooCommerce/Classes/Videos
- * @version 2.5.0
+ * @package MasVideos/Classes/Videos
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -33,13 +33,141 @@ class MasVideos_Post_Types {
      */
     public static function register_post_types() {
 
-        if ( ! is_blog_installed() || post_type_exists( 'video' ) ) {
+        if ( ! is_blog_installed() ) {
             return;
         }
 
         do_action( 'masvideos_register_post_type' );
 
-        $permalinks = masvideos_get_video_permalink_structure();
+        $permalinks = masvideos_get_permalink_structure();
+
+        // For Episodes
+        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $episodes_page_id = 0;
+
+        if ( current_theme_supports( 'masvideos' ) ) {
+            $has_archive = $episodes_page_id && get_post( $episodes_page_id ) ? urldecode( get_page_uri( $episodes_page_id ) ) : 'episodes';
+        } else {
+            $has_archive = false;
+        }
+
+        register_post_type(
+            'episode',
+            apply_filters(
+                'masvideos_register_post_type_episode',
+                array(
+                    'labels'              => array(
+                        'name'                  => __( 'Episodes', 'masvideos' ),
+                        'singular_name'         => __( 'Episode', 'masvideos' ),
+                        'all_items'             => __( 'All Episodes', 'masvideos' ),
+                        'menu_name'             => _x( 'Episodes', 'Admin menu name', 'masvideos' ),
+                        'add_new'               => __( 'Add New', 'masvideos' ),
+                        'add_new_item'          => __( 'Add new episode', 'masvideos' ),
+                        'edit'                  => __( 'Edit', 'masvideos' ),
+                        'edit_item'             => __( 'Edit episode', 'masvideos' ),
+                        'new_item'              => __( 'New episode', 'masvideos' ),
+                        'view_item'             => __( 'View episode', 'masvideos' ),
+                        'view_items'            => __( 'View episodes', 'masvideos' ),
+                        'search_items'          => __( 'Search episodes', 'masvideos' ),
+                        'not_found'             => __( 'No episodes found', 'masvideos' ),
+                        'not_found_in_trash'    => __( 'No episodes found in trash', 'masvideos' ),
+                        'parent'                => __( 'Parent episode', 'masvideos' ),
+                        'featured_image'        => __( 'Episode image', 'masvideos' ),
+                        'set_featured_image'    => __( 'Set episode image', 'masvideos' ),
+                        'remove_featured_image' => __( 'Remove episode image', 'masvideos' ),
+                        'use_featured_image'    => __( 'Use as episode image', 'masvideos' ),
+                        'insert_into_item'      => __( 'Insert into episode', 'masvideos' ),
+                        'uploaded_to_this_item' => __( 'Uploaded to this episode', 'masvideos' ),
+                        'filter_items_list'     => __( 'Filter episodes', 'masvideos' ),
+                        'items_list_navigation' => __( 'Episodes navigation', 'masvideos' ),
+                        'items_list'            => __( 'Episodes list', 'masvideos' ),
+                    ),
+                    'description'         => __( 'This is where you can add new episodes to your site.', 'masvideos' ),
+                    'public'              => true,
+                    'show_ui'             => true,
+                    'capability_type'     => 'episode',
+                    'map_meta_cap'        => true,
+                    'publicly_queryable'  => true,
+                    'exclude_from_search' => false,
+                    'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+                    'rewrite'             => $permalinks['episode_rewrite_slug'] ? array(
+                        'slug'       => $permalinks['episode_rewrite_slug'],
+                        'with_front' => false,
+                        'feeds'      => true,
+                    ) : false,
+                    'query_var'           => true,
+                    'supports'            => $supports,
+                    'has_archive'         => $has_archive,
+                    'show_in_nav_menus'   => true,
+                    'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-playlist-video'
+                )
+            )
+        );
+
+        // For TV Shows
+        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $tv_shows_page_id = 0;
+
+        if ( current_theme_supports( 'masvideos' ) ) {
+            $has_archive = $tv_shows_page_id && get_post( $tv_shows_page_id ) ? urldecode( get_page_uri( $tv_shows_page_id ) ) : 'tv_shows';
+        } else {
+            $has_archive = false;
+        }
+
+        register_post_type(
+            'tv_show',
+            apply_filters(
+                'masvideos_register_post_type_tv_show',
+                array(
+                    'labels'              => array(
+                        'name'                  => __( 'TV Shows', 'masvideos' ),
+                        'singular_name'         => __( 'TV Show', 'masvideos' ),
+                        'all_items'             => __( 'All TV Shows', 'masvideos' ),
+                        'menu_name'             => _x( 'TV Shows', 'Admin menu name', 'masvideos' ),
+                        'add_new'               => __( 'Add New', 'masvideos' ),
+                        'add_new_item'          => __( 'Add new tv show', 'masvideos' ),
+                        'edit'                  => __( 'Edit', 'masvideos' ),
+                        'edit_item'             => __( 'Edit tv show', 'masvideos' ),
+                        'new_item'              => __( 'New tv show', 'masvideos' ),
+                        'view_item'             => __( 'View tv show', 'masvideos' ),
+                        'view_items'            => __( 'View tv shows', 'masvideos' ),
+                        'search_items'          => __( 'Search tv shows', 'masvideos' ),
+                        'not_found'             => __( 'No tv shows found', 'masvideos' ),
+                        'not_found_in_trash'    => __( 'No tv shows found in trash', 'masvideos' ),
+                        'parent'                => __( 'Parent tv show', 'masvideos' ),
+                        'featured_image'        => __( 'TV Show image', 'masvideos' ),
+                        'set_featured_image'    => __( 'Set tv show image', 'masvideos' ),
+                        'remove_featured_image' => __( 'Remove tv show image', 'masvideos' ),
+                        'use_featured_image'    => __( 'Use as tv show image', 'masvideos' ),
+                        'insert_into_item'      => __( 'Insert into tv show', 'masvideos' ),
+                        'uploaded_to_this_item' => __( 'Uploaded to this tv show', 'masvideos' ),
+                        'filter_items_list'     => __( 'Filter tv shows', 'masvideos' ),
+                        'items_list_navigation' => __( 'TV Shows navigation', 'masvideos' ),
+                        'items_list'            => __( 'TV Shows list', 'masvideos' ),
+                    ),
+                    'description'         => __( 'This is where you can add new tv shows to your site.', 'masvideos' ),
+                    'public'              => true,
+                    'show_ui'             => true,
+                    'capability_type'     => 'tv_show',
+                    'map_meta_cap'        => true,
+                    'publicly_queryable'  => true,
+                    'exclude_from_search' => false,
+                    'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+                    'rewrite'             => $permalinks['tv_show_rewrite_slug'] ? array(
+                        'slug'       => $permalinks['tv_show_rewrite_slug'],
+                        'with_front' => false,
+                        'feeds'      => true,
+                    ) : false,
+                    'query_var'           => true,
+                    'supports'            => $supports,
+                    'has_archive'         => $has_archive,
+                    'show_in_nav_menus'   => true,
+                    'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-welcome-view-site'
+                )
+            )
+        );
 
         // For Videos
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
@@ -87,7 +215,7 @@ class MasVideos_Post_Types {
                         'items_list_navigation' => __( 'Videos navigation', 'masvideos' ),
                         'items_list'            => __( 'Videos list', 'masvideos' ),
                     ),
-                    'description'         => __( 'This is where you can add new videos to your store.', 'masvideos' ),
+                    'description'         => __( 'This is where you can add new videos to your site.', 'masvideos' ),
                     'public'              => true,
                     'show_ui'             => true,
                     'capability_type'     => 'video',
@@ -151,7 +279,7 @@ class MasVideos_Post_Types {
                         'items_list_navigation' => __( 'Movies navigation', 'masvideos' ),
                         'items_list'            => __( 'Movies list', 'masvideos' ),
                     ),
-                    'description'         => __( 'This is where you can add new movies to your store.', 'masvideos' ),
+                    'description'         => __( 'This is where you can add new movies to your site.', 'masvideos' ),
                     'public'              => true,
                     'show_ui'             => true,
                     'capability_type'     => 'movie',
@@ -188,7 +316,199 @@ class MasVideos_Post_Types {
 
         do_action( 'masvideos_register_taxonomy' );
 
-        $permalinks = masvideos_get_video_permalink_structure();
+        $permalinks = masvideos_get_permalink_structure();
+
+        register_taxonomy(
+            'episode_visibility',
+            apply_filters( 'masvideos_taxonomy_objects_episode_visibility', array( 'episode' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_episode_visibility', array(
+                    'hierarchical'      => false,
+                    'show_ui'           => false,
+                    'show_in_nav_menus' => false,
+                    'query_var'         => is_admin(),
+                    'rewrite'           => false,
+                    'public'            => false,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'episode_genre',
+            apply_filters( 'masvideos_taxonomy_objects_episode_genre', array( 'episode' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_episode_genre', array(
+                    'hierarchical'          => true,
+                    // 'update_count_callback' => '_wc_term_recount',
+                    'label'                 => __( 'Genres', 'masvideos' ),
+                    'labels'                => array(
+                        'name'              => __( 'Episode genres', 'masvideos' ),
+                        'singular_name'     => __( 'Genre', 'masvideos' ),
+                        'menu_name'         => _x( 'Genres', 'Admin menu name', 'masvideos' ),
+                        'search_items'      => __( 'Search genres', 'masvideos' ),
+                        'all_items'         => __( 'All genres', 'masvideos' ),
+                        'parent_item'       => __( 'Parent genre', 'masvideos' ),
+                        'parent_item_colon' => __( 'Parent genre:', 'masvideos' ),
+                        'edit_item'         => __( 'Edit genre', 'masvideos' ),
+                        'update_item'       => __( 'Update genre', 'masvideos' ),
+                        'add_new_item'      => __( 'Add new genre', 'masvideos' ),
+                        'new_item_name'     => __( 'New genre name', 'masvideos' ),
+                        'not_found'         => __( 'No genres found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_episode_terms',
+                        'edit_terms'   => 'edit_episode_terms',
+                        'delete_terms' => 'delete_episode_terms',
+                        'assign_terms' => 'assign_episode_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'         => $permalinks['episode_genre_rewrite_slug'],
+                        'with_front'   => false,
+                        'hierarchical' => true,
+                    ),
+                    'show_in_rest'          => true,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'episode_tag',
+            apply_filters( 'masvideos_taxonomy_objects_episode_tag', array( 'episode' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_episode_tag', array(
+                    'hierarchical'          => false,
+                    // 'update_count_callback' => '_wc_term_recount',
+                    'label'                 => __( 'Episode tags', 'masvideos' ),
+                    'labels'                => array(
+                        'name'                       => __( 'Episode tags', 'masvideos' ),
+                        'singular_name'              => __( 'Tag', 'masvideos' ),
+                        'menu_name'                  => _x( 'Tags', 'Admin menu name', 'masvideos' ),
+                        'search_items'               => __( 'Search tags', 'masvideos' ),
+                        'all_items'                  => __( 'All tags', 'masvideos' ),
+                        'edit_item'                  => __( 'Edit tag', 'masvideos' ),
+                        'update_item'                => __( 'Update tag', 'masvideos' ),
+                        'add_new_item'               => __( 'Add new tag', 'masvideos' ),
+                        'new_item_name'              => __( 'New tag name', 'masvideos' ),
+                        'popular_items'              => __( 'Popular tags', 'masvideos' ),
+                        'separate_items_with_commas' => __( 'Separate tags with commas', 'masvideos' ),
+                        'add_or_remove_items'        => __( 'Add or remove tags', 'masvideos' ),
+                        'choose_from_most_used'      => __( 'Choose from the most used tags', 'masvideos' ),
+                        'not_found'                  => __( 'No tags found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_episode_terms',
+                        'edit_terms'   => 'edit_episode_terms',
+                        'delete_terms' => 'delete_episode_terms',
+                        'assign_terms' => 'assign_episode_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'       => $permalinks['episode_tag_rewrite_slug'],
+                        'with_front' => false,
+                    ),
+                    'show_in_rest'          => true,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'tv_show_visibility',
+            apply_filters( 'masvideos_taxonomy_objects_tv_show_visibility', array( 'tv_show' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_tv_show_visibility', array(
+                    'hierarchical'      => false,
+                    'show_ui'           => false,
+                    'show_in_nav_menus' => false,
+                    'query_var'         => is_admin(),
+                    'rewrite'           => false,
+                    'public'            => false,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'tv_show_genre',
+            apply_filters( 'masvideos_taxonomy_objects_tv_show_genre', array( 'tv_show' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_tv_show_genre', array(
+                    'hierarchical'          => true,
+                    // 'update_count_callback' => '_wc_term_recount',
+                    'label'                 => __( 'Genres', 'masvideos' ),
+                    'labels'                => array(
+                        'name'              => __( 'TV Show genres', 'masvideos' ),
+                        'singular_name'     => __( 'Genre', 'masvideos' ),
+                        'menu_name'         => _x( 'Genres', 'Admin menu name', 'masvideos' ),
+                        'search_items'      => __( 'Search genres', 'masvideos' ),
+                        'all_items'         => __( 'All genres', 'masvideos' ),
+                        'parent_item'       => __( 'Parent genre', 'masvideos' ),
+                        'parent_item_colon' => __( 'Parent genre:', 'masvideos' ),
+                        'edit_item'         => __( 'Edit genre', 'masvideos' ),
+                        'update_item'       => __( 'Update genre', 'masvideos' ),
+                        'add_new_item'      => __( 'Add new genre', 'masvideos' ),
+                        'new_item_name'     => __( 'New genre name', 'masvideos' ),
+                        'not_found'         => __( 'No genres found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_tv_show_terms',
+                        'edit_terms'   => 'edit_tv_show_terms',
+                        'delete_terms' => 'delete_tv_show_terms',
+                        'assign_terms' => 'assign_tv_show_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'         => $permalinks['tv_show_genre_rewrite_slug'],
+                        'with_front'   => false,
+                        'hierarchical' => true,
+                    ),
+                    'show_in_rest'          => true,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'tv_show_tag',
+            apply_filters( 'masvideos_taxonomy_objects_tv_show_tag', array( 'tv_show' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_tv_show_tag', array(
+                    'hierarchical'          => false,
+                    // 'update_count_callback' => '_wc_term_recount',
+                    'label'                 => __( 'TV Show tags', 'masvideos' ),
+                    'labels'                => array(
+                        'name'                       => __( 'TV Show tags', 'masvideos' ),
+                        'singular_name'              => __( 'Tag', 'masvideos' ),
+                        'menu_name'                  => _x( 'Tags', 'Admin menu name', 'masvideos' ),
+                        'search_items'               => __( 'Search tags', 'masvideos' ),
+                        'all_items'                  => __( 'All tags', 'masvideos' ),
+                        'edit_item'                  => __( 'Edit tag', 'masvideos' ),
+                        'update_item'                => __( 'Update tag', 'masvideos' ),
+                        'add_new_item'               => __( 'Add new tag', 'masvideos' ),
+                        'new_item_name'              => __( 'New tag name', 'masvideos' ),
+                        'popular_items'              => __( 'Popular tags', 'masvideos' ),
+                        'separate_items_with_commas' => __( 'Separate tags with commas', 'masvideos' ),
+                        'add_or_remove_items'        => __( 'Add or remove tags', 'masvideos' ),
+                        'choose_from_most_used'      => __( 'Choose from the most used tags', 'masvideos' ),
+                        'not_found'                  => __( 'No tags found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_tv_show_terms',
+                        'edit_terms'   => 'edit_tv_show_terms',
+                        'delete_terms' => 'delete_tv_show_terms',
+                        'assign_terms' => 'assign_tv_show_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'       => $permalinks['tv_show_tag_rewrite_slug'],
+                        'with_front' => false,
+                    ),
+                    'show_in_rest'          => true,
+                )
+            )
+        );
 
         register_taxonomy(
             'video_visibility',
@@ -485,7 +805,7 @@ class MasVideos_Post_Types {
      * @return bool
      */
     public static function gutenberg_can_edit_post_type( $can_edit, $post_type ) {
-        return in_array( $post_type, array( 'video', 'movie' ) ) ? false : $can_edit;
+        return in_array( $post_type, array( 'episode', 'tv_show', 'video', 'movie' ) ) ? false : $can_edit;
     }
 
     /**
@@ -495,6 +815,8 @@ class MasVideos_Post_Types {
         if ( class_exists( 'Jetpack_Omnisearch_Posts' ) ) {
             new Jetpack_Omnisearch_Posts( 'video' );
             new Jetpack_Omnisearch_Posts( 'movie' );
+            new Jetpack_Omnisearch_Posts( 'tv_show' );
+            new Jetpack_Omnisearch_Posts( 'episode' );
         }
     }
 
@@ -507,6 +829,8 @@ class MasVideos_Post_Types {
     public static function rest_api_allowed_post_types( $post_types ) {
         $post_types[] = 'video';
         $post_types[] = 'movie';
+        $post_types[] = 'tv_show';
+        $post_types[] = 'episode';
 
         return $post_types;
     }

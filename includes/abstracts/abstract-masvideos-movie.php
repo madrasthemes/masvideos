@@ -924,7 +924,7 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
-     * Get the total amount (COUNT) of ratings, or just the count for one rating e.g. number of 5 star ratings.
+     * Get the total amount (COUNT) of ratings, or just the count for one rating e.g. number of 10 star ratings.
      *
      * @param  int $value Optional. Rating value to get the count for. By default returns the count of all rating values.
      * @return int

@@ -17,6 +17,9 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-page-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-episode-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-widget-functions.php';
@@ -105,7 +108,7 @@ function masvideos_get_template( $template_name, $args = array(), $template_path
  * Like masvideos_get_template, but returns the HTML instead of outputting.
  *
  * @see masvideos_get_template
- * @since 2.5.0
+ * @since 1.0.0
  * @param string $template_name Template name.
  * @param array  $args          Arguments. (default: array).
  * @param string $template_path Template path. (default: '').
@@ -268,8 +271,8 @@ function masvideos_nocache_headers() {
  * @since  1.0.0
  * @return array
  */
-function masvideos_get_video_permalink_structure() {
-    $saved_permalinks = (array) get_option( 'masvideos_video_permalinks', array() );
+function masvideos_get_permalink_structure() {
+    $saved_permalinks = (array) get_option( 'masvideos_permalinks', array() );
     $permalinks       = wp_parse_args(
         array_filter( $saved_permalinks ), array(
             'video_base'                   => _x( 'video', 'slug', 'masvideos' ),
@@ -280,12 +283,20 @@ function masvideos_get_video_permalink_structure() {
             'movie_genre_base'             => _x( 'movie-genre', 'slug', 'masvideos' ),
             'movie_tag_base'               => _x( 'movie-tag', 'slug', 'masvideos' ),
             'movie_attribute_base'         => '',
+            'tv_show_base'                 => _x( 'tv-show', 'slug', 'masvideos' ),
+            'tv_show_genre_base'           => _x( 'tv-show-genre', 'slug', 'masvideos' ),
+            'tv_show_tag_base'             => _x( 'tv-show-tag', 'slug', 'masvideos' ),
+            'tv_show_attribute_base'       => '',
+            'episode_base'                 => _x( 'episode', 'slug', 'masvideos' ),
+            'episode_genre_base'           => _x( 'episode-genre', 'slug', 'masvideos' ),
+            'episode_tag_base'             => _x( 'episode-tag', 'slug', 'masvideos' ),
+            'episode_attribute_base'       => '',
             'use_verbose_page_rules'       => false,
         )
     );
 
     if ( $saved_permalinks !== $permalinks ) {
-        update_option( 'masvideos_video_permalinks', $permalinks );
+        update_option( 'masvideos_permalinks', $permalinks );
     }
 
     $permalinks['video_rewrite_slug']           = untrailingslashit( $permalinks['video_base'] );
@@ -298,19 +309,17 @@ function masvideos_get_video_permalink_structure() {
     $permalinks['movie_tag_rewrite_slug']       = untrailingslashit( $permalinks['movie_tag_base'] );
     $permalinks['movie_attribute_rewrite_slug'] = untrailingslashit( $permalinks['movie_attribute_base'] );
 
+    $permalinks['tv_show_rewrite_slug']           = untrailingslashit( $permalinks['tv_show_base'] );
+    $permalinks['tv_show_genre_rewrite_slug']     = untrailingslashit( $permalinks['tv_show_genre_base'] );
+    $permalinks['tv_show_tag_rewrite_slug']       = untrailingslashit( $permalinks['tv_show_tag_base'] );
+    $permalinks['tv_show_attribute_rewrite_slug'] = untrailingslashit( $permalinks['tv_show_attribute_base'] );
+
+    $permalinks['episode_rewrite_slug']           = untrailingslashit( $permalinks['episode_base'] );
+    $permalinks['episode_genre_rewrite_slug']     = untrailingslashit( $permalinks['episode_genre_base'] );
+    $permalinks['episode_tag_rewrite_slug']       = untrailingslashit( $permalinks['episode_tag_base'] );
+    $permalinks['episode_attribute_rewrite_slug'] = untrailingslashit( $permalinks['episode_attribute_base'] );
+
     return $permalinks;
-}
-
-/**
- * Retrieve page ids.
- *
- * @param string $page Page slug.
- * @return int
- */
-function masvideos_get_page_id( $page ) {
-    $page = apply_filters( 'masvideos_get_' . $page . '_page_id', get_option( 'masvideos_' . $page . '_page_id' ) );
-
-    return $page ? absint( $page ) : -1;
 }
 
 /**
@@ -331,9 +340,9 @@ function masvideos_selected( $value, $options ) {
 }
 
 /**
- * Display a WooCommerce help tip.
+ * Display a MasVideos help tip.
  *
- * @since  2.5.0
+ * @since  1.0.0
  *
  * @param  string $tip        Help tip text.
  * @param  bool   $allow_html Allow sanitized HTML if true or escape.
@@ -455,4 +464,19 @@ function masvideos_get_image_size( $image_size ) {
     }
 
     return apply_filters( 'masvideos_get_image_size_' . $image_size, $size );
+}
+
+/**
+ * Queue some JavaScript code to be output in the footer.
+ *
+ * @param string $code Code.
+ */
+function masvideos_enqueue_js( $code ) {
+    global $masvideos_queued_js;
+
+    if ( empty( $masvideos_queued_js ) ) {
+        $masvideos_queued_js = '';
+    }
+
+    $masvideos_queued_js .= "\n" . $code . "\n";
 }

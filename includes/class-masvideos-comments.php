@@ -4,7 +4,7 @@
  *
  * Handle comments (reviews and order notes).
  *
- * @package WooCommerce/Classes/Movies
+ * @package MasVideos/Classes
  * @version 1.0.0
  */
 
@@ -48,6 +48,12 @@ class MasVideos_Comments {
      * @return bool
      */
     public static function comments_open( $open, $post_id ) {
+        if ( 'episode' === get_post_type( $post_id ) && ! post_type_supports( 'episode', 'comments' ) ) {
+            $open = false;
+        }
+        if ( 'tv_show' === get_post_type( $post_id ) && ! post_type_supports( 'tv_show', 'comments' ) ) {
+            $open = false;
+        }
         if ( 'video' === get_post_type( $post_id ) && ! post_type_supports( 'video', 'comments' ) ) {
             $open = false;
         }
@@ -64,6 +70,18 @@ class MasVideos_Comments {
      * @return array
      */
     public static function check_comment_rating( $comment_data ) {
+        // If posting a comment (not trackback etc) and not logged in.
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'episode' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_episode_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+            wp_die( esc_html__( 'Please rate the episode.', 'masvideos' ) );
+            exit;
+        }
+
+        // If posting a comment (not trackback etc) and not logged in.
+        if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'tv_show' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_tv_show_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
+            wp_die( esc_html__( 'Please rate the tv show.', 'masvideos' ) );
+            exit;
+        }
+
         // If posting a comment (not trackback etc) and not logged in.
         if ( ! is_admin() && isset( $_POST['comment_post_ID'], $_POST['rating'], $comment_data['comment_type'] ) && 'video' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && empty( $_POST['rating'] ) && '' === $comment_data['comment_type'] && 'yes' === get_option( 'masvideos_enable_review_rating' ) && 'yes' === get_option( 'masvideos_video_review_rating_required' ) ) { // WPCS: input var ok, CSRF ok.
             wp_die( esc_html__( 'Please rate the video.', 'masvideos' ) );
@@ -84,8 +102,8 @@ class MasVideos_Comments {
      * @param int $comment_id Comment ID.
      */
     public static function add_comment_rating( $comment_id ) {
-        if ( isset( $_POST['rating'], $_POST['comment_post_ID'] ) && in_array( get_post_type( absint( $_POST['comment_post_ID'] ) ), array( 'video', 'movie' ) ) ) { // WPCS: input var ok, CSRF ok.
-            if ( ! $_POST['rating'] || $_POST['rating'] > 5 || $_POST['rating'] < 0 ) { // WPCS: input var ok, CSRF ok, sanitization ok.
+        if ( isset( $_POST['rating'], $_POST['comment_post_ID'] ) && in_array( get_post_type( absint( $_POST['comment_post_ID'] ) ), array( 'episode', 'tv_show', 'video', 'movie' ) ) ) { // WPCS: input var ok, CSRF ok.
+            if ( ! $_POST['rating'] || $_POST['rating'] > 10 || $_POST['rating'] < 0 ) { // WPCS: input var ok, CSRF ok, sanitization ok.
                 return;
             }
             add_comment_meta( $comment_id, 'rating', intval( $_POST['rating'] ), true ); // WPCS: input var ok, CSRF ok.
@@ -107,11 +125,7 @@ class MasVideos_Comments {
     public static function comment_moderation_recipients( $emails, $comment_id ) {
         $comment = get_comment( $comment_id );
 
-        if ( $comment && 'video' === get_post_type( $comment->comment_post_ID ) ) {
-            $emails = array( get_option( 'admin_email' ) );
-        }
-
-        if ( $comment && 'movie' === get_post_type( $comment->comment_post_ID ) ) {
+        if( $comment && in_array( get_post_type( $comment->comment_post_ID ), array( 'episode', 'tv_show', 'video', 'movie' ) ) ) {
             $emails = array( get_option( 'admin_email' ) );
         }
 
@@ -124,6 +138,20 @@ class MasVideos_Comments {
      * @param int $post_id Post ID.
      */
     public static function clear_transients( $post_id ) {
+
+        if ( 'tv_show' === get_post_type( $post_id ) ) {
+            $tv_show = masvideos_get_tv_show( $post_id );
+            self::get_rating_counts_for_tv_show( $tv_show );
+            self::get_average_rating_for_tv_show( $tv_show );
+            self::get_review_count_for_tv_show( $tv_show );
+        }
+
+        if ( 'episode' === get_post_type( $post_id ) ) {
+            $episode = masvideos_get_episode( $post_id );
+            self::get_rating_counts_for_episode( $episode );
+            self::get_average_rating_for_episode( $episode );
+            self::get_review_count_for_episode( $episode );
+        }
 
         if ( 'video' === get_post_type( $post_id ) ) {
             $video = masvideos_get_video( $post_id );
@@ -223,6 +251,214 @@ class MasVideos_Comments {
      */
     public static function add_avatar_for_review_comment_type( $comment_types ) {
         return array_merge( $comment_types, array( 'review' ) );
+    }
+
+    /**
+     * Get tv show rating for a tv show. Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Movie $tv_show Movie instance.
+     * @return float
+     */
+    public static function get_average_rating_for_tv_show( &$tv_show ) {
+        global $wpdb;
+
+        $count = $tv_show->get_rating_count();
+
+        if ( $count ) {
+            $ratings = $wpdb->get_var(
+                $wpdb->prepare(
+                    "
+                SELECT SUM(meta_value) FROM $wpdb->commentmeta
+                LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+                WHERE meta_key = 'rating'
+                AND comment_post_ID = %d
+                AND comment_approved = '1'
+                AND meta_value > 0
+            ", $tv_show->get_id()
+                )
+            );
+            $average = number_format( $ratings / $count, 2, '.', '' );
+        } else {
+            $average = 0;
+        }
+
+        $tv_show->set_average_rating( $average );
+
+        $data_store = $tv_show->get_data_store();
+        $data_store->update_average_rating( $tv_show );
+
+        return $average;
+    }
+
+    /**
+     * Get tv show review count for a tv show (not replies). Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Movie $tv_show Movie instance.
+     * @return int
+     */
+    public static function get_review_count_for_tv_show( &$tv_show ) {
+        global $wpdb;
+
+        $count = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+            SELECT COUNT(*) FROM $wpdb->comments
+            WHERE comment_parent = 0
+            AND comment_post_ID = %d
+            AND comment_approved = '1'
+        ", $tv_show->get_id()
+            )
+        );
+
+        $tv_show->set_review_count( $count );
+
+        $data_store = $tv_show->get_data_store();
+        $data_store->update_review_count( $tv_show );
+
+        return $count;
+    }
+
+    /**
+     * Get tv show rating count for a tv show. Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Movie $tv_show Movie instance.
+     * @return int[]
+     */
+    public static function get_rating_counts_for_tv_show( &$tv_show ) {
+        global $wpdb;
+
+        $counts     = array();
+        $raw_counts = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+            SELECT meta_value, COUNT( * ) as meta_value_count FROM $wpdb->commentmeta
+            LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+            WHERE meta_key = 'rating'
+            AND comment_post_ID = %d
+            AND comment_approved = '1'
+            AND meta_value > 0
+            GROUP BY meta_value
+        ", $tv_show->get_id()
+            )
+        );
+
+        foreach ( $raw_counts as $count ) {
+            $counts[ $count->meta_value ] = absint( $count->meta_value_count ); // WPCS: slow query ok.
+        }
+
+        $tv_show->set_rating_counts( $counts );
+
+        $data_store = $tv_show->get_data_store();
+        $data_store->update_rating_counts( $tv_show );
+
+        return $counts;
+    }
+
+    /**
+     * Get episode rating for a episode. Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Movie $episode Movie instance.
+     * @return float
+     */
+    public static function get_average_rating_for_episode( &$episode ) {
+        global $wpdb;
+
+        $count = $episode->get_rating_count();
+
+        if ( $count ) {
+            $ratings = $wpdb->get_var(
+                $wpdb->prepare(
+                    "
+                SELECT SUM(meta_value) FROM $wpdb->commentmeta
+                LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+                WHERE meta_key = 'rating'
+                AND comment_post_ID = %d
+                AND comment_approved = '1'
+                AND meta_value > 0
+            ", $episode->get_id()
+                )
+            );
+            $average = number_format( $ratings / $count, 2, '.', '' );
+        } else {
+            $average = 0;
+        }
+
+        $episode->set_average_rating( $average );
+
+        $data_store = $episode->get_data_store();
+        $data_store->update_average_rating( $episode );
+
+        return $average;
+    }
+
+    /**
+     * Get episode review count for a episode (not replies). Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Movie $episode Movie instance.
+     * @return int
+     */
+    public static function get_review_count_for_episode( &$episode ) {
+        global $wpdb;
+
+        $count = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+            SELECT COUNT(*) FROM $wpdb->comments
+            WHERE comment_parent = 0
+            AND comment_post_ID = %d
+            AND comment_approved = '1'
+        ", $episode->get_id()
+            )
+        );
+
+        $episode->set_review_count( $count );
+
+        $data_store = $episode->get_data_store();
+        $data_store->update_review_count( $episode );
+
+        return $count;
+    }
+
+    /**
+     * Get episode rating count for a episode. Please note this is not cached.
+     *
+     * @since 1.0.0
+     * @param MasVideos_Movie $episode Movie instance.
+     * @return int[]
+     */
+    public static function get_rating_counts_for_episode( &$episode ) {
+        global $wpdb;
+
+        $counts     = array();
+        $raw_counts = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+            SELECT meta_value, COUNT( * ) as meta_value_count FROM $wpdb->commentmeta
+            LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+            WHERE meta_key = 'rating'
+            AND comment_post_ID = %d
+            AND comment_approved = '1'
+            AND meta_value > 0
+            GROUP BY meta_value
+        ", $episode->get_id()
+            )
+        );
+
+        foreach ( $raw_counts as $count ) {
+            $counts[ $count->meta_value ] = absint( $count->meta_value_count ); // WPCS: slow query ok.
+        }
+
+        $episode->set_rating_counts( $counts );
+
+        $data_store = $episode->get_data_store();
+        $data_store->update_rating_counts( $episode );
+
+        return $counts;
     }
 
     /**
