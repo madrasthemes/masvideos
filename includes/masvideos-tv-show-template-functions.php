@@ -213,7 +213,7 @@ if ( ! function_exists( 'masvideos_tv_show_loop_start' ) ) {
 
         masvideos_set_tv_shows_loop_prop( 'loop', 0 );
 
-        ?><div class="tv_shows columns-<?php echo esc_attr( masvideos_get_tv_shows_loop_prop( 'columns' ) ); ?>"><div class="tv_shows__inner"><?php
+        ?><div class="tv-shows columns-<?php echo esc_attr( masvideos_get_tv_shows_loop_prop( 'columns' ) ); ?>"><div class="tv-shows__inner"><?php
 
         $loop_start = apply_filters( 'masvideos_tv_show_loop_start', ob_get_clean() );
 
@@ -257,6 +257,371 @@ if ( ! function_exists( 'masvideos_tv_show_loop_end' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_tv_show_page_title' ) ) {
+
+    /**
+     * Page Title function.
+     *
+     * @param  bool $echo Should echo title.
+     * @return string
+     */
+    function masvideos_tv_show_page_title( $echo = true ) {
+
+        if ( is_search() ) {
+            /* translators: %s: search query */
+            $page_title = sprintf( __( 'Search results: &ldquo;%s&rdquo;', 'masvideos' ), get_search_query() );
+
+            if ( get_query_var( 'paged' ) ) {
+                /* translators: %s: page number */
+                $page_title .= sprintf( __( '&nbsp;&ndash; Page %s', 'masvideos' ), get_query_var( 'paged' ) );
+            }
+        } elseif ( is_tax() ) {
+
+            $page_title = single_term_title( '', false );
+
+        } else {
+
+            $tv_shows_page_id = masvideos_get_page_id( 'tv_shows' );
+            $page_title   = get_the_title( $tv_shows_page_id );
+
+        }
+
+        $page_title = apply_filters( 'masvideos_tv_show_page_title', $page_title );
+
+        if ( $echo ) {
+            echo $page_title; // WPCS: XSS ok.
+        } else {
+            return $page_title;
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_shows_control_bar' ) ) {
+    /**
+     * Display Control Bar.
+     */
+    function masvideos_tv_shows_control_bar() {
+        echo '<div class="masvideos-control-bar masvideos-tv-shows-control-bar">';
+            masviseos_tv_shows_per_page();
+            masvideos_tv_shows_catalog_ordering();
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masviseos_tv_shows_per_page' ) ) {
+    /**
+     * Outputs a dropdown for user to select how many tv shows to show per page
+     */
+    function masviseos_tv_shows_per_page() {
+
+        global $wp_query;
+
+        $action             = '';
+        $cat                = '';
+        $cat                = $wp_query->get_queried_object();
+        $method             = apply_filters( 'masvideos_tv_shows_mpp_method', 'post' );
+        $return_to_first    = apply_filters( 'masvideos_tv_shows_mpp_return_to_first', false );
+        $total              = $wp_query->found_posts;
+        $per_page           = $wp_query->get( 'posts_per_page' );
+        $_per_page          = 2;
+
+        // Generate per page options
+        $tv_shows_per_page_options = array();
+        while( $_per_page < $total ) {
+            $tv_shows_per_page_options[] = $_per_page;
+            $_per_page = $_per_page * 2;
+        }
+
+        if ( empty( $tv_shows_per_page_options ) ) {
+            return;
+        }
+
+        $tv_shows_per_page_options[] = -1;
+
+        // Set action url if option behaviour is true
+        // Paste QUERY string after for filter and orderby support
+        $query_string = ! empty( $_SERVER['QUERY_STRING'] ) ? '?' . add_query_arg( array( 'mpp' => false ), $_SERVER['QUERY_STRING'] ) : null;
+
+        if ( isset( $cat->term_id ) && isset( $cat->taxonomy ) && $return_to_first ) :
+            $action = get_term_link( $cat->term_id, $cat->taxonomy ) . $query_string;
+        elseif ( $return_to_first ) :
+            $action = get_permalink( masviseos_get_page_id( 'tv_shows' ) ) . $query_string;
+        endif;
+
+        // Only show on tv show categories
+        if ( ! masvideos_tv_shows_will_display() ) :
+            return;
+        endif;
+
+        do_action( 'masviseos_mpp_before_dropdown_form' );
+
+        ?><form method="POST" action="<?php echo esc_url( $action ); ?>" class="form-masviseos-mpp"><?php
+
+             do_action( 'masviseos_mpp_before_dropdown' );
+
+            ?><select name="mpp" onchange="this.form.submit()" class="masviseos-mmpp-select c-select"><?php
+
+                foreach( $tv_shows_per_page_options as $key => $value ) :
+
+                    ?><option value="<?php echo esc_attr( $value ); ?>" <?php selected( $value, $per_page ); ?>><?php
+                        $mpp_text = apply_filters( 'masviseos_mpp_text', __( 'Show %s', 'masvideos' ), $value );
+                        esc_html( printf( $mpp_text, $value == -1 ? __( 'All', 'masvideos' ) : $value ) ); // Set to 'All' when value is -1
+                    ?></option><?php
+
+                endforeach;
+
+            ?></select><?php
+
+            // Keep query string vars intact
+            foreach ( $_GET as $key => $val ) :
+
+                if ( 'mpp' === $key || 'submit' === $key ) :
+                    continue;
+                endif;
+                if ( is_array( $val ) ) :
+                    foreach( $val as $inner_val ) :
+                        ?><input type="hidden" name="<?php echo esc_attr( $key ); ?>[]" value="<?php echo esc_attr( $inner_val ); ?>" /><?php
+                    endforeach;
+                else :
+                    ?><input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $val ); ?>" /><?php
+                endif;
+            endforeach;
+
+            do_action( 'masviseos_mpp_after_dropdown' );
+
+        ?></form><?php
+
+        do_action( 'masviseos_mpp_after_dropdown_form' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_shows_catalog_ordering' ) ) {
+    function masvideos_tv_shows_catalog_ordering() {
+        if ( ! masvideos_get_tv_shows_loop_prop( 'is_paginated' ) || ! masvideos_tv_shows_will_display() ) {
+            return;
+        }
+
+        $catalog_orderby_options = apply_filters( 'masvideos_tv_shows_catalog_orderby', array(
+            'title-asc'  => esc_html__( 'Name: Ascending', 'masvideos' ),
+            'title-desc' => esc_html__( 'Name: Descending', 'masvideos' ),
+            'date'       => esc_html__( 'Latest', 'masvideos' ),
+            'menu_order' => esc_html__( 'Menu Order', 'masvideos' ),
+            'rating'     => esc_html__( 'Rating', 'masvideos' ),
+        ) );
+
+        $default_orderby = masvideos_get_tv_shows_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_tv_shows_default_catalog_orderby', 'date' );
+        $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
+
+        if ( masvideos_get_tv_shows_loop_prop( 'is_search' ) ) {
+            $catalog_orderby_options = array_merge( array( 'relevance' => esc_html__( 'Relevance', 'masvideos' ) ), $catalog_orderby_options );
+
+            unset( $catalog_orderby_options['menu_order'] );
+        }
+
+        if ( ! array_key_exists( $orderby, $catalog_orderby_options ) ) {
+            $orderby = current( array_keys( $catalog_orderby_options ) );
+        }
+
+        ?>
+        <form method="get">
+            <select name="orderby" class="orderby" onchange="this.form.submit();">
+                <?php foreach ( $catalog_orderby_options as $id => $name ) : ?>
+                    <option value="<?php echo esc_attr( $id ); ?>" <?php selected( $orderby, $id ); ?>><?php echo esc_html( $name ); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="hidden" name="paged" value="1" />
+        </form>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_shows_page_control_bar' ) ) {
+    /**
+     * Display Page Control Bar.
+     */
+    function masvideos_tv_shows_page_control_bar() {
+        echo '<div class="masvideos-page-control-bar masvideos-tv-shows-page-control-bar">';
+            masvideos_tv_shows_count();
+            masvideos_tv_shows_pagination();
+        echo '</div>';
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_tv_shows_count' ) ) {
+
+    /**
+     * Output the result count text (Showing x - x of x results).
+     */
+    function masvideos_tv_shows_count() {
+        if ( ! masvideos_get_tv_shows_loop_prop( 'is_paginated' ) || ! masvideos_tv_shows_will_display() ) {
+            return;
+        }
+        $args = array(
+            'total'    => masvideos_get_tv_shows_loop_prop( 'total' ),
+            'per_page' => masvideos_get_tv_shows_loop_prop( 'per_page' ),
+            'current'  => masvideos_get_tv_shows_loop_prop( 'current_page' ),
+        );
+
+        ?>
+        <p class="masvideos-result-count masvideos-tv-shows-result-count">
+            <?php
+            if ( $args['total'] <= $args['per_page'] || -1 === $args['per_page'] ) {
+                /* translators: %d: total results */
+                printf( _n( 'Showing the single result', 'Showing all %d results', $args['total'], 'masvideos' ), $args['total'] );
+            } else {
+                $first = ( $args['per_page'] * $args['current'] ) - $args['per_page'] + 1;
+                $last  = min( $args['total'], $args['per_page'] * $args['current'] );
+                /* translators: 1: first result 2: last result 3: total results */
+                printf( _nx( 'Showing the single result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), $first, $last, $args['total'] );
+            }
+            ?>
+        </p>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_shows_pagination' ) ) {
+    /**
+     * Display Pagination.
+     */
+    function masvideos_tv_shows_paginatio() {
+        if ( ! masvideos_get_tv_shows_loop_prop( 'is_paginated' ) || ! masvideos_tv_shows_will_display() ) {
+            return;
+        }
+
+        $args = array(
+            'total'   => masvideos_get_tv_shows_loop_prop( 'total_pages' ),
+            'current' => masvideos_get_tv_shows_loop_prop( 'current_page' ),
+            'base'    => esc_url_raw( add_query_arg( 'tv-show-page', '%#%', false ) ),
+            'format'  => '?tv-show-page=%#%',
+        );
+
+        if ( ! masvideos_get_tv_shows_loop_prop( 'is_shortcode' ) ) {
+            $args['format'] = '';
+            $args['base']   = esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) );
+        }
+
+        if (  $args['total'] <= 1 ) {
+            return;
+        }
+        ?>
+
+        <nav class="masvideos-pagination masvideos-tv-shows-pagination">
+            <?php
+                echo paginate_links( apply_filters( 'masvideos_tv_shows_pagination_args', array( // WPCS: XSS ok.
+                    'base'         => $args['base'],
+                    'format'       => $args['format'],
+                    'add_args'     => false,
+                    'current'      => max( 1, $args['current'] ),
+                    'total'        => $args['total'],
+                    'prev_text'    => '&larr;',
+                    'next_text'    => '&rarr;',
+                    'type'         => 'list',
+                    'end_size'     => 3,
+                    'mid_size'     => 3,
+                ) ) );
+            ?>
+        </nav>
+        <?php
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_feature_badge' ) ) {
+    /**
+     * tv show container open in the loop.
+     */
+    function masvideos_template_loop_tv_show_feature_badge() {
+        global $tv_show;
+
+        if ( $tv_show->get_featured() ) {
+            echo '<span class="tv-show__badge">';
+            echo '<span class="tv-show__badge--featured">' . esc_html__( apply_filters( 'masvideos_template_loop_tv_show_feature_badge_text', 'Featured' ), 'masvideos' ) . '</span>';
+            echo '</span>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_poster_open' ) ) {
+    /**
+     * tv show poster open in the loop.
+     */
+    function masvideos_template_loop_tv_show_poster_open() {
+        echo '<div class="tv-show__poster">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for tv show in the loop.
+     */
+    function masvideos_template_loop_tv_show_link_open() {
+        global $tv_show;
+
+        $link = apply_filters( 'masvideos_loop_tv_show_link', get_the_permalink(), $tv_show );
+
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopTvShow-link masvideos-loop-tv-show__link tv-show__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_poster' ) ) {
+    /**
+     * tv show poster in the loop.
+     */
+    function masvideos_template_loop_tv_show_poster() {
+        echo masvideos_get_tv_show_thumbnail( 'masvideos_tv_show_medium' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for tv show in the loop.
+     */
+    function masvideos_template_loop_tv_show_link_close() {
+        echo '</a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_poster_close' ) ) {
+    /**
+     * tv show poster close in the loop.
+     */
+    function masvideos_template_loop_tv_show_poster_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_body_open' ) ) {
+
+    /**
+     * tv show body open in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_body_open() {
+        echo '<div class="tv-show__body">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_info_open' ) ) {
+
+    /**
+     * tv show info open in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_info_open() {
+        echo '<div class="tv-show__info">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_info_head_open' ) ) {
+
+    /**
+     * tv show info body open in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_info_head_open() {
+        echo '<div class="tv-show__info--head">';
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_tv_show_title' ) ) {
 
     /**
@@ -264,5 +629,255 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_title' ) ) {
      */
     function masvideos_template_loop_tv_show_title() {
         the_title( '<h3 class="masvideos-loop-tv-show__title  tv-show__title">', '</h3>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_meta' ) ) {
+
+    /**
+     * tv show meta in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_meta() {
+        global $post, $tv_show;
+
+        $categories = get_the_term_list( $post->ID, 'tv_show_genre', '', ', ' );
+        if( taxonomy_exists( 'tv_show_release-year' ) ) {
+            $relaese_year = get_the_term_list( $post->ID, 'tv_show_release-year', '', ', ' );
+        } else {
+            $relaese_year = '';
+        }
+
+        if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
+            echo '<div class="tv_show__meta">';
+                if( ! empty ( $categories ) ) {
+                   echo '<span class="tv_show__meta--genre">' . $categories . '</span>';
+                }
+                if( ! empty ( $relaese_year ) ) {
+                    echo '<span class="tv_show__meta--release-year">' . $relaese_year . '</span>';
+                }
+            echo '</div>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_info_head_close' ) ) {
+
+    /**
+     * tv show info body close in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_info_head_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_short_desc' ) ) {
+
+    /**
+     * video short description in the video loop.
+     */
+    function masvideos_template_loop_tv_show_short_desc() {
+        global $post;
+
+        $short_description = apply_filters( 'masvideos_template_loop_tv_show_short_desc', $post->post_excerpt );
+
+        if ( ! $short_description ) {
+            return;
+        }
+
+        ?>
+        <div class="tv-show__short-description">
+            <?php echo '<p>' . $short_description . '</p>'; ?>
+        </div>
+
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_actions' ) ) {
+
+    /**
+     * tv show actions in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_actions() {
+        global $tv_show;
+        echo '<div class="tv-show__actions">';
+            echo '<a href="' . esc_url( get_permalink( $tv_show ) ) . '" class="tv-show-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
+            echo '<a href="#" class="tv-show-actions--link_add-to-playlist">' . esc_html__( '+ Playlist', 'masvideos' ) . '</a>';
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_info_close' ) ) {
+
+    /**
+     * tv show info close in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_info_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_review_info_open' ) ) {
+
+    /**
+     * tv show review info open in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_review_info_open() {
+        echo '<div class="tv-show__review-info">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_avg_rating' ) ) {
+
+    /**
+     * tv show avg rating in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_avg_rating() {
+        global $tv_show;
+
+        if ( ! empty( $tv_show->get_review_count() ) && $tv_show->get_review_count() > 0 ) {
+            ?>
+            <a href="<?php echo esc_url( get_permalink( $tv_show->get_id() ) . '#reviews' ); ?>" class="avg-rating">
+                <span class="avg-rating-number"> <?php echo number_format( $tv_show->get_average_rating(), 1, '.', '' ); ?></span>
+                <span class="avg-rating-text">
+                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $tv_show->get_review_count(), 'masvideos' ), $tv_show->get_review_count() ) ) ; ?>
+                </span>
+            </a>
+            <?php
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_viewers_count' ) ) {
+
+    /**
+     * tv show actions in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_viewers_count() {
+        echo '<div class="viewers-count"></div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_review_info_close' ) ) {
+
+    /**
+     * tv show review info close in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_review_info_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_body_close' ) ) {
+
+    /**
+     * tv show body close in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_body_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_episode' ) ) {
+
+    /**
+     * tv show episode in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_episode() {
+        global $tv_show;
+        echo '<div class="tv-show__episode">'. esc_html__( 'Newest Episode', 'masvideos' );
+        masvideos_get_tv_show_latest_episode();
+        echo '</div>';
+
+    }
+}
+
+/**
+ * Single
+ */
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_tv_show' ) ) {
+
+    /**
+     * Output the tv show.
+     */
+    function masvideos_template_single_tv_show_tv_show() {
+        masvideos_the_tv_show();
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_title' ) ) {
+
+    /**
+     * Output the tv show title.
+     */
+    function masvideos_template_single_tv_show_title() {
+        the_title( '<h1 class="tv-show_title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_show_comments' ) ) {
+
+    /**
+     * Output the Review comments template.
+     *
+     * @param WP_Comment $comment Comment object.
+     * @param array      $args Arguments.
+     * @param int        $depth Depth.
+     */
+    function masvideos_tv_show_comments( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment; // WPCS: override ok.
+        masvideos_get_template( 'single-tv-show/review.php', array(
+            'comment' => $comment,
+            'args'    => $args,
+            'depth'   => $depth,
+        ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_show_review_display_gravatar' ) ) {
+    /**
+     * Display the review authors gravatar
+     *
+     * @param array $comment WP_Comment.
+     * @return void
+     */
+    function masvideos_tv_show_review_display_gravatar( $comment ) {
+        echo get_avatar( $comment, apply_filters( 'masvideos_tv_show_review_gravatar_size', '60' ), '' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_show_review_display_rating' ) ) {
+    /**
+     * Display the reviewers star rating
+     *
+     * @return void
+     */
+    function masvideos_tv_show_review_display_rating() {
+        if ( post_type_supports( 'tv_show', 'comments' ) ) {
+            masvideos_get_template( 'single-tv-show/review-rating.php' );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_show_review_display_meta' ) ) {
+    /**
+     * Display the review authors meta (name, verified owner, review date)
+     *
+     * @return void
+     */
+    function masvideos_tv_show_review_display_meta() {
+        masvideos_get_template( 'single-tv-show/review-meta.php' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_tv_show_review_display_comment_text' ) ) {
+    /**
+     * Display the review content.
+     */
+    function masvideos_tv_show_review_display_comment_text() {
+        echo '<div class="description">';
+        comment_text();
+        echo '</div>';
     }
 }

@@ -13,7 +13,10 @@ defined( 'ABSPATH' ) || exit;
 add_action( 'masvideos_before_main_content', 'masvideos_template_loop_content_area_open', 10 );
 add_action( 'masvideos_before_movies_loop', 'masvideos_movies_control_bar', 10 );
 add_action( 'masvideos_after_movies_loop', 'masvideos_movies_page_control_bar', 10 );
+add_action( 'masvideos_before_tv_shows_loop', 'masvideos_tv_shows_control_bar', 10 );
+add_action( 'masvideos_after_tv_shows_loop', 'masvideos_tv_shows_page_control_bar', 10 );
 add_action( 'masvideos_after_main_content', 'masvideos_template_loop_content_area_close', 999 );
+
 
 /**
  * Breadcrumbs.
@@ -25,14 +28,14 @@ add_action( 'masvideos_before_main_content', 'masvideos_breadcrumb', 20, 0 );
 /**
  * Episodes Loop.
  */
-add_action( 'masvideos_episodes_loop', 'masvideos_episodes_loop_content', 20 );
-add_action( 'masvideos_episodes_loop_item_title', 'masvideos_template_loop_episode_title', 30 );
+//add_action( 'masvideos_episodes_loop', 'masvideos_episodes_loop_content', 20 );
+//add_action( 'masvideos_episodes_loop_item_title', 'masvideos_template_loop_episode_title', 30 );
 
 /**
  * TV Shows Loop.
  */
-add_action( 'masvideos_tv_shows_loop', 'masvideos_tv_shows_loop_content', 20 );
-add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_title', 30 );
+//add_action( 'masvideos_tv_shows_loop', 'masvideos_tv_shows_loop_content', 20 );
+//add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_title', 30 );
 
 /**
  * Videos Loop.
@@ -130,3 +133,43 @@ add_action( 'masvideos_video_review_before', 'masvideos_video_review_display_gra
 add_action( 'masvideos_video_review_before_comment_meta', 'masvideos_video_review_display_rating', 10 );
 add_action( 'masvideos_video_review_meta', 'masvideos_video_review_display_meta', 10 );
 add_action( 'masvideos_video_review_comment_text', 'masvideos_video_review_display_comment_text', 10 );
+
+/**
+ * TV Show Loop.
+ */
+add_action( 'masvideos_tv_shows_loop', 'masvideos_tv_shows_loop_content', 20 );
+add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_feature_badge', 10 );
+add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_poster_open', 30 );
+add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_link_open', 40 );
+add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_poster', 50 );
+add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_link_close', 60 );
+add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_poster_close', 70 );
+add_action( 'masvideos_before_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_body_open', 10 );
+add_action( 'masvideos_before_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_info_open', 20 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_info_head_open', 10 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_meta', 20 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_link_open', 30 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_title', 40 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_link_close', 50 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_episode', 60 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_info_head_close', 70 );
+add_action( 'masvideos_after_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_short_desc', 10 );
+add_action( 'masvideos_after_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_actions', 20 );
+add_action( 'masvideos_after_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_info_close', 30 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_review_info_open', 10 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_avg_rating', 20 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_viewers_count', 30 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_review_info_close', 40 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_body_close', 50 );
+
+/**
+ * Episodes Loop.
+ */
+add_action( 'masvideos_episodes_loop', 'masvideos_episodes_loop_content', 20 );
+add_action( 'masvideos_episodes_loop_item_title', 'masvideos_template_loop_episode_title', 30 );
+
+/**
+ * TV Show Single.
+ */
+add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_title', 5 );
+add_action( 'masvideos_after_single_tv_show_summary', 'comments_template', 10 );
