@@ -31,9 +31,17 @@ class MasVideos_Admin_Importers {
 		add_action( 'admin_init', array( $this, 'register_importers' ) );
 		add_action( 'admin_head', array( $this, 'hide_from_menus' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+		add_action( 'wp_ajax_masvideos_do_ajax_video_import', array( $this, 'do_ajax_video_import' ) );
 		add_action( 'wp_ajax_masvideos_do_ajax_movie_import', array( $this, 'do_ajax_movie_import' ) );
 
 		// Register MasVideos importers.
+		$this->importers['video_importer'] = array(
+			'menu'       => 'edit.php?post_type=video',
+			'name'       => __( 'Video Import', 'masvideos' ),
+			'capability' => 'import',
+			'callback'   => array( $this, 'video_importer' ),
+		);
+
 		$this->importers['movie_importer'] = array(
 			'menu'       => 'edit.php?post_type=movie',
 			'name'       => __( 'Movie Import', 'masvideos' ),
@@ -86,53 +94,14 @@ class MasVideos_Admin_Importers {
 	}
 
 	/**
-	 * The movie importer.
-	 *
-	 * This has a custom screen - the Tools > Import item is a placeholder.
-	 * If we're on that screen, redirect to the custom one.
-	 */
-	public function movie_importer() {
-		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
-			wp_safe_redirect( admin_url( 'edit.php?post_type=movie&page=movie_importer' ) );
-			exit;
-		}
-
-		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-movie-csv-importer.php';
-		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-movie-csv-importer-controller.php';
-
-		$importer = new MasVideos_Movie_CSV_Importer_Controller();
-		$importer->dispatch();
-	}
-
-	/**
 	 * Register WordPress based importers.
 	 */
 	public function register_importers() {
 		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
 			add_action( 'import_start', array( $this, 'post_importer_compatibility' ) );
+			register_importer( 'masvideos_video_csv', __( 'MasVideos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'video_importer' ) );
 			register_importer( 'masvideos_movie_csv', __( 'MasVideos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
-			register_importer( 'masvideos_video_csv', __( 'MasVideos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'videos_importer' ) );
 		}
-	}
-
-	/**
-	 * The tax rate importer which extends WP_Importer.
-	 */
-	public function videos_importer() {
-		require_once ABSPATH . 'wp-admin/includes/import.php';
-
-		if ( ! class_exists( 'WP_Importer' ) ) {
-			$class_wp_importer = ABSPATH . 'wp-admin/includes/class-wp-importer.php';
-
-			if ( file_exists( $class_wp_importer ) ) {
-				require $class_wp_importer;
-			}
-		}
-
-		require dirname( __FILE__ ) . '/importers/class-masvideos-video-importer.php';
-
-		$importer = new MasVideos_Video_Importer();
-		$importer->dispatch();
 	}
 
 	/**
@@ -155,11 +124,11 @@ class MasVideos_Admin_Importers {
 
 		if ( isset( $import_data['posts'] ) && ! empty( $import_data['posts'] ) ) {
 			foreach ( $import_data['posts'] as $post ) {
-				if ( 'movie' === $post['post_type'] && ! empty( $post['terms'] ) ) {
+				if ( in_array( $post['post_type'], array( 'episode', 'tv_show', 'video', 'movie' ) ) && ! empty( $post['terms'] ) ) {
 					foreach ( $post['terms'] as $term ) {
-						if ( strstr( $term['domain'], 'movie_' ) ) {
+						if ( strstr( $term['domain'], $post['post_type'] . '_' ) ) {
 							if ( ! taxonomy_exists( $term['domain'] ) ) {
-								$attribute_name = masvideos_sanitize_taxonomy_name( str_replace( 'movie_', '', $term['domain'] ) );
+								$attribute_name = masvideos_sanitize_taxonomy_name( str_replace( $post['post_type'] . '_', '', $term['domain'] ) );
 
 								// Create the taxonomy.
 								if ( ! in_array( $attribute_name, masvideos_get_attribute_taxonomies(), true ) ) {
@@ -177,7 +146,7 @@ class MasVideos_Admin_Importers {
 								// Register the taxonomy now so that the import works!
 								register_taxonomy(
 									$term['domain'],
-									apply_filters( 'masvideos_taxonomy_objects_' . $term['domain'], array( 'movie' ) ),
+									apply_filters( 'masvideos_taxonomy_objects_' . $term['domain'], array( $post['post_type'] ) ),
 									apply_filters(
 										'masvideos_taxonomy_args_' . $term['domain'], array(
 											'hierarchical' => true,
@@ -192,6 +161,134 @@ class MasVideos_Admin_Importers {
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * The video importer.
+	 *
+	 * This has a custom screen - the Tools > Import item is a placeholder.
+	 * If we're on that screen, redirect to the custom one.
+	 */
+	public function video_importer() {
+		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=video&page=video_importer' ) );
+			exit;
+		}
+
+		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-video-csv-importer.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-video-csv-importer-controller.php';
+
+		$importer = new MasVideos_Video_CSV_Importer_Controller();
+		$importer->dispatch();
+	}
+
+	/**
+	 * The movie importer.
+	 *
+	 * This has a custom screen - the Tools > Import item is a placeholder.
+	 * If we're on that screen, redirect to the custom one.
+	 */
+	public function movie_importer() {
+		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=movie&page=movie_importer' ) );
+			exit;
+		}
+
+		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-movie-csv-importer.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-movie-csv-importer-controller.php';
+
+		$importer = new MasVideos_Movie_CSV_Importer_Controller();
+		$importer->dispatch();
+	}
+
+	/**
+	 * Ajax callback for importing one batch of movies from a CSV.
+	 */
+	public function do_ajax_video_import() {
+		global $wpdb;
+
+		check_ajax_referer( 'masvideos-video-import', 'security' );
+
+		if ( ! $this->import_allowed() || ! isset( $_POST['file'] ) ) { // PHPCS: input var ok.
+			wp_send_json_error( array( 'message' => __( 'Insufficient privileges to import videos.', 'masvideos' ) ) );
+		}
+
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-video-csv-importer-controller.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-video-csv-importer.php';
+
+		$file   = masvideos_clean( wp_unslash( $_POST['file'] ) ); // PHPCS: input var ok.
+		$params = array(
+			'delimiter'       => ! empty( $_POST['delimiter'] ) ? masvideos_clean( wp_unslash( $_POST['delimiter'] ) ) : ',', // PHPCS: input var ok.
+			'start_pos'       => isset( $_POST['position'] ) ? absint( $_POST['position'] ) : 0, // PHPCS: input var ok.
+			'mapping'         => isset( $_POST['mapping'] ) ? (array) masvideos_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
+			'update_existing' => isset( $_POST['update_existing'] ) ? (bool) $_POST['update_existing'] : false, // PHPCS: input var ok.
+			'lines'           => apply_filters( 'masvideos_video_import_batch_size', 30 ),
+			'parse'           => true,
+		);
+
+		// Log failures.
+		if ( 0 !== $params['start_pos'] ) {
+			$error_log = array_filter( (array) get_user_option( 'video_import_error_log' ) );
+		} else {
+			$error_log = array();
+		}
+
+		$importer         = MasVideos_Video_CSV_Importer_Controller::get_importer( $file, $params );
+		$results          = $importer->import();
+		$percent_complete = $importer->get_percent_complete();
+		$error_log        = array_merge( $error_log, $results['failed'], $results['skipped'] );
+
+		update_user_option( get_current_user_id(), 'video_import_error_log', $error_log );
+
+		if ( 100 === $percent_complete ) {
+			// @codingStandardsIgnoreStart.
+			$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_original_id' ) );
+			$wpdb->delete( $wpdb->posts, array(
+				'post_type'   => 'video',
+				'post_status' => 'importing',
+			) );
+			// @codingStandardsIgnoreEnd.
+
+			// Clean up orphaned data.
+			$wpdb->query( "
+				DELETE {$wpdb->postmeta}.* FROM {$wpdb->postmeta}
+				LEFT JOIN {$wpdb->posts} wp ON wp.ID = {$wpdb->postmeta}.post_id
+				WHERE wp.ID IS NULL
+			" );
+			// @codingStandardsIgnoreStart.
+			$wpdb->query( "
+				DELETE tr.* FROM {$wpdb->term_relationships} tr
+				LEFT JOIN {$wpdb->posts} wp ON wp.ID = tr.object_id
+				LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+				WHERE wp.ID IS NULL
+				AND tt.taxonomy IN ( '" . implode( "','", array_map( 'esc_sql', get_object_taxonomies( 'video' ) ) ) . "' )
+			" );
+			// @codingStandardsIgnoreEnd.
+
+			// Send success.
+			wp_send_json_success(
+				array(
+					'position'   => 'done',
+					'percentage' => 100,
+					'url'        => add_query_arg( array( 'nonce' => wp_create_nonce( 'video-csv' ) ), admin_url( 'edit.php?post_type=video&page=video_importer&step=done' ) ),
+					'imported'   => count( $results['imported'] ),
+					'failed'     => count( $results['failed'] ),
+					'updated'    => count( $results['updated'] ),
+					'skipped'    => count( $results['skipped'] ),
+				)
+			);
+		} else {
+			wp_send_json_success(
+				array(
+					'position'   => $importer->get_file_position(),
+					'percentage' => $percent_complete,
+					'imported'   => count( $results['imported'] ),
+					'failed'     => count( $results['failed'] ),
+					'updated'    => count( $results['updated'] ),
+					'skipped'    => count( $results['skipped'] ),
+				)
+			);
 		}
 	}
 

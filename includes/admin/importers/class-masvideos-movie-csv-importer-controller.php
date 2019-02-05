@@ -277,7 +277,7 @@ class MasVideos_Movie_CSV_Importer_Controller {
 		$size       = size_format( $bytes );
 		$upload_dir = wp_upload_dir();
 
-		include dirname( __FILE__ ) . '/views/html-movie-csv-import-form.php';
+		include dirname( __FILE__ ) . '/views/html-csv-import-form.php';
 	}
 
 	/**
