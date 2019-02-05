@@ -283,7 +283,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	protected function set_movie_data( &$movie, $data ) {
 		if ( isset( $data['raw_attributes'] ) ) {
 			$attributes          = array();
-			$existing_attributes = $movie->get_attributes();
+			// $existing_attributes = $movie->get_attributes();
 
 			foreach ( $data['raw_attributes'] as $position => $attribute ) {
 				$attribute_id = 0;
@@ -302,18 +302,6 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 
 				// Get name.
 				$attribute_name = $attribute_id ? masvideos_attribute_taxonomy_name_by_id( $attribute_id ) : $attribute['name'];
-
-				// Set if is a variation attribute based on existing attributes if possible so updates via CSV do not change this.
-				$is_variation = 0;
-
-				if ( $existing_attributes ) {
-					foreach ( $existing_attributes as $existing_attribute ) {
-						if ( $existing_attribute->get_name() === $attribute_name ) {
-							$is_variation = $existing_attribute->get_variation();
-							break;
-						}
-					}
-				}
 
 				if ( $attribute_id ) {
 					if ( isset( $attribute['value'] ) ) {
