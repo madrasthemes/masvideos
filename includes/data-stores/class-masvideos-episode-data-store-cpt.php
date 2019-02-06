@@ -295,14 +295,14 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
         $episode->set_props(
             array(
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
-                'category_ids'          => $this->get_term_ids( $episode, 'episode_genre' ),
+                'genre_ids'             => $this->get_term_ids( $episode, 'episode_genre' ),
                 'tag_ids'               => $this->get_term_ids( $episode, 'episode_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_episode_image_gallery', true ) ) ),
                 'image_id'              => get_post_thumbnail_id( $id ),
-                'episode_choice'          => get_post_meta( $id, '_episode_choice', true ),
-                'episode_attachment_id'   => get_post_meta( $id, '_episode_attachment_id', true ),
-                'episode_embed_content'   => get_post_meta( $id, '_episode_embed_content', true ),
-                'episode_url_link'        => get_post_meta( $id, '_episode_url_link', true ),
+                'episode_choice'        => get_post_meta( $id, '_episode_choice', true ),
+                'episode_attachment_id' => get_post_meta( $id, '_episode_attachment_id', true ),
+                'episode_embed_content' => get_post_meta( $id, '_episode_embed_content', true ),
+                'episode_url_link'      => get_post_meta( $id, '_episode_url_link', true ),
             )
         );
     }
@@ -497,8 +497,8 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
     protected function update_terms( &$episode, $force = false ) {
         $changes = $episode->get_changes();
 
-        if ( $force || array_key_exists( 'category_ids', $changes ) ) {
-            $categories = $episode->get_category_ids( 'edit' );
+        if ( $force || array_key_exists( 'genre_ids', $changes ) ) {
+            $categories = $episode->get_genre_ids( 'edit' );
 
             if ( empty( $categories ) && get_option( 'default_episode_genre', 0 ) ) {
                 $categories = array( get_option( 'default_episode_genre', 0 ) );
@@ -951,11 +951,11 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
         }
 
         // Handle episode categories.
-        if ( ! empty( $query_vars['category'] ) ) {
+        if ( ! empty( $query_vars['genre'] ) ) {
             $wp_query_args['tax_query'][] = array(
                 'taxonomy' => 'episode_genre',
                 'field'    => 'slug',
-                'terms'    => $query_vars['category'],
+                'terms'    => $query_vars['genre'],
             );
         }
 

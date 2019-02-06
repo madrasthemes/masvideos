@@ -303,18 +303,18 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 
 	/**
 	 * Parse a category field from a CSV.
-	 * Categories are separated by commas and subcategories are "parent > subcategory".
+	 * Categories are separated by commas and subgenres are "parent > subcategory".
 	 *
 	 * @param string $value Field value.
 	 * @return array of arrays with "parent" and "name" keys.
 	 */
-	public function parse_categories_field( $value ) {
+	public function parse_genres_field( $value ) {
 		if ( empty( $value ) ) {
 			return array();
 		}
 
 		$row_terms  = $this->explode_values( $value );
-		$categories = array();
+		$genres = array();
 
 		foreach ( $row_terms as $row_term ) {
 			$parent = null;
@@ -327,7 +327,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 
 				if ( is_array( $term ) ) {
 					$term_id = $term['term_id'];
-					// Don't allow users without capabilities to create new categories.
+					// Don't allow users without capabilities to create new genres.
 				} elseif ( ! current_user_can( 'manage_movie_terms' ) ) {
 					break;
 				} else {
@@ -342,15 +342,15 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 
 				// Only requires assign the last category.
 				if ( ( 1 + $index ) === $total ) {
-					$categories[] = $term_id;
+					$genres[] = $term_id;
 				} else {
-					// Store parent to be able to insert or query categories based in parent ID.
+					// Store parent to be able to insert or query genres based in parent ID.
 					$parent = $term_id;
 				}
 			}
 		}
 
-		return $categories;
+		return $genres;
 	}
 
 	/**
@@ -473,11 +473,11 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			'short_description' => array( $this, 'parse_skip_field' ),
 			'description'       => array( $this, 'parse_skip_field' ),
 			'reviews_allowed'   => array( $this, 'parse_bool_field' ),
-			'category_ids'      => array( $this, 'parse_categories_field' ),
+			'genre_ids'         => array( $this, 'parse_genres_field' ),
 			'tag_ids'           => array( $this, 'parse_tags_field' ),
 			'images'            => array( $this, 'parse_images_field' ),
 			'parent_id'         => array( $this, 'parse_relative_field' ),
-			'movie_url'       => 'esc_url_raw',
+			'movie_url'         => 'esc_url_raw',
 			'menu_order'        => 'intval',
 		);
 

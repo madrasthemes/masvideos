@@ -298,7 +298,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         $movie->set_props(
             array(
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
-                'category_ids'          => $this->get_term_ids( $movie, 'movie_genre' ),
+                'genre_ids'             => $this->get_term_ids( $movie, 'movie_genre' ),
                 'tag_ids'               => $this->get_term_ids( $movie, 'movie_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_movie_image_gallery', true ) ) ),
                 'image_id'              => get_post_thumbnail_id( $id ),
@@ -506,8 +506,8 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     protected function update_terms( &$movie, $force = false ) {
         $changes = $movie->get_changes();
 
-        if ( $force || array_key_exists( 'category_ids', $changes ) ) {
-            $categories = $movie->get_category_ids( 'edit' );
+        if ( $force || array_key_exists( 'genre_ids', $changes ) ) {
+            $categories = $movie->get_genre_ids( 'edit' );
 
             if ( empty( $categories ) && get_option( 'default_movie_genre', 0 ) ) {
                 $categories = array( get_option( 'default_movie_genre', 0 ) );
@@ -960,11 +960,11 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         }
 
         // Handle movie categories.
-        if ( ! empty( $query_vars['category'] ) ) {
+        if ( ! empty( $query_vars['genre'] ) ) {
             $wp_query_args['tax_query'][] = array(
                 'taxonomy' => 'movie_genre',
                 'field'    => 'slug',
-                'terms'    => $query_vars['category'],
+                'terms'    => $query_vars['genre'],
             );
         }
 

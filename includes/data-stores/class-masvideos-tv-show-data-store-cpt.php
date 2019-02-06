@@ -293,7 +293,7 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
             array(
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
                 'seasons'               => get_post_meta( $id, '_seasons', true ),
-                'category_ids'          => $this->get_term_ids( $tv_show, 'tv_show_genre' ),
+                'genre_ids'             => $this->get_term_ids( $tv_show, 'tv_show_genre' ),
                 'tag_ids'               => $this->get_term_ids( $tv_show, 'tv_show_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_tv_show_image_gallery', true ) ) ),
                 'image_id'              => get_post_thumbnail_id( $id ),
@@ -488,8 +488,8 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
     protected function update_terms( &$tv_show, $force = false ) {
         $changes = $tv_show->get_changes();
 
-        if ( $force || array_key_exists( 'category_ids', $changes ) ) {
-            $categories = $tv_show->get_category_ids( 'edit' );
+        if ( $force || array_key_exists( 'genre_ids', $changes ) ) {
+            $categories = $tv_show->get_genre_ids( 'edit' );
 
             if ( empty( $categories ) && get_option( 'default_tv_show_genre', 0 ) ) {
                 $categories = array( get_option( 'default_tv_show_genre', 0 ) );
@@ -942,11 +942,11 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
         }
 
         // Handle tv show categories.
-        if ( ! empty( $query_vars['category'] ) ) {
+        if ( ! empty( $query_vars['genre'] ) ) {
             $wp_query_args['tax_query'][] = array(
                 'taxonomy' => 'tv_show_genre',
                 'field'    => 'slug',
-                'terms'    => $query_vars['category'],
+                'terms'    => $query_vars['genre'],
             );
         }
 

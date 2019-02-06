@@ -61,7 +61,7 @@ class MasVideos_TV_Show extends MasVideos_Data {
         'default_attributes'    => array(),
         'seasons'               => array(),
         'menu_order'            => 0,
-        'category_ids'          => array(),
+        'genre_ids'          => array(),
         'tag_ids'               => array(),
         'image_id'              => '',
         'gallery_image_ids'     => array(),
@@ -275,14 +275,14 @@ class MasVideos_TV_Show extends MasVideos_Data {
     }
 
     /**
-     * Get category ids.
+     * Get genre ids.
      *
      * @since 1.0.0
      * @param  string $context What the value is for. Valid values are view and edit.
      * @return array
      */
-    public function get_category_ids( $context = 'view' ) {
-        return $this->get_prop( 'category_ids', $context );
+    public function get_genre_ids( $context = 'view' ) {
+        return $this->get_prop( 'genre_ids', $context );
     }
 
     /**
@@ -563,13 +563,13 @@ class MasVideos_TV_Show extends MasVideos_Data {
     }
 
     /**
-     * Set the tv show categories.
+     * Set the tv show genres.
      *
      * @since 1.0.0
      * @param array $term_ids List of terms IDs.
      */
-    public function set_category_ids( $term_ids ) {
-        $this->set_prop( 'category_ids', array_unique( array_map( 'intval', $term_ids ) ) );
+    public function set_genre_ids( $term_ids ) {
+        $this->set_prop( 'genre_ids', array_unique( array_map( 'intval', $term_ids ) ) );
     }
 
     /**

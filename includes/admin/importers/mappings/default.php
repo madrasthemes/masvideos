@@ -46,6 +46,7 @@ function masvideos_importer_default_english_mappings( $mappings ) {
 		'Description'                             => 'description',
 		'Allow customer reviews?'                 => 'reviews_allowed',
 		'Categories'                              => 'category_ids',
+		'Genres'                                  => 'genre_ids',
 		'Tags'                                    => 'tag_ids',
 		'Images'                                  => 'images',
 		'Parent'                                  => 'parent_id',
