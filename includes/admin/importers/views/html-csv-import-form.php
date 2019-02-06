@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin View: Movie import form
+ * Admin View: Import form
  *
  * @package MasVideos/Admin
  */
@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <form class="masvideos-progress-form-content masvideos-importer" enctype="multipart/form-data" method="post">
 	<header>
-		<h2><?php esc_html_e( 'Import movies from a CSV file', 'masvideos' ); ?></h2>
-		<p><?php esc_html_e( 'This tool allows you to import (or merge) movie data to your store from a CSV file.', 'masvideos' ); ?></p>
+		<h2><?php esc_html_e( 'Import posts from a CSV file', 'masvideos' ); ?></h2>
+		<p><?php esc_html_e( 'This tool allows you to import (or merge) data to your site from a CSV file.', 'masvideos' ); ?></p>
 	</header>
 	<section>
 		<table class="form-table masvideos-importer-options">
@@ -53,11 +53,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</td>
 				</tr>
 				<tr>
-					<th><label for="masvideos-importer-update-existing"><?php esc_html_e( 'Update existing movies', 'masvideos' ); ?></label><br/></th>
+					<th><label for="masvideos-importer-update-existing"><?php esc_html_e( 'Update existing', 'masvideos' ); ?></label><br/></th>
 					<td>
 						<input type="hidden" name="update_existing" value="0" />
 						<input type="checkbox" id="masvideos-importer-update-existing" name="update_existing" value="1" />
-						<label for="masvideos-importer-update-existing"><?php esc_html_e( 'Existing movies that match by ID or SKU will be updated. Products that do not exist will be skipped.', 'masvideos' ); ?></label>
+						<label for="masvideos-importer-update-existing"><?php esc_html_e( 'Existing posts that match by ID will be updated. Posts that do not exist will be skipped.', 'masvideos' ); ?></label>
 					</td>
 				</tr>
 				<tr class="masvideos-importer-advanced hidden">

@@ -16,32 +16,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		if ( 0 < $imported ) {
 			$results[] = sprintf(
-				/* translators: %d: movies count */
-				_n( '%s movie imported', '%s movies imported', $imported, 'masvideos' ),
+				/* translators: %d: posts count */
+				_n( '%s post imported', '%s posts imported', $imported, 'masvideos' ),
 				'<strong>' . number_format_i18n( $imported ) . '</strong>'
 			);
 		}
 
 		if ( 0 < $updated ) {
 			$results[] = sprintf(
-				/* translators: %d: movies count */
-				_n( '%s movie updated', '%s movies updated', $updated, 'masvideos' ),
+				/* translators: %d: posts count */
+				_n( '%s post updated', '%s posts updated', $updated, 'masvideos' ),
 				'<strong>' . number_format_i18n( $updated ) . '</strong>'
 			);
 		}
 
 		if ( 0 < $skipped ) {
 			$results[] = sprintf(
-				/* translators: %d: movies count */
-				_n( '%s movie was skipped', '%s movies were skipped', $skipped, 'masvideos' ),
+				/* translators: %d: posts count */
+				_n( '%s post was skipped', '%s posts were skipped', $skipped, 'masvideos' ),
 				'<strong>' . number_format_i18n( $skipped ) . '</strong>'
 			);
 		}
 
 		if ( 0 < $failed ) {
 			$results [] = sprintf(
-				/* translators: %d: movies count */
-				_n( 'Failed to import %s movie', 'Failed to import %s movies', $failed, 'masvideos' ),
+				/* translators: %d: posts count */
+				_n( 'Failed to import %s post', 'Failed to import %s posts', $failed, 'masvideos' ),
 				'<strong>' . number_format_i18n( $failed ) . '</strong>'
 			);
 		}
@@ -91,6 +91,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		} );
 	</script>
 	<div class="masvideos-actions">
-		<a class="button button-primary" href="<?php echo esc_url( admin_url( 'edit.php?post_type=movie' ) ); ?>"><?php esc_html_e( 'View movies', 'masvideos' ); ?></a>
+		<a class="button button-primary" href="<?php echo esc_url( admin_url( 'edit.php?post_type=post' ) ); ?>"><?php esc_html_e( 'View posts', 'masvideos' ); ?></a>
 	</div>
 </div>

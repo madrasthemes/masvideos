@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <form class="masvideos-progress-form-content masvideos-importer" method="post" action="<?php echo esc_url( $this->get_next_step_link() ); ?>">
 	<header>
-		<h2><?php esc_html_e( 'Map CSV fields to movies', 'masvideos' ); ?></h2>
-		<p><?php esc_html_e( 'Select fields from your CSV file to map against movies fields, or to ignore during import.', 'masvideos' ); ?></p>
+		<h2><?php esc_html_e( 'Map CSV fields', 'masvideos' ); ?></h2>
+		<p><?php esc_html_e( 'Select fields from your CSV file to map against posts fields, or to ignore during import.', 'masvideos' ); ?></p>
 	</header>
 	<section class="masvideos-importer-mapping-table-wrapper">
 		<table class="widefat masvideos-importer-mapping-table">

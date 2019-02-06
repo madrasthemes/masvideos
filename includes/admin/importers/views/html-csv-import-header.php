@@ -10,6 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wrap masvideos">
-	<h1><?php esc_html_e( 'Import Movies', 'masvideos' ); ?></h1>
+	<h1><?php esc_html_e( 'Import', 'masvideos' ); ?></h1>
 
 	<div class="masvideos-progress-form-wrapper">
