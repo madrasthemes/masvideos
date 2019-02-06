@@ -100,7 +100,6 @@ class MasVideos_Post_Types {
                     'has_archive'         => $has_archive,
                     'show_in_nav_menus'   => true,
                     'show_in_rest'        => true,
-                    'show_in_menu'        => false,
                     'menu_icon'           => 'dashicons-playlist-video'
                 )
             )
