@@ -323,7 +323,7 @@ class MasVideos_Video_CSV_Importer extends MasVideos_Video_Importer {
 
             foreach ( $_terms as $index => $_term ) {
                 // Check if category exists. Parent must be empty string or null if doesn't exists.
-                $term = term_exists( $_term, 'video_genre', $parent );
+                $term = term_exists( $_term, 'video_cat', $parent );
 
                 if ( is_array( $term ) ) {
                     $term_id = $term['term_id'];
@@ -331,7 +331,7 @@ class MasVideos_Video_CSV_Importer extends MasVideos_Video_Importer {
                 } elseif ( ! current_user_can( 'manage_video_terms' ) ) {
                     break;
                 } else {
-                    $term = wp_insert_term( $_term, 'video_genre', array( 'parent' => intval( $parent ) ) );
+                    $term = wp_insert_term( $_term, 'video_cat', array( 'parent' => intval( $parent ) ) );
 
                     if ( is_wp_error( $term ) ) {
                         break; // We cannot continue if the term cannot be inserted.

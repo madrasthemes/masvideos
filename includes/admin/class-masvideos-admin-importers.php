@@ -56,7 +56,7 @@ class MasVideos_Admin_Importers {
 	 * @return bool Whether current user can perform imports.
 	 */
 	protected function import_allowed() {
-		return current_user_can( 'edit_movies' ) && current_user_can( 'import' );
+		return ( current_user_can( 'edit_videos' ) || current_user_can( 'edit_movies' ) ) && current_user_can( 'import' );
 	}
 
 	/**
@@ -90,6 +90,7 @@ class MasVideos_Admin_Importers {
 	 */
 	public function admin_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script( 'masvideos-video-import', MasVideos()->plugin_url() . '/assets/js/admin/masvideos-video-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
 		wp_register_script( 'masvideos-movie-import', MasVideos()->plugin_url() . '/assets/js/admin/masvideos-movie-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
 	}
 
@@ -124,7 +125,7 @@ class MasVideos_Admin_Importers {
 
 		if ( isset( $import_data['posts'] ) && ! empty( $import_data['posts'] ) ) {
 			foreach ( $import_data['posts'] as $post ) {
-				if ( in_array( $post['post_type'], array( 'episode', 'tv_show', 'video', 'movie' ) ) && ! empty( $post['terms'] ) ) {
+				if ( in_array( $post['post_type'], array( 'video', 'movie' ) ) && ! empty( $post['terms'] ) ) {
 					foreach ( $post['terms'] as $term ) {
 						if ( strstr( $term['domain'], $post['post_type'] . '_' ) ) {
 							if ( ! taxonomy_exists( $term['domain'] ) ) {

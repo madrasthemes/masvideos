@@ -28,4 +28,5 @@ function masvideos_importer_wordpress_mappings( $mappings ) {
 
 	return array_merge( $mappings, $wp_mappings );
 }
+add_filter( 'masvideos_csv_video_import_mapping_default_columns', 'masvideos_importer_wordpress_mappings' );
 add_filter( 'masvideos_csv_movie_import_mapping_default_columns', 'masvideos_importer_wordpress_mappings' );
