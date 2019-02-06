@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function masvideos_importer_generic_mappings( $mappings ) {
 	$generic_mappings = array(
 		__( 'Title', 'masvideos' )         => 'name',
+        __( 'TV Show Title', 'masvideos' ) => 'name',
 		__( 'Video Title', 'masvideos' )   => 'name',
 		__( 'Movie Title', 'masvideos' )   => 'name',
 		__( 'Menu order', 'masvideos' )    => 'menu_order',
@@ -26,5 +27,6 @@ function masvideos_importer_generic_mappings( $mappings ) {
 
 	return array_merge( $mappings, $generic_mappings );
 }
+add_filter( 'masvideos_csv_tv_show_import_mapping_default_columns', 'masvideos_importer_generic_mappings' );
 add_filter( 'masvideos_csv_video_import_mapping_default_columns', 'masvideos_importer_generic_mappings' );
 add_filter( 'masvideos_csv_movie_import_mapping_default_columns', 'masvideos_importer_generic_mappings' );

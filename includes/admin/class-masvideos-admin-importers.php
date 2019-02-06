@@ -31,10 +31,18 @@ class MasVideos_Admin_Importers {
 		add_action( 'admin_init', array( $this, 'register_importers' ) );
 		add_action( 'admin_head', array( $this, 'hide_from_menus' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+		add_action( 'wp_ajax_masvideos_do_ajax_tv_show_import', array( $this, 'do_ajax_tv_show_import' ) );
 		add_action( 'wp_ajax_masvideos_do_ajax_video_import', array( $this, 'do_ajax_video_import' ) );
 		add_action( 'wp_ajax_masvideos_do_ajax_movie_import', array( $this, 'do_ajax_movie_import' ) );
 
 		// Register MasVideos importers.
+		$this->importers['tv_show_importer'] = array(
+			'menu'       => 'edit.php?post_type=tv_show',
+			'name'       => __( 'TV Show Import', 'masvideos' ),
+			'capability' => 'import',
+			'callback'   => array( $this, 'tv_show_importer' ),
+		);
+
 		$this->importers['video_importer'] = array(
 			'menu'       => 'edit.php?post_type=video',
 			'name'       => __( 'Video Import', 'masvideos' ),
@@ -56,7 +64,7 @@ class MasVideos_Admin_Importers {
 	 * @return bool Whether current user can perform imports.
 	 */
 	protected function import_allowed() {
-		return ( current_user_can( 'edit_videos' ) || current_user_can( 'edit_movies' ) ) && current_user_can( 'import' );
+		return ( current_user_can( 'edit_tv_shows' ) || current_user_can( 'edit_videos' ) || current_user_can( 'edit_movies' ) ) && current_user_can( 'import' );
 	}
 
 	/**
@@ -90,6 +98,7 @@ class MasVideos_Admin_Importers {
 	 */
 	public function admin_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script( 'masvideos-tv-show-import', MasVideos()->plugin_url() . '/assets/js/admin/masvideos-tv-show-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
 		wp_register_script( 'masvideos-video-import', MasVideos()->plugin_url() . '/assets/js/admin/masvideos-video-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
 		wp_register_script( 'masvideos-movie-import', MasVideos()->plugin_url() . '/assets/js/admin/masvideos-movie-import' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
 	}
@@ -100,6 +109,7 @@ class MasVideos_Admin_Importers {
 	public function register_importers() {
 		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
 			add_action( 'import_start', array( $this, 'post_importer_compatibility' ) );
+			register_importer( 'masvideos_tv_show_csv', __( 'MasVideos TV Shows (CSV)', 'masvideos' ), __( 'Import <strong>tv shows</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'tv_show_importer' ) );
 			register_importer( 'masvideos_video_csv', __( 'MasVideos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'video_importer' ) );
 			register_importer( 'masvideos_movie_csv', __( 'MasVideos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
 		}
@@ -125,7 +135,7 @@ class MasVideos_Admin_Importers {
 
 		if ( isset( $import_data['posts'] ) && ! empty( $import_data['posts'] ) ) {
 			foreach ( $import_data['posts'] as $post ) {
-				if ( in_array( $post['post_type'], array( 'video', 'movie' ) ) && ! empty( $post['terms'] ) ) {
+				if ( in_array( $post['post_type'], array( 'tv_show', 'video', 'movie' ) ) && ! empty( $post['terms'] ) ) {
 					foreach ( $post['terms'] as $term ) {
 						if ( strstr( $term['domain'], $post['post_type'] . '_' ) ) {
 							if ( ! taxonomy_exists( $term['domain'] ) ) {
@@ -166,6 +176,25 @@ class MasVideos_Admin_Importers {
 	}
 
 	/**
+	 * The tv show importer.
+	 *
+	 * This has a custom screen - the Tools > Import item is a placeholder.
+	 * If we're on that screen, redirect to the custom one.
+	 */
+	public function tv_show_importer() {
+		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=tv_show&page=tv_show_importer' ) );
+			exit;
+		}
+
+		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-tv-show-csv-importer.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php';
+
+		$importer = new MasVideos_TV_Show_CSV_Importer_Controller();
+		$importer->dispatch();
+	}
+
+	/**
 	 * The video importer.
 	 *
 	 * This has a custom screen - the Tools > Import item is a placeholder.
@@ -201,6 +230,96 @@ class MasVideos_Admin_Importers {
 
 		$importer = new MasVideos_Movie_CSV_Importer_Controller();
 		$importer->dispatch();
+	}
+
+	/**
+	 * Ajax callback for importing one batch of tv shows from a CSV.
+	 */
+	public function do_ajax_tv_show_import() {
+		global $wpdb;
+
+		check_ajax_referer( 'masvideos-tv-show-import', 'security' );
+
+		if ( ! $this->import_allowed() || ! isset( $_POST['file'] ) ) { // PHPCS: input var ok.
+			wp_send_json_error( array( 'message' => __( 'Insufficient privileges to import tv shows.', 'masvideos' ) ) );
+		}
+
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php';
+		include_once MASVIDEOS_ABSPATH . 'includes/import/class-masvideos-tv-show-csv-importer.php';
+
+		$file   = masvideos_clean( wp_unslash( $_POST['file'] ) ); // PHPCS: input var ok.
+		$params = array(
+			'delimiter'       => ! empty( $_POST['delimiter'] ) ? masvideos_clean( wp_unslash( $_POST['delimiter'] ) ) : ',', // PHPCS: input var ok.
+			'start_pos'       => isset( $_POST['position'] ) ? absint( $_POST['position'] ) : 0, // PHPCS: input var ok.
+			'mapping'         => isset( $_POST['mapping'] ) ? (array) masvideos_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
+			'update_existing' => isset( $_POST['update_existing'] ) ? (bool) $_POST['update_existing'] : false, // PHPCS: input var ok.
+			'lines'           => apply_filters( 'masvideos_tv_show_import_batch_size', 30 ),
+			'parse'           => true,
+		);
+
+		// Log failures.
+		if ( 0 !== $params['start_pos'] ) {
+			$error_log = array_filter( (array) get_user_option( 'tv_show_import_error_log' ) );
+		} else {
+			$error_log = array();
+		}
+
+		$importer         = MasVideos_TV_Show_CSV_Importer_Controller::get_importer( $file, $params );
+		$results          = $importer->import();
+		$percent_complete = $importer->get_percent_complete();
+		$error_log        = array_merge( $error_log, $results['failed'], $results['skipped'] );
+
+		update_user_option( get_current_user_id(), 'tv_show_import_error_log', $error_log );
+
+		if ( 100 === $percent_complete ) {
+			// @codingStandardsIgnoreStart.
+			$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_original_id' ) );
+			$wpdb->delete( $wpdb->posts, array(
+				'post_type'   => 'tv_show',
+				'post_status' => 'importing',
+			) );
+			// @codingStandardsIgnoreEnd.
+
+			// Clean up orphaned data.
+			$wpdb->query( "
+				DELETE {$wpdb->postmeta}.* FROM {$wpdb->postmeta}
+				LEFT JOIN {$wpdb->posts} wp ON wp.ID = {$wpdb->postmeta}.post_id
+				WHERE wp.ID IS NULL
+			" );
+			// @codingStandardsIgnoreStart.
+			$wpdb->query( "
+				DELETE tr.* FROM {$wpdb->term_relationships} tr
+				LEFT JOIN {$wpdb->posts} wp ON wp.ID = tr.object_id
+				LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+				WHERE wp.ID IS NULL
+				AND tt.taxonomy IN ( '" . implode( "','", array_map( 'esc_sql', get_object_taxonomies( 'tv_show' ) ) ) . "' )
+			" );
+			// @codingStandardsIgnoreEnd.
+
+			// Send success.
+			wp_send_json_success(
+				array(
+					'position'   => 'done',
+					'percentage' => 100,
+					'url'        => add_query_arg( array( 'nonce' => wp_create_nonce( 'tv-show-csv' ) ), admin_url( 'edit.php?post_type=tv_show&page=tv_show_importer&step=done' ) ),
+					'imported'   => count( $results['imported'] ),
+					'failed'     => count( $results['failed'] ),
+					'updated'    => count( $results['updated'] ),
+					'skipped'    => count( $results['skipped'] ),
+				)
+			);
+		} else {
+			wp_send_json_success(
+				array(
+					'position'   => $importer->get_file_position(),
+					'percentage' => $percent_complete,
+					'imported'   => count( $results['imported'] ),
+					'failed'     => count( $results['failed'] ),
+					'updated'    => count( $results['updated'] ),
+					'skipped'    => count( $results['skipped'] ),
+				)
+			);
+		}
 	}
 
 	/**
