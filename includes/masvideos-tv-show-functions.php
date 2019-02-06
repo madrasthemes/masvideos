@@ -140,3 +140,35 @@ function masvideos_tv_shows_array_filter_editable( $tv_show ) {
 function masvideos_tv_shows_array_filter_readable( $tv_show ) {
     return $tv_show && is_a( $tv_show, 'MasVideos_TV_Show' ) && current_user_can( 'read_tv_show', $tv_show->get_id() );
 }
+
+
+if ( ! function_exists( 'masvideos_get_tv_show_thumbnail' ) ) {
+    /**
+     * Get the masvideos thumbnail, or the placeholder if not set.
+     */
+    function masvideos_get_tv_show_thumbnail( $size = 'masvideos_tv_show_medium' ) {
+        global $tv_show;
+
+        $image_size = apply_filters( 'masvideos_tv_show_archive_thumbnail_size', $size );
+        return $tv_show ? $tv_show->get_image( $image_size , array( 'class' => 'tv_show__poster--image' ) ) : '';
+        
+    }
+}
+
+if ( ! function_exists( 'masvideos_get_tv_show_latest_episode' ) ) {
+    function masvideos_get_tv_show_latest_episode() {
+        global $tv_show;
+        $seasons = $tv_show->get_seasons();
+        if(! empty( $seasons )) {
+            end($seasons);
+            $latest_season_key = key($seasons);
+            end($seasons[$latest_season_key]['episodes']);
+            $latest_episode_key = key($seasons[$latest_season_key]['episodes']);
+            $latest_episode = masvideos_get_episode($seasons[$latest_season_key]['episodes'][$latest_episode_key]);
+            echo '<a href="' . esc_url( get_permalink($latest_episode->get_ID()) ) . '" class="tv-show__episode--link">' . $latest_episode->get_title() . '</a>';
+        }
+    }
+}
+
+
+
