@@ -1,6 +1,6 @@
 <?php
 /**
- * Categories Widget
+ * Genres Widget
  *
  * @package MasVideos/Widgets
  * @version 1.0.0
@@ -9,36 +9,36 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Categories widget class.
+ * Genres widget class.
  */
-class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
+class MasVideos_Widget_Movies_Genres extends MasVideos_Widget {
 
 	/**
-	 * Category ancestors.
+	 * Genre ancestors.
 	 *
 	 * @var array
 	 */
-	public $cat_ancestors;
+	public $genre_ancestors;
 
 	/**
-	 * Current Category.
+	 * Current Genre.
 	 *
 	 * @var bool
 	 */
-	public $current_cat;
+	public $current_genre;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->widget_cssclass    = 'masvideos widget_movies_categories masvideos-widget-movies-categories';
-		$this->widget_description = __( 'A list or dropdown of movies categories.', 'masvideos' );
-		$this->widget_id          = 'masvideos_widget_movies_categories';
-		$this->widget_name        = __( 'Filter Movies by Categories', 'masvideos' );
+		$this->widget_cssclass    = 'masvideos widget_movies_genres masvideos-widget-movies-genres';
+		$this->widget_description = __( 'A list or dropdown of movies genres.', 'masvideos' );
+		$this->widget_id          = 'masvideos_widget_movies_genres';
+		$this->widget_name        = __( 'Filter Movies by Genres', 'masvideos' );
 		$this->settings           = array(
 			'title'              => array(
 				'type'  => 'text',
-				'std'   => __( 'Movies categories', 'masvideos' ),
+				'std'   => __( 'Movies genres', 'masvideos' ),
 				'label' => __( 'Title', 'masvideos' ),
 			),
 			'orderby'            => array(
@@ -46,7 +46,7 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 				'std'     => 'name',
 				'label'   => __( 'Order by', 'masvideos' ),
 				'options' => array(
-					'order' => __( 'Category order', 'masvideos' ),
+					'order' => __( 'Genre order', 'masvideos' ),
 					'name'  => __( 'Name', 'masvideos' ),
 				),
 			),
@@ -68,12 +68,12 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 			'show_children_only' => array(
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Only show children of the current category', 'masvideos' ),
+				'label' => __( 'Only show children of the current genre', 'masvideos' ),
 			),
 			'hide_empty'         => array(
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Hide empty categories', 'masvideos' ),
+				'label' => __( 'Hide empty genres', 'masvideos' ),
 			),
 			'max_depth'          => array(
 				'type'  => 'text',
@@ -122,17 +122,17 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 			$list_args['orderby'] = 'title';
 		}
 
-		$this->current_cat   = false;
-		$this->cat_ancestors = array();
+		$this->current_genre   = false;
+		$this->genre_ancestors = array();
 
 		if ( is_tax( 'movie_genre' ) ) {
-			$this->current_cat   = $wp_query->queried_object;
-			$this->cat_ancestors = get_ancestors( $this->current_cat->term_id, 'movie_genre' );
+			$this->current_genre   = $wp_query->queried_object;
+			$this->genre_ancestors = get_ancestors( $this->current_genre->term_id, 'movie_genre' );
 
 		} elseif ( is_singular( 'movie' ) ) {
 			$terms = masvideos_get_movie_terms(
 				$post->ID, 'movie_genre', apply_filters(
-					'masvideos_movie_categories_widget_terms_args', array(
+					'masvideos_movie_genres_widget_terms_args', array(
 						'orderby' => 'parent',
 						'order'   => 'DESC',
 					)
@@ -140,18 +140,18 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 			);
 
 			if ( $terms ) {
-				$main_term           = apply_filters( 'masvideos_movie_categories_widget_main_term', $terms[0], $terms );
-				$this->current_cat   = $main_term;
-				$this->cat_ancestors = get_ancestors( $main_term->term_id, 'movie_genre' );
+				$main_term           = apply_filters( 'masvideos_movie_genres_widget_main_term', $terms[0], $terms );
+				$this->current_genre   = $main_term;
+				$this->genre_ancestors = get_ancestors( $main_term->term_id, 'movie_genre' );
 			}
 		}
 
 		// Show Siblings and Children Only.
-		if ( $show_children_only && $this->current_cat ) {
+		if ( $show_children_only && $this->current_genre ) {
 			if ( $hierarchical ) {
 				$include = array_merge(
-					$this->cat_ancestors,
-					array( $this->current_cat->term_id ),
+					$this->genre_ancestors,
+					array( $this->current_genre->term_id ),
 					get_terms(
 						'movie_genre',
 						array(
@@ -165,15 +165,15 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 						'movie_genre',
 						array(
 							'fields'       => 'ids',
-							'parent'       => $this->current_cat->term_id,
+							'parent'       => $this->current_genre->term_id,
 							'hierarchical' => true,
 							'hide_empty'   => false,
 						)
 					)
 				);
 				// Gather siblings of ancestors.
-				if ( $this->cat_ancestors ) {
-					foreach ( $this->cat_ancestors as $ancestor ) {
+				if ( $this->genre_ancestors ) {
+					foreach ( $this->genre_ancestors as $ancestor ) {
 						$include = array_merge(
 							$include, get_terms(
 								'movie_genre',
@@ -193,7 +193,7 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 					'movie_genre',
 					array(
 						'fields'       => 'ids',
-						'parent'       => $this->current_cat->term_id,
+						'parent'       => $this->current_genre->term_id,
 						'hierarchical' => true,
 						'hide_empty'   => false,
 					)
@@ -218,15 +218,15 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 		$this->widget_start( $args, $instance );
 
 		if ( $dropdown ) {
-			masvideos_movie_dropdown_categories(
+			masvideos_movie_dropdown_genres(
 				apply_filters(
-					'masvideos_movie_categories_widget_dropdown_args', wp_parse_args(
+					'masvideos_movie_genres_widget_dropdown_args', wp_parse_args(
 						$dropdown_args, array(
 							'show_count'         => $count,
 							'hierarchical'       => $hierarchical,
 							'show_uncategorized' => 0,
 							'orderby'            => $orderby,
-							'selected'           => $this->current_cat ? $this->current_cat->slug : '',
+							'selected'           => $this->current_genre ? $this->current_genre->slug : '',
 						)
 					)
 				)
@@ -237,14 +237,14 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 
 			masvideos_enqueue_js(
 				"
-				jQuery( '.dropdown_movie_cat' ).change( function() {
+				jQuery( '.dropdown_movie_genre' ).change( function() {
 					if ( jQuery(this).val() != '' ) {
 						var this_page = '';
 						var home_url  = '" . esc_js( home_url( '/' ) ) . "';
 						if ( home_url.indexOf( '?' ) > 0 ) {
-							this_page = home_url + '&movies_cat=' + jQuery(this).val();
+							this_page = home_url + '&movie_genre=' + jQuery(this).val();
 						} else {
-							this_page = home_url + '?movies_cat=' + jQuery(this).val();
+							this_page = home_url + '?movie_genre=' + jQuery(this).val();
 						}
 						location.href = this_page;
 					} else {
@@ -253,9 +253,9 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 				});
 
 				if ( jQuery().selectWoo ) {
-					var masvideos_movies_cat_select = function() {
-						jQuery( '.dropdown_movie_cat' ).selectWoo( {
-							placeholder: '" . esc_js( __( 'Select a category', 'masvideos' ) ) . "',
+					var masvideos_movie_genre_select = function() {
+						jQuery( '.dropdown_movie_genre' ).selectWoo( {
+							placeholder: '" . esc_js( __( 'Select a genre', 'masvideos' ) ) . "',
 							minimumResultsForSearch: 5,
 							width: '100%',
 							allowClear: true,
@@ -266,24 +266,24 @@ class MasVideos_Widget_Movies_Categories extends MasVideos_Widget {
 							}
 						} );
 					};
-					masvideos_movie_cat_select();
+					masvideos_movie_genre_select();
 				}
 			"
 			);
 		} else {
-			include_once MasVideos()->plugin_path() . '/includes/walkers/class-masvideos-movies-cat-list-walker.php';
+			include_once MasVideos()->plugin_path() . '/includes/walkers/class-masvideos-movies-genre-list-walker.php';
 
-			$list_args['walker']                     = new MasVideos_Movie_Cat_List_Walker();
+			$list_args['walker']                     = new MasVideos_Movie_Genre_List_Walker();
 			$list_args['title_li']                   = '';
 			$list_args['pad_counts']                 = 1;
-			$list_args['show_option_none']           = __( 'No movies categories exist.', 'masvideos' );
-			$list_args['current_category']           = ( $this->current_cat ) ? $this->current_cat->term_id : '';
-			$list_args['current_category_ancestors'] = $this->cat_ancestors;
+			$list_args['show_option_none']           = __( 'No movies genres exist.', 'masvideos' );
+			$list_args['current_genre']           = ( $this->current_genre ) ? $this->current_genre->term_id : '';
+			$list_args['current_genre_ancestors'] = $this->genre_ancestors;
 			$list_args['max_depth']                  = $max_depth;
 
-			echo '<ul class="movies-categories">';
+			echo '<ul class="movies-genres">';
 
-			wp_list_categories( apply_filters( 'masvideos_movies_categories_widget_args', $list_args ) );
+			wp_list_categories( apply_filters( 'masvideos_movies_genres_widget_args', $list_args ) );
 
 			echo '</ul>';
 		}

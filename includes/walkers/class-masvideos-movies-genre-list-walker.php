@@ -1,6 +1,6 @@
 <?php
 /**
- * MasVideos_Movie_Cat_List_Walker class
+ * MasVideos_Movie_Genre_List_Walker class
  *
  * @package MasVideos/Classes/Walkers
  * @version 1.0.0
@@ -8,14 +8,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'MasVideos_Movie_Cat_List_Walker', false ) ) {
+if ( class_exists( 'MasVideos_Movie_Genre_List_Walker', false ) ) {
 	return;
 }
 
 /**
- * MasVideos Movies cat list walker class.
+ * MasVideos Movies genre list walker class.
  */
-class MasVideos_Movie_Cat_List_Walker extends Walker {
+class MasVideos_Movie_Genre_List_Walker extends Walker {
 
 	/**
 	 * What the class handles.
@@ -42,7 +42,7 @@ class MasVideos_Movie_Cat_List_Walker extends Walker {
 	 * @since 1.0.0
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth Depth of category. Used for tab indentation.
+	 * @param int    $depth Depth of genre. Used for tab indentation.
 	 * @param array  $args Will only append content if style argument value is 'list'.
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
@@ -61,7 +61,7 @@ class MasVideos_Movie_Cat_List_Walker extends Walker {
 	 * @since 1.0.0
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth Depth of category. Used for tab indentation.
+	 * @param int    $depth Depth of genre. Used for tab indentation.
 	 * @param array  $args Will only append content if style argument value is 'list'.
 	 */
 	public function end_lvl( &$output, $depth = 0, $args = array() ) {
@@ -80,32 +80,32 @@ class MasVideos_Movie_Cat_List_Walker extends Walker {
 	 * @since 1.0.0
 	 *
 	 * @param string  $output            Passed by reference. Used to append additional content.
-	 * @param object  $cat               Category.
-	 * @param int     $depth             Depth of category in reference to parents.
+	 * @param object  $genre               Genreegory.
+	 * @param int     $depth             Depth of genre in reference to parents.
 	 * @param array   $args              Arguments.
 	 * @param integer $current_object_id Current object ID.
 	 */
-	public function start_el( &$output, $cat, $depth = 0, $args = array(), $current_object_id = 0 ) {
-		$cat_id = intval( $cat->term_id );
+	public function start_el( &$output, $genre, $depth = 0, $args = array(), $current_object_id = 0 ) {
+		$genre_id = intval( $genre->term_id );
 
-		$output .= '<li class="cat-item cat-item-' . $cat_id;
+		$output .= '<li class="genre-item genre-item-' . $genre_id;
 
-		if ( $args['current_category'] === $cat_id ) {
-			$output .= ' current-cat';
+		if ( $args['current_genre'] === $genre_id ) {
+			$output .= ' current-genre';
 		}
 
 		if ( $args['has_children'] && $args['hierarchical'] && ( empty( $args['max_depth'] ) || $args['max_depth'] > $depth + 1 ) ) {
-			$output .= ' cat-parent';
+			$output .= ' genre-parent';
 		}
 
-		if ( $args['current_category_ancestors'] && $args['current_category'] && in_array( $cat_id, $args['current_category_ancestors'], true ) ) {
-			$output .= ' current-cat-parent';
+		if ( $args['current_genre_ancestors'] && $args['current_genre'] && in_array( $genre_id, $args['current_genre_ancestors'], true ) ) {
+			$output .= ' current-genre-parent';
 		}
 
-		$output .= '"><a href="' . get_term_link( $cat_id, $this->tree_type ) . '">' . apply_filters( 'list_movie_cats', $cat->name, $cat ) . '</a>';
+		$output .= '"><a href="' . get_term_link( $genre_id, $this->tree_type ) . '">' . apply_filters( 'list_movie_genres', $genre->name, $genre ) . '</a>';
 
 		if ( $args['show_count'] ) {
-			$output .= ' <span class="count">(' . $cat->count . ')</span>';
+			$output .= ' <span class="count">(' . $genre->count . ')</span>';
 		}
 	}
 
@@ -116,11 +116,11 @@ class MasVideos_Movie_Cat_List_Walker extends Walker {
 	 * @since 1.0.0
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param object $cat    Category.
-	 * @param int    $depth  Depth of category. Not used.
+	 * @param object $genre    Genre
+	 * @param int    $depth  Depth of genre. Not used.
 	 * @param array  $args   Only uses 'list' for whether should append to output.
 	 */
-	public function end_el( &$output, $cat, $depth = 0, $args = array() ) {
+	public function end_el( &$output, $genre, $depth = 0, $args = array() ) {
 		$output .= "</li>\n";
 	}
 

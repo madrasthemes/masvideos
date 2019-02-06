@@ -638,7 +638,7 @@ function masvideos_get_movie_visibility_term_ids() {
  *
  * @param array $args Args to control display of dropdown.
  */
-function masvideos_movie_dropdown_categories( $args = array() ) {
+function masvideos_movie_dropdown_genres( $args = array() ) {
 	global $wp_query;
 
 	$args = wp_parse_args(
