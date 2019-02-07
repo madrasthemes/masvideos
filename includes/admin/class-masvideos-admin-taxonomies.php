@@ -66,7 +66,7 @@ class MasVideos_Admin_Taxonomies {
 
         if ( ! empty( $videos_attribute_taxonomies ) ) {
             foreach ( $videos_attribute_taxonomies as $videos_attribute_taxonomie ) {
-                add_action( $videos_attribute_taxonomie->post_type . '_' . $videos_attribute_taxonomie->attribute_name . '_pre_add_form', array( $this, 'movie_attribute_description' ) );
+                add_action( $videos_attribute_taxonomie->post_type . '_' . $videos_attribute_taxonomie->attribute_name . '_pre_add_form', array( $this, 'video_attribute_description' ) );
             }
         }
     }
@@ -74,6 +74,20 @@ class MasVideos_Admin_Taxonomies {
     public function admin_scripts() {
         wp_enqueue_media();
         wp_enqueue_script( 'masvideos-admin-meta-boxes' );
+    }
+
+    /**
+     * Description for movies attribute to aid users.
+     */
+    public function movie_attribute_description() {
+        echo wpautop( __( 'Attribute terms can be assigned to movies and variations.<br/><br/><b>Note</b>: Deleting a term will remove it from all movies and variations to which it has been assigned. Recreating a term will not automatically assign it back to movies.', 'masvideos' ) );
+    }
+
+    /**
+     * Description for videos attribute to aid users.
+     */
+    public function video_attribute_description() {
+        echo wpautop( __( 'Attribute terms can be assigned to mvideoes and variations.<br/><br/><b>Note</b>: Deleting a term will remove it from all videos and variations to which it has been assigned. Recreating a term will not automatically assign it back to videos.', 'masvideos' ) );
     }
 
     /**
