@@ -1,0 +1,23 @@
+/**
+ * Bootstrap variables override
+ */
+.section-videos-live-coming-soon {
+  /* &.wp-block-columns>.editor-inner-blocks>.editor-block-list__layout>[data-type="core/column"]:not(:last-child) {
+        margin-right: 14px;
+    }
+
+    &.wp-block-columns>.editor-inner-blocks>.editor-block-list__layout>[data-type="core/column"]:not(:first-child) {
+        margin-left: 14px;
+    } */ }
+  .section-videos-live-coming-soon a {
+    text-decoration: none; }
+  .section-videos-live-coming-soon .video__title {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    color: #000; }
+  .section-videos-live-coming-soon .video__link {
+    display: block; }
+  .section-videos-live-coming-soon .video__actions, .section-videos-live-coming-soon .video__review-info {
+    display: none; }
+
+/*# sourceMappingURL=editor.css.map */

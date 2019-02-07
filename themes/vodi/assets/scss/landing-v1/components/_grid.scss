@@ -1,0 +1,38 @@
+.container-fluid,
+.container {
+    @include make-container();
+    max-width: 1486px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    @include media-breakpoint-up(md) {
+    	max-width: 1486px;
+	    padding-left: 38px;
+	    padding-right: 38px;
+	    margin-right: auto;
+    	margin-left: auto;
+    }
+}
+
+.site-header__inner,
+.lp-featured-section__inner,
+.nav,
+.tab-content-details,
+.site-header__left,
+.site-header__inner {
+    @include make-row();
+}
+
+.lp-featured-section__details,
+.lp-featured-section__banner,
+.site-header__left,
+.site-header__logo,
+.site-header__right,
+.site-header__user-account,
+.site-header__nav,
+.nav-link,
+.screen,
+.unsubscribe-content,
+.unsubscribe-thumbnail {
+    @include make-col-ready();
+}

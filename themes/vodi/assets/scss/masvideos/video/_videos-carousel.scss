@@ -1,0 +1,47 @@
+.videos {
+    .slick-slide {
+        margin: 0 9px;
+    }
+
+    .slick-list {
+        margin: 0 -9px;
+        width: 100%;
+    }
+
+    .movie {
+        margin-bottom: 0;
+
+        &__title {
+            margin-bottom: 0;
+        }
+    }
+
+    &-carousel__inner {
+        .video {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.brand-video-channel-carousel {
+    padding-bottom: 50px;
+
+    &__inner {
+        .thumbnail {
+            flex: 0 0 14%;
+            max-width: 14%;
+
+            img {
+                filter: grayscale(100%);
+                opacity: .5;
+            }
+
+            &:hover {
+                img {
+                    filter: none;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

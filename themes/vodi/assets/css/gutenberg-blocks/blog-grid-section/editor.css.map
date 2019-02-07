@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "editor.css",
+	"sources": [
+		"../../../scss/gutenberg-blocks/blog-grid-section/editor.scss"
+	],
+	"names": [],
+	"mappings": ""
+}

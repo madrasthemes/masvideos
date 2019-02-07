@@ -1,0 +1,16 @@
+.editor-styles-wrapper .home-blog-grid-with-list-section ul.nav {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+  list-style: none; }
+
+.editor-styles-wrapper .home-blog-grid-with-list-section .article .entry-title {
+  margin-top: 0; }
+
+.editor-styles-wrapper .home-blog-grid-with-list-section .article__excerpt p {
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: -0.001em;
+  margin-top: 0; }
+
+/*# sourceMappingURL=editor.css.map */

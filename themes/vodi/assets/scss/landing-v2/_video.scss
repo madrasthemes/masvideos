@@ -1,0 +1,49 @@
+.lp-v2-video-section {	
+    overflow: hidden;
+
+    &__inner {
+        text-align: center;
+    }
+
+    &__video {
+        @include media-breakpoint-up(xl) {
+            height: 758px;
+        }
+
+        img {
+            width: 100%;
+
+            @include media-breakpoint-up(xl) {
+                width: auto;
+            }
+        }
+    }
+
+    &__title {
+        font-size: 32px;
+        line-height: 1.10;
+        letter-spacing: -0.01em;
+        font-weight: $ms-semi-bold;
+        color: $vodi-primary-color;
+
+        @include media-breakpoint-up(md) {
+            font-size: 40px;
+        }
+
+         @include media-breakpoint-up(lg) {
+            font-size: 72px;
+         }
+    }
+
+    &__subtitle {
+        font-size: 20px;
+        line-height: 1.25;
+        font-weight: $ms-medium;
+        color: #ffffff;
+        padding-top: 4px;
+
+        @include media-breakpoint-up(md) { 
+            font-size: 26px;
+        }
+    }
+}

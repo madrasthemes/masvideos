@@ -1,0 +1,119 @@
+.section-game-blog-1-4-columns {
+    padding: 60px 0 40px;
+
+    &__inner {
+        @include make-row(18px);
+
+        .columns-4 > .articles__inner {
+            @include make-row(18px);            
+        }
+
+        .articles {
+            @include make-col(12);
+        }
+
+        .columns-4 > .articles__inner .article {
+            @include make-col(12);
+
+            @include media-breakpoint-up(md) {
+                @include make-col(6);
+            }
+        }
+
+        .articles,
+        .columns-4 > .articles__inner .article {
+            @include make-col-ready(18px);
+            
+            @include media-breakpoint-up(xl) {
+                @include make-col(6);
+            }
+        }
+
+        .article {
+            display: flex;
+            position: relative;
+            margin-bottom: 18px;
+
+            &__attachment {
+                @include make-col(12);
+                margin-right: 0;
+                margin-bottom: 0;
+
+                a {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    margin: inherit;
+
+                    &::after {
+                        position: absolute;
+                        content: '';
+                        background-image: url(assets/images/glow.png);
+                        background-position: bottom;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        display: block;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                    }
+                }
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            &__summary {
+                position: absolute;
+                padding: 0 15px 15px;
+                bottom: 0;
+            }
+
+            .article__header {
+                margin-bottom: 0;
+            }
+
+            .entry-title {
+                margin-bottom: 0;
+
+                a {
+                    font-family: $os;
+                    font-weight: $os-bold;
+                    font-size: 18px;
+                    color: $white;
+                }
+            }
+
+            &__excerpt {
+                font-size: 13px;
+                color: #dfe5e8;
+            }
+        }
+
+        .columns-4 {
+            .article__summary {
+                left: 9px;
+                right: 9px;
+            }
+        }
+    }
+
+    &.negative-bg {
+        margin-top: -230px;
+        padding-top: 290px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            background-image: linear-gradient(to bottom, rgb(8, 11, 19), rgba(8, 11, 19, 0.9), rgba(8, 11, 19, 0.45), rgba(8, 11, 19, 0.35), rgba(19, 23, 34, 0.3), rgba(19, 23, 34, 0.35), rgba(19, 23, 34, 0.6), rgba(19, 23, 34, 0.7), rgba(19, 23, 34, 0.8), rgba(19, 23, 34, 0.9), rgb(19, 23, 34));
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    }
+}

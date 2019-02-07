@@ -1,0 +1,44 @@
+@mixin make-table( $table-cell-padding: $table-cell-padding, $margin-bottom: $spacer , $table-text-align: left ) {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: $margin-bottom;
+    background-color: $table-bg; // Reset for nesting within parents with `background-color`.
+
+    th,
+    td {
+        padding: $table-cell-padding;
+        vertical-align: top;
+        border-top: $table-border-width solid $table-border-color;
+        text-align: $table-text-align;
+    }
+
+    thead th {
+        vertical-align: bottom;
+        border-bottom: (2 * $table-border-width) solid $table-border-color;
+    }
+
+    tbody + tbody {
+        border-top: (2 * $table-border-width) solid $table-border-color;
+    }
+
+    .table {
+        background-color: $body-bg;
+    }
+}
+
+@mixin make-table-bordered( $table-cell-padding: $table-cell-padding, $margin-bottom: $spacer, $table-text-align: left ) {
+    @include make-table( $table-cell-padding, $margin-bottom, $table-text-align );
+    border: $table-border-width solid $table-border-color;
+
+    th,
+    td {
+        border: $table-border-width solid $table-border-color;
+    }
+
+    thead {
+        th,
+        td {
+            border-bottom-width: (2 * $table-border-width);
+        }
+    }
+}

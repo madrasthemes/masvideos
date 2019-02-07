@@ -1,0 +1,307 @@
+.videos-with-featured-video {
+    &__1-6-column {
+        > .masvideos-videos {
+            @include media-breakpoint-up(xl) {
+                @include make-col(4.81);
+                padding-right: 7.5px;
+            }
+
+            .video {
+                @include media-breakpoint-up(xl) {
+
+                    &__episode {
+                        margin-bottom: 2px;
+                    }
+
+                    &__poster--image {
+                        height: 404px;
+                        object-fit: cover;
+                    }
+                }
+            }
+
+            & + .masvideos-videos {
+                @include media-breakpoint-up(xl) {
+                    @include make-col(7.19);
+                    padding-left: 7.5px;
+                }
+
+                .videos__inner {
+                    @include make-row(15px);
+                }
+
+                .video {
+                    @include media-breakpoint-up(xl) {
+                        @include make-col-ready(15px);
+                        @include make-col(4);
+                        margin-bottom: 15px;
+
+                        &__episode {
+                            margin-bottom: 2px;
+                        }
+
+                        &__poster--image {
+                            height: 153px;
+                            object-fit: cover;
+                        }
+                    }
+
+                    @include media-breakpoint-up(xxl) {
+                        margin-bottom: 43px;
+                    }
+                }
+            }
+        }
+
+        > .columns-4 {
+            @include media-breakpoint-up(xl) {
+                @include make-col(7.19);
+                padding-left: 7.5px;
+            }
+
+            .videos__inner {
+                @include make-row(15px);
+            }
+
+            .video {
+                @include media-breakpoint-up(xl) {
+                    @include make-col-ready(15px);
+                    @include make-col(3);
+                    margin-bottom: 15px;
+
+                    &__episode {
+                        margin-bottom: 2px;
+                    }
+
+                    &__poster--image {
+                        height: 153px;
+                        object-fit: cover;
+                    }
+                }
+
+                @include media-breakpoint-up(xxl) {
+                    margin-bottom: 43px;
+                }
+            }
+        }
+    }
+
+    &__1-2-column,
+    &__1-4-column {
+        @include make-row(18px);
+
+        .masvideos-videos {
+            @include make-col-ready(18px);
+            
+            .video {
+                &__title {
+                    margin-bottom: 0.3rem;
+                }
+
+                &__episode {
+                    display: none;
+                }
+
+                &__meta {
+                    display: block;
+                }
+            }
+
+            @include media-breakpoint-up(lg) {
+                @include make-col(6);
+            }
+
+            & + .masvideos-videos {
+                @include media-breakpoint-up(lg) {
+                    @include make-col(6);
+                } 
+            }       
+
+        }
+
+
+        .columns-1 {
+
+            img {
+                @include media-breakpoint-up(lg) {
+                    height: 350px;
+                }
+
+                @include media-breakpoint-up(xl) {
+                    height: 430px;
+                }
+
+                @include media-breakpoint-up(xxl) {
+                    height: 464px;
+                }
+            }
+        }
+
+        .columns-2 {
+
+            .videos__inner {
+                @include make-row(18px);
+
+                .video {
+                    @include make-col-ready(18px);
+
+                    @include media-breakpoint-up(md) {
+                        @include make-col(6);
+                    }
+                    
+                    margin-bottom: 19px;
+                }
+            }
+        }
+    }
+
+    &__1-8-column,
+    &__1-10-column,
+    &__1-12-column {
+        .masvideos-videos {
+            @include media-breakpoint-up(xl) {
+                @include make-col(4.1);
+                padding-right: 8px;
+            }
+
+            & + .masvideos-videos {
+                @include media-breakpoint-up(xl) {
+                    @include make-col(7.9);
+                    padding-left: 7.5px;
+                }
+            }
+        }
+        
+        .columns-1 {
+            .video {
+                @include media-breakpoint-up(xl) {
+
+                    &__episode {
+                        margin-bottom: 2px;
+                    }
+
+                    &__poster--image {
+                        height: 404px;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+
+        > .columns-4 {
+
+            .videos__inner {
+                @include make-row(15px);
+            }
+
+            .video {
+                @include media-breakpoint-up(xl) {
+                    @include make-col-ready(15px);
+                    @include make-col(2);
+                    padding-right: 8px;
+                    margin-bottom: 5px;
+                    &__episode {
+                        margin-bottom: 2px;
+                    }
+
+                    &__poster--image {
+                        height: 153px;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.home-section-videos-with-featured-video {
+    &.style-2 {
+        .columns-3 {
+            .video {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.home-section__videos {
+    .tab-content > .tab-pane {
+      display: none;
+    }
+
+    .tab-content > .active {
+      display: block;
+    }
+}
+
+.sports-videos {
+    .video {
+        &__title {
+            margin-bottom: 0.3rem;
+        }
+
+        &__episode {
+            display: none;
+        }
+
+        &__meta {
+            display: block;
+        }
+
+        &__duration {
+            display: block;
+        }
+    }
+}
+
+.home-section-videos-with-featured-video {
+    margin-bottom: 20px;
+
+    &.trailer-videos {
+        padding: 66px 0 12px;
+
+        .video {
+            margin-bottom: 23px;
+            
+            &__episode {
+                display: none;
+            }
+
+            &__duration {
+                display: block;
+            }
+
+            &__poster {
+                margin-bottom: 9px;
+
+                &--image {
+                    width: 100%;
+                }
+            }
+        }
+
+        .featured-video .video__poster--image {
+            @include media-breakpoint-up(xl) {
+                height: 381px;
+            }
+
+            @include media-breakpoint-up(xxl) {
+                height: 365px;
+            }
+        }
+    }
+}
+
+.home-section-videos-with-featured-video-with-bg {
+    background-color: #f5f5f5;
+    padding-top: 56px;
+    padding-bottom: 25px;
+    margin-bottom: 53px;
+    background-size: cover;
+    background-position: center center;
+    background-image: url(http://placehold.it/1920x627/e9ebec/e9ebec);
+
+    @include media-breakpoint-up(xl) {
+        height: 627px;
+    }
+}

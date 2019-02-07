@@ -1,0 +1,36 @@
+.social-icons {
+    @include make-nav();
+}
+
+.footer-social-icon {
+    @include make-nav-link( $nav-link-padding-y, 4px );
+
+    .fa-stack {
+        height: 34px;
+        width: 34px;
+        line-height: 34px;
+    }
+
+    .fa-stack-2x {
+        font-size: 34px;
+    }
+}
+
+.footer-social-icons.social-label {
+    li {
+
+        &+li {
+            margin-left: 26px;
+        }
+
+        > a {
+            font-size: 14px;
+            padding: 0;
+        }
+    }
+
+    i {
+        font-size: 16px;
+        margin-right: 5px;
+    }
+}

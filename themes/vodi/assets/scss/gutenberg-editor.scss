@@ -1,0 +1,696 @@
+/**
+ * Vodi Gutenberg Editor styles
+ */
+// Vendors
+@import "vendors/bootstrap/functions";
+@import "vendors/bootstrap/variables";
+@import "vendors/bootstrap/mixins";
+@import "vendors/bootstrap/reboot";
+
+// Utilities
+@import "variables";
+@import "mixins";
+
+$size__spacing-unit: 1rem;
+
+@import "utilities/primary-color.scss";
+
+@import "components/nav";
+@import "themes/theme";
+@import "masvideos/home/home-section";
+@import "masvideos/movie";
+@import "masvideos/video";
+@import "site/blog/article";
+@import "site/blog/gallery";
+
+.home-section {
+    width: auto;
+    margin-left: 0;
+}
+
+/** === Editor Frame === */
+
+body {
+    .wp-block[data-align="full"] {
+        width: 100%;
+    }
+
+    //mobile
+    @include media-breakpoint-up(sm) {
+        .wp-block[data-align="full"] {
+            width: calc( 100% + 90px );
+            max-width: calc( 100% + 90px );
+        }
+    }
+
+    //tablet
+    @include media-breakpoint-up(md) {
+        .editor-writing-flow {
+            max-width: 100%;
+            margin: 0;
+        }
+
+        .editor-post-title__block,
+        .editor-default-block-appender,
+        .editor-block-list__block {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .wp-block[data-align="wide"] {
+            width: 100%;
+        }
+
+        .wp-block[data-align="full"] {
+            position: relative;
+            left: calc( -12.5% - 14px );
+            width: calc( 125% + 116px );
+            max-width: calc( 125% + 115px ); // Subtract 1px here to avoid the rounding errors that happen due to the usage of percentages.
+        }
+
+        .wp-block[data-align="right"] {
+            max-width: 125%;
+        }
+    }
+}
+
+/** === Content Width === */
+.wp-block {
+    width: calc(100vw - (2 * #{$size__spacing-unit}));
+    max-width: 100%;
+
+    // Only the top level blocks need specific widths, therefore override for every nested block.
+    .wp-block {
+        width: 100%;
+    }
+
+    // @include media-breakpoint-up(md) {
+    //     width: calc(8 * (100vw / 12));
+    // }
+
+    // @include media-breakpoint-up(xl) {
+    //     width: calc(6 * (100vw / 12 ));
+    // }
+
+    // Only the top level blocks need specific widths, therefore override for every nested block.
+    .wp-block {
+        width: 100%;
+    }
+}
+
+/** === Base Typography === */
+
+body {
+    font-family: $os;
+    font-size: 15px;
+    line-height: 24px;
+    color: #19272e;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    word-break: break-word;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+p {
+    font-size: 15px;
+    line-height: 24px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $ms;
+}
+
+a {
+    @include hover-focus {
+        outline: 0;
+        text-decoration: none;
+    }
+}
+
+// Use white text against these backgrounds by default.
+.has-primary-background-color,
+.has-secondary-background-color,
+.has-dark-gray-background-color,
+.has-light-gray-background-color {
+    color: $white;
+
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    a {
+        color: $white;
+    }
+}
+
+// Use dark gray text against this background by default.
+.has-white-background-color {
+    color: #111;
+
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    a {
+        color: #111;
+    }
+}
+
+figcaption,
+.gallery-caption {
+    font-family: $os;
+    font-size: 15px;
+    line-height: 24px;
+    color: #767676;
+}
+
+/** === Post Title === */
+
+.editor-post-title__block {
+    .editor-post-title__input {
+        font-family: $ms;
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+    }
+}
+
+/** === Table === */
+
+.wp-block-table {
+    font-family: $os;
+}
+
+/** === Cover === */
+
+.wp-block-cover {
+
+    h2,
+    .wp-block-cover-text {
+        font-family: $ms;
+        font-size: 1.6875em;
+        font-weight: bold;
+        line-height: 1.4;
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        strong {
+            font-weight: bolder;
+        }
+
+        @include media-breakpoint-up(md) {
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        padding-left: 10%;
+        padding-right: 10%;
+
+        h2,
+        .wp-block-cover-text {
+            font-size: 2.25em;
+        }
+    }
+}
+
+.wp-block[data-type="core/cover"][data-align="left"],
+.wp-block[data-type="core/cover"][data-align="right"] {
+
+    .editor-block-list__block-edit {
+        width: calc(4 * (100vw / 12));
+    }
+
+    .wp-block-cover {
+        width: 100%;
+        max-width: 100%;
+        padding: calc(1.375 * #{$size__spacing-unit});
+
+        p {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        @include media-breakpoint-up(md) {
+            padding: calc(2.75 * 1rem) calc(2.75 * 1rem) calc(3.125 * 1rem);
+        }
+    }
+}
+
+.wp-block[data-type="core/cover"][data-align="wide"],
+.wp-block[data-type="core/cover"][data-align="full"] {
+
+    @include media-breakpoint-up(md) {
+
+        h2,
+        .wp-block-cover-text {
+            max-width: calc(8 * (100vw / 12));
+        }
+    }
+
+    @include media-breakpoint-up(xl) {
+
+        h2,
+        .wp-block-cover-text {
+            max-width: calc(6 * (100vw / 12));
+        }
+    }
+}
+
+.wp-block[data-type="core/cover"][data-align="full"] {
+
+    @include media-breakpoint-up(md) {
+
+        .wp-block-cover {
+            padding-left: calc(10% + 64px);
+            padding-right: calc(10% + 64px);
+        }
+    }
+}
+
+/** === Gallery === */
+
+.wp-block-gallery {
+
+    .blocks-gallery-image figcaption,
+    .blocks-gallery-item figcaption,
+    .gallery-item .gallery-caption {
+        font-size: 0.71111em;
+        line-height: 1.6;
+    }
+}
+
+/** === Button === */
+
+.wp-block-button {
+
+    .wp-block-button__link {
+        @include make-button();
+    }
+
+    &:not(.is-style-outline) .wp-block-button__link {
+        background: #0073aa;
+    }
+
+    &:not(.is-style-squared) .wp-block-button__link {
+        border-radius: 5px;
+    }
+
+    &.is-style-outline,
+    &.is-style-outline:hover,
+    &.is-style-outline:focus,
+    &.is-style-outline:active {
+        background: transparent;
+        color: #0073aa;
+
+        .wp-block-button__link {
+            background: transparent;
+
+            &:not(.has-text-color) {
+                color: #0073aa;
+            }
+        }
+    }
+}
+
+/** === Blockquote === */
+
+.wp-block-quote {
+
+    &:not(.is-large):not(.is-style-large) {
+        border-left: 2px solid #0073aa;
+    }
+
+    &.is-large,
+    &.is-style-large {
+        margin-top: 2.8125em;
+        margin-bottom: 2.8125em;
+    }
+
+    &.is-large p,
+    &.is-style-large p {
+        font-size: 1.6875em;
+        line-height: 1.3;
+        margin-bottom: 0.5em;
+        margin-top: 0.5em;
+    }
+
+    cite,
+    footer,
+    .wp-block-quote__citation {
+        font-family: $os;
+        font-size: 0.71111em;
+        line-height: 1.6;
+        color: #767676;
+    }
+}
+
+/** === Pullquote === */
+
+.wp-block-pullquote {
+    border-color: transparent;
+    border-width: 0;
+    color: #000;
+
+    blockquote {
+        margin-top: calc(3 * #{ $size__spacing-unit});
+        margin-bottom: calc(3.33 * #{ $size__spacing-unit});
+        hyphens: auto;
+        word-break: break-word;
+    }
+
+    &:not(.is-style-solid-color) .wp-block-pullquote__citation {
+        color: #767676;
+    }
+
+    &.is-style-solid-color {
+
+        blockquote {
+            width: calc(100% - (2 * #{ $size__spacing-unit}));
+            max-width: calc( 100% - (2 * #{ $size__spacing-unit}));
+
+            a,
+            &.has-text-color p,
+            &.has-text-color a {
+                color: inherit;
+            }
+
+            &:not(.has-text-color) {
+                color: $white;
+            }
+
+            @include media-breakpoint-up(md) {
+                max-width: 80%;
+            }
+        }
+
+        &:not(.has-background-color) {
+            background-color: #0073aa;
+        }
+    }
+}
+
+.wp-block[data-type="core/pullquote"],
+.wp-block[data-type="core/pullquote"][data-align="left"],
+.wp-block[data-type="core/pullquote"][data-align="right"] {
+
+    blockquote > .block-library-pullquote__content .editor-rich-text__tinymce[data-is-empty="true"]::before,
+    blockquote > .editor-rich-text p,
+    p {
+        font-size: 1.6875em;
+        font-style: italic;
+        line-height: 1.3;
+        margin-bottom: 0.5em;
+        margin-top: 0.5em;
+
+        @include media-breakpoint-up(md) {
+            font-size: 2.25em;
+        }
+    }
+
+    .wp-block-pullquote__citation {
+        font-family: $os;
+        font-size: 0.71111em;
+        line-height: 1.6;
+        text-transform: none;
+    }
+
+    em {
+        font-style: normal;
+    }
+}
+
+.wp-block[data-type="core/pullquote"][data-align="left"],
+.wp-block[data-type="core/pullquote"][data-align="right"] {
+
+    .editor-block-list__block-edit {
+        width: calc(4 * (100vw / 12));
+        max-width: 50%;
+
+        .wp-block-pullquote:not(.is-style-solid-color) {
+            padding: 0;
+        }
+
+        .wp-block-pullquote.is-style-solid-color {
+            padding: 1em;
+        }
+    }
+
+    blockquote > .block-library-pullquote__content .editor-rich-text__tinymce[data-is-empty="true"]::before,
+    blockquote > .editor-rich-text p,
+    p,
+    .wp-block-pullquote__citation {
+        text-align: left;
+    }
+}
+
+.wp-block[data-type="core/pullquote"][data-align="full"] {
+
+    @include media-breakpoint-up(md) {
+
+        .wp-block-pullquote blockquote {
+            max-width: calc(80% - 128px);
+        }
+    }
+}
+
+/** === File === */
+
+.wp-block-file {
+    font-family: $os;
+
+    .wp-block-file__textlink {
+        text-decoration: underline;
+        color: #0073aa;
+
+        &:hover {
+            color: darken( #0073aa, 10% );
+            text-decoration: none;
+        }
+    }
+
+    .wp-block-file__button {
+        display: table;
+        line-height: 1.8;
+        font-size: 0.88889em;
+        font-weight: bold;
+        background-color: #0073aa;
+        border-radius: 5px;
+    }
+
+    .wp-block-file__button-richtext-wrapper {
+        display: block;
+        margin-top: calc(0.75 * #{$size__spacing-unit});
+        margin-left: 0;
+    }
+
+}
+
+/** === Verse === */
+
+.wp-block-verse,
+.wp-block-verse pre {
+    padding: 0;
+}
+
+/** === Code === */
+
+.wp-block-code {
+    border-radius: 0;
+}
+
+/** === Table === */
+
+.wp-block-table {
+
+    td, th {
+        border-color: #767676;
+    }
+}
+
+/** === Separator === */
+
+.wp-block-separator {
+
+    &:not(.is-style-dots) {
+        border-bottom: 2px solid #767676;
+    }
+
+    &:not(.is-style-wide):not(.is-style-dots) {
+        width: 2.25em;
+        margin-left: 0;
+    }
+
+    &.is-style-dots:before {
+        color: #767676;
+        font-size: 1.6875em;
+        letter-spacing: calc(2 * #{$size__spacing-unit});
+        padding-left: calc(2 * #{$size__spacing-unit});
+    }
+}
+
+/* Remove duplicate rule-line when a separator
+ * is followed by an H1, or H2 */
+.wp-block[data-type="core/separator"] + .wp-block[data-type="core/heading"] h1:before,
+.wp-block[data-type="core/separator"] + .wp-block[data-type="core/heading"] h2:before {
+    display: none;
+}
+
+/** === Latest Posts, Archives, Categories === */
+
+ul.wp-block-archives,
+.wp-block-categories,
+.wp-block-latest-posts {
+    padding: 0;
+    list-style-type: none;
+
+    ul {
+        padding: 0;
+        list-style-type: none;
+    }
+
+    li {
+        color: #767676;
+        font-family: $os;
+        font-size: calc(15px * 1.125);
+        font-weight: bold;
+        line-height: 1.2;
+        padding-bottom: ( .75 * $size__spacing-unit );
+
+        &.menu-item-has-children,
+        &:last-child {
+            padding-bottom: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        ul {
+            padding-left: $size__spacing-unit;
+        }
+    }
+}
+
+.wp-block-categories {
+
+    ul {
+        padding-top: ( .75 * $size__spacing-unit );
+
+        ul {
+            counter-reset: submenu;
+        }
+
+        ul > li > a::before {
+            font-family: $os;
+            font-weight: normal;
+            content: "\2013\00a0" counters(submenu, "\2013\00a0", none);
+            counter-increment: submenu;
+        }
+    }
+
+    li ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: ( -.75 * $size__spacing-unit );
+    }
+}
+
+/** === Latest Comments === */
+
+.wp-block-latest-comments {
+
+    .wp-block-latest-comments__comment-meta {
+        font-family: $os;
+        font-weight: bold;
+
+        .wp-block-latest-comments__comment-date {
+            font-weight: normal;
+        }
+    }
+
+    .wp-block-latest-comments__comment,
+    .wp-block-latest-comments__comment-date,
+    .wp-block-latest-comments__comment-excerpt p {
+        font-size: inherit;
+    }
+
+    .wp-block-latest-comments__comment-date {
+        font-size: 0.71111em;
+    }
+}
+
+/** === Classic Editor === */
+
+/* Properly center-align captions in the classic-editor block */
+.wp-caption {
+    dd {
+        color: #767676;
+        font-size: 0.71111em;
+        font-family: $os;
+        line-height: 1.6;
+        margin: 0;
+        padding: ( $size__spacing-unit * .5 );
+        text-align: left;
+        text-align: center;
+        -webkit-margin-start: 0px;
+        margin-inline-start: 0px;
+    }
+}
+
+.wp-block-freeform {
+
+    /* Add style for galleries in classic-editor block */
+    blockquote {
+        border-left: 2px solid #0073aa;
+
+        cite {
+            font-family: $os;
+            font-size: 0.71111em;
+            font-style: normal;
+            line-height: 1.6;
+            color: #767676;
+        }
+    }
+}
+
+/** === Divid Column Ratio === */
+
+.has-2-columns {
+    > .editor-inner-blocks > .editor-block-list__layout {
+        @include make-row();
+    }
+
+    > .editor-inner-blocks > .editor-block-list__layout > .wp-block {
+        @include make-col-ready();
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    $i: 1;
+    @while $i < 12 {
+        $j: 12-$i;
+        &.vodi-#{$i}-#{$j} {
+            > .editor-inner-blocks > .editor-block-list__layout > .wp-block {
+                &:first-child {
+                    @include make-col($i);
+                }
+
+                &:last-child {
+                    @include make-col($j);
+                }
+            }
+        }
+
+        $i: $i + 1;
+    }
+}

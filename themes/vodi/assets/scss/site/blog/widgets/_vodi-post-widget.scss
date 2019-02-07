@@ -1,0 +1,59 @@
+.vodi_posts_widget {
+    .entry-cats-list,
+    .published {
+        font-size: 13px;
+    }
+
+    .entry-cats-list a {
+        font-weight: $ms-bold;
+    }
+
+    .published {
+        font-style: italic;
+        color: #949494;
+
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 2px;
+            height: 2px;
+            background: #949494;
+            border-radius: 50%;
+            vertical-align: super;
+            margin: 0 5px 0 3px;
+        }
+    }
+
+    .widget-header {
+        display: block;
+
+        @include media-breakpoint-up(sm) {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widget-title {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header-aside {
+            a {
+                font-size: 14px;
+                line-height: 18px;
+                color: #949494;
+                font-weight: 500;
+                
+                @include media-breakpoint-up(sm) {
+                    padding-left: 8px;
+                }
+            }
+        }
+    }
+}
+
+@import "vodi-post-widget-style-1";
+@import "vodi-post-widget-style-2";
+@import "vodi-post-widget-style-3";

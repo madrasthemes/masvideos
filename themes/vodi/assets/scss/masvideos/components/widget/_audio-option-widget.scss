@@ -1,0 +1,51 @@
+.audio-options {
+    list-style: none;
+    padding: 0;
+    display: flex;
+
+    span {
+        font-size: 9px;
+        color: #fff;
+        line-height: 1.5;
+        font-weight: $os-semi-bold;
+        letter-spacing: -0.05em;
+        margin-top: 5px;
+    }
+
+    svg {
+        color: #fff;
+        display: block;
+        height: 20px;
+    }
+
+    li {
+        background-color: #373c49;
+        
+        + li {
+            margin-left: 5px;
+        }
+
+        @include hover-focus {
+            background-color: #24baef;
+
+            & span {
+                color: #000;
+            }
+        }
+
+        &:first-child {
+            svg {
+                padding-top: 5px;
+            }
+        }
+
+        a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 52px;
+            height: 53px;
+            justify-content: center;
+        }
+    }
+}

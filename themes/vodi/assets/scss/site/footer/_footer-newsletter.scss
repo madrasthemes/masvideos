@@ -1,0 +1,28 @@
+.footer-news-letter {
+    padding-top: 45px;
+    padding-left: 35px;
+    .title {
+        font-size: 26px;
+        font-family: $ms;
+        font-weight: 300;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+    
+    .sub-title {
+        font-size: 15px;
+        font-weight: 400;
+        margin-bottom: 24px;
+    }
+
+    a {
+        font-size: 14px;
+        font-family: $ms;
+        font-weight: $ms-bold;
+        background-color: #24baef;
+        padding: 10px 42px 8px 46px;
+        display: block;
+        width: fit-content;
+        border-radius: 4px;
+    }
+}

@@ -1,0 +1,141 @@
+.footer-widgets {
+    .widget {
+        margin-bottom: 20px;
+    }
+
+    ul {
+        @include list-unstyled();
+    }
+}
+
+.footer-widgets-inner {
+    @include make-row();
+    padding: 46px 0 23px;
+    align-items: flex-start;
+
+    .footer-widget-1,
+    .footer-widget-2,
+    .footer-widget-3 {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    &.col-3 {
+        .footer-widget-1,
+        .footer-widget-2 {
+            @include make-col(4.8);
+        }
+
+        .footer-widget-3 {
+            @include make-col(2.4);
+        }
+
+        .footer-widget-3 {
+            padding-left: 19px;
+        }
+    }
+
+    &.col-2 {
+        .footer-widget-1,
+        .footer-widget-2 {
+            @include make-col(6);
+        }
+    }
+
+    .widget_nav_menu {
+        .menu,
+        .sub-menu {
+            @include list-unstyled();
+        }
+
+        .menu {
+            margin-bottom: 0;
+        }
+    }
+
+    .widget_meta,
+    .widget_nav_menu {
+        a {
+            padding: 4px 0;
+            display: inline-block;
+        }
+    }
+
+    .widget-header {
+        margin-bottom: 25px;
+    }
+
+    .widget-title {
+        font-size: 18px;
+    }
+
+    .widget_nav_menu > div,
+    .widget_categories,
+    .widget_pages,
+    .widget_meta {
+        > ul {
+            column-count: 2;
+        }
+    }
+
+    .widget_archive {
+        ul {
+            column-count: 2;   
+        }
+    }
+
+    .footer-widget-3 {
+        .widget_nav_menu > div,
+        .widget_categories,
+        .widget_pages,
+        .widget_meta {
+            > ul {
+                column-count: 1;
+            }
+        }
+
+        .widget_archive ul {
+            column-count: 1;   
+        }
+    }
+
+    .widget_archive,
+    .widget_categories,
+    .widget_pages {
+        ul li {
+
+            a {
+                display: inline-block;
+                padding: 4px 0;
+            }
+        }
+    }
+
+    .widget_categories,
+    .widget_pages {
+        ul ul {
+            padding-left: 0;
+        }
+    }
+
+    select {
+        background-position: calc(100% - 20px) calc(1em + 1px), calc(100% - 15px) calc(1em + 1px);
+        background-size: 6px 6px, 5px 5px, 1px 1.5em;
+        background-repeat: no-repeat;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding: 0 35px 0 20px;
+    }
+
+    .widget_recent_entries li {
+
+        &:first-child {
+            padding-top: 0;
+        }
+
+        a {
+            font-size: 15px;
+            font-weight: $ms-medium;
+        }
+    }
+}

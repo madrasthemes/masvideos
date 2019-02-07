@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "editor.css",
+	"sources": [
+		"../../../scss/gutenberg-blocks/section-full-width-banner/editor.scss"
+	],
+	"names": [],
+	"mappings": "AAAA,AAAA,mCAAmC,CAAC;EAChC,KAAK,EAAE,KAAK,GACf"
+}

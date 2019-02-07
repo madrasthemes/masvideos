@@ -1,0 +1,38 @@
+@mixin make-nav() {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+
+    > li > a {
+        display: block;
+        @include hover-focus {
+            text-decoration: none;
+        }
+
+        // Disabled state lightens text
+        &.disabled {
+            color: $nav-link-disabled-color;
+        }
+    }
+
+    .menu-item-has-children {
+        position: relative;
+
+        @include hover-focus() {
+            > .sub-menu {
+                display: block;
+            }
+        }
+    }
+
+    .sub-menu .sub-menu {
+        left: 100%;
+        top: 0;
+    }
+}
+
+@mixin make-nav-link( $nav-link-padding-y: $nav-link-padding-y, $nav-link-padding-x: $nav-link-padding-x ) {
+    padding: $nav-link-padding-y $nav-link-padding-x;
+}

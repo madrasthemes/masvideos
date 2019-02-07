@@ -1,0 +1,398 @@
+.section-movies-list {
+    background: #131722;
+    counter-reset: my-sec-counter;
+    padding-bottom: 72px;
+
+    &__inner {
+        
+        @include media-breakpoint-up(lg) {
+            display: flex;
+
+        }
+
+        .top-movies-list {
+            padding: 0px;
+
+            @include media-breakpoint-up(md) {
+                padding-right: 15px;
+                padding-left: 15px;
+
+            }
+
+            @include media-breakpoint-up(lg) {
+                @include make-col(4);
+            }
+
+            & + .featured-with-list-view-movies-list {
+                @include media-breakpoint-up(md) {
+                    padding-left: 30px;
+                }
+                @include media-breakpoint-up(lg) {
+                    padding-left: 50px;
+                }
+                @include media-breakpoint-up(xl) {
+                    padding-left: 70px;
+                }
+            }
+        }
+    }
+    
+    .top-movies-list {
+        background: #1c212e;
+
+        &__header {
+            justify-content: space-between;
+            padding: 34px 0px 15px 0px;
+            margin: 0 19px;
+            border-bottom: 1px solid #2f2f33;
+
+            &:before{
+                content: none;
+            }
+
+            @include media-breakpoint-up(xl) {
+                display: flex;
+                align-items: center;
+
+            }
+
+            .nav-tabs {
+                li {
+                    & + li {
+                        margin-left: 25px;
+                    }
+                }
+            }
+        }
+
+        &__info {
+             padding: 16px 0;
+
+             .movie-list {
+                display: flex;
+                align-items: center;
+                margin: 0px 19px;
+                border-bottom: 1px solid #2f2f33;
+
+                &:before{
+                    counter-increment: my-sec-counter;
+                    content: counter(my-sec-counter) " "; 
+                    margin-right: 25px;
+                    text-align: center;
+                    color: $pagination-active-color;
+                    font-size: 36px;
+                    line-height: 18px;
+                    font-weight: $ms-bold;
+
+                    @include media-breakpoint-up(xl) {
+                        width: 40px;
+                    }   
+                }
+
+                &:last-child {
+                    border: none;
+                }
+
+                &__poster {
+                    display: none;
+                }
+
+                &__body {
+                    padding: 15px 0;
+                }
+            }
+        }
+    }
+
+    &__title {
+        font-size: 22px;
+        line-height: 18px;
+        font-weight: $ms-medium;
+        color: $pagination-active-color;
+        margin-bottom: 5px;
+
+        @include media-breakpoint-up(xl) {
+            margin-bottom: 0;
+
+        }
+    }
+
+    &__header a {   
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: $ms-semi-bold;
+        color: #949494;
+
+        &.active  {
+            font-weight: $ms-bold;
+            color: $pagination-active-bg;
+        }
+    }
+
+    .movie-list {
+        &__year {
+            font-size: 12px;
+            line-height: 18px;
+            font-weight: $os-regular;
+            color: $pagination-color;
+            margin-bottom: 2px;
+            display: block;
+
+            a {
+                color: $pagination-color;
+            }
+        }
+
+        &__name {
+            font-size: 14px;
+            line-height: 18px;
+            color: $pagination-active-color;
+            font-weight: $os-bold;
+            margin: 0 0 2px;
+        }
+
+        &__genre {
+            font-size: 12px;
+            line-height: 18px;
+            color: $vodi-primary-color;
+            display: block;
+        }
+    }
+
+    .featured-with-list-view-movies-list {
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #2f2f33;
+            padding-top: 35px;
+            padding-bottom: 20px;
+            margin-bottom: 17px;
+
+
+            &:before {
+                content: none;
+            }
+
+            a {   
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: $ms-semi-bold;
+                color: #949494;
+
+                &.active  {
+                    font-weight: $ms-bold;
+                    color: $pagination-active-bg;
+                }
+            }
+
+            .nav-tabs {
+                li {
+                    & + li {
+                        margin-left: 25px;
+                    }
+                }
+            }
+        }
+
+        &__info {
+            .featured-movie {
+                .movie {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 26px;
+
+                    &__poster {
+                        margin-bottom: 25px;
+
+                        @include media-breakpoint-up(sm){
+                            margin-bottom: 0;
+                        }
+                    }
+
+                    &__body {
+                        @include media-breakpoint-up(sm) {
+                            margin-left: 46px;
+                        }
+                    }
+
+                    &__meta {
+                        &--genre {
+                            display: none;
+                        }
+
+                         > span {
+                            & + span {
+                                &:before {
+                                    content: none;
+                                }
+                            }
+                        }
+                    }
+
+                    &__short-description {
+                        display: block;
+                    }
+
+                    &__title {
+                        font-size: 19px;
+                        line-height: 18px;
+                        color: $pagination-active-color;
+                        margin-bottom: 12.5px;
+                        display: inline-block;
+                    }
+
+                    &__actions {
+                        display: block;
+
+                        .movie-actions--link_watch, 
+                        .movie-actions--link_add-to-playlist {
+                            @include make-button( 14px, 18.7px, 12px, 1, 5px, 2px );
+                            color: #fff;
+                            font-family: $ms;
+                            min-width: 125px; 
+                        }
+
+                        .movie-actions--link_add-to-playlist {
+                            margin-left: 5px;
+
+                            @include hover-focus {
+                                background-color: #fff;
+                                color: #000;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .featured-movie__actions--link + .featured-movie__actions--link {
+                @include media-breakpoint-up(md){
+                    margin-left: 5px;
+                }
+            }
+
+            .list-view-movies-list {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+
+                .movie-list {
+                    @include make-col(6);
+
+                    @include media-breakpoint-up(md) {
+                        @include make-col(4);
+                    }
+
+                    @include media-breakpoint-up(lg) {
+                        @include make-col(5.4);
+                    }
+
+                    position: relative;
+                    cursor: pointer;
+                    display: flex;
+                    padding: 13px 0px;
+                    align-items: center;
+                    border-top: 1px solid #2f2f33;
+
+                    &:nth-child(1),
+                    &:nth-child(2) {
+                        padding-top: 0;
+                        border-top: none;
+                    }
+
+                    &__body {
+                        @include media-breakpoint-up(lg) {
+                            margin-left: 18px;
+                        }
+                    }
+
+                    &__genre {
+                        padding-top: 10px;
+                    }
+
+                    &__name {
+                         margin-bottom: 5px;
+                    }
+
+                    .movie__link {
+
+                        img {
+                            width: 68px;
+                            height: 100px;
+                        }
+                    }
+
+                    @include media-breakpoint-up(lg){
+
+                        &:nth-child(2n){
+                            position: relative;
+
+                            &:before {
+                                content: " ";
+                                width: 1px;
+                                height: 129px;
+                                background-color: #2c3346;
+                                display: block;
+                                position: absolute;
+                                left: -45px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*.tab-content {
+        padding: 16px 0;
+
+        >.tab-pane {
+            display: none;
+
+            .movie {
+                display: flex;
+                align-items: center;
+                margin: 0px 19px;
+            }
+        }
+
+        >.active {
+            display: block;
+        }
+    }*/
+
+    /*.nav {
+                
+                font-family: $ms;
+                font-weight: $ms-medium;
+                overflow: auto;
+                display: -webkit-box;
+
+                @include media-breakpoint-down(sm) {
+                    overflow: auto;
+                    flex-wrap: nowrap;
+                }
+            }*/
+
+            /*li {
+
+                display: flex;
+                flex-shrink: 0;
+
+                a{
+                    display: inline-block;
+                }
+
+                &+ li:before {
+                    content: '/';
+                    color: #2c3c4a;;
+                    margin: 0 10px 0 19px;
+                    font-size: 22px;
+                    font-weight: 300;
+                }
+            }
+
+            &:before{
+                content: none;
+            }*/

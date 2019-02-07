@@ -1,0 +1,108 @@
+.tabbed-list-movies {
+
+	&__inner {
+
+        .nav {
+            width: 100%;
+            padding-left: 0;
+
+        .nav-item {
+            margin-left: 0;
+
+            a {
+                font-size: 22px;
+                font-weight: 400;
+                display: inline;
+
+                &.active {
+                    font-weight: 500;
+                }
+            }
+
+            +  .nav-item {
+                    &:before {
+                            content: '/';
+                            margin: 0 9px 0 15px;
+                            color: #2c3c4a;
+                            display: inline-block;
+                        }    
+                    }
+                }
+
+                 border-bottom: 1px solid #2f2f33;
+        padding-bottom: 12px;
+
+        &:after {
+            content: none;
+        }
+            }
+
+        .grid-movie-list {
+            margin-left: 0;
+            margin-right: 0;
+
+            .movie__list {
+
+                .year {
+                    font-size: 12px;
+                    color: $pagination-color;
+                }
+
+                .movie__name {
+                    font-size: 14px;
+                    color: #fff;
+                    font-weight: 700;
+                    margin: 0;
+                    margin-bottom: 10px;
+                }
+
+                .wrapper {
+                    margin-left: 15px;
+                }
+
+                .movie__link {
+                    margin: 13px 0;
+                    display: flex;
+                }     
+
+                @include media-breakpoint-up(sm) {
+                    @include make-col(6);
+                }
+
+                @include media-breakpoint-up(md) {
+                    @include make-col(4);
+                    border-top: 1px solid #2f2f33;
+                }
+
+                @include media-breakpoint-up(lg) {
+                    padding:0;
+
+                    position: relative;
+
+                    &:before {
+                        content: " ";
+                        width: 1px;
+                        height: 100px;
+                        background-color: #2c3346;
+                        display: block;
+                        position: absolute;
+                        left: -28px;
+                        bottom: 11px
+                    }
+
+                    &:nth-child(3n+1) {
+                        &:before{ 
+                        content: none;
+                    }
+                }    
+
+                 &:nth-child(-n+3) {
+                
+                    border-top: none;
+                
+                }
+                }
+            }
+        }
+    }
+}

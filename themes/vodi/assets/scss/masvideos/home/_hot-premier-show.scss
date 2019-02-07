@@ -1,0 +1,106 @@
+// .section-hot-premier-show {
+
+//     .movie-actions--link_add-to-playlist {
+//         display: none;
+//     }
+
+//     .home-section__flex-header {
+//         margin-bottom: 23px;
+//     }
+
+//     .movies {
+
+//         &__inner {
+//             margin-left: -7.5px;
+//             margin-right: -7.5px;
+//         }
+//     }    
+
+//     .movie {
+//         position: relative;
+//         padding-right: 7.5px !important;
+//         padding-left: 7.5px !important;  
+
+//         @include media-breakpoint-up(md) {
+//             @include make-col(6);
+//         }
+
+//         @include media-breakpoint-up(lg) {
+//             @include make-col(3);
+//         }
+
+//         &__title {
+//             color: #fff !important;
+//             margin-bottom: 20px;
+//             font-size: 22px;
+//             line-height: 1.5;
+
+//             @include media-breakpoint-up(md) {
+//                 font-size: 32px;
+//             }
+
+//             @include media-breakpoint-only(lg) {
+//                 font-size: 28px;
+//             }
+//         }
+
+//         &__actions {
+//             display: block;
+//         }
+
+//         &__poster {
+//             margin-bottom: 0;
+
+//             &::before {
+//                 background: linear-gradient(to bottom, rgba(240,47,23,0) 50%, rgba(0,0,0,0.70) 100%);
+//                 content: " ";
+//                 height: 100%;
+//                 position: absolute;
+//                 bottom: 0;
+//                 right: 0;
+//                 left: 0;
+//             }
+//         }
+
+//         &__short-description {
+//             display: block;
+//         }
+
+//         &__body {
+//             position: absolute;
+//             text-align: center;
+//             width: 100%;
+//             padding: 0 25px 20px;
+//             bottom: 0;
+//             right: 0;
+//             left: 0;
+//         }
+
+//         &__short-description {
+//             font-size: 13px;
+//             line-height: 22px;
+//             color: #fff;
+//             font-weight: 400;
+//             margin-bottom: 20px;
+//         }
+
+//         &__info--head {
+//             display: none;
+//         }
+
+//         .movie-actions--link_watch {
+//             display: block;
+//             width: 100%;
+//             padding: 10.5px 12px;
+//             font-size: 14px;
+//             font-weight: $ms-bold;
+//             font-family: $ms;
+//             border: 2px solid #b6b7b9;
+//             background: transparent;
+//             border-radius: 5px;
+//             color: #fff;
+//         }
+//     }
+// }
+
+

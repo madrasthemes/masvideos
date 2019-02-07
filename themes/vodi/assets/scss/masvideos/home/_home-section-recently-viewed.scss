@@ -1,0 +1,22 @@
+.home-section-recently-viewed {
+    .recently-viewed {
+        @include make-row(14px);
+
+        > .movie {
+            @include make-col-ready(14px);
+            @include make-col(6);
+
+            @include media-breakpoint-up(md) {
+                @include make-col(3);
+            }
+            
+            @include media-breakpoint-up(xl) {
+                @include make-col(1.5);
+            }
+        }
+    }
+
+    .home-section__flex-header {
+        margin-bottom: 20px;
+    }
+}

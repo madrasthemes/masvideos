@@ -1,0 +1,22 @@
+/**
+ * Bootstrap variables override
+ */
+.home-recent-comments .recent-comments ul {
+  padding-left: 0;
+  list-style: none; }
+  .home-recent-comments .recent-comments ul li.recentcomments {
+    padding: 4px 0 7px 0; }
+    .home-recent-comments .recent-comments ul li.recentcomments > a {
+      font-size: 15px;
+      line-height: 21px;
+      font-weight: 600;
+      color: #121a21;
+      display: block !important; }
+    .home-recent-comments .recent-comments ul li.recentcomments .comment-author-link > a {
+      color: #121a21;
+      font-size: 13px;
+      line-height: 18px; }
+    .home-recent-comments .recent-comments ul li.recentcomments + .recentcomments {
+      border-top: 1px solid #e5eaeb; }
+
+/*# sourceMappingURL=style.css.map */

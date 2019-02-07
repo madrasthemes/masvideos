@@ -1,0 +1,24 @@
+.editor-styles-wrapper { 
+	.section-featured-video {
+		a {
+			text-decoration: none;
+		}
+		
+		.video {
+			&__title {
+				margin-top: 0;
+			}
+
+			&__short-description {
+				p {
+					font-size: 14px;
+				    line-height: 21px;
+				    letter-spacing: -0.01em;
+				    color: #b4bbc0;
+				    margin-bottom: 23px;
+				    margin-top: 0;
+				}
+			}
+		}
+	}
+}

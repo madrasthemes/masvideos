@@ -1,0 +1,5 @@
+.footer-menu,
+.nav,
+.offcanvas-nav {
+    @include make-nav();
+}

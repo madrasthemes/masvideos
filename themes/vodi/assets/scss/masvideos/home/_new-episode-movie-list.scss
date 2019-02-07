@@ -1,0 +1,77 @@
+.new-episode-movie-list {
+
+	&.style-2 {
+		padding: 0px 0 34px;
+
+		.section-movies-carousel__carousel {
+            @include make-col(12);
+        }
+
+        .slick-arrow {
+            &:before {
+                display: block;
+            }
+        }
+
+        .slick-prev {
+            left: 0px;
+            z-index: 1;
+
+            &:before {
+                width: 22px;
+                height: 42px;
+                background-image: url( 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="42"><path 
+                    d="M21.988,40.588 L20.602,41.988 L0.011,21.204 L0.214,20.999 L0.011,20.795 L20.602,0.011 L21.988,1.410 L2.582,20.999 L21.988,40.588 Z" fill="rgb(177, 177, 177)"/>
+                </svg>');
+            }
+
+            @include media-breakpoint-up(md) {
+                left: -25px;
+                top: 25%;
+            }
+
+            @include media-breakpoint-up(xxl) {
+                left: -50px;
+            }
+        }
+
+        .slick-prev:hover::before {
+            background-image: url( 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="42"><path 
+                    d="M21.988,40.588 L20.602,41.988 L0.011,21.204 L0.214,20.999 L0.011,20.795 L20.602,0.011 L21.988,1.410 L2.582,20.999 L21.988,40.588 Z" fill="rgb(255, 255, 255)"/>
+                </svg>');
+        }
+
+        .slick-next {
+            right: 0px;
+
+            &:before {
+                width: 22px;
+                height: 42px;
+                background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="23" height="43"><path d="M22.707,21.707 L1.707,42.707 L0.293,41.293 L20.086,21.500 L0.293,1.706 L1.707,0.292 L22.707,21.292 L22.500,21.499 L22.707,21.707 Z" fill="rgb(177, 177, 177)"/>
+                    </svg>');
+            }
+
+            @include media-breakpoint-up(md) {
+                right: -25px;
+                top: 25%;
+            }
+
+            @include media-breakpoint-up(xxl) {
+                right: -50px;
+            }
+        }
+
+        .slick-next:hover::before {
+            background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="23" height="43"><path d="M22.707,21.707 L1.707,42.707 L0.293,41.293 L20.086,21.500 L0.293,1.706 L1.707,0.292 L22.707,21.292 L22.500,21.499 L22.707,21.707 Z" fill="rgb(255, 255, 255)"/>
+                    </svg>');
+        }
+
+        .movies-carousel{ 
+            &.columns-5 {
+                .slick-slide {
+                    margin: 0 10px;
+                }
+            }
+        }
+    }
+}

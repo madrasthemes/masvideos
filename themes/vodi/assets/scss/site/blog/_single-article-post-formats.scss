@@ -1,0 +1,77 @@
+.single-article {
+
+    &.format-link,
+    &.format-aside,
+    &.format-quote {
+
+        .single-article__inner {    
+            display: flex;
+            flex-direction: column;
+
+            .article__header {
+                order: 1;
+                margin-top: 10px;
+                margin-bottom: 40px;
+
+                .article__title {
+                    display: none;
+                }
+            }
+
+            .article__content {
+                background-color: #f6f7f9;
+                padding: 60px 80px;
+                margin-bottom: 0;
+            }
+        }    
+    }
+
+    &.format-quote .single-article__inner {
+
+        .article__content {
+
+            blockquote {
+                padding: 0;
+                position: relative;
+
+                &:before {
+                    position: absolute;
+                }
+
+                p:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    &.format-link {
+        p {
+            font-size: 22px;
+            line-height: 28px;
+            letter-spacing: -0.025em;
+            word-wrap: break-word;
+            font-weight: 600;
+            
+            a {
+                color: #121a21;
+
+                @include hover-focus() {
+                    text-decoration: none;
+                    color: $vodi-primary-color;
+                }
+            }
+        }
+    }
+
+    &.format-aside {
+        
+        .single-article__inner {
+
+            .article__header {
+                margin-top: 10px;
+                margin-bottom: 45px;   
+            }
+        }        
+    }
+}

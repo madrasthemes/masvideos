@@ -1,0 +1,56 @@
+.gallery {
+    > .gallery-item {
+        a, img {
+        	display: block;
+    	}
+
+    	img {
+    		margin:auto;
+    	}
+    }
+
+    .wp-caption-text {
+	    font-size: 12px;
+	    line-height: 15px;
+	    color: #707070;
+	    text-align: center;
+	    margin-top: 10px;
+	}
+}
+
+.gallery-columns-1 > .gallery-item {
+    @include make-col(12);
+}
+.gallery-columns-2 > .gallery-item {
+    @include make-col(6);
+}
+.gallery-columns-3 > .gallery-item {
+    @include make-col(4);
+}
+.gallery-columns-4 > .gallery-item {
+    @include make-col(3);
+}
+.gallery-columns-5 > .gallery-item {
+    @include make-col(2.4);
+}
+.gallery-columns-6 > .gallery-item {
+    @include make-col(2);
+}
+.gallery-columns-7 > .gallery-item {
+    @include make-col(1.71428571429);
+}
+.gallery-columns-8 > .gallery-item {
+    @include make-col(1.5);
+}
+.gallery-columns-9 > .gallery-item {
+    @include make-col(1.33333333333);
+}
+.gallery-columns-10 > .gallery-item {
+    @include make-col(1.2);
+}
+.gallery-columns-11 > .gallery-item {
+    @include make-col(1.09090909091);
+}
+.gallery-columns-12 > .gallery-item {
+    @include make-col(1);
+}

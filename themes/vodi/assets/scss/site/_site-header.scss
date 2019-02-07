@@ -1,0 +1,95 @@
+@import "header/primary-nav";
+@import "header/secondary-nav";
+@import "header/secondary-nav-v3";
+@import "header/offcanvas-menu";
+@import "header/header-v2";
+@import "header/header-v3";
+@import "header/header-v4";
+
+.site-header {
+    box-shadow: 0 0 8px rgba(51,51,51,.3);
+    margin-bottom: 37px;
+    position: relative;
+    z-index: 9;
+    
+    &__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &.header-v1 {
+        .site-header__inner {
+            min-height: 82px;
+        }
+    }
+
+    &__right,
+    &__left {
+        display: flex;
+        align-items: center;
+    }
+
+    &__left {
+        > *:last-child {
+            padding-right: 0;
+        }
+    }
+
+    &__offcanvas--toggler {
+        padding: 18px;
+        margin-left: -18px;
+        display: block;
+    }
+
+    &__search {
+        padding: 0 17px;
+
+        .search-field {
+            min-width: 250px;
+        }
+    }
+
+    &__upload {
+        font-size: 14px;
+        line-height: 18px;
+        padding: 0 12px;
+        margin-top: 4px;
+
+        &--link {
+            display: flex;
+            white-space: nowrap;
+
+            @include hover-focus() {
+                text-decoration: none;
+
+                svg {
+                    fill: #0056b3;
+                }
+            }
+        }
+
+        &--icon {
+            margin-right: 9px;
+            display: block
+        }
+    }
+
+    &__notification {
+        padding: 0 18px;
+
+        &--link {
+            white-space: nowrap;
+        }
+    }
+
+    &__user-account {
+        &--link {
+            white-space: nowrap;
+        }
+    }
+
+    &.header-v3 {
+        box-shadow: 0px 14px 29px 0px rgba(0, 0, 0, 0.45);
+    }
+}

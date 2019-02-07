@@ -1,0 +1,110 @@
+.section-featured-video {
+    &__inner {
+        align-items: center;
+        padding: 94px 0;
+    }
+
+    .featured-video {
+        &__content {
+            order: 1;
+            padding-top: 20px;
+
+            @include media-breakpoint-up(md) {
+                @include make-col(7);
+                order: inherit;
+                padding-top: 0;
+            }
+
+            @include media-breakpoint-up(lg) {
+                @include make-col(6);
+            }
+
+            @include media-breakpoint-up(xl) {
+                @include make-col(4.8);
+            }
+            
+            &-image {
+                width: 187px;
+                height: 59px;
+                object-fit: cover;
+                margin-bottom: 55px;
+            }
+
+            &-title {
+                font-size: 30px;
+                font-weight: $ms-bold;
+                color: $white;
+                margin-bottom: 18px;
+            }
+
+            &-subtitle {
+                display: block;
+                font-family: $ms;
+                font-weight: $ms-medium;
+                font-size: 16px;
+                line-height: 26px;
+                color: $white;
+                margin-bottom: 50px;
+            }
+
+            &-action--link {
+                font-family: $ms;
+                @include make-button( 20px, 40px, 14px, 18px , 6px, 2px );
+                min-width: 180px;
+
+                &_watch {
+                    color: $white;
+                    font-size: 12px;
+                    line-height: 12.77px;
+                    margin-bottom: 20px;
+
+                    @include media-breakpoint-up(md) {
+                        margin-bottom: 0;
+                    }
+                }
+
+                &_add-to-playlist {
+                    @include button-outline-variant( $white, $black );
+                }
+
+                &+ .featured-video__content-action--link {
+                    margin-left: 0;
+
+                    @include media-breakpoint-up(md) {
+                        margin-left: 15px;
+                    }
+                }
+            }
+        }
+
+        &__action {
+            @include media-breakpoint-up(md) {
+                @include make-col(5);
+            }
+
+            @include media-breakpoint-up(lg) {
+                @include make-col(6);
+            }
+
+            @include media-breakpoint-up(xl) {
+                @include make-col(7.2);
+            }
+
+            &-icon {
+                font-size: 84px;
+                border: 2px solid $white;
+                border-radius: 50%;
+                margin: auto;
+                width: 182px;
+                height: 182px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+
+    h2.featured-video__content-title {
+        font-size: 50px;
+    }
+}

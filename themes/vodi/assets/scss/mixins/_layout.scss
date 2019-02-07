@@ -1,0 +1,23 @@
+@mixin stretch-full-width() {
+    width: 100vw;
+    position: relative;
+    margin-left: calc(-50vw + 50% - 8px);
+
+    @include media-breakpoint-down(md) {
+        margin-left: calc(-50vw + 50%);
+    }
+}
+
+@mixin make-auto-col() {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+@mixin make-auto-width-col() {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+}

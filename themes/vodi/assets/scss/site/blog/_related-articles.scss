@@ -1,0 +1,98 @@
+.related-posts {
+     @include make-row();
+
+    > article{
+        flex-direction: column;
+        align-items: flex-start;
+
+        &.post {
+            @include make-col-ready();
+            @include make-col(12);
+        }
+
+        .article__thumbnail {
+            margin-bottom: 18px;
+        }
+    }
+
+    &.columns-1 {
+        > article.post {
+            @include make-col(12);
+        }
+    }
+
+    &.columns-2 {
+        > article.post {
+            @include make-col(6);
+
+        }
+    }
+
+
+    &.columns-3 {
+        > article.post {
+            @include make-col(4);
+        }
+    }
+
+    &.columns-4 {
+        > article.post {
+            @include make-col(3);
+        }
+    }
+
+    &.columns-5 {
+        > article.post {
+            @include make-col(2.4);
+        }
+    }
+
+    &.columns-6 {
+        > article.post {
+            @include make-col(2);
+        }
+    }
+    
+
+    .article__title {
+        font-size: 17px;
+    }
+}
+
+.vodi-related-articles {
+
+    .article__attachment--thumbnail {
+        display: block;
+        margin-bottom: 17px;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 19px;
+
+    }
+
+    .section-title {
+        flex: 1;
+        margin-bottom: 0;
+
+        &:after {
+            margin-left: 16px;
+            z-index: 15;
+        }
+    }
+
+    .header-aside {
+        font-size: 14px;
+        line-height: 18px;
+        font-family: $ms;
+        font-weight: $ms-medium;
+        padding-left: 11px;
+
+        a {
+             color: #949494;
+        }
+    }
+}

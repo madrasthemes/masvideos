@@ -1,0 +1,7 @@
+.nav .sub-menu {
+    @include make-dropdown();
+}
+
+.nav .sub-menu > li > a {
+    @include make-dropdown-item();
+}

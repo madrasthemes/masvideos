@@ -1,0 +1,12 @@
+.lp-v2-features-section .features,
+.lp-v2-section-plans__inner,
+.lp-v2-features-section__inner {
+	@include make-row();
+}
+
+.lp-v2-features-section__caption,
+.lp-v2-features-section__content,
+.lp-v2-features-section .feature,
+.lp-v2-section-plans__plan-box {
+	@include make-col-ready();
+}

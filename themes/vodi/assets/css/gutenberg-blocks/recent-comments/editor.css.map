@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "editor.css",
+	"sources": [
+		"../../../scss/gutenberg-blocks/recent-comments/editor.scss"
+	],
+	"names": [],
+	"mappings": ""
+}

@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "editor.css",
+	"sources": [
+		"../../../scss/gutenberg-blocks/movie-section-aside-header/editor.scss"
+	],
+	"names": [],
+	"mappings": ""
+}

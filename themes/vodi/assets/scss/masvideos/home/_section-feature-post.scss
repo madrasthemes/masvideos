@@ -1,0 +1,50 @@
+.section-featured-post {
+    margin-bottom: 28px;
+    
+    .section-feature-post__inner {
+        .article {
+            @include make-col(12);
+
+            @include media-breakpoint-up(md) {
+                @include make-col(3);
+            }
+
+            display: block;
+
+            &__attachment {
+                max-width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+                height: auto;
+                flex: none;
+            }
+
+            &__summary {
+                text-align: center;
+                flex: none;
+
+                .entry-title {
+                    font-size: 15px;
+                    font-family: $os;
+                    color: $vodi-body-color;
+                    line-height: 21px;
+                    font-weight: $os-bold;
+                    margin-bottom: 10px;
+                }
+
+                .article__categories {
+                    font-size: 13px;
+                }
+            }
+
+            &__meta {
+                font-size: 13px;
+                font-style: normal;
+
+                .article__date:before {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+@import "../../vendors/bootstrap/functions";
+@import "../../vendors/bootstrap/variables";
+@import "../../vendors/bootstrap/mixins";
+@import "../../mixins";
+@import "../../components/nav";
+
+
+.section-hot-premier-show {
+
+    .nav-tabs {
+        list-style: none;
+
+        a {
+            text-decoration: none;
+        }
+    }
+
+    .nav-item {
+        margin-bottom: 0;
+    }
+
+    .movie {
+
+        &__short-description p {
+            line-height: 21px;
+        }
+    }
+
+    .movie-actions--link_watch {
+        text-decoration: none;
+    }
+}

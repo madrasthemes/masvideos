@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "editor.css",
+	"sources": [
+		"../../../scss/gutenberg-blocks/videos-with-featured-video/editor.scss"
+	],
+	"names": [],
+	"mappings": "AAAA,AAEE,sBAFoB,CACrB,wCAAwC,CACvC,CAAC,CAAC;EACD,eAAe,EAAE,IAAI,GACrB;;AAJH,AAME,sBANoB,CACrB,wCAAwC,CAKvC,EAAE,AAAA,IAAI,CAAC;EACN,OAAO,EAAE,IAAI;EACV,SAAS,EAAE,IAAI;EACf,aAAa,EAAE,CAAC;EAChB,UAAU,EAAE,IAAI,GACnB;;AAXH,AAaE,sBAboB,CACrB,wCAAwC,CAYvC,aAAa,CAAC;EACb,UAAU,EAAE,CAAC,GACb"
+}

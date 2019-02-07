@@ -1,0 +1,43 @@
+/**
+ * Bootstrap variables override
+ */
+.home-section__movies__inner {
+  align-items: center;
+  padding: 45px 0 30px; }
+  @media (min-width: 768px) {
+    .home-section__movies__inner > .home-section__header::before {
+      margin-right: auto;
+      margin-left: auto; } }
+  @media (min-width: 1200px) {
+    .home-section__movies__inner > .home-section__header::before {
+      margin-right: 0;
+      margin-left: 0; } }
+  @media (min-width: 768px) {
+    .home-section__movies__inner > .home-section__header {
+      text-align: center; } }
+  @media (min-width: 1200px) {
+    .home-section__movies__inner > .home-section__header {
+      flex: 0 0 25%;
+      max-width: 25%;
+      text-align: left; } }
+  @media (min-width: 1440px) {
+    .home-section__movies__inner > .home-section__header {
+      flex: 0 0 29.1666666667%;
+      max-width: 29.1666666667%;
+      padding-right: 75px; } }
+  .home-section__movies__inner > .home-section__header::before {
+    margin-bottom: 42px; }
+  @media (min-width: 1200px) {
+    .home-section__movies__inner > .home-section__header + .masvideos-movies {
+      flex: 0 0 75%;
+      max-width: 75%;
+      padding-left: 7.5px; } }
+  @media (min-width: 1440px) {
+    .home-section__movies__inner > .home-section__header + .masvideos-movies {
+      flex: 0 0 70.8333333333%;
+      max-width: 70.8333333333%;
+      padding-left: 7.5px; } }
+  .home-section__movies__inner .movie {
+    margin-bottom: 30px; }
+
+/*# sourceMappingURL=style.css.map */

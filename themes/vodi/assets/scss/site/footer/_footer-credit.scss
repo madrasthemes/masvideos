@@ -1,0 +1,15 @@
+.site-info {
+    text-align: center;
+    font-size: 13px;
+    line-height: 23px;
+}
+
+.policy-info {
+    a {
+        font-size: 13px;
+        
+        &:hover {
+            color: $vodi-primary-color;
+        }
+    }
+}

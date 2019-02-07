@@ -1,0 +1,7 @@
+$vodi-primary-color: #24baef;
+$primary-bg-color: $vodi-primary-color;
+
+@import "../vendors/bootstrap/functions";
+@import "../vendors/bootstrap/variables";
+@import "../vendors/bootstrap/mixins";
+@import "../utilities/primary-color.scss";

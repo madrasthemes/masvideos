@@ -1,0 +1,41 @@
+@import "vendors/bootstrap/functions";
+@import "vendors/bootstrap/variables";
+@import "variables";
+@import "vendors/bootstrap/mixins";
+@import "vendors/bootstrap/root";
+@import "vendors/bootstrap/reboot";
+@import "vendors/bootstrap/type";
+@import "vendors/bootstrap/images";
+@import "vendors/bootstrap/code";
+
+@import "mixins";
+
+@import "landing-v1/header";
+@import "landing-v1/components/grid";
+@import "landing-v1/landing-nav";
+@import "landing-v1/landing-content-featured-section";
+@import "landing-v1/components/dropdown";
+@import "landing-v1/hero";
+@import "landing-v1/components/button";
+@import "landing-v1/movies-section";
+@import "landing-v1/tabs-section";
+@import "landing-v1/section-titles";
+@import "landing-v1/footer";
+@import "landing-v1/landing-site-type";
+@import "landing-v1/pricing-table";
+@import "landing-v1/components/table";
+@import "landing-v1/components/slick";
+
+@import "landing-v2/header-v2";
+@import "landing-v2/landing-v2-site-type";
+@import "landing-v2/video";
+@import "landing-v2/features-section";
+@import "landing-v2/components/grid";
+@import "landing-v2/plans";
+@import "landing-v2/faq";
+@import "landing-v2/view-count";
+@import "landing-v2/footer-v2";
+
+@import "coming-soon/coming-soon-content";
+@import "coming-soon/coming-soon-site-type";
+@import "coming-soon/components/grid";

@@ -1,0 +1,37 @@
+// Vendors
+@import "../../vendors/bootstrap/functions";
+@import "../../vendors/bootstrap/variables";
+@import "../../vendors/bootstrap/mixins";
+
+// Utilities
+@import "../../variables";
+@import "../../mixins";
+
+.section-videos-live-coming-soon {
+    .live-videos {
+        .video {
+            &__body {
+                padding: 12px 10px 12px 20px;
+                border: 1px solid #ced0d1;
+                border-radius: 3px;
+                width: 100%;
+            }
+
+            &__poster--image {
+                min-width: 224px;
+                height: 138px;
+                object-fit: cover;
+            }
+
+            &__container {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .live-videos__title {
+        @include media-breakpoint-up(sm) {
+            margin-left: 236px;
+        }
+    }
+}

@@ -1,0 +1,91 @@
+.lp-featured-section {
+    background-image:  linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)),url(https://placehold.it/1920x610);
+    background-position: 50% 14%;
+    padding: 30px 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+	color: $vodi-body-color;
+	line-height: 1.25;
+
+    @include media-breakpoint-up(md) {
+         padding: 80px 0;
+    }
+
+	span {
+		font-size: 30px;
+		font-weight: $ms-medium;
+		margin-top: 16px;
+		display: block;
+	}
+
+	p {
+		font-size: 15px;
+		line-height: 26px;
+		margin-top: 23px;
+        -webkit-font-smoothing: antialiased;
+
+        @include media-breakpoint-up(md) {
+            padding-right: 100px;
+            font-size: 18px;
+        }
+	}
+
+    &__link {
+        text-align: center;
+
+        @include media-breakpoint-up(md) {
+            text-align: start;
+        }
+    }
+
+	&__details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 30px;
+
+        @include media-breakpoint-up(md) {
+            @include make-col(7);
+            margin-bottom: 0;
+        }
+	}
+
+	&__banner {
+        @include media-breakpoint-up(md) {
+            @include make-col(5);
+            display: flex;
+            justify-content: flex-end;
+        }	
+	}
+
+    img {
+        box-shadow: 4px 25px 37px #858585;
+        width: 100%;
+    }
+
+    .label-new {
+
+        span {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            font-size: 18px;
+            line-height: 26px;
+            font-weight: $ms-bold;
+            color: #ffffff;
+            transform: rotate(-40deg);
+            margin-top: 26px;
+            padding-left: 12px;
+        }
+
+        &:before {
+            content:' ';
+            width: 0;
+            height: 0;
+            border-top: 100px solid red;
+            border-right: 100px solid transparent;
+            position: absolute;
+            top: 0;
+        }
+    }
+}

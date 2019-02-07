@@ -1,0 +1,111 @@
+.vodi_posts_widget .style-2 {
+
+    ul {
+
+        li {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+    
+            .post-thumbnail {
+                flex: 0 0 100%;
+                max-width: 100%;
+                padding: 0;
+                height: 210px;
+                background-color: #eee;
+                text-align: center;
+                display: flex;
+
+                &::after {
+                    position: absolute;
+                    content: '';
+                    background-image: url(assets/images/glow.png);
+                    background-position: bottom;
+                    background-repeat: no-repeat;
+                    display: block;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                }
+
+                img {
+                    margin: auto;
+                }
+            }
+
+            .entry-title {
+                font-size: 18px;
+                line-height: 21px;
+                letter-spacing: -0.01em;
+                font-family: $ms;
+                font-weight: $ms-semi-bold;
+
+                a {
+                    color: $vodi-body-color;
+
+                    @include hover-focus() {
+                        text-decoration: none;
+                        color: $vodi-primary-color;
+                    }
+                }
+            }
+
+            .entry-meta {
+
+                display: block;
+                font-size: 13px;
+                line-height: 18px;
+                letter-spacing: -0.010em; 
+                color: #949494;
+                font-style: italic;
+
+                a {
+                    color: $vodi-primary-color;
+                    text-decoration: none;
+                    font-weight: $os-bold;
+                }
+
+                .published {
+
+                    &:before {
+                        margin: 0 8px;
+                    }
+                }
+            } 
+        }
+
+        .has-post-thumbnail {
+            position: relative;
+
+            .post-content {
+                position: absolute;
+                bottom: 0;
+                padding: 16px 20px;
+                width: 100%;
+                
+
+                .entry-title {
+                    max-height: 126px;
+                    overflow: hidden;
+                    
+                    a {
+                        color: #ffffff;
+
+                        @include hover-focus() {
+                            text-decoration: none;
+                            color: $vodi-primary-color;
+                        }
+                    }
+                }
+
+                .entry-categories {
+
+                    a {
+                        color: $vodi-primary-color;
+                    }    
+                }
+            }       
+        }
+    }
+}

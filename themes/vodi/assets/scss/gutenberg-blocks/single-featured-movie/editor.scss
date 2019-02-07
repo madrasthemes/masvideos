@@ -1,0 +1,29 @@
+// Vendors
+@import "../../vendors/bootstrap/functions";
+@import "../../vendors/bootstrap/variables";
+@import "../../vendors/bootstrap/mixins";
+//@import "../../vendors/bootstrap/reboot";
+
+
+.editor-styles-wrapper .single-featured-movie-section .entry-title{
+	line-height: 1;
+}
+
+div.wp-block[data-type="vodi/single-featured-movie"] {
+    max-width: none;
+    margin-left: -65px;
+    margin-right: -65px;
+    width: auto;
+}
+
+.editor-block-list__layout .editor-block-list__block[data-type="vodi/single-featured-movie"] .editor-block-contextual-toolbar .editor-block-toolbar {
+    left: 60px;
+}
+
+.editor-block-list__layout .editor-block-list__block[data-type="vodi/single-featured-movie"]>.editor-block-mover {
+    left: 20px;
+}
+
+.editor-block-list__layout .editor-block-list__block[data-type="vodi/single-featured-movie"]>.editor-block-mover {
+    top: -64px;
+}

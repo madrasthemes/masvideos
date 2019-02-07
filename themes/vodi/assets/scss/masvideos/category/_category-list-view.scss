@@ -1,0 +1,116 @@
+.list-view {
+    .product-inner {
+        display: flex;
+        align-items: center;
+    }
+
+    .product-body {
+        display: flex;
+    }
+
+    .product-header {
+        flex: 1 1 22.5%;
+        max-width: 22.5%;
+        margin-right: 31px;
+    }
+
+	.products {
+		list-style-type: none;
+        padding: 0;
+        margin: 0;
+	}
+
+    .product {
+        padding: 16px 0;
+        cursor: pointer;
+
+        + .product {
+            border-top: 1px solid #2f2f33;
+        }
+
+        &:hover {
+            background-color: #202533;
+
+            .product-actions--link_watch {
+                background-color: $vodi-primary-color;
+            }
+        }
+    }
+
+    .movie__poster {
+        margin-bottom: 0;
+    }
+
+	.movie__meta {
+		font-size: 12px;
+		line-height: 18px;
+		letter-spacing: -0.01em;
+		color: #808b90;
+	}
+
+	.movie__title {
+		font-size: 17px;
+	    line-height: 18px;
+	    letter-spacing: -0.01em;
+	    font-weight: $os-bold;
+	    font-family: $os;
+	    color: #ffffff;
+        margin-bottom: 11px;
+	}
+
+    p {
+        font-size: 14px;
+        line-height: 21px;
+        letter-spacing: -0.01em;
+        color: #b4bbc0;
+        margin-bottom: 23px;
+    }
+
+    .product-actions{
+
+        a {
+            font-size: 12px;
+            line-height: 1.25;
+            font-family:$ms;
+            font-weight: $ms-bold;
+            color: #ffffff;
+            text-transform: uppercase;
+            display: inline-block;
+            border: 2px solid transparent;
+        }
+    }
+
+    .product-actions--link_watch {
+        border-radius: 5px;
+        background-color: #303544;
+        padding: 12.5px 18.7px;
+    }
+
+    .product-actions--link_add-to-playlist {
+        padding: 12px;
+    }
+
+    .movie-review-info {
+        font-size: 12px;
+        line-height: 18px;
+        letter-spacing: -0.01em;
+        color: #808b90;
+        flex: 1 1 25%;
+        max-width: 25%;
+    }
+}
+
+.vodi-products-header {
+
+    &__title {
+        font-size: 22px;
+        line-height: 1.25;
+        letter-spacing: -0.025em;
+        font-weight: $ms-medium;
+        color: #ffffff;
+        border-bottom: 1px solid #2f2f33;
+        margin: 0;
+        padding-bottom: 12px;
+        margin: 0;
+    }
+}

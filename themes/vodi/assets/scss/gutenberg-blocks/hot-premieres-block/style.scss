@@ -1,0 +1,128 @@
+// Vendors
+@import "../../vendors/bootstrap/functions";
+@import "../../vendors/bootstrap/variables";
+@import "../../vendors/bootstrap/mixins";
+
+// Utilities
+@import "../../variables";
+@import "../../mixins";
+
+
+.section-hot-premier-show {
+
+    .movie-actions--link_add-to-playlist {
+        display: none;
+    }
+
+    .home-section__flex-header {
+        margin-bottom: 23px;
+    }
+
+    .movies {
+
+        &__inner {
+            margin-left: -7.5px;
+            margin-right: -7.5px;
+        }
+    }    
+
+    &.hide-movie-title .movie__title {
+        display: none;
+    }
+
+    .movie {
+        position: relative;
+        padding-right: 7.5px !important;
+        padding-left: 7.5px !important;  
+
+        @include media-breakpoint-up(md) {
+            @include make-col(6);
+        }
+
+        @include media-breakpoint-up(lg) {
+            @include make-col(3);
+        }
+
+        &__title {
+            color: #fff !important;
+            margin-bottom: 20px;
+            font-size: 22px;
+            line-height: 1.2;
+
+            @include media-breakpoint-up(md) {
+                font-size: 32px;
+            }
+
+            @include media-breakpoint-only(lg) {
+                font-size: 28px;
+            }
+
+            @include hover-focus {
+                color: $vodi-primary-color !important;
+            }
+        }
+
+        &__actions {
+            display: block;
+        }
+
+        &__poster {
+            margin-bottom: 0;
+
+            &::before {
+                background: linear-gradient(to bottom, rgba(240,47,23,0) 50%, rgba(0,0,0,0.70) 100%);
+                content: " ";
+                height: 100%;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+            }
+        }
+
+        &__body {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            padding: 0 25px 20px;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+
+        &__short-description {
+            font-size: 13px;
+            line-height: 22px;
+            color: #fff;
+            font-weight: 400;
+            margin-bottom: 20px;
+            display: block;
+
+            p {
+                max-height: 42px;
+                overflow: hidden;
+            }
+        }
+
+        &__meta {
+            display: none;
+        }
+
+        .movie-actions--link_watch {
+            @include button-variant(transparent, #b6b7b9, transparent, $vodi-primary-color);
+            @include button-size(12px, 10.5px, 14px, $btn-line-height, 5px);
+            display: block;
+            width: 100%;
+            font-weight: $ms-bold;
+            font-family: $ms;
+            border: 2px solid;
+            color: #fff;
+
+            @include hover-focus {
+                color: $vodi-primary-color;
+                text-decoration: none;
+            }
+        }
+    }
+}
+

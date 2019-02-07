@@ -1,0 +1,46 @@
+.single-featured-section {
+	background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url(https://placehold.it/1920x500);
+	background-position-x: center;
+	position: relative;
+    display: flex;
+    align-items: flex-end;
+
+    @include media-breakpoint-up(md) {
+    	height: 500px;
+    }
+}
+
+.featured-post-section {
+
+	.article {
+		@include media-breakpoint-up(md) {
+			margin-bottom: 36px;
+		}
+
+		.entry-title {
+			font-size: 30px;
+			line-height: 35px;
+			letter-spacing: -0.01em;
+			font-weight: $ms-bold;
+			color: #ffffff;
+
+			@include media-breakpoint-up(md) {
+				font-size: 44px;
+				line-height: 52px;
+			}
+		}
+
+		&__meta {
+			margin-bottom: 15px;
+		}
+
+		.comments-link a {
+			color: #ffffff;
+			font-style: normal;
+		}
+
+		&__categories a {
+			font-weight: $os-bold;
+		}
+	}	
+}    

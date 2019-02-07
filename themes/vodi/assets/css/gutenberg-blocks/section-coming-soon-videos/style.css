@@ -1,0 +1,88 @@
+/**
+ * Bootstrap variables override
+ */
+.section-videos-live-coming-soon.has-2-columns {
+  margin: 0 0 20px; }
+  .section-videos-live-coming-soon.has-2-columns .wp-block-column {
+    padding-right: 8px;
+    padding-left: 8px; }
+
+.section-videos-live-coming-soon .home-section__action {
+  border-width: 0 !important;
+  padding: 0 !important;
+  line-height: 1; }
+  .section-videos-live-coming-soon .home-section__action a {
+    color: #949494; }
+
+.section-videos-live-coming-soon .live-videos__title,
+.section-videos-live-coming-soon .coming-soon-videos__title {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #949494;
+  margin-bottom: 10px; }
+
+.section-videos-live-coming-soon .video {
+  display: flex;
+  margin-bottom: 18px; }
+  .section-videos-live-coming-soon .video__poster {
+    margin-bottom: 0; }
+  .section-videos-live-coming-soon .video__meta {
+    display: block;
+    font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 4px;
+    color: #808b90; }
+  .section-videos-live-coming-soon .video__title {
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 4px; }
+    @media (min-width: 1200px) {
+      .section-videos-live-coming-soon .video__title {
+        font-size: 16px; } }
+  .section-videos-live-coming-soon .video__short-description {
+    display: block;
+    max-height: 62px;
+    overflow: hidden; }
+    .section-videos-live-coming-soon .video__short-description p {
+      font-size: 14px;
+      line-height: 21px;
+      letter-spacing: -0.01em;
+      color: #b4bbc0;
+      margin-bottom: 23px; }
+
+.section-videos-live-coming-soon .coming-soon-videos .videos__inner {
+  margin: 0; }
+
+.section-videos-live-coming-soon .coming-soon-videos .video {
+  padding: 12px;
+  border: 1px solid #ced0d1;
+  border-radius: 3px; }
+  .section-videos-live-coming-soon .coming-soon-videos .video__body {
+    margin-left: 16px; }
+  .section-videos-live-coming-soon .coming-soon-videos .video__container {
+    margin-right: 10px;
+    position: relative; }
+    .section-videos-live-coming-soon .coming-soon-videos .video__container::after {
+      content: " ";
+      display: block;
+      width: 1px;
+      height: 52px;
+      background-color: #e7e7e7;
+      position: absolute;
+      top: 19px;
+      right: -14px; }
+  .section-videos-live-coming-soon .coming-soon-videos .video__poster--image {
+    width: 100px;
+    height: 80px;
+    max-width: 100px;
+    object-fit: cover; }
+  .section-videos-live-coming-soon .coming-soon-videos .video__short-description {
+    max-height: 42px; }
+    .section-videos-live-coming-soon .coming-soon-videos .video__short-description p {
+      margin-bottom: 0; }
+
+.section-videos-live-coming-soon .home-section__action {
+  text-align: right; }
+
+/*# sourceMappingURL=style.css.map */

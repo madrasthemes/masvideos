@@ -1,0 +1,53 @@
+.movies {
+    .slick-slide {
+        margin: 0 7px;
+    }
+
+    .slick-list {
+        margin: 0 -7px;
+        width: 100%;
+    }
+
+    .movie {
+        //margin-bottom: 0;
+
+        &__title {
+            margin-bottom: 11px;
+        }
+    }
+}
+
+.style-2 .movies {
+    &.columns-5,
+    &.columns-6 {
+        .slick-list {
+            margin: 0 -11px;
+        }
+
+        .slick-slide {
+            margin: 0 11px;
+        }
+    }
+
+    &.columns-7,
+    &.columns-8 {
+        .slick-list {
+            margin: 0 -10px;
+        }
+
+        .slick-slide {
+            margin: 0 10px;
+        }
+    }
+
+    &.columns-9,
+    &.columns-10 {
+        .slick-list {
+            margin: 0 -5px;
+        }
+
+        .slick-slide {
+            margin: 0 5px;
+        }
+    }
+}

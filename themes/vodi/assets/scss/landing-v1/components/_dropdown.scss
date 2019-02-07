@@ -1,0 +1,10 @@
+.site-header__nav .menu .sub-menu {
+    @include make-dropdown();
+    margin: 0;
+}
+
+.site-header__nav .menu .sub-menu > li > a {
+    @include make-dropdown-item();
+    padding: 0.45rem 1.5rem;
+    font-size: 14px;
+}

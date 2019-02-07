@@ -1,0 +1,50 @@
+.vodi_posts_widget .style-3 {
+    ul {
+        counter-reset: my-badass-counter;
+
+        li {
+            
+            padding-top: 10px;
+            
+            .entry-title {
+                font-size: 17px;
+                line-height: 23px;
+                letter-spacing: -0.025em;
+                font-family: $ms;
+                font-weight: $ms-semi-bold;
+                margin-bottom: 0;
+                display: flex;
+                align-items: center;
+
+                &:before {
+                    content: counter(my-badass-counter);
+                    counter-increment: my-badass-counter;
+                    border-radius: 50%;
+                    width: 34px;
+                    border: 1px solid #a2abaf;
+                    height: 34px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 13px;
+                    align-self: flex-start;
+                }
+
+                a {
+                    color: $vodi-body-color;
+                    flex: 1;
+
+                    @include hover-focus() {
+                        text-decoration: none;
+                        color: $vodi-primary-color;
+                    }
+                }
+            }
+
+            a.post-thumbnail,
+            .entry-meta {
+                display: none;
+            }
+        }
+    }
+}

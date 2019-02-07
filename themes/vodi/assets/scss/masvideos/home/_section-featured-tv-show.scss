@@ -1,0 +1,148 @@
+.section-featured-tv-show {
+    &__inner {
+        min-height: 675px;
+        padding-top: 100px;
+    }
+
+    .featured-tv-show {
+        &__header {
+            color: $white;
+            text-align: center;
+            margin-bottom: 67px;
+
+            &-pretitle {
+                font-size: 16px;
+                line-height: 26px;
+                opacity: 0.21;
+                margin-bottom: 28px;
+            }
+
+            &-title {
+                font-size: 50px;
+                font-weight: $ms-bold;
+                margin-bottom: 28px;
+            }
+
+            &-subtitle {
+                font-family: $ms;
+                font-size: 20px;
+                line-height: 36px;
+
+                @include media-breakpoint-up(sm) {
+                    font-size: 26px;
+                }
+            }
+        }
+
+        &__videos {
+            .nav {
+                @include list-unstyled();
+                display: flex;
+                flex-wrap: nowrap;
+                overflow: auto;
+                align-items: baseline;                
+                margin-bottom: 30px;
+
+                &-item {
+                    &+ .nav-item {
+                        margin-left: 30px;
+
+                    }
+                }
+
+                &-link {
+                    font-family: $ms;
+                    font-size: 16px;
+                    letter-spacing: 0.8px;
+                    line-height: 18px;
+                    font-weight: $ms-semi-bold;
+                    color: $white;
+
+                    &.active {
+                        font-size: 20px;
+                        line-height: 1;
+                        font-weight: 700;
+                    }
+                }
+
+                @include media-breakpoint-up(md) {
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+
+                .nav-item {
+                    flex-shrink: 0;
+                }
+            }
+
+            .video__title {
+                color: $white;
+            }
+        }
+    }
+
+    .videos__inner {
+        @include make-row(15px);
+
+        > .video {
+            @include make-col-ready(15px);
+            @include media-breakpoint-up(md) {
+                @include make-col(6);
+            }
+
+            &:first-child {
+                @include media-breakpoint-between(md,lg) {
+                    @include make-col(12);
+                }
+            }
+
+            @include media-breakpoint-up(xl) {
+                @include make-col(2.4);
+            }
+        }
+    }
+
+    &.featured-game-play {
+        .featured-tv-show {
+            &__header {
+                &-title {
+                    font-size: 45px;
+                }
+
+                &-subtitle {
+                    font-size: 20px;
+
+                    @include media-breakpoint-up(sm) {
+                        font-size: 24px;
+                    }
+                }
+            }
+        }
+
+        .video {
+            &__title {
+                margin-bottom: 0.3rem;
+            }
+
+            &__episode {
+                display: none;
+            }
+
+            &__meta {
+                display: block;
+            }
+
+            &__duration {
+                display: block;
+            }
+        }
+    }
+
+    &.lite {
+        .featured-tv-show {
+            &__header {
+                color: $black;
+            }
+        }
+    }
+}

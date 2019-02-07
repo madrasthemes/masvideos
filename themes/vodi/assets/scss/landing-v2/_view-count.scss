@@ -1,0 +1,45 @@
+.view-count {
+	padding: 40px 0;
+
+	@include media-breakpoint-up(md) {
+		padding: 100px 0;
+	}
+
+	@include media-breakpoint-up(xl) {
+		padding: 180px 0;
+	}
+
+	&__content {
+		line-height: 1.10;
+		font-weight: $ms-medium;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.count {
+		font-size: 60px;
+		color: $vodi-primary-color;
+
+		@include media-breakpoint-up(md) {
+			font-size: 100px;
+		}
+
+		@include media-breakpoint-up(lg) {
+			font-size: 130px;
+		}
+
+		@include media-breakpoint-up(xl) {
+			font-size: 170px;
+		}
+	}
+
+	p {
+		font-size: 32px;
+		color: #ffffff;
+	}
+
+	.count,p {
+		text-align: center;
+	} 
+}

@@ -1,0 +1,27 @@
+ul.page-numbers,
+.nav-links,
+.page-links-inner {
+    @include make-pagination();
+}
+
+ul.page-numbers,
+.nav-links {
+    justify-content: center;
+}
+
+ul.page-numbers > li > a,
+ul.page-numbers > li > span,
+.nav-links > .page-numbers,
+.page-links-inner > a,
+.page-links-inner > span {
+    @include make-page-link();
+}
+
+.page-links-inner > span {
+    @include make-page-link-active();
+}
+
+.pagination {
+    font-family: $ms;
+    margin-bottom: 40px;
+}

@@ -1,0 +1,13 @@
+.editor-styles-wrapper { 
+	.section-videos-carousel-nav-header {
+		a {
+			text-decoration: none;
+		}
+
+		.video {
+			&__title {
+				margin-top: 0;
+			}
+		}
+	}
+}

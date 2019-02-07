@@ -1,0 +1,173 @@
+.section-live-game-players-list {
+    padding: 44px 0;
+
+    &.style-2 {
+        .home-section__title {
+            font-size: 24px;
+            font-weight: $ms-bold;
+        }
+    }
+
+    .live-game-players-list {
+        @include make-row(16px);
+    }
+
+    .columns-5 .live-game-player,
+    .columns-6 .live-game-player {
+        margin-bottom: 16px;
+
+        @include media-breakpoint-up(md) {
+            @include make-col(6);
+        }
+
+        @include media-breakpoint-up(lg) {
+            @include make-col(4);
+        }
+    }
+
+    .columns-5 .live-game-player {
+        @include media-breakpoint-up(xl) {
+            @include make-col(2.4);
+        }
+    }
+
+    .columns-6 .live-game-player {
+        @include media-breakpoint-up(xl) {
+            @include make-col(3);
+        }
+
+        @include media-breakpoint-up(xxl) {
+            @include make-col(2);
+        }
+    }
+
+    .live-game-player {
+        @include make-col-ready(16px);
+
+        &__inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: rgba(43, 55, 81, 0.2);
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        &__profile,
+        &__profile--info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        &__social-network-page {
+            &-links {
+                margin-bottom: 12px;
+            }
+
+            &-link {
+                display: inline-block;
+                font-size: 16px;
+                width: 20px;
+                color: rgba(255, 255, 255, .72);
+            }
+        }
+
+        &__thumbnail {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            border: 3px solid #52ac20;
+
+            &--image {
+                width: 88px;
+                height: 88px;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+        }
+
+        &__status {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background-color: #52ac20;
+            color: $white;
+            border-radius: 50%;
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: $os-semi-bold;
+            top: 50%;
+            left: 100%;
+            transform: translate(-50%, -50%);
+
+            span {
+                font-weight: $os-bold;
+            }
+        }
+
+        &__name {
+            margin-bottom: 8px;
+
+            a {
+                font-family: $os;
+                font-size: 18px;
+                font-weight: $os-bold;
+                color: $white;
+            }
+        }
+
+        &__about {
+            font-size: 13px;
+            line-height: 18px;
+            font-weight: $os-semi-bold;
+            color: $white;
+            margin-bottom: 8px;
+            height: 36px;
+            word-break: break-word;
+            overflow: hidden;
+        }
+
+        &.offline {
+            .live-game-player {
+                &__thumbnail {
+                    border-color: #8c8f95;
+                }
+
+                &__status {
+                    background-color: #8c8f95;
+                    font-size: 12px;
+                    font-weight: $os-regular;
+                }
+            }
+        }
+    }
+
+    .game-now-playing {
+        display: inline-block;
+        font-size: 13px;
+        line-height: 18px;
+        margin-bottom: 18px;
+    }
+
+    .watch-live-playing-game {
+        display: inline-block;
+        margin: 0 auto;
+
+        &__link {
+            font-family: $ms;
+            @include make-button( 10px, 15px, 13px, 18px , 6px, 2px );
+            opacity: .75;
+            min-width: 182px;
+            height: 44px;
+            text-transform: capitalize;
+            @include button-variant( transparent, rgba( 255, 255, 255, 0.67 ), $white, $white );
+        }
+    }
+}
