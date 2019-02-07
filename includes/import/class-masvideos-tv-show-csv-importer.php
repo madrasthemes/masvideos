@@ -465,20 +465,23 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
          * column_name => callback.
          */
         $data_formatting = array(
-            'id'                => array( $this, 'parse_id_field' ),
-            'type'              => array( $this, 'parse_skip_field' ),
-            'published'         => array( $this, 'parse_float_field' ),
-            'featured'          => array( $this, 'parse_bool_field' ),
-            'name'              => array( $this, 'parse_skip_field' ),
-            'short_description' => array( $this, 'parse_skip_field' ),
-            'description'       => array( $this, 'parse_skip_field' ),
-            'reviews_allowed'   => array( $this, 'parse_bool_field' ),
-            'genre_ids'         => array( $this, 'parse_genres_field' ),
-            'tag_ids'           => array( $this, 'parse_tags_field' ),
-            'images'            => array( $this, 'parse_images_field' ),
-            'parent_id'         => array( $this, 'parse_relative_field' ),
-            'tv_show_url'         => 'esc_url_raw',
-            'menu_order'        => 'intval',
+            'id'                        => array( $this, 'parse_id_field' ),
+            'type'                      => array( $this, 'parse_skip_field' ),
+            'published'                 => array( $this, 'parse_float_field' ),
+            'featured'                  => array( $this, 'parse_bool_field' ),
+            'name'                      => array( $this, 'parse_skip_field' ),
+            'short_description'         => array( $this, 'parse_skip_field' ),
+            'description'               => array( $this, 'parse_skip_field' ),
+            'reviews_allowed'           => array( $this, 'parse_bool_field' ),
+            'genre_ids'                 => array( $this, 'parse_genres_field' ),
+            'tag_ids'                   => array( $this, 'parse_tags_field' ),
+            'images'                    => array( $this, 'parse_images_field' ),
+            'parent_id'                 => array( $this, 'parse_relative_field' ),
+            'episode_choice'            => array( $this, 'parse_skip_field' ),
+            'episode_attachment_id'     => array( $this, 'parse_images_field' ),
+            'episode_embed_content'     => 'masvideos_sanitize_textarea_iframe',
+            'episode_url_link'          => 'esc_url_raw',
+            'menu_order'                => 'intval',
         );
 
         /**
@@ -490,7 +493,6 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
             '/attributes:value*/'    => array( $this, 'parse_comma_field' ),
             '/attributes:visible*/'  => array( $this, 'parse_bool_field' ),
             '/attributes:taxonomy*/' => array( $this, 'parse_bool_field' ),
-            '/downloads:url*/'       => array( $this, 'parse_download_file_field' ),
             '/meta:*/'               => 'wp_kses_post', // Allow some HTML in meta fields.
         );
 

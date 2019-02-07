@@ -465,20 +465,23 @@ class MasVideos_Video_CSV_Importer extends MasVideos_Video_Importer {
          * column_name => callback.
          */
         $data_formatting = array(
-            'id'                => array( $this, 'parse_id_field' ),
-            'type'              => array( $this, 'parse_comma_field' ),
-            'published'         => array( $this, 'parse_float_field' ),
-            'featured'          => array( $this, 'parse_bool_field' ),
-            'name'              => array( $this, 'parse_skip_field' ),
-            'short_description' => array( $this, 'parse_skip_field' ),
-            'description'       => array( $this, 'parse_skip_field' ),
-            'reviews_allowed'   => array( $this, 'parse_bool_field' ),
-            'category_ids'      => array( $this, 'parse_categories_field' ),
-            'tag_ids'           => array( $this, 'parse_tags_field' ),
-            'images'            => array( $this, 'parse_images_field' ),
-            'parent_id'         => array( $this, 'parse_relative_field' ),
-            'video_url'       => 'esc_url_raw',
-            'menu_order'        => 'intval',
+            'id'                        => array( $this, 'parse_id_field' ),
+            'type'                      => array( $this, 'parse_comma_field' ),
+            'published'                 => array( $this, 'parse_float_field' ),
+            'featured'                  => array( $this, 'parse_bool_field' ),
+            'name'                      => array( $this, 'parse_skip_field' ),
+            'short_description'         => array( $this, 'parse_skip_field' ),
+            'description'               => array( $this, 'parse_skip_field' ),
+            'reviews_allowed'           => array( $this, 'parse_bool_field' ),
+            'category_ids'              => array( $this, 'parse_categories_field' ),
+            'tag_ids'                   => array( $this, 'parse_tags_field' ),
+            'images'                    => array( $this, 'parse_images_field' ),
+            'parent_id'                 => array( $this, 'parse_relative_field' ),
+            'video_choice'              => array( $this, 'parse_skip_field' ),
+            'video_attachment_id'       => array( $this, 'parse_images_field' ),
+            'video_embed_content'       => 'masvideos_sanitize_textarea_iframe',
+            'video_url_link'            => 'esc_url_raw',
+            'menu_order'                => 'intval',
         );
 
         /**
@@ -488,7 +491,6 @@ class MasVideos_Video_CSV_Importer extends MasVideos_Video_Importer {
             '/attributes:value*/'    => array( $this, 'parse_comma_field' ),
             '/attributes:visible*/'  => array( $this, 'parse_bool_field' ),
             '/attributes:taxonomy*/' => array( $this, 'parse_bool_field' ),
-            '/downloads:url*/'       => array( $this, 'parse_download_file_field' ),
             '/meta:*/'               => 'wp_kses_post', // Allow some HTML in meta fields.
         );
 
