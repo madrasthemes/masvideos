@@ -477,6 +477,8 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
             'tag_ids'                   => array( $this, 'parse_tags_field' ),
             'images'                    => array( $this, 'parse_images_field' ),
             'parent_id'                 => array( $this, 'parse_relative_field' ),
+            'parent_tv_show'            => array( $this, 'parse_skip_field' ),
+            'parent_season'             => array( $this, 'parse_skip_field' ),
             'episode_choice'            => array( $this, 'parse_skip_field' ),
             'episode_attachment_id'     => array( $this, 'parse_images_field' ),
             'episode_embed_content'     => 'masvideos_sanitize_textarea_iframe',

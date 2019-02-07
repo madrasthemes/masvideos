@@ -264,6 +264,10 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
             $object = apply_filters( 'masvideos_tv_show_import_pre_insert_tv_show_object', $object, $data );
             $object->save();
 
+            if ( 'episode' === $data['type'] ) {
+                $this->set_episode_data_to_tv_show( $object, $data );
+            }
+
             do_action( 'masvideos_tv_show_import_inserted_tv_show_object', $object, $data );
 
             return array(
@@ -370,6 +374,32 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
             }
 
             $episode->set_attributes( $attributes );
+        }
+    }
+
+    /**
+     * Set episode to tv show data.
+     *
+     * @param MasVideos_Episode $episode Episode instance.
+     * @param array           $data  Item data.
+     * @throws Exception             If data cannot be set.
+     */
+    protected function set_episode_data_to_tv_show( &$episode, $data ) {
+
+        // Check if parent exist.
+        if ( isset( $data['parent_tv_show'] ) && isset( $data['parent_season'] ) ) {
+            $tv_show_obj = get_page_by_title( $data['parent_tv_show'], OBJECT, 'tv_show' );
+
+            if ( $tv_show_obj ) {
+                $tv_show = masvideos_get_tv_show( $tv_show_obj );
+
+                $seasons = $tv_show->get_seasons( 'edit' );
+                $season_key = array_search( $data['parent_season'], array_column( $seasons, 'name' ) );
+                $seasons[$season_key]['episodes'][] = $episode->get_id();
+
+                $tv_show->set_seasons( $seasons );
+                $tv_show->save();
+            }
         }
     }
 
