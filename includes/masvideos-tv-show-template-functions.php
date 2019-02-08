@@ -486,7 +486,7 @@ if ( ! function_exists( 'masvideos_tv_shows_pagination' ) ) {
     /**
      * Display Pagination.
      */
-    function masvideos_tv_shows_paginatio() {
+    function masvideos_tv_shows_pagination() {
         if ( ! masvideos_get_tv_shows_loop_prop( 'is_paginated' ) || ! masvideos_tv_shows_will_display() ) {
             return;
         }

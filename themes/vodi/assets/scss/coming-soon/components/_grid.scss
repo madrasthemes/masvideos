@@ -1,9 +1,0 @@
-.cs-site-content-section {
-    @include make-row();
-}
-
-.cs-site-content-section__subscribe-section,
-.cs-site-content-section__timer-section,
-.cs-site-content-section__vodi-subscribe-form {
-    @include make-col-ready();
-}

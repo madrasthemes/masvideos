@@ -1,9 +1,0 @@
-{
-	"version": 3,
-	"file": "editor.css",
-	"sources": [
-		"../../../scss/gutenberg-blocks/blog-grid-with-list-section/editor.scss"
-	],
-	"names": [],
-	"mappings": "AAAA,AAEE,sBAFoB,CACrB,iCAAiC,CAChC,EAAE,AAAA,IAAI,CAAC;EACN,OAAO,EAAE,IAAI;EACV,SAAS,EAAE,IAAI;EACf,aAAa,EAAE,CAAC;EAChB,UAAU,EAAE,IAAI,GACnB;;AAPH,AAUG,sBAVmB,CACrB,iCAAiC,CAQhC,QAAQ,CACP,YAAY,CAAC;EACZ,UAAU,EAAE,CAAC,GACb;;AAZJ,AAeI,sBAfkB,CACrB,iCAAiC,CAa9B,iBAAS,CACT,CAAC,CAAC;EACD,SAAS,EAAE,IAAI;EACZ,WAAW,EAAE,IAAI;EACjB,cAAc,EAAE,QAAQ;EACxB,UAAU,EAAE,CAAC,GAChB"
-}

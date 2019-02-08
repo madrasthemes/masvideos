@@ -178,8 +178,6 @@ if ( ! function_exists( 'masvideos_get_tv_show_seasons' ) ) {
         foreach ($seasons as $season) {
             $season_titles[] = $season['name'];
         }
-        //$seasons = get_the_term_list( $tv_show->ID, 'movie_genre', '', ', ' );
-        //pr($season_titles);
         foreach ($season_titles as $season_title) {
             echo '<a href="' . esc_url( get_permalink($tv_show->get_ID()) ) . '" class="tv-show__episode--link">' . $season_title . '</a>';
         }

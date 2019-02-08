@@ -1,9 +1,0 @@
-{
-	"version": 3,
-	"file": "editor.css",
-	"sources": [
-		"../../../scss/gutenberg-blocks/section-videos-carousel-nav-header/editor.scss"
-	],
-	"names": [],
-	"mappings": "AAAA,AAEE,sBAFoB,CACrB,mCAAmC,CAClC,CAAC,CAAC;EACD,eAAe,EAAE,IAAI,GACrB;;AAJH,AAOG,sBAPmB,CACrB,mCAAmC,CAMhC,aAAO,CAAC;EACR,UAAU,EAAE,CAAC,GACb"
-}
