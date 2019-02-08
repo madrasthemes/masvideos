@@ -79,6 +79,33 @@ function masvideos_attribute_taxonomy_name( $post_type, $attribute_name ) {
 }
 
 /**
+ * Get a attribute post_type by ID.
+ *
+ * @since  1.0.0
+ * @param int $attribute_id Attribute ID.
+ * @return string Return an empty string if attribute doesn't exist.
+ */
+function masvideos_attribute_post_type_by_id( $attribute_id ) {
+    global $wpdb;
+
+    $data = $wpdb->get_row(
+        $wpdb->prepare(
+            "
+        SELECT post_type
+        FROM {$wpdb->prefix}masvideos_attribute_taxonomies
+        WHERE attribute_id = %d
+    ", $attribute_id
+        )
+    );
+
+    if ( $data && ! is_wp_error( $data ) ) {
+        return $data->post_type;
+    }
+
+    return '';
+}
+
+/**
  * Get a attribute name by ID.
  *
  * @since  1.0.0

@@ -95,6 +95,11 @@ class MasVideos_Admin_Attributes {
         check_admin_referer( 'masvideos-add-new_attribute' );
 
         $attribute = self::get_posted_attribute();
+
+        if ( empty( $attribute['post_type'] ) || ! current_user_can( "edit_{$attribute['post_type']}_terms" ) ) {
+            return false;
+        }
+
         $args      = array(
             'name'         => $attribute['attribute_label'],
             'slug'         => $attribute['attribute_name'],
@@ -123,6 +128,11 @@ class MasVideos_Admin_Attributes {
         check_admin_referer( 'masvideos-save-attribute_' . $attribute_id );
 
         $attribute = self::get_posted_attribute();
+
+        if ( empty( $attribute['post_type'] ) || ! current_user_can( "edit_{$attribute['post_type']}_terms" ) ) {
+            return false;
+        }
+
         $args      = array(
             'name'         => $attribute['attribute_label'],
             'slug'         => $attribute['attribute_name'],
@@ -152,6 +162,12 @@ class MasVideos_Admin_Attributes {
         $attribute_id = absint( $_GET['delete'] );
         check_admin_referer( 'masvideos-delete-attribute_' . $attribute_id );
 
+        $post_type = masvideos_attribute_post_type_by_id( $attribute_id );
+
+        if ( empty( $post_type ) || ! current_user_can( "delete_{$post_type}_terms" ) ) {
+            return false;
+        }
+
         return masvideos_delete_attribute( $attribute_id );
     }
 
@@ -168,110 +184,112 @@ class MasVideos_Admin_Attributes {
         $post_type = $_GET['post_type'];
         $attribute_to_edit = $wpdb->get_row( 'SELECT attribute_type, attribute_label, attribute_name, attribute_orderby, attribute_public FROM ' . $wpdb->prefix . "masvideos_attribute_taxonomies WHERE attribute_id = '$edit'" );
 
-        ?>
-        <div class="wrap masvideos">
-            <h1><?php esc_html_e( 'Edit attribute', 'masvideos' ); ?></h1>
+        if ( current_user_can( "edit_{$post_type}_terms" ) ) {
+            ?>
+            <div class="wrap masvideos">
+                <h1><?php esc_html_e( 'Edit attribute', 'masvideos' ); ?></h1>
 
-            <?php
-            if ( ! $attribute_to_edit ) {
-                echo '<div id="masvideos_errors" class="error"><p>' . esc_html__( 'Error: non-existing attribute ID.', 'masvideos' ) . '</p></div>';
-            } else {
-                $att_type    = $attribute_to_edit->attribute_type;
-                $att_label   = $attribute_to_edit->attribute_label;
-                $att_name    = $attribute_to_edit->attribute_name;
-                $att_orderby = $attribute_to_edit->attribute_orderby;
-                $att_public  = $attribute_to_edit->attribute_public;
-                ?>
-                <form action="edit.php?post_type=<?php echo esc_attr( $post_type ); ?>&amp;page=<?php echo esc_attr( $post_type ); ?>_attributes&amp;edit=<?php echo absint( $edit ); ?>" method="post">
-                    <table class="form-table">
-                        <tbody>
-                            <?php do_action( 'masvideos_before_edit_attribute_fields' ); ?>
-                            <tr class="form-field form-required">
-                                <th scope="row" valign="top">
-                                    <label for="attribute_label"><?php esc_html_e( 'Name', 'masvideos' ); ?></label>
-                                </th>
-                                <td>
-                                    <input name="attribute_label" id="attribute_label" type="text" value="<?php echo esc_attr( $att_label ); ?>" />
-                                    <p class="description"><?php esc_html_e( 'Name for the attribute (shown on the front-end).', 'masvideos' ); ?></p>
-                                </td>
-                            </tr>
-                            <tr class="form-field form-required">
-                                <th scope="row" valign="top">
-                                    <label for="attribute_name"><?php esc_html_e( 'Slug', 'masvideos' ); ?></label>
-                                </th>
-                                <td>
-                                    <input name="attribute_name" id="attribute_name" type="text" value="<?php echo esc_attr( $att_name ); ?>" maxlength="28" />
-                                    <p class="description"><?php esc_html_e( 'Unique slug/reference for the attribute; must be no more than 28 characters.', 'masvideos' ); ?></p>
-                                </td>
-                            </tr>
-                            <tr class="form-field form-required">
-                                <th scope="row" valign="top">
-                                    <label for="attribute_public"><?php esc_html_e( 'Enable archives?', 'masvideos' ); ?></label>
-                                </th>
-                                <td>
-                                    <input name="attribute_public" id="attribute_public" type="checkbox" value="1" <?php checked( $att_public, 1 ); ?> />
-                                    <p class="description"><?php esc_html_e( 'Enable this if you want this attribute to have archives in your store.', 'masvideos' ); ?></p>
-                                </td>
-                            </tr>
-                            <?php
-                            /**
-                             * Attribute types can change the way attributes are displayed on the frontend and admin.
-                             *
-                             * By Default MasVideos only includes the `select` type. Others can be added with the
-                             * `masvideos_attributes_type_selector` filter. If there is only the default type registered,
-                             * this setting will be hidden.
-                             */
-                            if ( masvideos_has_custom_attribute_types() ) {
-                                ?>
+                <?php
+                if ( ! $attribute_to_edit ) {
+                    echo '<div id="masvideos_errors" class="error"><p>' . esc_html__( 'Error: non-existing attribute ID.', 'masvideos' ) . '</p></div>';
+                } else {
+                    $att_type    = $attribute_to_edit->attribute_type;
+                    $att_label   = $attribute_to_edit->attribute_label;
+                    $att_name    = $attribute_to_edit->attribute_name;
+                    $att_orderby = $attribute_to_edit->attribute_orderby;
+                    $att_public  = $attribute_to_edit->attribute_public;
+                    ?>
+                    <form action="edit.php?post_type=<?php echo esc_attr( $post_type ); ?>&amp;page=<?php echo esc_attr( $post_type ); ?>_attributes&amp;edit=<?php echo absint( $edit ); ?>" method="post">
+                        <table class="form-table">
+                            <tbody>
+                                <?php do_action( 'masvideos_before_edit_attribute_fields' ); ?>
                                 <tr class="form-field form-required">
                                     <th scope="row" valign="top">
-                                        <label for="attribute_type"><?php esc_html_e( 'Type', 'masvideos' ); ?></label>
+                                        <label for="attribute_label"><?php esc_html_e( 'Name', 'masvideos' ); ?></label>
                                     </th>
                                     <td>
-                                        <select name="attribute_type" id="attribute_type">
-                                            <?php foreach ( masvideos_get_attribute_types() as $key => $value ) : ?>
-                                                <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $att_type, $key ); ?>><?php echo esc_attr( $value ); ?></option>
-                                            <?php endforeach; ?>
-                                            <?php
-                                                /**
-                                                 * Deprecated action in favor of mas_videos_attributes_type_selector filter.
-                                                 *
-                                                 * @todo Remove in 4.0.0
-                                                 * @deprecated 2.4.0
-                                                 */
-                                                do_action( 'masvideos_admin_attribute_types' );
-                                            ?>
-                                        </select>
-                                        <p class="description"><?php esc_html_e( "Determines how this attribute's values are displayed.", 'masvideos' ); ?></p>
+                                        <input name="attribute_label" id="attribute_label" type="text" value="<?php echo esc_attr( $att_label ); ?>" />
+                                        <p class="description"><?php esc_html_e( 'Name for the attribute (shown on the front-end).', 'masvideos' ); ?></p>
+                                    </td>
+                                </tr>
+                                <tr class="form-field form-required">
+                                    <th scope="row" valign="top">
+                                        <label for="attribute_name"><?php esc_html_e( 'Slug', 'masvideos' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <input name="attribute_name" id="attribute_name" type="text" value="<?php echo esc_attr( $att_name ); ?>" maxlength="28" />
+                                        <p class="description"><?php esc_html_e( 'Unique slug/reference for the attribute; must be no more than 28 characters.', 'masvideos' ); ?></p>
+                                    </td>
+                                </tr>
+                                <tr class="form-field form-required">
+                                    <th scope="row" valign="top">
+                                        <label for="attribute_public"><?php esc_html_e( 'Enable archives?', 'masvideos' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <input name="attribute_public" id="attribute_public" type="checkbox" value="1" <?php checked( $att_public, 1 ); ?> />
+                                        <p class="description"><?php esc_html_e( 'Enable this if you want this attribute to have archives in your store.', 'masvideos' ); ?></p>
                                     </td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
-                            <tr class="form-field form-required">
-                                <th scope="row" valign="top">
-                                    <label for="attribute_orderby"><?php esc_html_e( 'Default sort order', 'masvideos' ); ?></label>
-                                </th>
-                                <td>
-                                    <select name="attribute_orderby" id="attribute_orderby">
-                                        <option value="menu_order" <?php selected( $att_orderby, 'menu_order' ); ?>><?php esc_html_e( 'Custom ordering', 'masvideos' ); ?></option>
-                                        <option value="name" <?php selected( $att_orderby, 'name' ); ?>><?php esc_html_e( 'Name', 'masvideos' ); ?></option>
-                                        <option value="name_num" <?php selected( $att_orderby, 'name_num' ); ?>><?php esc_html_e( 'Name (numeric)', 'masvideos' ); ?></option>
-                                        <option value="id" <?php selected( $att_orderby, 'id' ); ?>><?php esc_html_e( 'Term ID', 'masvideos' ); ?></option>
-                                    </select>
-                                    <p class="description"><?php esc_html_e( 'Determines the sort order of the terms on the frontend pages. If using custom ordering, you can drag and drop the terms in this attribute.', 'masvideos' ); ?></p>
-                                </td>
-                            </tr>
-                            <?php do_action( 'masvideos_after_edit_attribute_fields' ); ?>
-                        </tbody>
-                    </table>
-                    <p class="submit"><button type="submit" name="save_attribute" id="submit" class="button-primary" value="<?php esc_attr_e( 'Update', 'masvideos' ); ?>"><?php esc_html_e( 'Update', 'masvideos' ); ?></button></p>
-                    <input name="post_type" id="post_type" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
-                    <?php wp_nonce_field( 'masvideos-save-attribute_' . $edit ); ?>
-                </form>
-            <?php } ?>
-        </div>
-        <?php
+                                /**
+                                 * Attribute types can change the way attributes are displayed on the frontend and admin.
+                                 *
+                                 * By Default MasVideos only includes the `select` type. Others can be added with the
+                                 * `masvideos_attributes_type_selector` filter. If there is only the default type registered,
+                                 * this setting will be hidden.
+                                 */
+                                if ( masvideos_has_custom_attribute_types() ) {
+                                    ?>
+                                    <tr class="form-field form-required">
+                                        <th scope="row" valign="top">
+                                            <label for="attribute_type"><?php esc_html_e( 'Type', 'masvideos' ); ?></label>
+                                        </th>
+                                        <td>
+                                            <select name="attribute_type" id="attribute_type">
+                                                <?php foreach ( masvideos_get_attribute_types() as $key => $value ) : ?>
+                                                    <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $att_type, $key ); ?>><?php echo esc_attr( $value ); ?></option>
+                                                <?php endforeach; ?>
+                                                <?php
+                                                    /**
+                                                     * Deprecated action in favor of mas_videos_attributes_type_selector filter.
+                                                     *
+                                                     * @todo Remove in 4.0.0
+                                                     * @deprecated 2.4.0
+                                                     */
+                                                    do_action( 'masvideos_admin_attribute_types' );
+                                                ?>
+                                            </select>
+                                            <p class="description"><?php esc_html_e( "Determines how this attribute's values are displayed.", 'masvideos' ); ?></p>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                                <tr class="form-field form-required">
+                                    <th scope="row" valign="top">
+                                        <label for="attribute_orderby"><?php esc_html_e( 'Default sort order', 'masvideos' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <select name="attribute_orderby" id="attribute_orderby">
+                                            <option value="menu_order" <?php selected( $att_orderby, 'menu_order' ); ?>><?php esc_html_e( 'Custom ordering', 'masvideos' ); ?></option>
+                                            <option value="name" <?php selected( $att_orderby, 'name' ); ?>><?php esc_html_e( 'Name', 'masvideos' ); ?></option>
+                                            <option value="name_num" <?php selected( $att_orderby, 'name_num' ); ?>><?php esc_html_e( 'Name (numeric)', 'masvideos' ); ?></option>
+                                            <option value="id" <?php selected( $att_orderby, 'id' ); ?>><?php esc_html_e( 'Term ID', 'masvideos' ); ?></option>
+                                        </select>
+                                        <p class="description"><?php esc_html_e( 'Determines the sort order of the terms on the frontend pages. If using custom ordering, you can drag and drop the terms in this attribute.', 'masvideos' ); ?></p>
+                                    </td>
+                                </tr>
+                                <?php do_action( 'masvideos_after_edit_attribute_fields' ); ?>
+                            </tbody>
+                        </table>
+                        <p class="submit"><button type="submit" name="save_attribute" id="submit" class="button-primary" value="<?php esc_attr_e( 'Update', 'masvideos' ); ?>"><?php esc_html_e( 'Update', 'masvideos' ); ?></button></p>
+                        <input name="post_type" id="post_type" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
+                        <?php wp_nonce_field( 'masvideos-save-attribute_' . $edit ); ?>
+                    </form>
+                <?php } ?>
+            </div>
+            <?php
+        }
     }
 
     /**
@@ -310,7 +328,14 @@ class MasVideos_Admin_Attributes {
                                                 <td>
                                                     <strong><a href="edit-tags.php?taxonomy=<?php echo esc_html( masvideos_attribute_taxonomy_name( $tax->post_type, $tax->attribute_name ) ); ?>&amp;post_type=<?php echo esc_attr( $post_type ); ?>"><?php echo esc_html( $tax->attribute_label ); ?></a></strong>
 
-                                                    <div class="row-actions"><span class="edit"><a href="<?php echo esc_url( add_query_arg( 'edit', $tax->attribute_id, sprintf( 'edit.php?post_type=%s&amp;page=%s_attributes', $tax->post_type, $tax->post_type ) ) ); ?>"><?php esc_html_e( 'Edit', 'masvideos' ); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'delete', $tax->attribute_id, sprintf( 'edit.php?post_type=%s&amp;page=%s_attributes', $tax->post_type, $tax->post_type ) ), 'masvideos-delete-attribute_' . $tax->attribute_id ) ); ?>"><?php esc_html_e( 'Delete', 'masvideos' ); ?></a></span></div>
+                                                    <div class="row-actions">
+                                                        <?php if ( current_user_can( "edit_{$post_type}_terms" ) ) : ?>
+                                                            <span class="edit"><a href="<?php echo esc_url( add_query_arg( 'edit', $tax->attribute_id, sprintf( 'edit.php?post_type=%s&amp;page=%s_attributes', $tax->post_type, $tax->post_type ) ) ); ?>"><?php esc_html_e( 'Edit', 'masvideos' ); ?></a> | </span>
+                                                        <?php endif; ?>
+                                                        <?php if ( current_user_can( "delete_{$post_type}_terms" ) ) : ?>
+                                                            <span class="delete"><a class="delete" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'delete', $tax->attribute_id, sprintf( 'edit.php?post_type=%s&amp;page=%s_attributes', $tax->post_type, $tax->post_type ) ), 'masvideos-delete-attribute_' . $tax->attribute_id ) ); ?>"><?php esc_html_e( 'Delete', 'masvideos' ); ?></a></span>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </td>
                                                 <td><?php echo esc_html( $tax->attribute_name ); ?></td>
                                                 <?php if ( masvideos_has_custom_attribute_types() ) : ?>
@@ -381,84 +406,86 @@ class MasVideos_Admin_Attributes {
                         </table>
                     </div>
                 </div>
-                <div id="col-left">
-                    <div class="col-wrap">
-                        <div class="form-wrap">
-                            <h2><?php esc_html_e( 'Add new attribute', 'masvideos' ); ?></h2>
-                            <p><?php esc_html_e( 'Attributes let you define extra data, such as producer or composer.', 'masvideos' ); ?></p>
-                            <form action="edit.php?post_type=<?php echo esc_attr( $post_type ); ?>&amp;page=<?php echo esc_attr( $post_type ); ?>_attributes" method="post">
-                                <?php do_action( 'masvideos_before_add_attribute_fields' ); ?>
+                <?php if ( current_user_can( "edit_{$post_type}_terms" ) ) : ?>
+                    <div id="col-left">
+                        <div class="col-wrap">
+                            <div class="form-wrap">
+                                <h2><?php esc_html_e( 'Add new attribute', 'masvideos' ); ?></h2>
+                                <p><?php esc_html_e( 'Attributes let you define extra data, such as producer or composer.', 'masvideos' ); ?></p>
+                                <form action="edit.php?post_type=<?php echo esc_attr( $post_type ); ?>&amp;page=<?php echo esc_attr( $post_type ); ?>_attributes" method="post">
+                                    <?php do_action( 'masvideos_before_add_attribute_fields' ); ?>
 
-                                <div class="form-field">
-                                    <label for="attribute_label"><?php esc_html_e( 'Name', 'masvideos' ); ?></label>
-                                    <input name="attribute_label" id="attribute_label" type="text" value="" />
-                                    <p class="description"><?php esc_html_e( 'Name for the attribute (shown on the front-end).', 'masvideos' ); ?></p>
-                                </div>
-
-                                <div class="form-field">
-                                    <label for="attribute_name"><?php esc_html_e( 'Slug', 'masvideos' ); ?></label>
-                                    <input name="attribute_name" id="attribute_name" type="text" value="" maxlength="28" />
-                                    <p class="description"><?php esc_html_e( 'Unique slug/reference for the attribute; must be no more than 28 characters.', 'masvideos' ); ?></p>
-                                </div>
-
-                                <div class="form-field">
-                                    <label for="attribute_public"><input name="attribute_public" id="attribute_public" type="checkbox" value="1" /> <?php esc_html_e( 'Enable Archives?', 'masvideos' ); ?></label>
-
-                                    <p class="description"><?php esc_html_e( 'Enable this if you want this attribute to have archives in your site.', 'masvideos' ); ?></p>
-                                </div>
-
-                                <?php
-                                /**
-                                 * Attribute types can change the way attributes are displayed on the frontend and admin.
-                                 *
-                                 * By Default MasVideos only includes the `select` type. Others can be added with the
-                                 * `masvideos_attributes_type_selector` filter. If there is only the default type registered,
-                                 * this setting will be hidden.
-                                 */
-                                if ( masvideos_has_custom_attribute_types() ) {
-                                    ?>
                                     <div class="form-field">
-                                        <label for="attribute_type"><?php esc_html_e( 'Type', 'masvideos' ); ?></label>
-                                        <select name="attribute_type" id="attribute_type">
-                                            <?php foreach ( masvideos_get_attribute_types() as $key => $value ) : ?>
-                                                <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $value ); ?></option>
-                                            <?php endforeach; ?>
-                                            <?php
-                                                /**
-                                                 * Deprecated action in favor of masvideos_attributes_type_selector filter.
-                                                 *
-                                                 * @todo Remove in 4.0.0
-                                                 * @deprecated 2.4.0
-                                                 */
-                                                do_action( 'masvideos_admin_attribute_types' );
-                                            ?>
-                                        </select>
-                                        <p class="description"><?php esc_html_e( "Determines how this attribute's values are displayed.", 'masvideos' ); ?></p>
+                                        <label for="attribute_label"><?php esc_html_e( 'Name', 'masvideos' ); ?></label>
+                                        <input name="attribute_label" id="attribute_label" type="text" value="" />
+                                        <p class="description"><?php esc_html_e( 'Name for the attribute (shown on the front-end).', 'masvideos' ); ?></p>
                                     </div>
+
+                                    <div class="form-field">
+                                        <label for="attribute_name"><?php esc_html_e( 'Slug', 'masvideos' ); ?></label>
+                                        <input name="attribute_name" id="attribute_name" type="text" value="" maxlength="28" />
+                                        <p class="description"><?php esc_html_e( 'Unique slug/reference for the attribute; must be no more than 28 characters.', 'masvideos' ); ?></p>
+                                    </div>
+
+                                    <div class="form-field">
+                                        <label for="attribute_public"><input name="attribute_public" id="attribute_public" type="checkbox" value="1" /> <?php esc_html_e( 'Enable Archives?', 'masvideos' ); ?></label>
+
+                                        <p class="description"><?php esc_html_e( 'Enable this if you want this attribute to have archives in your site.', 'masvideos' ); ?></p>
+                                    </div>
+
                                     <?php
-                                }
-                                ?>
+                                    /**
+                                     * Attribute types can change the way attributes are displayed on the frontend and admin.
+                                     *
+                                     * By Default MasVideos only includes the `select` type. Others can be added with the
+                                     * `masvideos_attributes_type_selector` filter. If there is only the default type registered,
+                                     * this setting will be hidden.
+                                     */
+                                    if ( masvideos_has_custom_attribute_types() ) {
+                                        ?>
+                                        <div class="form-field">
+                                            <label for="attribute_type"><?php esc_html_e( 'Type', 'masvideos' ); ?></label>
+                                            <select name="attribute_type" id="attribute_type">
+                                                <?php foreach ( masvideos_get_attribute_types() as $key => $value ) : ?>
+                                                    <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $value ); ?></option>
+                                                <?php endforeach; ?>
+                                                <?php
+                                                    /**
+                                                     * Deprecated action in favor of masvideos_attributes_type_selector filter.
+                                                     *
+                                                     * @todo Remove in 4.0.0
+                                                     * @deprecated 2.4.0
+                                                     */
+                                                    do_action( 'masvideos_admin_attribute_types' );
+                                                ?>
+                                            </select>
+                                            <p class="description"><?php esc_html_e( "Determines how this attribute's values are displayed.", 'masvideos' ); ?></p>
+                                        </div>
+                                        <?php
+                                    }
+                                    ?>
 
-                                <div class="form-field">
-                                    <label for="attribute_orderby"><?php esc_html_e( 'Default sort order', 'masvideos' ); ?></label>
-                                    <select name="attribute_orderby" id="attribute_orderby">
-                                        <option value="menu_order"><?php esc_html_e( 'Custom ordering', 'masvideos' ); ?></option>
-                                        <option value="name"><?php esc_html_e( 'Name', 'masvideos' ); ?></option>
-                                        <option value="name_num"><?php esc_html_e( 'Name (numeric)', 'masvideos' ); ?></option>
-                                        <option value="id"><?php esc_html_e( 'Term ID', 'masvideos' ); ?></option>
-                                    </select>
-                                    <p class="description"><?php esc_html_e( 'Determines the sort order of the terms on the frontend pages. If using custom ordering, you can drag and drop the terms in this attribute.', 'masvideos' ); ?></p>
-                                </div>
+                                    <div class="form-field">
+                                        <label for="attribute_orderby"><?php esc_html_e( 'Default sort order', 'masvideos' ); ?></label>
+                                        <select name="attribute_orderby" id="attribute_orderby">
+                                            <option value="menu_order"><?php esc_html_e( 'Custom ordering', 'masvideos' ); ?></option>
+                                            <option value="name"><?php esc_html_e( 'Name', 'masvideos' ); ?></option>
+                                            <option value="name_num"><?php esc_html_e( 'Name (numeric)', 'masvideos' ); ?></option>
+                                            <option value="id"><?php esc_html_e( 'Term ID', 'masvideos' ); ?></option>
+                                        </select>
+                                        <p class="description"><?php esc_html_e( 'Determines the sort order of the terms on the frontend pages. If using custom ordering, you can drag and drop the terms in this attribute.', 'masvideos' ); ?></p>
+                                    </div>
 
-                                <?php do_action( 'masvideos_after_add_attribute_fields' ); ?>
+                                    <?php do_action( 'masvideos_after_add_attribute_fields' ); ?>
 
-                                <p class="submit"><button type="submit" name="add_new_attribute" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Add attribute', 'masvideos' ); ?>"><?php esc_html_e( 'Add attribute', 'masvideos' ); ?></button></p>
-                                <input name="post_type" id="post_type" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
-                                <?php wp_nonce_field( 'masvideos-add-new_attribute' ); ?>
-                            </form>
+                                    <p class="submit"><button type="submit" name="add_new_attribute" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Add attribute', 'masvideos' ); ?>"><?php esc_html_e( 'Add attribute', 'masvideos' ); ?></button></p>
+                                    <input name="post_type" id="post_type" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
+                                    <?php wp_nonce_field( 'masvideos-add-new_attribute' ); ?>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
             <script type="text/javascript">
             /* <![CDATA[ */
