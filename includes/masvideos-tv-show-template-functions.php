@@ -193,7 +193,8 @@ function masvideos_get_default_tv_show_rows_per_page() {
  */
 function masvideos_tv_show_class( $class = '', $tv_show_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_tv_show_class( $class, $tv_show_id ) ) ) . '"';
-    post_class();
+    $class .="tv-show";
+    post_class( $class );
 }
 
 /**
@@ -648,12 +649,12 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_meta' ) ) {
         }
 
         if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
-            echo '<div class="tv_show__meta">';
+            echo '<div class="tv-show__meta">';
                 if( ! empty ( $categories ) ) {
-                   echo '<span class="tv_show__meta--genre">' . $categories . '</span>';
+                   echo '<span class="tv-show__meta--genre">' . $categories . '</span>';
                 }
                 if( ! empty ( $relaese_year ) ) {
-                    echo '<span class="tv_show__meta--release-year">' . $relaese_year . '</span>';
+                    echo '<span class="tv-show__meta--release-year">' . $relaese_year . '</span>';
                 }
             echo '</div>';
         }
