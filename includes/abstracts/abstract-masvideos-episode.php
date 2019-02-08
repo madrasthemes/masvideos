@@ -60,7 +60,7 @@ class MasVideos_Episode extends MasVideos_Data {
         'attributes'            => array(),
         'default_attributes'    => array(),
         'menu_order'            => 0,
-        'category_ids'          => array(),
+        'genre_ids'          => array(),
         'tag_ids'               => array(),
         'image_id'              => '',
         'episode_choice'          => '',
@@ -224,6 +224,17 @@ class MasVideos_Episode extends MasVideos_Data {
     }
 
     /**
+     * Return if reviews is allowed.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return bool
+     */
+    public function get_reviews_allowed( $context = 'view' ) {
+        return $this->get_prop( 'reviews_allowed', $context );
+    }
+
+    /**
      * Returns episode attributes.
      *
      * @param  string $context What the value is for. Valid values are view and edit.
@@ -256,14 +267,14 @@ class MasVideos_Episode extends MasVideos_Data {
     }
 
     /**
-     * Get category ids.
+     * Get genre ids.
      *
      * @since 1.0.0
      * @param  string $context What the value is for. Valid values are view and edit.
      * @return array
      */
-    public function get_category_ids( $context = 'view' ) {
-        return $this->get_prop( 'category_ids', $context );
+    public function get_genre_ids( $context = 'view' ) {
+        return $this->get_prop( 'genre_ids', $context );
     }
 
     /**
@@ -545,13 +556,13 @@ class MasVideos_Episode extends MasVideos_Data {
     }
 
     /**
-     * Set the episode categories.
+     * Set the episode genres.
      *
      * @since 1.0.0
      * @param array $term_ids List of terms IDs.
      */
-    public function set_category_ids( $term_ids ) {
-        $this->set_prop( 'category_ids', array_unique( array_map( 'intval', $term_ids ) ) );
+    public function set_genre_ids( $term_ids ) {
+        $this->set_prop( 'genre_ids', array_unique( array_map( 'intval', $term_ids ) ) );
     }
 
     /**

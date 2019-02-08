@@ -36,8 +36,8 @@ if ( ! defined( 'ABSPATH' ) ) {
             array(
                 'id'            => '_movie_embed_content',
                 'value'         => is_callable( array( $movie_object, 'get_movie_embed_content' ) ) ? $movie_object->get_movie_embed_content( 'edit' ) : '',
-                'label'         => __( 'Embed Movie URL', 'masvideos' ),
-                'description'   => __( 'Enter the external URL to the movie.', 'masvideos' ),
+                'label'         => __( 'Embed Movie Content', 'masvideos' ),
+                'description'   => __( 'Enter the embed content to the movie.', 'masvideos' ),
                 'wrapper_class' => 'show_if_movie_embed hide',
             )
         );
