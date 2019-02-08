@@ -75,7 +75,7 @@ function masvideos_setup_videos_loop( $args = array() ) {
 
     $GLOBALS['masvideos_videos_loop'] = wp_parse_args( $args, $default_args );
 }
-add_action( 'masvideos_beee_videos_loop', 'masvideos_setup_videos_loop' );
+add_action( 'masvideos_before_videos_loop', 'masvideos_setup_videos_loop' );
 
 /**
  * Resets the masvideos_videos_loop global.
