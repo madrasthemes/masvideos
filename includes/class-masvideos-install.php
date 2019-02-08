@@ -388,6 +388,21 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
                 $wp_roles->add_cap( 'administrator', $cap );
             }
         }
+
+        $video_contributor_capabilities = apply_filters( 'masvideos_video_contributor_capabilities', array(
+            'edit_video',
+            'read_video',
+            'delete_video',
+            'edit_videos',
+            'delete_videos',
+            'manage_video_terms',
+            'assign_video_terms',
+            'upload_files',
+        ) );
+
+        foreach ( $video_contributor_capabilities as $cap ) {
+            $wp_roles->add_cap( 'contributor', $cap );
+        }
     }
 
     /**
