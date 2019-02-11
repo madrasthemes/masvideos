@@ -484,7 +484,11 @@ if ( ! function_exists( 'masvideos_template_loop_video_actions' ) ) {
      * video actions in the video loop.
      */
     function masvideos_template_loop_video_actions() {
-        echo '<div class="video__actions"></div>';
+        global $video;
+        echo '<div class="video__actions">';
+            echo '<a href="' . esc_url( get_permalink( $video ) ) . '" class="video-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
+            echo '<a href="#" class="video-actions--link_add-to-playlist">' . esc_html__( '+ Playlist', 'masvideos' ) . '</a>';
+        echo '</div>';
     }
 }
 
