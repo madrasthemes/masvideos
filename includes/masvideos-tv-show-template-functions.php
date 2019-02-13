@@ -639,24 +639,53 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_meta' ) ) {
      * tv show meta in the tv show loop.
      */
     function masvideos_template_loop_tv_show_meta() {
-        global $post, $tv_show;
+        echo '<div class="tv-show__meta">';
+            masvideos_template_single_tv_show_genres();
+            masvideos_template_single_tv_show_release_year();
+        echo '</div>';
+    }
+}
 
-        $categories = get_the_term_list( $post->ID, 'tv_show_genre', '', ', ' );
-        if( taxonomy_exists( 'tv_show_release-year' ) ) {
-            $relaese_year = get_the_term_list( $post->ID, 'tv_show_release-year', '', ', ' );
-        } else {
-            $relaese_year = '';
+if ( ! function_exists( 'masvideos_template_single_tv_show_genres' ) ) {
+
+    /**
+     * TV Show genres in the tv show single.
+     */
+    function masvideos_template_single_tv_show_genres() {
+        global $tv_show;
+
+        $categories = get_the_term_list( $tv_show->get_id(), 'tv_show_genre', '', ', ' );
+
+        if( ! empty ( $categories ) ) {
+           echo '<span class="tv-show__meta--genre">' . $categories . '</span>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_release_year' ) ) {
+
+    /**
+     * TV Show release year in the tv show single.
+     */
+    function masvideos_template_single_tv_show_release_year() {
+        global $tv_show;
+        $seasons = $tv_show->get_seasons();
+
+        $season_years = array_column( $seasons, 'year' );
+        $start = min( $season_years );
+        $end = max( $season_years );
+
+        $tv_show_year = '';
+        if( ! empty( $start ) && ! empty( $end ) ) {
+            $tv_show_year = $start . ' - ' . $end;
+        } elseif( ! empty( $start ) ) {
+            $tv_show_year = $start;
+        } elseif( ! empty( $end ) ) {
+            $tv_show_year = $end;
         }
 
-        if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
-            echo '<div class="tv-show__meta">';
-                if( ! empty ( $categories ) ) {
-                   echo '<span class="tv-show__meta--genre">' . $categories . '</span>';
-                }
-                if( ! empty ( $relaese_year ) ) {
-                    echo '<span class="tv-show__meta--release-year">' . $relaese_year . '</span>';
-                }
-            echo '</div>';
+        if( ! empty ( $tv_show_year ) ) {
+            echo sprintf( '<span class="tv-show__meta--release-year">%s</span>', $tv_show_year );
         }
     }
 }
@@ -697,12 +726,13 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_short_desc' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_tv_show_actions' ) ) {
 
     /**
-     * tv show actions in the tv show loop.
+     * TV Show actions in the tv show loop.
      */
     function masvideos_template_loop_tv_show_actions() {
-        global $tv_show;
         echo '<div class="tv-show__actions">';
-            echo '<a href="' . esc_url( get_permalink( $tv_show ) ) . '" class="tv-show-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
+            global $tv_show;
+            $link = apply_filters( 'masvideos_loop_tv_show_link', get_the_permalink(), $tv_show );
+            echo '<a href="' . esc_url( $link ) . '" class="tv-show-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
             echo '<a href="#" class="tv-show-actions--link_add-to-playlist">' . esc_html__( '+ Playlist', 'masvideos' ) . '</a>';
         echo '</div>';
     }

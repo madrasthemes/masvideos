@@ -184,6 +184,3 @@ if ( ! function_exists( 'masvideos_get_tv_show_seasons' ) ) {
         
     }
 }
-
-
-
