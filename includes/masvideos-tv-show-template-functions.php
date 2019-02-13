@@ -642,6 +642,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_meta' ) ) {
         echo '<div class="tv-show__meta">';
             masvideos_template_single_tv_show_genres();
             masvideos_template_single_tv_show_release_year();
+            masvideos_template_loop_tv_show_new_episodes_count();
         echo '</div>';
     }
 }
@@ -669,19 +670,23 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_release_year' ) ) {
      */
     function masvideos_template_single_tv_show_release_year() {
         global $tv_show;
-        $seasons = $tv_show->get_seasons();
-
-        $season_years = array_column( $seasons, 'year' );
-        $start = min( $season_years );
-        $end = max( $season_years );
-
+        
         $tv_show_year = '';
-        if( ! empty( $start ) && ! empty( $end ) ) {
-            $tv_show_year = $start . ' - ' . $end;
-        } elseif( ! empty( $start ) ) {
-            $tv_show_year = $start;
-        } elseif( ! empty( $end ) ) {
-            $tv_show_year = $end;
+
+        $seasons = $tv_show->get_seasons();
+            
+        if( ! empty( $seasons ) ) {
+            $season_years = array_column( $seasons, 'year' );
+            $start = count( $season_years ) ? min( $season_years ) : '';
+            $end = count( $season_years ) ? max( $season_years ) : '';
+
+            if( ! empty( $start ) && ! empty( $end ) ) {
+                $tv_show_year = $start . ' - ' . $end;
+            } elseif( ! empty( $start ) ) {
+                $tv_show_year = $start;
+            } elseif( ! empty( $end ) ) {
+                $tv_show_year = $end;
+            }
         }
 
         if( ! empty ( $tv_show_year ) ) {
@@ -823,6 +828,21 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_new_episode' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_loop_tv_show_new_episodes_count' ) ) {
+
+    /**
+     * TV Show new episode in the tv show loop.
+     */
+    function masvideos_template_loop_tv_show_new_episodes_count() {
+        $all_episodes = masvideos_get_tv_show_all_episodes();
+        $count = count( $all_episodes );
+
+        if( $count ) {
+            echo wp_kses_post( sprintf( _n( '<div class="tv-show__episode">%s</div> Episode', '<span>%s</span> Episodes', $count, 'masvideos' ), $count ) ) ;
+        }
+    }
+}
+
 
 if ( ! function_exists( 'masvideos_template_loop_tv_show_hover_area_open' ) ) {
     /**
@@ -907,9 +927,15 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_seasons' ) ) {
      */
     function masvideos_template_loop_tv_show_seasons() {
         global $tv_show;
-        echo '<div class="tv-show__seasons">'. esc_html__( 'Seasons #:  ', 'masvideos' );
-        masvideos_get_tv_show_seasons();
-        echo '</div>';
+
+        $season_titles = masvideos_get_tv_show_all_season_titles();
+        if( ! empty( $season_titles ) ) {
+            echo '<div class="tv-show__seasons">'. esc_html__( 'Seasons #:  ', 'masvideos' );
+            foreach ( $season_titles as $season_title ) {
+                echo '<a href="' . esc_url( get_permalink( $tv_show->get_ID() ) ) . '" class="tv-show__episode--link">' . $season_title . '</a>';
+            }
+            echo '</div>';
+        }
     }
 }
 

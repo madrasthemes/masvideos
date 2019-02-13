@@ -155,6 +155,39 @@ if ( ! function_exists( 'masvideos_get_tv_show_thumbnail' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_get_tv_show_all_episodes' ) ) {
+    function masvideos_get_tv_show_all_episodes() {
+        global $tv_show;
+
+        $episodes = array();
+
+        $seasons = $tv_show->get_seasons();
+        foreach ( $seasons as $season ) {
+            if( ! empty( $season['episodes'] ) ) {
+                foreach ( $season['episodes'] as $episode ) {
+                    $episodes[] = array(
+                        'season_name' => ! empty( $season['name'] ) ? $season['name'] : '',
+                        'episodes' => $episode,
+                    );
+                }
+            }
+        }
+
+        return $episodes;
+    }
+}
+
+if ( ! function_exists( 'masvideos_get_tv_show_all_season_titles' ) ) {
+    function masvideos_get_tv_show_all_season_titles() {
+        global $tv_show;
+
+        $seasons = $tv_show->get_seasons();
+        $season_titles = ! empty( $seasons ) ? array_column( $seasons, 'name' ) : array();
+
+        return $season_titles;
+    }
+}
+
 if ( ! function_exists( 'masvideos_get_tv_show_latest_episode' ) ) {
     function masvideos_get_tv_show_latest_episode() {
         global $tv_show;
@@ -167,20 +200,5 @@ if ( ! function_exists( 'masvideos_get_tv_show_latest_episode' ) ) {
             $latest_episode = masvideos_get_episode($seasons[$latest_season_key]['episodes'][$latest_episode_key]);
             echo '<a href="' . esc_url( get_permalink($latest_episode->get_ID()) ) . '" class="tv-show__episode--link">' . $latest_episode->get_title() . '</a>';
         }
-    }
-}
-
-if ( ! function_exists( 'masvideos_get_tv_show_seasons' ) ) {
-    function masvideos_get_tv_show_seasons() {
-        global $tv_show;
-        $seasons = $tv_show->get_seasons();
-        $season_titles = array();
-        foreach ($seasons as $season) {
-            $season_titles[] = $season['name'];
-        }
-        foreach ($season_titles as $season_title) {
-            echo '<a href="' . esc_url( get_permalink($tv_show->get_ID()) ) . '" class="tv-show__episode--link">' . $season_title . '</a>';
-        }
-        
     }
 }
