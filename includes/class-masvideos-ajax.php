@@ -441,6 +441,19 @@ class MasVideos_AJAX {
             $tv_show->set_seasons( $seasons );
             $tv_show->save();
 
+            if( ! empty( $seasons ) ) {
+                foreach ( $seasons as $key => $season ) {
+                    if( ! empty( $season['episodes'] ) ) {
+                        foreach ( $season['episodes'] as $episode_id ) {
+                            $episode = masvideos_get_episode( $episode_id );
+                            $episode->set_tv_show_id( $tv_show_id );
+                            $episode->set_tv_show_season_id( $key );
+                            $episode->save();
+                        }
+                    }
+                }
+            }
+
             $response = array();
 
             ob_start();
