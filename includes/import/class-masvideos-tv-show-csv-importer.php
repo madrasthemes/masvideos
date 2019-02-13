@@ -483,6 +483,7 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
             'episode_attachment_id'     => array( $this, 'parse_images_field' ),
             'episode_embed_content'     => 'masvideos_sanitize_textarea_iframe',
             'episode_url_link'          => 'esc_url_raw',
+            'episode_release_date'      => array( $this, 'parse_date_field' ),
             'menu_order'                => 'intval',
         );
 
