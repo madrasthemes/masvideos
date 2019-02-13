@@ -125,7 +125,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
             $season_names_max_key = max( array_keys( $season_names ) );
 
             for ( $i = 0; $i <= $season_names_max_key; $i++ ) {
-                if ( empty( $season_names[ $i ] ) || ! isset( $season_episodes[ $i ] ) ) {
+                if ( empty( $season_names[ $i ] ) ) {
                     continue;
                 }
 

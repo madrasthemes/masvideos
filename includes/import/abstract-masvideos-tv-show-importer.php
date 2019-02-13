@@ -415,6 +415,9 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
             $seasons          = array();
 
             foreach ( $data['raw_seasons'] as $key => $season ) {
+                if ( empty( $season['name'] ) ) {
+                    continue;
+                }
 
                 // Image URLs need converting to IDs before inserting.
                 if ( isset( $season['image_id'] ) ) {
