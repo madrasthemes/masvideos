@@ -236,7 +236,6 @@ class MasVideos_Breadcrumb {
 		}
 
 		$this->add_crumb( get_the_title(), get_permalink() );
-		$this->endpoint_trail();
 	}
 
 	/**
