@@ -63,6 +63,8 @@ class MasVideos_Episode extends MasVideos_Data {
         'genre_ids'             => array(),
         'tag_ids'               => array(),
         'image_id'              => '',
+        'tv_show_id'            => '',
+        'tv_show_season_id'     => '',
         'episode_choice'        => '',
         'episode_attachment_id' => '',
         'episode_embed_content' => '',
@@ -308,6 +310,28 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function get_image_id( $context = 'view' ) {
         return $this->get_prop( 'image_id', $context );
+    }
+
+    /**
+     * Get main TV Show id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_tv_show_id( $context = 'view' ) {
+        return $this->get_prop( 'tv_show_id', $context );
+    }
+
+    /**
+     * Get main TV Show season id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_tv_show_season_id( $context = 'view' ) {
+        return $this->get_prop( 'tv_show_season_id', $context );
     }
 
     /**
@@ -611,6 +635,26 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function set_image_id( $image_id = '' ) {
         $this->set_prop( 'image_id', $image_id );
+    }
+
+    /**
+     * Set main TV Show id
+     *
+     * @since 1.0.0
+     * @param int|string $tv_show_id TV Show id.
+     */
+    public function set_tv_show_id( $tv_show_id = '' ) {
+        $this->set_prop( 'tv_show_id', $tv_show_id );
+    }
+
+    /**
+     * Set main TV Show season id
+     *
+     * @since 1.0.0
+     * @param int|string $tv_show_season_id TV Show season id.
+     */
+    public function set_tv_show_season_id( $tv_show_season_id = '' ) {
+        $this->set_prop( 'tv_show_season_id', $tv_show_season_id );
     }
 
     /**
