@@ -35,6 +35,7 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
         '_episode_attachment_id',
         '_episode_embed_content',
         '_episode_url_link',
+        '_episode_release_date',
         '_file_paths',
         '_episode_image_gallery',
         '_episode_version',
@@ -303,6 +304,7 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
                 'episode_attachment_id' => get_post_meta( $id, '_episode_attachment_id', true ),
                 'episode_embed_content' => get_post_meta( $id, '_episode_embed_content', true ),
                 'episode_url_link'      => get_post_meta( $id, '_episode_url_link', true ),
+                'episode_release_date'  => get_post_meta( $id, '_episode_release_date', true ),
             )
         );
     }
@@ -409,12 +411,13 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
     protected function update_post_meta( &$episode, $force = false ) {
         $meta_key_to_props = array(
             '_default_attributes'           => 'default_attributes',
-            '_episode_image_gallery'          => 'gallery_image_ids',
+            '_episode_image_gallery'        => 'gallery_image_ids',
             '_thumbnail_id'                 => 'image_id',
-            '_episode_choice'                 => 'episode_choice',
-            '_episode_attachment_id'          => 'episode_attachment_id',
-            '_episode_embed_content'          => 'episode_embed_content',
-            '_episode_url_link'               => 'episode_url_link',
+            '_episode_choice'               => 'episode_choice',
+            '_episode_attachment_id'        => 'episode_attachment_id',
+            '_episode_embed_content'        => 'episode_embed_content',
+            '_episode_url_link'             => 'episode_url_link',
+            '_episode_release_date'         => 'episode_release_date',
             '_masvideos_average_rating'     => 'average_rating',
             '_masvideos_rating_count'       => 'rating_counts',
             '_masvideos_review_count'       => 'review_count',

@@ -125,6 +125,7 @@ class MasVideos_Shortcode_TV_Shows {
                 'tag'            => '',        // Comma separated tag slugs.
                 'visibility'     => 'visible', // Possible values are 'visible', 'catalog', 'search', 'hidden', 'featured'.
                 'class'          => '',        // HTML class.
+                'template'       => '',        // Template file to run.
                 'page'           => 1,         // Page for pagination.
                 'paginate'       => false,     // Should results be paginated.
                 'cache'          => true,      // Should shortcode output be cached.
@@ -568,7 +569,11 @@ class MasVideos_Shortcode_TV_Shows {
                     add_action( 'masvideos_tv_show_is_visible', array( $this, 'set_tv_show_as_visible' ) );
 
                     // Render tv_show template.
-                    masvideos_get_template_part( 'content', 'tv-show' );
+                    if( ! empty( $this->attributes['template'] ) ) {
+                        masvideos_get_template_part( $this->attributes['template'] );
+                    } else {
+                        masvideos_get_template_part( 'content', 'tv-show' );
+                    }
 
                     // Restore tv_show visibility.
                     remove_action( 'masvideos_tv_show_is_visible', array( $this, 'set_tv_show_as_visible' ) );

@@ -494,6 +494,8 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                 'masvideos_csv_tv_show_import_mapping_default_columns', array(
                     __( 'ID', 'masvideos' )                        => 'id',
                     __( 'Type', 'masvideos' )                      => 'type',
+                    __( 'Parent TV Show', 'masvideos' )            => 'parent_tv_show',
+                    __( 'Parent Season', 'masvideos' )             => 'parent_season',
                     __( 'Name', 'masvideos' )                      => 'name',
                     __( 'Published', 'masvideos' )                 => 'published',
                     __( 'Is featured?', 'masvideos' )              => 'featured',
@@ -505,13 +507,11 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                     __( 'Tags', 'masvideos' )                      => 'tag_ids',
                     __( 'Images', 'masvideos' )                    => 'images',
                     __( 'Position', 'masvideos' )                  => 'menu_order',
-                    __( 'TV Show Choice', 'masvideos' )              => 'tv_show_choice',
-                    __( 'TV Show Attachment', 'masvideos' )          => 'tv_show_attachment_id',
-                    __( 'TV Show Embed Content', 'masvideos' )       => 'tv_show_embed_content',
-                    __( 'TV Show Link', 'masvideos' )                => 'tv_show_url_link',
-                    __( 'TV Show Release Date', 'masvideos' )        => 'tv_show_release_date',
-                    __( 'TV Show Run Time', 'masvideos' )            => 'tv_show_run_time',
-                    __( 'TV Show Censor Rating', 'masvideos' )       => 'tv_show_censor_rating',
+                    __( 'Episode Choice', 'masvideos' )            => 'episode_choice',
+                    __( 'Episode Attachment', 'masvideos' )        => 'episode_attachment_id',
+                    __( 'Episode Embed Content', 'masvideos' )     => 'episode_embed_content',
+                    __( 'Episode Link', 'masvideos' )              => 'episode_url_link',
+                    __( 'Episode Release Date', 'masvideos' )      => 'episode_release_date',
                 )
             )
         );
@@ -527,6 +527,8 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                         __( 'Season %d image', 'masvideos' ) => 'seasons:image_id',
                         /* translators: %d: Season number */
                         __( 'Season %d episode(s)', 'masvideos' ) => 'seasons:episodes',
+                        /* translators: %d: Season number */
+                        __( 'Season %d year', 'masvideos' ) => 'seasons:year',
                         /* translators: %d: Season number */
                         __( 'Season %d description', 'masvideos' ) => 'seasons:description',
                         /* translators: %d: Season number */
@@ -636,6 +638,8 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
         $options        = array(
             'id'                     => __( 'ID', 'masvideos' ),
             'type'                   => __( 'Type', 'masvideos' ),
+            'parent_tv_show'         => __( 'Parent TV Show', 'masvideos' ),
+            'parent_season'          => __( 'Parent Season', 'masvideos' ),
             'name'                   => __( 'Name', 'masvideos' ),
             'published'              => __( 'Published', 'masvideos' ),
             'featured'               => __( 'Is featured?', 'masvideos' ),
@@ -649,12 +653,14 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
             'episode_attachment_id'  => __( 'Episode Attachment', 'masvideos' ),
             'episode_embed_content'  => __( 'Episode Embed Content', 'masvideos' ),
             'episode_url_link'       => __( 'Episode Link', 'masvideos' ),
+            'episode_release_date'   => __( 'Episode Release Date', 'masvideos' ),
             'seasons'                => array(
                 'name'    => __( 'Seasons', 'masvideos' ),
                 'options' => array(
                     'seasons:name' . $index         => __( 'Season name', 'masvideos' ),
                     'seasons:image_id' . $index     => __( 'Season image', 'masvideos' ),
                     'seasons:episodes' . $index     => __( 'Season episode(s)', 'masvideos' ),
+                    'seasons:year' . $index         => __( 'Season year', 'masvideos' ),
                     'seasons:description' . $index  => __( 'Season description', 'masvideos' ),
                     'seasons:position' . $index     => __( 'Season position', 'masvideos' ),
                 ),

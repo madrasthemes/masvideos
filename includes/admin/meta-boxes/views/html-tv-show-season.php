@@ -54,6 +54,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </tr>
                 <tr>
                     <td>
+                        <label><?php esc_html_e( 'Year', 'masvideos' ); ?>:</label>
+                        <input type="text" name="season_year[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $season['year'] ); ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <label><?php esc_html_e( 'Description', 'masvideos' ); ?>:</label>
                         <textarea name="season_description[<?php echo esc_attr( $i ); ?>]" cols="5" rows="5" placeholder="<?php esc_attr_e( 'Enter some description.', 'masvideos' ); ?>"><?php echo esc_textarea( $season['description'] ); ?></textarea>
                     </td>

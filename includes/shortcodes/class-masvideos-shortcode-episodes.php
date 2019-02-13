@@ -125,6 +125,7 @@ class MasVideos_Shortcode_Episodes {
                 'tag'            => '',        // Comma separated tag slugs.
                 'visibility'     => 'visible', // Possible values are 'visible', 'catalog', 'search', 'hidden', 'featured'.
                 'class'          => '',        // HTML class.
+                'template'       => '',        // Template file to run.
                 'page'           => 1,         // Page for pagination.
                 'paginate'       => false,     // Should results be paginated.
                 'cache'          => true,      // Should shortcode output be cached.
@@ -568,7 +569,11 @@ class MasVideos_Shortcode_Episodes {
                     add_action( 'masvideos_episode_is_visible', array( $this, 'set_episode_as_visible' ) );
 
                     // Render episode template.
-                    masvideos_get_template_part( 'content', 'episode' );
+                    if( ! empty( $this->attributes['template'] ) ) {
+                        masvideos_get_template_part( $this->attributes['template'] );
+                    } else {
+                        masvideos_get_template_part( 'content', 'episode' );
+                    }
 
                     // Restore episode visibility.
                     remove_action( 'masvideos_episode_is_visible', array( $this, 'set_episode_as_visible' ) );

@@ -60,13 +60,14 @@ class MasVideos_Episode extends MasVideos_Data {
         'attributes'            => array(),
         'default_attributes'    => array(),
         'menu_order'            => 0,
-        'genre_ids'          => array(),
+        'genre_ids'             => array(),
         'tag_ids'               => array(),
         'image_id'              => '',
-        'episode_choice'          => '',
-        'episode_attachment_id'   => '',
-        'episode_embed_content'   => '',
-        'episode_url_link'        => '',
+        'episode_choice'        => '',
+        'episode_attachment_id' => '',
+        'episode_embed_content' => '',
+        'episode_url_link'      => '',
+        'episode_release_date'  => '',
         'gallery_image_ids'     => array(),
         'rating_counts'         => array(),
         'average_rating'        => 0,
@@ -351,6 +352,17 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function get_episode_url_link( $context = 'view' ) {
         return $this->get_prop( 'episode_url_link', $context );
+    }
+
+    /**
+     * Get main episode release date.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_episode_release_date( $context = 'view' ) {
+        return $this->get_prop( 'episode_release_date', $context );
     }
 
     /**
@@ -639,6 +651,16 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function set_episode_url_link( $episode_url_link = '' ) {
         $this->set_prop( 'episode_url_link', $episode_url_link );
+    }
+
+    /**
+     * Set main episode release date content.
+     *
+     * @since 1.0.0
+     * @param int|string $episode_release_date Movie relese date.
+     */
+    public function set_episode_release_date( $episode_release_date = '' ) {
+        $this->set_date_prop( 'episode_release_date', $episode_release_date );
     }
 
     /**

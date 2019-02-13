@@ -411,6 +411,7 @@ class MasVideos_AJAX {
             'name'          => sprintf( __( 'Season %d', 'masvideos' ), $i+1 ),
             'image_id'      => 0,
             'episodes'      => array(),
+            'year'          => '',
             'description'   => '',
             'position'      => 0
         );
