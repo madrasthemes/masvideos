@@ -528,6 +528,8 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                         /* translators: %d: Season number */
                         __( 'Season %d episode(s)', 'masvideos' ) => 'seasons:episodes',
                         /* translators: %d: Season number */
+                        __( 'Season %d year', 'masvideos' ) => 'seasons:year',
+                        /* translators: %d: Season number */
                         __( 'Season %d description', 'masvideos' ) => 'seasons:description',
                         /* translators: %d: Season number */
                         __( 'Season %d position', 'masvideos' ) => 'seasons:position',
@@ -658,6 +660,7 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                     'seasons:name' . $index         => __( 'Season name', 'masvideos' ),
                     'seasons:image_id' . $index     => __( 'Season image', 'masvideos' ),
                     'seasons:episodes' . $index     => __( 'Season episode(s)', 'masvideos' ),
+                    'seasons:year' . $index         => __( 'Season year', 'masvideos' ),
                     'seasons:description' . $index  => __( 'Season description', 'masvideos' ),
                     'seasons:position' . $index     => __( 'Season position', 'masvideos' ),
                 ),

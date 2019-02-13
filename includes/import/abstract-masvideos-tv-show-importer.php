@@ -425,6 +425,7 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
                     'name'          => isset( $season['name'] ) ? masvideos_clean( $season['name'] ) : '',
                     'image_id'      => isset( $season_image_id ) ? absint( $season_image_id ) : 0,
                     'episodes'      => isset( $season['episodes'] ) ? $season['episodes'] : array(),
+                    'year'          => isset( $season['year'] ) ? masvideos_clean( $season['year'] ) : '',
                     'description'   => isset( $season['description'] ) ? masvideos_sanitize_textarea( $season['description'] ) : '',
                     'position'      => isset( $season['position'] ) ? absint( $season['position'] ) : 0
                 );

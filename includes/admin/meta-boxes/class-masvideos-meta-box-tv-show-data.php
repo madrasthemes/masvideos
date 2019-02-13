@@ -119,6 +119,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
             $season_names         = $data['season_names'];
             $season_image_id      = $data['season_image_id'];
             $season_episodes      = $data['season_episodes'];
+            $season_year          = $data['season_year'];
             $season_description   = $data['season_description'];
             $season_position      = $data['season_position'];
             $season_names_max_key = max( array_keys( $season_names ) );
@@ -132,6 +133,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
                     'name'          => isset( $season_names[ $i ] ) ? masvideos_clean( $season_names[ $i ] ) : '',
                     'image_id'      => isset( $season_image_id[ $i ] ) ? absint( $season_image_id[ $i ] ) : 0,
                     'episodes'      => isset( $season_episodes[ $i ] ) ? $season_episodes[ $i ] : array(),
+                    'year'          => isset( $season_year[ $i ] ) ? masvideos_clean( $season_year[ $i ] ) : '',
                     'description'   => isset( $season_description[ $i ] ) ? masvideos_sanitize_textarea( $season_description[ $i ] ) : '',
                     'position'      => isset( $season_position[ $i ] ) ? absint( $season_position[ $i ] ) : 0
                 );

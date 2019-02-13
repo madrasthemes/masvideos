@@ -589,6 +589,10 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
                 }
                 unset( $data[ $key ] );
 
+            } elseif ( $this->starts_with( $key, 'seasons:year' ) ) {
+                $seasons[ str_replace( 'seasons:year', '', $key ) ]['year'] = $value;
+                unset( $data[ $key ] );
+
             } elseif ( $this->starts_with( $key, 'seasons:description' ) ) {
                 $seasons[ str_replace( 'seasons:description', '', $key ) ]['description'] = $value;
                 unset( $data[ $key ] );
