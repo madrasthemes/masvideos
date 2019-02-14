@@ -257,6 +257,45 @@ if ( ! function_exists( 'masvideos_episode_loop_end' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_episode_page_title' ) ) {
+
+    /**
+     * Page Title function.
+     *
+     * @param  bool $echo Should echo title.
+     * @return string
+     */
+    function masvideos_episode_page_title( $echo = true ) {
+
+        if ( is_search() ) {
+            /* translators: %s: search query */
+            $page_title = sprintf( __( 'Search results: &ldquo;%s&rdquo;', 'masvideos' ), get_search_query() );
+
+            if ( get_query_var( 'paged' ) ) {
+                /* translators: %s: page number */
+                $page_title .= sprintf( __( '&nbsp;&ndash; Page %s', 'masvideos' ), get_query_var( 'paged' ) );
+            }
+        } elseif ( is_tax() ) {
+
+            $page_title = single_term_title( '', false );
+
+        } else {
+
+            $episodes_page_id = masvideos_get_page_id( 'episodes' );
+            $page_title   = get_the_title( $episodes_page_id );
+
+        }
+
+        $page_title = apply_filters( 'masvideos_episode_page_title', $page_title );
+
+        if ( $echo ) {
+            echo $page_title; // WPCS: XSS ok.
+        } else {
+            return $page_title;
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
 
     /**
@@ -264,5 +303,95 @@ if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
      */
     function masvideos_template_loop_episode_title() {
         the_title( '<h3 class="masvideos-loop-episode__title  episode__title">', '</h3>' );
+    }
+}
+
+/**
+ * Single
+ */
+
+if ( ! function_exists( 'masvideos_template_single_episode_episode' ) ) {
+
+    /**
+     * Output the episode.
+     */
+    function masvideos_template_single_episode_episode() {
+        masvideos_the_episode();
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_title' ) ) {
+
+    /**
+     * Output the episode title.
+     */
+    function masvideos_template_single_episode_title() {
+        the_title( '<h1 class="episode_title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_comments' ) ) {
+
+    /**
+     * Output the Review comments template.
+     *
+     * @param WP_Comment $comment Comment object.
+     * @param array      $args Arguments.
+     * @param int        $depth Depth.
+     */
+    function masvideos_episode_comments( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment; // WPCS: override ok.
+        masvideos_get_template( 'single-episode/review.php', array(
+            'comment' => $comment,
+            'args'    => $args,
+            'depth'   => $depth,
+        ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_gravatar' ) ) {
+    /**
+     * Display the review authors gravatar
+     *
+     * @param array $comment WP_Comment.
+     * @return void
+     */
+    function masvideos_episode_review_display_gravatar( $comment ) {
+        echo get_avatar( $comment, apply_filters( 'masvideos_episode_review_gravatar_size', '60' ), '' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_rating' ) ) {
+    /**
+     * Display the reviewers star rating
+     *
+     * @return void
+     */
+    function masvideos_episode_review_display_rating() {
+        if ( post_type_supports( 'episode', 'comments' ) ) {
+            masvideos_get_template( 'single-episode/review-rating.php' );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_meta' ) ) {
+    /**
+     * Display the review authors meta (name, verified owner, review date)
+     *
+     * @return void
+     */
+    function masvideos_episode_review_display_meta() {
+        masvideos_get_template( 'single-episode/review-meta.php' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_comment_text' ) ) {
+    /**
+     * Display the review content.
+     */
+    function masvideos_episode_review_display_comment_text() {
+        echo '<div class="description">';
+        comment_text();
+        echo '</div>';
     }
 }

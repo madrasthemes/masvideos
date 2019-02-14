@@ -140,3 +140,55 @@ function masvideos_episodes_array_filter_editable( $episode ) {
 function masvideos_episodes_array_filter_readable( $episode ) {
     return $episode && is_a( $episode, 'MasVideos_Episode' ) && current_user_can( 'read_episode', $episode->get_id() );
 }
+
+if ( ! function_exists ( 'masvideos_the_episode' ) ) {
+    function masvideos_the_episode( $post = null ) {
+        global $episode;
+
+        $episode_src = masvideos_get_the_episode( $episode );
+        $episode_choice = $episode->get_episode_choice();
+
+        if ( ! empty ( $episode_src ) ) {
+            if ( $episode_choice == 'episode_file' ) {
+                echo do_shortcode('[video src="' . $episode_src . '"]');
+            } elseif ( $episode_choice == 'episode_embed' ) {
+                echo '<div class="wp-video">' . $episode_src . '</div>';
+            } elseif ( $episode_choice == 'episode_url' ) {
+                echo do_shortcode('[video src="' . $episode_src . '"]');
+            }
+        }
+    }
+}
+
+if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
+    function masvideos_get_the_episode( $post = null ) {
+        global $episode;
+
+        $episode_src = '';
+        $episode_choice = $episode->get_episode_choice();
+
+        if ( $episode_choice == 'episode_file' ) {
+            $episode_src =  wp_get_attachment_url( $episode->get_episode_attachment_id() );
+        } elseif ( $episode_choice == 'episode_embed' ) {
+            $episode_src = $episode->get_episode_embed_content();
+        } elseif ( $episode_choice == 'episode_url' ) {
+            $episode_src = $episode->get_episode_url_link();
+        }
+
+        return $episode_src;
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_get_episode_thumbnail' ) ) {
+    /**
+     * Get the masvideos thumbnail, or the placeholder if not set.
+     */
+    function masvideos_get_episode_thumbnail( $size = 'masvideos_episode_medium' ) {
+        global $episode;
+
+        $image_size = apply_filters( 'masvideos_episode_archive_thumbnail_size', $size );
+
+        return $episode ? $episode->get_image( $image_size , array( 'class' => 'episode__poster--image' ) ) : '';
+    }
+}
