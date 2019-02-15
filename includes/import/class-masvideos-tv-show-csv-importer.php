@@ -480,10 +480,12 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
             'parent_tv_show'            => array( $this, 'parse_skip_field' ),
             'parent_season'             => array( $this, 'parse_skip_field' ),
             'episode_choice'            => array( $this, 'parse_skip_field' ),
+            'episode_number'            => array( $this, 'parse_skip_field' ),
             'episode_attachment_id'     => array( $this, 'parse_images_field' ),
             'episode_embed_content'     => 'masvideos_sanitize_textarea_iframe',
             'episode_url_link'          => 'esc_url_raw',
             'episode_release_date'      => array( $this, 'parse_date_field' ),
+            'episode_run_time'          => array( $this, 'parse_skip_field' ),
             'menu_order'                => 'intval',
         );
 

@@ -65,11 +65,13 @@ class MasVideos_Episode extends MasVideos_Data {
         'image_id'              => '',
         'tv_show_id'            => '',
         'tv_show_season_id'     => '',
+        'episode_number'        => '',
         'episode_choice'        => '',
         'episode_attachment_id' => '',
         'episode_embed_content' => '',
         'episode_url_link'      => '',
         'episode_release_date'  => '',
+        'episode_run_time'      => '',
         'gallery_image_ids'     => array(),
         'rating_counts'         => array(),
         'average_rating'        => 0,
@@ -335,6 +337,17 @@ class MasVideos_Episode extends MasVideos_Data {
     }
 
     /**
+     * Get main episode number.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_episode_number( $context = 'view' ) {
+        return $this->get_prop( 'episode_number', $context );
+    }
+
+    /**
      * Get main episode choice.
      *
      * @since 1.0.0
@@ -387,6 +400,17 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function get_episode_release_date( $context = 'view' ) {
         return $this->get_prop( 'episode_release_date', $context );
+    }
+
+    /**
+     * Get main episode run time.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_episode_run_time( $context = 'view' ) {
+        return $this->get_prop( 'episode_run_time', $context );
     }
 
     /**
@@ -658,10 +682,20 @@ class MasVideos_Episode extends MasVideos_Data {
     }
 
     /**
+     * Set main episode number
+     *
+     * @since 1.0.0
+     * @param int|string $episode_number Episode number.
+     */
+    public function set_episode_number( $episode_number = '' ) {
+        $this->set_prop( 'episode_number', $episode_number );
+    }
+
+    /**
      * Set main episode choice
      *
      * @since 1.0.0
-     * @param int|string $episode_choice Video attachment id.
+     * @param int|string $episode_choice Episode choice.
      */
     public function set_episode_choice( $episode_choice = '' ) {
         $this->set_prop( 'episode_choice', $episode_choice );
@@ -671,7 +705,7 @@ class MasVideos_Episode extends MasVideos_Data {
      * Set main episode attachment ID.
      *
      * @since 1.0.0
-     * @param int|string $episode_attachment_id Video attachment id.
+     * @param int|string $episode_attachment_id Episode attachment id.
      */
     public function set_episode_attachment_id( $episode_attachment_id = '' ) {
         $this->set_prop( 'episode_attachment_id', $episode_attachment_id );
@@ -681,7 +715,7 @@ class MasVideos_Episode extends MasVideos_Data {
      * Set main episode embed content.
      *
      * @since 1.0.0
-     * @param int|string $episode_embed_content Video embed content.
+     * @param int|string $episode_embed_content Episode embed content.
      */
     public function set_episode_embed_content( $episode_embed_content = '' ) {
         $this->set_prop( 'episode_embed_content', $episode_embed_content );
@@ -691,7 +725,7 @@ class MasVideos_Episode extends MasVideos_Data {
      * Set main episode url.
      *
      * @since 1.0.0
-     * @param int|string $episode_url_link Video embed content.
+     * @param int|string $episode_url_link Episode embed content.
      */
     public function set_episode_url_link( $episode_url_link = '' ) {
         $this->set_prop( 'episode_url_link', $episode_url_link );
@@ -701,10 +735,20 @@ class MasVideos_Episode extends MasVideos_Data {
      * Set main episode release date content.
      *
      * @since 1.0.0
-     * @param int|string $episode_release_date Movie relese date.
+     * @param int|string $episode_release_date Episode relese date.
      */
     public function set_episode_release_date( $episode_release_date = '' ) {
         $this->set_date_prop( 'episode_release_date', $episode_release_date );
+    }
+
+    /**
+     * Set main episode run time content.
+     *
+     * @since 1.0.0
+     * @param int|string $episode_run_time Episode relese date.
+     */
+    public function set_episode_run_time( $episode_run_time = '' ) {
+        $this->set_prop( 'episode_run_time', $episode_run_time );
     }
 
     /**

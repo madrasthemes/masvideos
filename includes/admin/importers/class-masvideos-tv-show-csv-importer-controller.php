@@ -507,11 +507,13 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                     __( 'Tags', 'masvideos' )                      => 'tag_ids',
                     __( 'Images', 'masvideos' )                    => 'images',
                     __( 'Position', 'masvideos' )                  => 'menu_order',
+                    __( 'Episode Number', 'masvideos' )            => 'episode_number',
                     __( 'Episode Choice', 'masvideos' )            => 'episode_choice',
                     __( 'Episode Attachment', 'masvideos' )        => 'episode_attachment_id',
                     __( 'Episode Embed Content', 'masvideos' )     => 'episode_embed_content',
                     __( 'Episode Link', 'masvideos' )              => 'episode_url_link',
                     __( 'Episode Release Date', 'masvideos' )      => 'episode_release_date',
+                    __( 'Episode Run Time', 'masvideos' )          => 'episode_run_time',
                 )
             )
         );
@@ -649,11 +651,13 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
             'genre_ids'              => __( 'Genres', 'masvideos' ),
             'tag_ids'                => __( 'Tags', 'masvideos' ),
             'images'                 => __( 'Images', 'masvideos' ),
+            'episode_number'         => __( 'Episode Number', 'masvideos' ),
             'episode_choice'         => __( 'Episode Choice', 'masvideos' ),
             'episode_attachment_id'  => __( 'Episode Attachment', 'masvideos' ),
             'episode_embed_content'  => __( 'Episode Embed Content', 'masvideos' ),
             'episode_url_link'       => __( 'Episode Link', 'masvideos' ),
             'episode_release_date'   => __( 'Episode Release Date', 'masvideos' ),
+            'episode_run_time'       => __( 'Episode Run Time', 'masvideos' ),
             'seasons'                => array(
                 'name'    => __( 'Seasons', 'masvideos' ),
                 'options' => array(

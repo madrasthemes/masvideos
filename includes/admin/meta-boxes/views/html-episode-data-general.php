@@ -7,6 +7,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     <div class="options_group">
         <?php
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_episode_number',
+                'value'         => is_callable( array( $episode_object, 'get_episode_number' ) ) ? $episode_object->get_episode_number( 'edit' ) : '',
+                'label'         => __( 'Episode Number', 'masvideos' ),
+                'description'   => __( 'Enter the episode number.', 'masvideos' ),
+            )
+        );
+
         masvideos_wp_select(
             array(
                 'id'            => '_episode_choice',
@@ -59,6 +68,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                 'value'         => $episode_object->get_episode_release_date( 'edit' ) && ( $date = $episode_object->get_episode_release_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '',
                 'label'         => __( 'Episode Release Date', 'masvideos' ),
                 'description'   => __( 'Enter the release date of the episode.', 'masvideos' ),
+            )
+        );
+
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_episode_run_time',
+                'value'         => is_callable( array( $episode_object, 'get_episode_run_time' ) ) ? $episode_object->get_episode_run_time( 'edit' ) : '',
+                'label'         => __( 'Episode Time Dutration', 'masvideos' ),
+                'description'   => __( 'Enter the episode run time duration.', 'masvideos' ),
             )
         );
 
