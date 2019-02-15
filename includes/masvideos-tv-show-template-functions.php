@@ -981,15 +981,14 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tabs' ) ) {
         $seasons = $tv_show->get_seasons();
         if( ! empty( $seasons ) ) {
             $tabs = array();
-            // $seasons = array_reverse( $seasons );
             foreach ( $seasons as $key => $season ) {
                 if( ! empty( $season['name'] ) && ! empty( $season['episodes'] ) ) {
                     $episode_ids = implode( ",", $season['episodes'] );
                     $shortcode_atts = apply_filters( 'masvideos_template_single_tv_show_seasons_tab_shortcode_atts', array(
                         'orderby'   => 'post__in',
                         'order'     => 'DESC',
-                        'limit'     => '5',
-                        'columns'   => '5',
+                        'limit'     => '-1',
+                        'columns'   => '6',
                         'ids'       => $episode_ids,
                     ), $season, $key );
 

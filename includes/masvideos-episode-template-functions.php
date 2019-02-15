@@ -418,8 +418,8 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
                     $shortcode_atts = apply_filters( 'masvideos_template_single_episode_seasons_tab_shortcode_atts', array(
                         'orderby'   => 'post__in',
                         'order'     => 'DESC',
-                        'limit'     => '5',
-                        'columns'   => '5',
+                        'limit'     => '-1',
+                        'columns'   => '6',
                         'ids'       => $episode_ids,
                     ), $season, $key );
 
