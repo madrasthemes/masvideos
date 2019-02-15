@@ -167,7 +167,7 @@ if ( ! function_exists( 'masvideos_get_tv_show_all_episodes' ) ) {
                 foreach ( $season['episodes'] as $episode ) {
                     $episodes[] = array(
                         'season_name' => ! empty( $season['name'] ) ? $season['name'] : '',
-                        'episodes' => $episode,
+                        'episode' => $episode,
                     );
                 }
             }
@@ -185,20 +185,5 @@ if ( ! function_exists( 'masvideos_get_tv_show_all_season_titles' ) ) {
         $season_titles = ! empty( $seasons ) ? array_column( $seasons, 'name' ) : array();
 
         return $season_titles;
-    }
-}
-
-if ( ! function_exists( 'masvideos_get_tv_show_latest_episode' ) ) {
-    function masvideos_get_tv_show_latest_episode() {
-        global $tv_show;
-        $seasons = $tv_show->get_seasons();
-        if(! empty( $seasons )) {
-            end($seasons);
-            $latest_season_key = key($seasons);
-            end($seasons[$latest_season_key]['episodes']);
-            $latest_episode_key = key($seasons[$latest_season_key]['episodes']);
-            $latest_episode = masvideos_get_episode($seasons[$latest_season_key]['episodes'][$latest_episode_key]);
-            echo '<a href="' . esc_url( get_permalink($latest_episode->get_ID()) ) . '" class="tv-show__episode--link">' . $latest_episode->get_title() . '</a>';
-        }
     }
 }

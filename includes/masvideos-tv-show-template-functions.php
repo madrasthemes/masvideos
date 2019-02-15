@@ -755,14 +755,23 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_body_close' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_tv_show_new_episode' ) ) {
 
     /**
-     * tv show new episode in the tv show loop.
+     * TV show new episode in the tv show loop.
      */
     function masvideos_template_loop_tv_show_new_episode() {
-        global $tv_show;
-        echo '<div class="tv-show__episode">'. esc_html__( 'Newest Episode: ', 'masvideos' );
-        masvideos_get_tv_show_latest_episode();
-        echo '</div>';
-
+        $all_episodes = masvideos_get_tv_show_all_episodes();
+        if( ! empty( $all_episodes ) ) {
+            end( $all_episodes );
+            $latest_episode_key = key( $all_episodes );
+            $episode = masvideos_get_episode( $all_episodes[$latest_episode_key]['episode'] );
+            $episode_url = get_permalink( $episode->get_ID() );
+            $episode_title = $episode->get_episode_number();
+            if( empty( $episode_title ) ) {
+                $episode_title = $episode->get_title();
+            }
+            echo '<div class="tv-show__episode">'. esc_html__( 'Newest Episode: ', 'masvideos' );
+            echo '<a href="' . esc_url( $episode_url ) . '" class="tv-show__episode--link">' . $episode_title . '</a>';
+            echo '</div>';
+        }
     }
 }
 
