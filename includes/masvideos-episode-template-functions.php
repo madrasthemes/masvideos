@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  * When the_post is called, put episode data into a global.
  *
  * @param mixed $post Post Object.
- * @return MasVideos_Movie
+ * @return MasVideos_Episode
  */
 function masvideos_setup_episode_data( $post ) {
     unset( $GLOBALS['episode'] );
@@ -327,6 +327,70 @@ if ( ! function_exists( 'masvideos_template_single_episode_title' ) ) {
      */
     function masvideos_template_single_episode_title() {
         the_title( '<h1 class="episode_title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_meta' ) ) {
+
+    /**
+     * Episode meta in the episode single.
+     */
+    function masvideos_template_single_episode_meta() {
+        echo '<div class="episode__meta">';
+            do_action( 'masvideos_single_episode_meta' );
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_genres' ) ) {
+
+    /**
+     * Episode genres in the episode single.
+     */
+    function masvideos_template_single_episode_genres() {
+        global $episode;
+
+        $categories = get_the_term_list( $episode->get_id(), 'episode_genre', '', ', ' );
+
+        if( ! empty ( $categories ) ) {
+           echo '<span class="episode__meta--genre">' . $categories . '</span>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_release_date' ) ) {
+
+    /**
+     * Episode release date in the episode single.
+     */
+    function masvideos_template_single_episode_release_date() {
+        global $episode;
+        
+        $release_date_formated = '';
+        $release_date = $episode->get_episode_release_date();
+        if( ! empty( $release_date ) ) {
+            $release_date_formated = date( 'd.m.Y', strtotime( $release_date ) );
+        }
+
+        if( ! empty ( $release_date_formated ) ) {
+            echo sprintf( '<span class="episode__meta--release-date">%s %s</span>', esc_html__( 'Added:', 'masvideos' ), $release_date_formated );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_duration' ) ) {
+
+    /**
+     * Episode duration in the episode single.
+     */
+    function masvideos_template_single_episode_duration() {
+        global $episode;
+        
+        $duration = $episode->get_episode_run_time();
+
+        if( ! empty ( $duration ) ) {
+            echo sprintf( '<span class="episode__meta--duration">%s</span>', $duration );
+        }
     }
 }
 

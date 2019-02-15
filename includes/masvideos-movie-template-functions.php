@@ -824,7 +824,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_release_year' ) ) {
 if ( ! function_exists( 'masvideos_template_single_movie_duration' ) ) {
 
     /**
-     * Movie release year in the movie single.
+     * Movie duration in the movie single.
      */
     function masvideos_template_single_movie_duration() {
         global $movie;
