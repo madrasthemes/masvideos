@@ -633,68 +633,6 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_title' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_tv_show_meta' ) ) {
-
-    /**
-     * tv show meta in the tv show loop.
-     */
-    function masvideos_template_loop_tv_show_meta() {
-        echo '<div class="tv-show__meta">';
-            masvideos_template_single_tv_show_genres();
-            masvideos_template_single_tv_show_release_year();
-            masvideos_template_loop_tv_show_new_episodes_count();
-        echo '</div>';
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_single_tv_show_genres' ) ) {
-
-    /**
-     * TV Show genres in the tv show single.
-     */
-    function masvideos_template_single_tv_show_genres() {
-        global $tv_show;
-
-        $categories = get_the_term_list( $tv_show->get_id(), 'tv_show_genre', '', ', ' );
-
-        if( ! empty ( $categories ) ) {
-           echo '<span class="tv-show__meta--genre">' . $categories . '</span>';
-        }
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_single_tv_show_release_year' ) ) {
-
-    /**
-     * TV Show release year in the tv show single.
-     */
-    function masvideos_template_single_tv_show_release_year() {
-        global $tv_show;
-        
-        $tv_show_year = '';
-
-        $seasons = $tv_show->get_seasons();
-            
-        if( ! empty( $seasons ) ) {
-            $season_years = array_column( $seasons, 'year' );
-            $start = count( $season_years ) ? min( $season_years ) : '';
-            $end = count( $season_years ) ? max( $season_years ) : '';
-
-            if( ! empty( $start ) && ! empty( $end ) ) {
-                $tv_show_year = $start . ' - ' . $end;
-            } elseif( ! empty( $start ) ) {
-                $tv_show_year = $start;
-            } elseif( ! empty( $end ) ) {
-                $tv_show_year = $end;
-            }
-        }
-
-        if( ! empty ( $tv_show_year ) ) {
-            echo sprintf( '<span class="tv-show__meta--release-year">%s</span>', $tv_show_year );
-        }
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_tv_show_info_head_close' ) ) {
 
     /**
@@ -960,6 +898,66 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_title' ) ) {
      */
     function masvideos_template_single_tv_show_title() {
         the_title( '<h1 class="tv-show_title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_meta' ) ) {
+
+    /**
+     * tv show meta in the tv show loop.
+     */
+    function masvideos_template_single_tv_show_meta() {
+        echo '<div class="tv-show__meta">';
+            do_action( 'masvideos_single_tv_show_meta' );
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_genres' ) ) {
+
+    /**
+     * TV Show genres in the tv show single.
+     */
+    function masvideos_template_single_tv_show_genres() {
+        global $tv_show;
+
+        $categories = get_the_term_list( $tv_show->get_id(), 'tv_show_genre', '', ', ' );
+
+        if( ! empty ( $categories ) ) {
+           echo '<span class="tv-show__meta--genre">' . $categories . '</span>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_release_year' ) ) {
+
+    /**
+     * TV Show release year in the tv show single.
+     */
+    function masvideos_template_single_tv_show_release_year() {
+        global $tv_show;
+        
+        $tv_show_year = '';
+
+        $seasons = $tv_show->get_seasons();
+            
+        if( ! empty( $seasons ) ) {
+            $season_years = array_column( $seasons, 'year' );
+            $start = count( $season_years ) ? min( $season_years ) : '';
+            $end = count( $season_years ) ? max( $season_years ) : '';
+
+            if( ! empty( $start ) && ! empty( $end ) ) {
+                $tv_show_year = $start . ' - ' . $end;
+            } elseif( ! empty( $start ) ) {
+                $tv_show_year = $start;
+            } elseif( ! empty( $end ) ) {
+                $tv_show_year = $end;
+            }
+        }
+
+        if( ! empty ( $tv_show_year ) ) {
+            echo sprintf( '<span class="tv-show__meta--release-year">%s</span>', $tv_show_year );
+        }
     }
 }
 

@@ -65,7 +65,7 @@ add_action( 'masvideos_before_tv_shows_loop_item_title', 'masvideos_template_loo
 add_action( 'masvideos_before_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_info_open', 20 );
 
 add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_info_head_open', 10 );
-add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_meta', 20 );
+add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_single_tv_show_meta', 20 );
 add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_link_open', 30 );
 add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_title', 40 );
 add_action( 'masvideos_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_link_close', 50 );
@@ -90,7 +90,7 @@ add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_sh
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_poster_close', 110 );
 
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_info_head_open', 120 );
-add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_meta', 130 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_single_tv_show_meta', 130 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_link_open', 140 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_title', 150 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_link_close', 160 );
@@ -117,6 +117,9 @@ add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_sh
  */
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_title', 5 );
 add_action( 'masvideos_after_single_tv_show_summary', 'comments_template', 10 );
+
+add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_genres', 10 );
+add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_release_year', 20 );
 
 /**
  * Videos Loop.
