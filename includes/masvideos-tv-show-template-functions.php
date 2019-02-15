@@ -970,34 +970,40 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_release_year' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tab' ) ) {
+if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tabs' ) ) {
 
     /**
-     * TV Show release year in the tv show single.
+     * TV Show seasons and episodes tabs in the tv show single.
      */
-    function masvideos_template_single_tv_show_seasons_tab() {
+    function masvideos_template_single_tv_show_seasons_tabs() {
         global $tv_show;
-        
-        $tv_show_year = '';
 
         $seasons = $tv_show->get_seasons();
-            
-        // if( ! empty( $seasons ) ) {
-        //     $season_years = array_column( $seasons, 'year' );
-        //     $start = count( $season_years ) ? min( $season_years ) : '';
-        //     $end = count( $season_years ) ? max( $season_years ) : '';
+        if( ! empty( $seasons ) ) {
+            $tabs = array();
+            // $seasons = array_reverse( $seasons );
+            foreach ( $seasons as $key => $season ) {
+                if( ! empty( $season['name'] ) && ! empty( $season['episodes'] ) ) {
+                    $episode_ids = implode( ",", $season['episodes'] );
+                    $shortcode_atts = apply_filters( 'masvideos_template_single_tv_show_seasons_tab_shortcode_atts', array(
+                        'orderby'   => 'post__in',
+                        'order'     => 'DESC',
+                        'limit'     => '5',
+                        'columns'   => '5',
+                        'ids'       => $episode_ids,
+                    ), $season, $key );
 
-        //     if( ! empty( $start ) && ! empty( $end ) ) {
-        //         $tv_show_year = $start . ' - ' . $end;
-        //     } elseif( ! empty( $start ) ) {
-        //         $tv_show_year = $start;
-        //     } elseif( ! empty( $end ) ) {
-        //         $tv_show_year = $end;
-        //     }
-        // }
+                    $tab = array(
+                        'title'     => $season['name'],
+                        'content'   => vodi_do_shortcode( 'mas_episodes', $shortcode_atts ),
+                        'priority'  => $key
+                    );
 
-        if( ! empty ( $tv_show_year ) ) {
-            echo sprintf( '<span class="tv-show__meta--release-year">%s</span>', $tv_show_year );
+                    $tabs[] = $tab;
+                }
+            }
+
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs ) );
         }
     }
 }

@@ -394,6 +394,50 @@ if ( ! function_exists( 'masvideos_template_single_episode_duration' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
+
+    /**
+     * Episode's TV Show seasons and other episodes tabs in the episode single.
+     */
+    function masvideos_template_single_episode_seasons_tabs() {
+        global $episode;
+
+        $episode_id = $episode->get_id();
+        $tv_show_id = $episode->get_tv_show_id();
+        $tv_show = masvideos_get_tv_show( $tv_show_id );
+        $seasons = $tv_show->get_seasons();
+        if( ! empty( $seasons ) ) {
+            $tabs = array();
+            foreach ( $seasons as $key => $season ) {
+                if( ! empty( $season['name'] ) && ! empty( $season['episodes'] ) ) {
+                    $episode_ids = $season['episodes'];
+                    if ( ( $key = array_search( $episode_id, $episode_ids ) ) !== false ) {
+                        unset( $episode_ids[$key] );
+                    }
+                    $episode_ids = implode( ",", $episode_ids );
+                    $shortcode_atts = apply_filters( 'masvideos_template_single_episode_seasons_tab_shortcode_atts', array(
+                        'orderby'   => 'post__in',
+                        'order'     => 'DESC',
+                        'limit'     => '5',
+                        'columns'   => '5',
+                        'ids'       => $episode_ids,
+                    ), $season, $key );
+
+                    $tab = array(
+                        'title'     => $season['name'],
+                        'content'   => vodi_do_shortcode( 'mas_episodes', $shortcode_atts ),
+                        'priority'  => $key
+                    );
+
+                    $tabs[] = $tab;
+                }
+            }
+
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs ) );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_episode_comments' ) ) {
 
     /**
