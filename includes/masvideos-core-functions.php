@@ -481,3 +481,19 @@ function masvideos_enqueue_js( $code ) {
 
     $masvideos_queued_js .= "\n" . $code . "\n";
 }
+
+if ( ! function_exists( 'masvideos_sort_priority_callback' ) ) {
+    /**
+     * Sort Priority Callback Function
+     *
+     * @param array $a Comparison A.
+     * @param array $b Comparison B.
+     * @return bool
+     */
+    function masvideos_sort_priority_callback( $a, $b ) {
+        if ( ! isset( $a['priority'], $b['priority'] ) || $a['priority'] === $b['priority'] ) {
+            return 0;
+        }
+        return ( $a['priority'] < $b['priority'] ) ? -1 : 1;
+    }
+}

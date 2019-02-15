@@ -27,6 +27,8 @@ if ( empty( $tabs ) || ! is_array( $tabs ) ) {
 $default_active_tab = empty( $default_active_tab ) ? 0 : $default_active_tab;
 $tab_uniqid = 'tab-' . uniqid();
 
+uasort( $tabs, 'masvideos_sort_priority_callback' );
+
 ?>
 <div class="masvideos-tabs">
     <ul class="nav">
@@ -43,7 +45,13 @@ $tab_uniqid = 'tab-' . uniqid();
         <?php foreach ( $tabs as $key => $tab ) :
             $tab_id = $tab_uniqid . $key; ?>
             <div id="<?php echo esc_attr( $tab_id ); ?>" class="tab-pane<?php if ( $key == $default_active_tab ) echo esc_attr( ' active show' ); ?>">
-                <?php if ( isset( $tab['callback'] ) ) { call_user_func( $tab['callback'], $key, $tab ); } ?>
+                <?php
+                    if ( isset( $tab['callback'] ) ) {
+                        call_user_func( $tab['callback'], $key, $tab );
+                    } elseif ( ! empty( $tab['content'] ) ) {
+                        echo wp_kses_post( $tab['content'] );
+                    }
+                ?>
             </div>
         <?php endforeach; ?>
     </div>
