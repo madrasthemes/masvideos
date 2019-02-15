@@ -904,7 +904,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_title' ) ) {
 if ( ! function_exists( 'masvideos_template_single_tv_show_meta' ) ) {
 
     /**
-     * tv show meta in the tv show loop.
+     * tv show meta in the tv show single.
      */
     function masvideos_template_single_tv_show_meta() {
         echo '<div class="tv-show__meta">';

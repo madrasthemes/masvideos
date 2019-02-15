@@ -620,34 +620,6 @@ if ( ! function_exists( 'masvideos_template_loop_movie_info_head_open' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_movie_meta' ) ) {
-
-    /**
-     * video meta in the video loop.
-     */
-    function masvideos_template_loop_movie_meta() {
-        global $post, $movie;
-
-        $categories = get_the_term_list( $post->ID, 'movie_genre', '', ', ' );
-        if( taxonomy_exists( 'movie_release-year' ) ) {
-            $relaese_year = get_the_term_list( $post->ID, 'movie_release-year', '', ', ' );
-        } else {
-            $relaese_year = '';
-        }
-
-        if ( ! empty( $categories ) || ! empty( $relaese_year ) ) {
-            echo '<div class="movie__meta">';
-                if( ! empty ( $categories ) ) {
-                   echo '<span class="movie__meta--genre">' . $categories . '</span>';
-                }
-                if( ! empty ( $relaese_year ) ) {
-                    echo '<span class="movie__meta--release-year">' . $relaese_year . '</span>';
-                }
-            echo '</div>';
-        }
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_movie_title' ) ) {
 
     /**
@@ -798,6 +770,70 @@ if ( ! function_exists( 'masvideos_template_single_movie_title' ) ) {
      */
     function masvideos_template_single_movie_title() {
         the_title( '<h1 class="movie_title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_meta' ) ) {
+
+    /**
+     * Movie meta in the movie single.
+     */
+    function masvideos_template_single_movie_meta() {
+        echo '<div class="movie__meta">';
+            do_action( 'masvideos_single_movie_meta' );
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_genres' ) ) {
+
+    /**
+     * Movie genres in the movie single.
+     */
+    function masvideos_template_single_movie_genres() {
+        global $movie;
+
+        $categories = get_the_term_list( $movie->get_id(), 'movie_genre', '', ', ' );
+
+        if( ! empty ( $categories ) ) {
+           echo '<span class="movie__meta--genre">' . $categories . '</span>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_release_year' ) ) {
+
+    /**
+     * Movie release year in the movie single.
+     */
+    function masvideos_template_single_movie_release_year() {
+        global $movie;
+        
+        $relaese_year = '';
+        $release_date = $movie->get_movie_release_date();
+        if( ! empty( $release_date ) ) {
+            $relaese_year = date( 'Y', strtotime( $release_date ) );
+        }
+
+        if( ! empty ( $relaese_year ) ) {
+            echo sprintf( '<span class="movie__meta--release-year">%s</span>', $relaese_year );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_duration' ) ) {
+
+    /**
+     * Movie release year in the movie single.
+     */
+    function masvideos_template_single_movie_duration() {
+        global $movie;
+        
+        $duration = $movie->get_movie_run_time();
+
+        if( ! empty ( $duration ) ) {
+            echo sprintf( '<span class="movie__meta--duration">%s</span>', $duration );
+        }
     }
 }
 
