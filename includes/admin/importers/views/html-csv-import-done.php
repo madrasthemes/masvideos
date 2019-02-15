@@ -58,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<table class="widefat masvideos-importer-error-log-table">
 			<thead>
 				<tr>
-					<th><?php esc_html_e( 'Product', 'masvideos' ); ?></th>
+					<th><?php esc_html_e( 'Post', 'masvideos' ); ?></th>
 					<th><?php esc_html_e( 'Reason for failure', 'masvideos' ); ?></th>
 				</tr>
 			</thead>

@@ -394,11 +394,13 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
                 $tv_show = masvideos_get_tv_show( $tv_show_obj );
 
                 $seasons = $tv_show->get_seasons( 'edit' );
-                $season_key = array_search( $data['parent_season'], array_column( $seasons, 'name' ) );
-                $seasons[$season_key]['episodes'][] = $episode->get_id();
+                if( ! empty( $seasons ) ) {
+                    $season_key = array_search( $data['parent_season'], array_column( $seasons, 'name' ) );
+                    $seasons[$season_key]['episodes'][] = $episode->get_id();
 
-                $tv_show->set_seasons( $seasons );
-                $tv_show->save();
+                    $tv_show->set_seasons( $seasons );
+                    $tv_show->save();
+                }
 
                 $episode->set_tv_show_id( $tv_show->get_id() );
                 $episode->set_tv_show_season_id( $season_key );

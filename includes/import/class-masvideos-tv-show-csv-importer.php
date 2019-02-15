@@ -641,7 +641,7 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
         if ( ! empty( $seasons ) ) {
             // Remove empty seasons and clear indexes.
             foreach ( $seasons as $season ) {
-                if ( empty( $season['name'] ) || empty( $season['episodes'] ) ) {
+                if ( empty( $season['name'] ) ) {
                     continue;
                 }
 
