@@ -961,6 +961,38 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_release_year' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tab' ) ) {
+
+    /**
+     * TV Show release year in the tv show single.
+     */
+    function masvideos_template_single_tv_show_seasons_tab() {
+        global $tv_show;
+        
+        $tv_show_year = '';
+
+        $seasons = $tv_show->get_seasons();
+            
+        // if( ! empty( $seasons ) ) {
+        //     $season_years = array_column( $seasons, 'year' );
+        //     $start = count( $season_years ) ? min( $season_years ) : '';
+        //     $end = count( $season_years ) ? max( $season_years ) : '';
+
+        //     if( ! empty( $start ) && ! empty( $end ) ) {
+        //         $tv_show_year = $start . ' - ' . $end;
+        //     } elseif( ! empty( $start ) ) {
+        //         $tv_show_year = $start;
+        //     } elseif( ! empty( $end ) ) {
+        //         $tv_show_year = $end;
+        //     }
+        // }
+
+        if( ! empty ( $tv_show_year ) ) {
+            echo sprintf( '<span class="tv-show__meta--release-year">%s</span>', $tv_show_year );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_tv_show_comments' ) ) {
 
     /**

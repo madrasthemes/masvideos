@@ -445,11 +445,12 @@ class MasVideos_Video_CSV_Importer_Controller {
      */
     protected function done() {
         // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification
-        $imported = isset( $_GET['videos-imported'] ) ? absint( $_GET['videos-imported'] ) : 0;
-        $updated  = isset( $_GET['videos-updated'] ) ? absint( $_GET['videos-updated'] ) : 0;
-        $failed   = isset( $_GET['videos-failed'] ) ? absint( $_GET['videos-failed'] ) : 0;
-        $skipped  = isset( $_GET['videos-skipped'] ) ? absint( $_GET['videos-skipped'] ) : 0;
-        $errors   = array_filter( (array) get_user_option( 'video_import_error_log' ) );
+        $post_type  = isset( $_GET['post_type'] ) ? masvideos_clean( $_GET['post_type'] ) : 'post';
+        $imported   = isset( $_GET['videos-imported'] ) ? absint( $_GET['videos-imported'] ) : 0;
+        $updated    = isset( $_GET['videos-updated'] ) ? absint( $_GET['videos-updated'] ) : 0;
+        $failed     = isset( $_GET['videos-failed'] ) ? absint( $_GET['videos-failed'] ) : 0;
+        $skipped    = isset( $_GET['videos-skipped'] ) ? absint( $_GET['videos-skipped'] ) : 0;
+        $errors     = array_filter( (array) get_user_option( 'video_import_error_log' ) );
         // phpcs:enable
 
         include_once dirname( __FILE__ ) . '/views/html-csv-import-done.php';

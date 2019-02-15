@@ -91,6 +91,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		} );
 	</script>
 	<div class="masvideos-actions">
-		<a class="button button-primary" href="<?php echo esc_url( admin_url( 'edit.php?post_type=post' ) ); ?>"><?php esc_html_e( 'View posts', 'masvideos' ); ?></a>
+		<a class="button button-primary" href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $post_type ) ); ?>"><?php esc_html_e( 'View', 'masvideos' ); ?></a>
 	</div>
 </div>
