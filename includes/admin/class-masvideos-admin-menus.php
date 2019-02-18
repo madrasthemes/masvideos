@@ -42,7 +42,10 @@ class MasVideos_Admin_Menus {
 
         // add_menu_page( __( 'MasVideos', 'masvideos' ), __( 'MasVideos', 'masvideos' ), 'manage_masvideos', 'masvideos', null, null, '55.5' );
 
-        add_submenu_page( 'edit.php?post_type=episode', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_episode_terms', 'episode_attributes', array( $this, 'attributes_page' ) );
+        if ( masvideos_is_episode_archive() ) {
+            add_submenu_page( 'edit.php?post_type=episode', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_episode_terms', 'episode_attributes', array( $this, 'attributes_page' ) );
+        }
+
         add_submenu_page( 'edit.php?post_type=tv_show', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_tv_show_terms', 'tv_show_attributes', array( $this, 'attributes_page' ) );
         add_submenu_page( 'edit.php?post_type=video', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_video_terms', 'video_attributes', array( $this, 'attributes_page' ) );
         add_submenu_page( 'edit.php?post_type=movie', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_movie_terms', 'movie_attributes', array( $this, 'attributes_page' ) );

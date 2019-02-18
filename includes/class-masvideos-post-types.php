@@ -45,7 +45,7 @@ class MasVideos_Post_Types {
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $episodes_page_id = 0;
 
-        if ( current_theme_supports( 'masvideos' ) ) {
+        if ( masvideos_is_episode_archive() && current_theme_supports( 'masvideos' ) ) {
             $has_archive = $episodes_page_id && get_post( $episodes_page_id ) ? urldecode( get_page_uri( $episodes_page_id ) ) : 'episodes';
         } else {
             $has_archive = false;
@@ -99,6 +99,7 @@ class MasVideos_Post_Types {
                     'supports'            => $supports,
                     'has_archive'         => $has_archive,
                     'show_in_nav_menus'   => true,
+                    'show_in_menu'        => masvideos_is_episode_archive() ? true : 'edit.php?post_type=tv_show',
                     'show_in_rest'        => true,
                     'menu_icon'           => 'dashicons-playlist-video'
                 )
@@ -333,86 +334,88 @@ class MasVideos_Post_Types {
             )
         );
 
-        register_taxonomy(
-            'episode_genre',
-            apply_filters( 'masvideos_taxonomy_objects_episode_genre', array( 'episode' ) ),
-            apply_filters(
-                'masvideos_taxonomy_args_episode_genre', array(
-                    'hierarchical'          => true,
-                    // 'update_count_callback' => '_wc_term_recount',
-                    'label'                 => __( 'Genres', 'masvideos' ),
-                    'labels'                => array(
-                        'name'              => __( 'Episode genres', 'masvideos' ),
-                        'singular_name'     => __( 'Genre', 'masvideos' ),
-                        'menu_name'         => _x( 'Genres', 'Admin menu name', 'masvideos' ),
-                        'search_items'      => __( 'Search genres', 'masvideos' ),
-                        'all_items'         => __( 'All genres', 'masvideos' ),
-                        'parent_item'       => __( 'Parent genre', 'masvideos' ),
-                        'parent_item_colon' => __( 'Parent genre:', 'masvideos' ),
-                        'edit_item'         => __( 'Edit genre', 'masvideos' ),
-                        'update_item'       => __( 'Update genre', 'masvideos' ),
-                        'add_new_item'      => __( 'Add new genre', 'masvideos' ),
-                        'new_item_name'     => __( 'New genre name', 'masvideos' ),
-                        'not_found'         => __( 'No genres found', 'masvideos' ),
-                    ),
-                    'show_ui'               => true,
-                    'query_var'             => true,
-                    'capabilities'          => array(
-                        'manage_terms' => 'manage_episode_terms',
-                        'edit_terms'   => 'edit_episode_terms',
-                        'delete_terms' => 'delete_episode_terms',
-                        'assign_terms' => 'assign_episode_terms',
-                    ),
-                    'rewrite'               => array(
-                        'slug'         => $permalinks['episode_genre_rewrite_slug'],
-                        'with_front'   => false,
-                        'hierarchical' => true,
-                    ),
-                    'show_in_rest'          => true,
+        if ( masvideos_is_episode_archive() ) {
+            register_taxonomy(
+                'episode_genre',
+                apply_filters( 'masvideos_taxonomy_objects_episode_genre', array( 'episode' ) ),
+                apply_filters(
+                    'masvideos_taxonomy_args_episode_genre', array(
+                        'hierarchical'          => true,
+                        // 'update_count_callback' => '_wc_term_recount',
+                        'label'                 => __( 'Genres', 'masvideos' ),
+                        'labels'                => array(
+                            'name'              => __( 'Episode genres', 'masvideos' ),
+                            'singular_name'     => __( 'Genre', 'masvideos' ),
+                            'menu_name'         => _x( 'Genres', 'Admin menu name', 'masvideos' ),
+                            'search_items'      => __( 'Search genres', 'masvideos' ),
+                            'all_items'         => __( 'All genres', 'masvideos' ),
+                            'parent_item'       => __( 'Parent genre', 'masvideos' ),
+                            'parent_item_colon' => __( 'Parent genre:', 'masvideos' ),
+                            'edit_item'         => __( 'Edit genre', 'masvideos' ),
+                            'update_item'       => __( 'Update genre', 'masvideos' ),
+                            'add_new_item'      => __( 'Add new genre', 'masvideos' ),
+                            'new_item_name'     => __( 'New genre name', 'masvideos' ),
+                            'not_found'         => __( 'No genres found', 'masvideos' ),
+                        ),
+                        'show_ui'               => true,
+                        'query_var'             => true,
+                        'capabilities'          => array(
+                            'manage_terms' => 'manage_episode_terms',
+                            'edit_terms'   => 'edit_episode_terms',
+                            'delete_terms' => 'delete_episode_terms',
+                            'assign_terms' => 'assign_episode_terms',
+                        ),
+                        'rewrite'               => array(
+                            'slug'         => $permalinks['episode_genre_rewrite_slug'],
+                            'with_front'   => false,
+                            'hierarchical' => true,
+                        ),
+                        'show_in_rest'          => true,
+                    )
                 )
-            )
-        );
+            );
 
-        register_taxonomy(
-            'episode_tag',
-            apply_filters( 'masvideos_taxonomy_objects_episode_tag', array( 'episode' ) ),
-            apply_filters(
-                'masvideos_taxonomy_args_episode_tag', array(
-                    'hierarchical'          => false,
-                    // 'update_count_callback' => '_wc_term_recount',
-                    'label'                 => __( 'Episode tags', 'masvideos' ),
-                    'labels'                => array(
-                        'name'                       => __( 'Episode tags', 'masvideos' ),
-                        'singular_name'              => __( 'Tag', 'masvideos' ),
-                        'menu_name'                  => _x( 'Tags', 'Admin menu name', 'masvideos' ),
-                        'search_items'               => __( 'Search tags', 'masvideos' ),
-                        'all_items'                  => __( 'All tags', 'masvideos' ),
-                        'edit_item'                  => __( 'Edit tag', 'masvideos' ),
-                        'update_item'                => __( 'Update tag', 'masvideos' ),
-                        'add_new_item'               => __( 'Add new tag', 'masvideos' ),
-                        'new_item_name'              => __( 'New tag name', 'masvideos' ),
-                        'popular_items'              => __( 'Popular tags', 'masvideos' ),
-                        'separate_items_with_commas' => __( 'Separate tags with commas', 'masvideos' ),
-                        'add_or_remove_items'        => __( 'Add or remove tags', 'masvideos' ),
-                        'choose_from_most_used'      => __( 'Choose from the most used tags', 'masvideos' ),
-                        'not_found'                  => __( 'No tags found', 'masvideos' ),
-                    ),
-                    'show_ui'               => true,
-                    'query_var'             => true,
-                    'capabilities'          => array(
-                        'manage_terms' => 'manage_episode_terms',
-                        'edit_terms'   => 'edit_episode_terms',
-                        'delete_terms' => 'delete_episode_terms',
-                        'assign_terms' => 'assign_episode_terms',
-                    ),
-                    'rewrite'               => array(
-                        'slug'       => $permalinks['episode_tag_rewrite_slug'],
-                        'with_front' => false,
-                    ),
-                    'show_in_rest'          => true,
+            register_taxonomy(
+                'episode_tag',
+                apply_filters( 'masvideos_taxonomy_objects_episode_tag', array( 'episode' ) ),
+                apply_filters(
+                    'masvideos_taxonomy_args_episode_tag', array(
+                        'hierarchical'          => false,
+                        // 'update_count_callback' => '_wc_term_recount',
+                        'label'                 => __( 'Episode tags', 'masvideos' ),
+                        'labels'                => array(
+                            'name'                       => __( 'Episode tags', 'masvideos' ),
+                            'singular_name'              => __( 'Tag', 'masvideos' ),
+                            'menu_name'                  => _x( 'Tags', 'Admin menu name', 'masvideos' ),
+                            'search_items'               => __( 'Search tags', 'masvideos' ),
+                            'all_items'                  => __( 'All tags', 'masvideos' ),
+                            'edit_item'                  => __( 'Edit tag', 'masvideos' ),
+                            'update_item'                => __( 'Update tag', 'masvideos' ),
+                            'add_new_item'               => __( 'Add new tag', 'masvideos' ),
+                            'new_item_name'              => __( 'New tag name', 'masvideos' ),
+                            'popular_items'              => __( 'Popular tags', 'masvideos' ),
+                            'separate_items_with_commas' => __( 'Separate tags with commas', 'masvideos' ),
+                            'add_or_remove_items'        => __( 'Add or remove tags', 'masvideos' ),
+                            'choose_from_most_used'      => __( 'Choose from the most used tags', 'masvideos' ),
+                            'not_found'                  => __( 'No tags found', 'masvideos' ),
+                        ),
+                        'show_ui'               => true,
+                        'query_var'             => true,
+                        'capabilities'          => array(
+                            'manage_terms' => 'manage_episode_terms',
+                            'edit_terms'   => 'edit_episode_terms',
+                            'delete_terms' => 'delete_episode_terms',
+                            'assign_terms' => 'assign_episode_terms',
+                        ),
+                        'rewrite'               => array(
+                            'slug'       => $permalinks['episode_tag_rewrite_slug'],
+                            'with_front' => false,
+                        ),
+                        'show_in_rest'          => true,
+                    )
                 )
-            )
-        );
+            );
+        }
 
         register_taxonomy(
             'tv_show_visibility',

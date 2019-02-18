@@ -482,6 +482,15 @@ function masvideos_enqueue_js( $code ) {
     $masvideos_queued_js .= "\n" . $code . "\n";
 }
 
+/**
+ * Check is Episode posttype has archive
+ *
+ * @return bool
+ */
+function masvideos_is_episode_archive() {
+    return apply_filters( 'masvideos_is_episode_archive', false );
+}
+
 if ( ! function_exists( 'masvideos_sort_priority_callback' ) ) {
     /**
      * Sort Priority Callback Function

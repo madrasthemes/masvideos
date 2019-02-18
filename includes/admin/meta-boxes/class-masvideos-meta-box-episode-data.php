@@ -67,6 +67,10 @@ class MasVideos_Meta_Box_Episode_Data {
             )
         );
 
+        if ( ! masvideos_is_episode_archive() ) {
+            unset( $tabs['attribute'] );
+        }
+
         // Sort tabs based on priority.
         uasort( $tabs, array( __CLASS__, 'episode_data_tabs_sort' ) );
 
