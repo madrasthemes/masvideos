@@ -296,12 +296,87 @@ if ( ! function_exists( 'masvideos_episode_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_loop_episode_poster_open' ) ) {
+    /**
+     * episode poster open in the loop.
+     */
+    function masvideos_template_loop_episode_poster_open() {
+        echo '<div class="episode__poster">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for episode in the loop.
+     */
+    function masvideos_template_loop_episode_link_open() {
+        global $episode;
+
+        $link = apply_filters( 'masvideos_loop_episode_link', get_the_permalink(), $episode );
+
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopEpisode-link masvideos-loop-episode__link episode__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_poster' ) ) {
+    /**
+     * episode poster in the loop.
+     */
+    function masvideos_template_loop_episode_poster() {
+        echo masvideos_get_episode_thumbnail( 'masvideos_episode_medium' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for episode in the loop.
+     */
+    function masvideos_template_loop_episode_link_close() {
+        echo '</a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_poster_close' ) ) {
+    /**
+     * episode poster close in the loop.
+     */
+    function masvideos_template_loop_episode_poster_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_body_open' ) ) {
+
+    /**
+     * episode body open in the episode loop.
+     */
+    function masvideos_template_loop_episode_body_open() {
+        echo '<div class="episode__body">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_body_close' ) ) {
+
+    /**
+     * episode body close in the episode loop.
+     */
+    function masvideos_template_loop_episode_body_close() {
+        echo '</div>';
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
 
     /**
      * Show the episode title in the episode loop. By default this is an H3.
      */
     function masvideos_template_loop_episode_title() {
+        global $episode;
+        $episode_number = $episode->get_episode_number();
+        if(! empty( $episode_number )) {
+            echo '<span class="masvideos-loop-episode__number episode__number">' . $episode_number . '</span>';
+        }
+
         the_title( '<h3 class="masvideos-loop-episode__title  episode__title">', '</h3>' );
     }
 }
