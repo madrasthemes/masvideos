@@ -355,7 +355,10 @@ if ( ! function_exists( 'masvideos_template_loop_episode_body_open' ) ) {
      * episode body open in the episode loop.
      */
     function masvideos_template_loop_episode_body_open() {
+         global $episode;
         echo '<div class="episode__body">';
+        $link = apply_filters( 'masvideos_loop_episode_link', get_the_permalink(), $episode );
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopEpisode-link masvideos-loop-episode__link episode__link">';
     }
 }
 
@@ -365,6 +368,7 @@ if ( ! function_exists( 'masvideos_template_loop_episode_body_close' ) ) {
      * episode body close in the episode loop.
      */
     function masvideos_template_loop_episode_body_close() {
+        echo '</a>';
         echo '</div>';
     }
 }
