@@ -98,7 +98,7 @@ if ( ! function_exists( 'taxonomy_is_video_attribute' ) ) {
     function taxonomy_is_video_attribute( $name ) {
         global $masvideos_attributes;
 
-        return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['video'] );
+        return taxonomy_exists( $name ) && isset( $masvideos_attributes['video'] ) && array_key_exists( $name, (array) $masvideos_attributes['video'] );
     }
 }
 
@@ -176,7 +176,7 @@ if ( ! function_exists( 'taxonomy_is_movie_attribute' ) ) {
     function taxonomy_is_movie_attribute( $name ) {
         global $masvideos_attributes;
 
-        return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['movie'] );
+        return taxonomy_exists( $name ) && isset( $masvideos_attributes['movie'] ) && array_key_exists( $name, (array) $masvideos_attributes['movie'] );
     }
 }
 
@@ -254,7 +254,7 @@ if ( ! function_exists( 'taxonomy_is_episode_attribute' ) ) {
     function taxonomy_is_episode_attribute( $name ) {
         global $masvideos_attributes;
 
-        return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['episode'] );
+        return taxonomy_exists( $name ) && isset( $masvideos_attributes['episode'] ) && array_key_exists( $name, (array) $masvideos_attributes['episode'] );
     }
 }
 
@@ -332,6 +332,6 @@ if ( ! function_exists( 'taxonomy_is_tv_show_attribute' ) ) {
     function taxonomy_is_tv_show_attribute( $name ) {
         global $masvideos_attributes;
 
-        return taxonomy_exists( $name ) && array_key_exists( $name, (array) $masvideos_attributes['tv_show'] );
+        return taxonomy_exists( $name ) && isset( $masvideos_attributes['tv_show'] ) && array_key_exists( $name, (array) $masvideos_attributes['tv_show'] );
     }
 }
