@@ -664,7 +664,12 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
         $related_video_ids = masvideos_get_related_videos( $video_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_video_ids );
 
-        echo MasVideos_Shortcodes::videos( $args );
+        if( ! empty( $related_video_ids ) ) {
+            echo '<section class="tv-show__related">';
+                echo apply_filters( 'masvideos_related_videos_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $video_id ) ), $video_id );
+                echo MasVideos_Shortcodes::videos( $args );
+            echo '</section>';
+        }
     }
 }
 
