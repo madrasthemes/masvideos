@@ -307,3 +307,13 @@ if ( ! function_exists( 'masvideos_template_loop_content_area_close' ) ) {
         echo '</div><!-- /.content-area -->';
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_sharing' ) ) {
+
+    /**
+     * Output the sharing.
+     */
+    function masvideos_template_single_sharing() {
+        do_action( 'masvideos_share' );
+    }
+}
