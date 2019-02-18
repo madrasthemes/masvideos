@@ -491,6 +491,19 @@ function masvideos_is_episode_archive() {
     return apply_filters( 'masvideos_is_episode_archive', false );
 }
 
+/**
+ * Retrieves post term ids for a taxonomy.
+ *
+ * @since  1.0.0
+ * @param  int    $post_id  Post ID.
+ * @param  string $taxonomy Taxonomy slug.
+ * @return array
+ */
+function masvideos_get_term_ids( $post_id, $taxonomy ) {
+    $terms = get_the_terms( $post_id, $taxonomy );
+    return ( empty( $terms ) || is_wp_error( $terms ) ) ? array() : wp_list_pluck( $terms, 'term_id' );
+}
+
 if ( ! function_exists( 'masvideos_sort_priority_callback' ) ) {
     /**
      * Sort Priority Callback Function
