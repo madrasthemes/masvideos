@@ -534,6 +534,54 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_episode_related_tv_shows' ) ) {
+
+    /**
+     * Episode related tv shows in the episode single.
+     */
+    function masvideos_template_single_episode_related_tv_shows() {
+        global $episode;
+        
+        $tv_show_id = $episode->get_tv_show_id();
+
+        if( $tv_show_id ) {
+            masvideos_related_tv_shows( $tv_show_id );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_related_episodes' ) ) {
+
+    /**
+     * Output the related episodes.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_related_episodes( $episode_id = false, $args = array() ) {
+        global $episode;
+
+        $episode_id = $episode_id ? $episode_id : $episode->get_id();
+
+        if ( ! $episode_id ) {
+            return;
+        }
+
+        $defaults = array(
+            'limit'          => 5,
+            'columns'        => 5,
+            'orderby'        => 'rand',
+            'order'          => 'desc',
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $related_episode_ids = masvideos_get_related_episodes( $episode_id, $args['limit'] );
+        $args['ids'] = implode( ',', $related_episode_ids );
+
+        echo MasVideos_Shortcodes::episodes( $args );
+    }
+}
+
 if ( ! function_exists( 'masvideos_episode_comments' ) ) {
 
     /**

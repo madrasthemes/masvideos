@@ -1007,6 +1007,38 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tabs' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_related_tv_shows' ) ) {
+
+    /**
+     * Output the related tv shows.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_related_tv_shows( $tv_show_id = false, $args = array() ) {
+        global $tv_show;
+
+        $tv_show_id = $tv_show_id ? $tv_show_id : $tv_show->get_id();
+
+        if ( ! $tv_show_id ) {
+            return;
+        }
+
+        $defaults = array(
+            'limit'          => 5,
+            'columns'        => 5,
+            'orderby'        => 'rand',
+            'order'          => 'desc',
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $related_tv_show_ids = masvideos_get_related_tv_shows( $tv_show_id, $args['limit'] );
+        $args['ids'] = implode( ',', $related_tv_show_ids );
+
+        echo MasVideos_Shortcodes::tv_shows( $args );
+    }
+}
+
 if ( ! function_exists( 'masvideos_tv_show_comments' ) ) {
 
     /**

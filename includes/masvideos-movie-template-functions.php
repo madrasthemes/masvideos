@@ -837,6 +837,38 @@ if ( ! function_exists( 'masvideos_template_single_movie_duration' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_related_movies' ) ) {
+
+    /**
+     * Output the related movies.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_related_movies( $movie_id = false, $args = array() ) {
+        global $movie;
+
+        $movie_id = $movie_id ? $movie_id : $movie->get_id();
+
+        if ( ! $movie_id ) {
+            return;
+        }
+
+        $defaults = array(
+            'limit'          => 5,
+            'columns'        => 5,
+            'orderby'        => 'rand',
+            'order'          => 'desc',
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $related_movie_ids = masvideos_get_related_movies( $movie_id, $args['limit'] );
+        $args['ids'] = implode( ',', $related_movie_ids );
+
+        echo MasVideos_Shortcodes::movies( $args );
+    }
+}
+
 if ( ! function_exists( 'masvideos_movie_comments' ) ) {
 
     /**
