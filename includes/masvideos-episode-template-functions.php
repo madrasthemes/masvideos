@@ -284,6 +284,10 @@ if ( ! function_exists( 'masvideos_episode_page_title' ) ) {
             $episodes_page_id = masvideos_get_page_id( 'episodes' );
             $page_title   = get_the_title( $episodes_page_id );
 
+            if ( empty( $page_title ) ) {
+                $page_title = post_type_archive_title( '', false );
+            }
+
         }
 
         $page_title = apply_filters( 'masvideos_episode_page_title', $page_title );

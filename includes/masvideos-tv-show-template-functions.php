@@ -285,6 +285,10 @@ if ( ! function_exists( 'masvideos_tv_show_page_title' ) ) {
             $tv_shows_page_id = masvideos_get_page_id( 'tv_shows' );
             $page_title   = get_the_title( $tv_shows_page_id );
 
+            if ( empty( $page_title ) ) {
+                $page_title = post_type_archive_title( '', false );
+            }
+
         }
 
         $page_title = apply_filters( 'masvideos_tv_show_page_title', $page_title );
