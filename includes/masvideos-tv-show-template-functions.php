@@ -44,7 +44,7 @@ add_action( 'the_post', 'masvideos_setup_tv_show_data' );
 function masvideos_setup_tv_shows_loop( $args = array() ) {
     $default_args = array(
         'loop'         => 0,
-        'columns'      => 4,
+        'columns'      => masvideos_get_default_tv_shows_per_row(),
         'name'         => '',
         'is_shortcode' => false,
         'is_paginated' => true,
