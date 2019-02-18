@@ -994,7 +994,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tabs' ) ) {
 
                     $tab = array(
                         'title'     => $season['name'],
-                        'content'   => vodi_do_shortcode( 'mas_episodes', $shortcode_atts ),
+                        'content'   => MasVideos_Shortcodes::episodes( $shortcode_atts ),
                         'priority'  => $key
                     );
 
