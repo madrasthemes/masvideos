@@ -381,7 +381,7 @@ if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
     function masvideos_template_loop_episode_title() {
         global $episode;
         $episode_number = $episode->get_episode_number();
-        if(! empty( $episode_number )) {
+        if( ! empty( $episode_number ) ) {
             echo '<span class="masvideos-loop-episode__number episode__number">' . $episode_number . '</span>';
         }
 
@@ -409,7 +409,21 @@ if ( ! function_exists( 'masvideos_template_single_episode_title' ) ) {
      * Output the episode title.
      */
     function masvideos_template_single_episode_title() {
-        the_title( '<h1 class="episode_title entry-title">', '</h1>' );
+        global $episode;
+
+        $before_title = '';
+
+        $tv_show_id = $episode->get_tv_show_id();
+        if( ! empty( $tv_show_id ) ) {
+            $before_title .= get_the_title( $tv_show_id ) . ' - ';
+        }
+
+        $episode_number = $episode->get_episode_number();
+        if( ! empty( $episode_number ) ) {
+            $before_title .= $episode_number . ' - ';
+        }
+
+        the_title( '<h1 class="episode_title entry-title">' . $before_title, '</h1>' );
     }
 }
 
