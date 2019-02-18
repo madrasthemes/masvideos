@@ -291,7 +291,7 @@ function masvideos_get_related_movies( $movie_id, $limit = 5, $exclude_ids = arr
         if ( empty( $genres_array ) && empty( $tags_array ) && ! apply_filters( 'masvideos_movie_related_posts_force_display', false, $movie_id ) ) {
             $related_posts = array();
         } else {
-            $data_store    = WC_Data_Store::load( 'movie' );
+            $data_store    = MasVideos_Data_Store::load( 'movie' );
             $related_posts = $data_store->get_related_movies( $genres_array, $tags_array, $exclude_ids, $limit + 10, $movie_id );
         }
 

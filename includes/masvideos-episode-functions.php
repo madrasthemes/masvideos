@@ -267,7 +267,7 @@ function masvideos_episodes_array_orderby_menu_order( $a, $b ) {
  */
 function masvideos_get_related_episodes( $episode_id, $limit = 5, $exclude_ids = array() ) {
 
-    $episode_id       = absint( $episode_id );
+    $episode_id     = absint( $episode_id );
     $limit          = $limit >= -1 ? $limit : 5;
     $exclude_ids    = array_merge( array( 0, $episode_id ), $exclude_ids );
     $transient_name = 'masvideos_related_episodes_' . $episode_id;
@@ -291,7 +291,7 @@ function masvideos_get_related_episodes( $episode_id, $limit = 5, $exclude_ids =
         if ( empty( $genres_array ) && empty( $tags_array ) && ! apply_filters( 'masvideos_episode_related_posts_force_display', false, $episode_id ) ) {
             $related_posts = array();
         } else {
-            $data_store    = WC_Data_Store::load( 'episode' );
+            $data_store    = MasVideos_Data_Store::load( 'episode' );
             $related_posts = $data_store->get_related_episodes( $genres_array, $tags_array, $exclude_ids, $limit + 10, $episode_id );
         }
 

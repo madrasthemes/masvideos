@@ -267,7 +267,7 @@ function masvideos_tv_shows_array_orderby_menu_order( $a, $b ) {
  */
 function masvideos_get_related_tv_shows( $tv_show_id, $limit = 5, $exclude_ids = array() ) {
 
-    $tv_show_id       = absint( $tv_show_id );
+    $tv_show_id     = absint( $tv_show_id );
     $limit          = $limit >= -1 ? $limit : 5;
     $exclude_ids    = array_merge( array( 0, $tv_show_id ), $exclude_ids );
     $transient_name = 'masvideos_related_tv_shows_' . $tv_show_id;
@@ -291,7 +291,7 @@ function masvideos_get_related_tv_shows( $tv_show_id, $limit = 5, $exclude_ids =
         if ( empty( $genres_array ) && empty( $tags_array ) && ! apply_filters( 'masvideos_tv_show_related_posts_force_display', false, $tv_show_id ) ) {
             $related_posts = array();
         } else {
-            $data_store    = WC_Data_Store::load( 'tv_show' );
+            $data_store    = MasVideos_Data_Store::load( 'tv_show' );
             $related_posts = $data_store->get_related_tv_shows( $genres_array, $tags_array, $exclude_ids, $limit + 10, $tv_show_id );
         }
 

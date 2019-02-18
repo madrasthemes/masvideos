@@ -291,7 +291,7 @@ function masvideos_get_related_videos( $video_id, $limit = 5, $exclude_ids = arr
         if ( empty( $cats_array ) && empty( $tags_array ) && ! apply_filters( 'masvideos_video_related_posts_force_display', false, $video_id ) ) {
             $related_posts = array();
         } else {
-            $data_store    = WC_Data_Store::load( 'video' );
+            $data_store    = MasVideos_Data_Store::load( 'video' );
             $related_posts = $data_store->get_related_videos( $cats_array, $tags_array, $exclude_ids, $limit + 10, $video_id );
         }
 
