@@ -358,6 +358,22 @@ if ( ! function_exists( 'masvideos_template_single_episode_genres' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_episode_tags' ) ) {
+
+    /**
+     * Episode tags in the episode single.
+     */
+    function masvideos_template_single_episode_tags() {
+        global $episode;
+
+        $tags = get_the_term_list( $episode->get_id(), 'episode_tag', '', ', ' );
+
+        if( ! empty ( $tags ) ) {
+            echo sprintf( '<span class="episode-tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_single_episode_release_date' ) ) {
 
     /**
@@ -405,6 +421,11 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
         $episode_id = $episode->get_id();
         $tv_show_id = $episode->get_tv_show_id();
         $tv_show = masvideos_get_tv_show( $tv_show_id );
+
+        if( ! $tv_show ) {
+            return;
+        }
+
         $seasons = $tv_show->get_seasons();
         if( ! empty( $seasons ) ) {
             $tabs = array();
