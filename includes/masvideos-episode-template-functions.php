@@ -712,12 +712,24 @@ if ( ! function_exists( 'masvideos_template_single_episode_rating_with_sharing_c
     }
 }
 
-if ( ! function_exists( 'masvideos_template_single_episode_rating_info' ) ) {
+if ( ! function_exists( 'masvideos_template_single_episode_avg_rating_info' ) ) {
     /**
      * Single episode rating info open
      */
-    function masvideos_template_single_episode_rating_info() {
-        echo '<div class="episode__rating-with-sharing">';
+    function masvideos_template_single_episode_avg_rating_info() {
+        global $episode;
+        echo '<div class="episode__rating-info">';
+
+        if ( ! empty( $episode->get_review_count() ) && $episode->get_review_count() > 0 ) {
+            ?>
+            <a href="<?php echo esc_url( get_permalink( $episode->get_id() ) . '#reviews' ); ?>" class="avg-rating">
+                <span class="avg-rating-number"> <?php echo number_format( $episode->get_average_rating(), 1, '.', '' ); ?></span>
+                <span class="avg-rating-text">
+                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $episode->get_review_count(), 'masvideos' ), $episode->get_review_count() ) ) ; ?>
+                </span>
+            </a>
+            <?php
+        }
         echo '</div>';
     }
 }
