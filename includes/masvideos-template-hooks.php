@@ -51,7 +51,8 @@ add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episo
 add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_rating_with_sharing_close', 60 );
 add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_info_head_close', 70 );
 add_action( 'masvideos_after_single_episode_summary', 'masvideos_template_single_episode_seasons_tabs', 10 );
-add_action( 'masvideos_after_single_episode_summary', 'comments_template', 20 );
+add_action( 'masvideos_after_single_episode_summary', 'masvideos_template_single_episode_related_tv_shows', 20 );
+add_action( 'masvideos_after_single_episode_summary', 'comments_template', 30 );
 
 add_action( 'masvideos_single_episode_meta', 'masvideos_template_single_episode_duration', 10 );
 add_action( 'masvideos_single_episode_meta', 'masvideos_template_single_episode_release_date', 20 );

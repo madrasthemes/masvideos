@@ -381,7 +381,7 @@ if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
     function masvideos_template_loop_episode_title() {
         global $episode;
         $episode_number = $episode->get_episode_number();
-        if(! empty( $episode_number )) {
+        if( ! empty( $episode_number ) ) {
             echo '<span class="masvideos-loop-episode__number episode__number">' . $episode_number . '</span>';
         }
 
@@ -409,7 +409,21 @@ if ( ! function_exists( 'masvideos_template_single_episode_title' ) ) {
      * Output the episode title.
      */
     function masvideos_template_single_episode_title() {
-        the_title( '<h1 class="episode_title entry-title">', '</h1>' );
+        global $episode;
+
+        $before_title = '';
+
+        $tv_show_id = $episode->get_tv_show_id();
+        if( ! empty( $tv_show_id ) ) {
+            $before_title .= get_the_title( $tv_show_id ) . ' - ';
+        }
+
+        $episode_number = $episode->get_episode_number();
+        if( ! empty( $episode_number ) ) {
+            $before_title .= $episode_number . ' - ';
+        }
+
+        the_title( '<h1 class="episode_title entry-title">' . $before_title, '</h1>' );
     }
 }
 
@@ -586,7 +600,12 @@ if ( ! function_exists( 'masvideos_related_episodes' ) ) {
         $related_episode_ids = masvideos_get_related_episodes( $episode_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_episode_ids );
 
-        echo MasVideos_Shortcodes::episodes( $args );
+        if( ! empty( $related_episode_ids ) ) {
+            echo '<section class="tv-show__related">';
+                echo apply_filters( 'masvideos_related_episodes_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $episode_id ) ), $episode_id );
+                echo MasVideos_Shortcodes::episodes( $args );
+            echo '</section>';
+        }
     }
 }
 

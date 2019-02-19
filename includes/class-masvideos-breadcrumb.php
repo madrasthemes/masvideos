@@ -60,6 +60,9 @@ class MasVideos_Breadcrumb {
 			'is_404',
 			'is_attachment',
 			'is_single',
+			'is_tv_show_genre',
+			'is_tv_show_tag',
+			'is_tv_shows',
 			'is_video_category',
 			'is_video_tag',
 			'is_videos',
@@ -75,7 +78,7 @@ class MasVideos_Breadcrumb {
 			'is_tax',
 		);
 
-		if ( ( ! is_front_page() && ! ( is_post_type_archive() && ( intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'videos' ) || intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'movies' ) ) ) ) || is_paged() ) {
+		if ( ( ! is_front_page() && ! ( is_post_type_archive() && in_array( intval( get_option( 'page_on_front' ) ), array( masvideos_get_page_id( 'tv_shows' ), masvideos_get_page_id( 'videos' ), masvideos_get_page_id( 'movies' ) ) ) ) ) || is_paged() ) {
 			foreach ( $conditionals as $conditional ) {
 				if ( call_user_func( $conditional ) ) {
 					call_user_func( array( $this, 'add_crumbs_' . substr( $conditional, 3 ) ) );
@@ -90,6 +93,20 @@ class MasVideos_Breadcrumb {
 		}
 
 		return array();
+	}
+
+	/**
+	 * Prepend the archive page to archive breadcrumbs.
+	 */
+	private function prepend_tv_shows_page() {
+		$permalinks 		= masvideos_get_permalink_structure();
+		$tv_shows_page_id 	= masvideos_get_page_id( 'tv_shows' );
+		$tv_shows_page 		= get_post( $tv_shows_page_id );
+
+		// If permalinks contain the tv_show page in the URI prepend the breadcrumb with tv_shows.
+		if ( $tv_shows_page_id && $tv_shows_page && isset( $permalinks['tv_show_base'] ) && strstr( $permalinks['tv_show_base'], '/' . $tv_shows_page->post_name ) && intval( get_option( 'page_on_front' ) ) !== $tv_shows_page_id ) {
+			$this->add_crumb( get_the_title( $tv_shows_page ), get_permalink( $tv_shows_page ) );
+		}
 	}
 
 	/**
@@ -161,7 +178,54 @@ class MasVideos_Breadcrumb {
 			$permalink = get_permalink( $post );
 		}
 
-		if ( 'video' === get_post_type( $post ) ) {
+		if ( 'episode' === get_post_type( $post ) ) {
+			$episode 	= masvideos_get_episode( $post->ID );
+			$tv_show_id = $episode->get_tv_show_id();
+			$tv_show 	= masvideos_get_tv_show( $tv_show_id );
+
+			if( $tv_show ) {
+				$this->prepend_tv_shows_page();
+
+				$terms = masvideos_get_tv_show_terms(
+					$tv_show_id, 'tv_show_genre', apply_filters(
+						'masvideos_breadcrumb_tv_show_terms_args', array(
+							'orderby' => 'parent',
+							'order'   => 'DESC',
+						)
+					)
+				);
+
+				if ( $terms ) {
+					$main_term = apply_filters( 'masvideos_breadcrumb_main_term', $terms[0], $terms );
+					$this->term_ancestors( $main_term->term_id, 'tv_show_genre' );
+					$this->add_crumb( $main_term->name, get_term_link( $main_term ) );
+				}
+
+				$this->add_crumb( get_the_title( $tv_show_id ), get_permalink( $tv_show_id ) );
+				$season_id = $episode->get_tv_show_season_id();
+				$seasons = $tv_show->get_seasons();
+				if( ! empty( $seasons ) && isset( $seasons[$season_id]['name'] ) ) {
+					$this->add_crumb( $seasons[$season_id]['name'], get_permalink( $tv_show_id ) );
+				}
+			}
+		} elseif ( 'tv_show' === get_post_type( $post ) ) {
+			$this->prepend_tv_shows_page();
+
+			$terms = masvideos_get_tv_show_terms(
+				$post->ID, 'tv_show_genre', apply_filters(
+					'masvideos_breadcrumb_tv_show_terms_args', array(
+						'orderby' => 'parent',
+						'order'   => 'DESC',
+					)
+				)
+			);
+
+			if ( $terms ) {
+				$main_term = apply_filters( 'masvideos_breadcrumb_main_term', $terms[0], $terms );
+				$this->term_ancestors( $main_term->term_id, 'tv_show_genre' );
+				$this->add_crumb( $main_term->name, get_term_link( $main_term ) );
+			}
+		} elseif ( 'video' === get_post_type( $post ) ) {
 			$this->prepend_videos_page();
 
 			$terms = masvideos_get_video_terms(
@@ -239,6 +303,47 @@ class MasVideos_Breadcrumb {
 	}
 
 	/**
+	 * TV Show category trail.
+	 */
+	private function add_crumbs_tv_show_genre() {
+		$current_term = $GLOBALS['wp_query']->get_queried_object();
+
+		$this->prepend_tv_shows_page();
+		$this->term_ancestors( $current_term->term_id, 'tv_show_genre' );
+		$this->add_crumb( $current_term->name, get_term_link( $current_term, 'tv_show_genre' ) );
+	}
+
+	/**
+	 * TV Show tag trail.
+	 */
+	private function add_crumbs_tv_show_tag() {
+		$current_term = $GLOBALS['wp_query']->get_queried_object();
+
+		$this->prepend_tv_shows_page();
+
+		/* translators: %s: tv_show tag */
+		$this->add_crumb( sprintf( __( 'TV Shows tagged &ldquo;%s&rdquo;', 'masvideos' ), $current_term->name ), get_term_link( $current_term, 'tv_show_genre' ) );
+	}
+
+	/**
+	 * TV Shows breadcrumb.
+	 */
+	private function add_crumbs_tv_shows() {
+		if ( intval( get_option( 'page_on_front' ) ) === masvideos_get_page_id( 'tv_shows' ) ) {
+			return;
+		}
+
+		$_name = masvideos_get_page_id( 'tv_shows' ) ? get_the_title( masvideos_get_page_id( 'tv_shows' ) ) : '';
+
+		if ( ! $_name ) {
+			$tv_show_post_type = get_post_type_object( 'tv_show' );
+			$_name             = $tv_show_post_type->labels->name;
+		}
+
+		$this->add_crumb( $_name, get_post_type_archive_link( 'tv_show' ) );
+	}
+
+	/**
 	 * Video category trail.
 	 */
 	private function add_crumbs_video_category() {
@@ -273,7 +378,7 @@ class MasVideos_Breadcrumb {
 
 		if ( ! $_name ) {
 			$video_post_type = get_post_type_object( 'video' );
-			$_name             = $video_post_type->labels->singular_name;
+			$_name             = $video_post_type->labels->name;
 		}
 
 		$this->add_crumb( $_name, get_post_type_archive_link( 'video' ) );
@@ -314,7 +419,7 @@ class MasVideos_Breadcrumb {
 
 		if ( ! $_name ) {
 			$movie_post_type = get_post_type_object( 'movie' );
-			$_name             = $movie_post_type->labels->singular_name;
+			$_name             = $movie_post_type->labels->name;
 		}
 
 		$this->add_crumb( $_name, get_post_type_archive_link( 'movie' ) );
@@ -327,7 +432,7 @@ class MasVideos_Breadcrumb {
 		$post_type = get_post_type_object( get_post_type() );
 
 		if ( $post_type ) {
-			$this->add_crumb( $post_type->labels->singular_name, get_post_type_archive_link( get_post_type() ) );
+			$this->add_crumb( $post_type->labels->name, get_post_type_archive_link( get_post_type() ) );
 		}
 	}
 
@@ -413,18 +518,6 @@ class MasVideos_Breadcrumb {
 			if ( ! is_wp_error( $ancestor ) && $ancestor ) {
 				$this->add_crumb( $ancestor->name, get_term_link( $ancestor ) );
 			}
-		}
-	}
-
-	/**
-	 * Endpoints.
-	 */
-	private function endpoint_trail() {
-		$endpoint       = is_masvideos_endpoint_url() ? MasVideos()->movie_query->get_current_endpoint() : '';
-		$endpoint_title = $endpoint ? MasVideos()->movie_query->get_endpoint_title( $endpoint ) : '';
-
-		if ( $endpoint_title ) {
-			$this->add_crumb( $endpoint_title );
 		}
 	}
 

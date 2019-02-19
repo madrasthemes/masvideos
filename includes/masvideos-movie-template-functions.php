@@ -306,25 +306,25 @@ if ( ! function_exists( 'masvideos_movies_control_bar' ) ) {
      */
     function masvideos_movies_control_bar() {
         echo '<div class="masvideos-control-bar masvideos-movies-control-bar">';
-            masviseos_movies_per_page();
+            masvideos_movies_per_page();
             masvideos_movies_catalog_ordering();
         echo '</div>';
     }
 }
 
-if ( ! function_exists( 'masviseos_movies_per_page' ) ) {
+if ( ! function_exists( 'masvideos_movies_per_page' ) ) {
     /**
      * Outputs a dropdown for user to select how many movies to show per page
      */
-    function masviseos_movies_per_page() {
+    function masvideos_movies_per_page() {
 
         global $wp_query;
 
         $action             = '';
         $cat                = '';
         $cat                = $wp_query->get_queried_object();
-        $method             = apply_filters( 'masviseos_movies_mpp_method', 'post' );
-        $return_to_first    = apply_filters( 'masviseos_movies_mpp_return_to_first', false );
+        $method             = apply_filters( 'masvideos_movies_mpp_method', 'post' );
+        $return_to_first    = apply_filters( 'masvideos_movies_mpp_return_to_first', false );
         $total              = $wp_query->found_posts;
         $per_page           = $wp_query->get( 'posts_per_page' );
         $_per_page          = 2;
@@ -349,7 +349,7 @@ if ( ! function_exists( 'masviseos_movies_per_page' ) ) {
         if ( isset( $cat->term_id ) && isset( $cat->taxonomy ) && $return_to_first ) :
             $action = get_term_link( $cat->term_id, $cat->taxonomy ) . $query_string;
         elseif ( $return_to_first ) :
-            $action = get_permalink( masviseos_get_page_id( 'movies' ) ) . $query_string;
+            $action = get_permalink( masvideos_get_page_id( 'movies' ) ) . $query_string;
         endif;
 
         // Only show on movie categories
@@ -357,18 +357,18 @@ if ( ! function_exists( 'masviseos_movies_per_page' ) ) {
             return;
         endif;
 
-        do_action( 'masviseos_mpp_before_dropdown_form' );
+        do_action( 'masvideos_mpp_before_dropdown_form' );
 
-        ?><form method="POST" action="<?php echo esc_url( $action ); ?>" class="form-masviseos-mpp"><?php
+        ?><form method="POST" action="<?php echo esc_url( $action ); ?>" class="form-masvideos-mpp"><?php
 
-             do_action( 'masviseos_mpp_before_dropdown' );
+             do_action( 'masvideos_mpp_before_dropdown' );
 
-            ?><select name="mpp" onchange="this.form.submit()" class="masviseos-mmpp-select c-select"><?php
+            ?><select name="mpp" onchange="this.form.submit()" class="masvideos-mmpp-select c-select"><?php
 
                 foreach( $movies_per_page_options as $key => $value ) :
 
                     ?><option value="<?php echo esc_attr( $value ); ?>" <?php selected( $value, $per_page ); ?>><?php
-                        $mpp_text = apply_filters( 'masviseos_mpp_text', __( 'Show %s', 'masvideos' ), $value );
+                        $mpp_text = apply_filters( 'masvideos_mpp_text', __( 'Show %s', 'masvideos' ), $value );
                         esc_html( printf( $mpp_text, $value == -1 ? __( 'All', 'masvideos' ) : $value ) ); // Set to 'All' when value is -1
                     ?></option><?php
 
@@ -391,11 +391,11 @@ if ( ! function_exists( 'masviseos_movies_per_page' ) ) {
                 endif;
             endforeach;
 
-            do_action( 'masviseos_mpp_after_dropdown' );
+            do_action( 'masvideos_mpp_after_dropdown' );
 
         ?></form><?php
 
-        do_action( 'masviseos_mpp_after_dropdown_form' );
+        do_action( 'masvideos_mpp_after_dropdown_form' );
     }
 }
 
@@ -869,7 +869,12 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
         $related_movie_ids = masvideos_get_related_movies( $movie_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_movie_ids );
 
-        echo MasVideos_Shortcodes::movies( $args );
+        if( ! empty( $related_movie_ids ) ) {
+            echo '<section class="tv-show__related">';
+                echo apply_filters( 'masvideos_related_movies_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $movie_id ) ), $movie_id );
+                echo MasVideos_Shortcodes::movies( $args );
+            echo '</section>';
+        }
     }
 }
 
