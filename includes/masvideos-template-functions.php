@@ -156,6 +156,50 @@ function masvideos_generator_tag( $gen, $type ) {
 }
 
 /**
+ * Add body classes for MasVideos pages.
+ *
+ * @param  array $classes Body Classes.
+ * @return array
+ */
+function masvideos_body_class( $classes ) {
+    $classes = (array) $classes;
+
+    if ( is_masvideos() ) {
+
+        $classes[] = 'masvideos';
+        $classes[] = 'masvideos-page';
+
+        if( is_video() || is_movie() || is_episode() || is_tv_show() ) {
+            $classes[] = 'masvideos-single';
+        } else {
+            $classes[] = 'masvideos-archive';
+        }
+
+    }
+
+    $classes[] = 'masvideos-no-js';
+
+    add_action( 'wp_footer', 'masvideos_no_js' );
+
+    return array_unique( $classes );
+}
+
+/**
+ * NO JS handling.
+ *
+ * @since 3.4.0
+ */
+function masvideos_no_js() {
+    ?>
+    <script type="text/javascript">
+        var c = document.body.className;
+        c = c.replace(/masvideos-no-js/, 'masvideos-js');
+        document.body.className = c;
+    </script>
+    <?php
+}
+
+/**
  * Get the placeholder image URL etc.
  *
  * @access public
