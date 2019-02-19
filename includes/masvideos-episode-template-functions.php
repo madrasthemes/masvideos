@@ -712,21 +712,23 @@ if ( ! function_exists( 'masvideos_template_single_episode_rating_with_sharing_c
     }
 }
 
-if ( ! function_exists( 'masvideos_template_single_episode_avg_rating_info' ) ) {
+if ( ! function_exists( 'masvideos_template_single_episode_avg_rating' ) ) {
     /**
-     * Single episode rating info open
+     * Single episode rating open
      */
-    function masvideos_template_single_episode_avg_rating_info() {
+    function masvideos_template_single_episode_avg_rating() {
         global $episode;
-        echo '<div class="episode__rating-info">';
+        echo '<div class="episode__rating">';
 
         if ( ! empty( $episode->get_review_count() ) && $episode->get_review_count() > 0 ) {
             ?>
             <a href="<?php echo esc_url( get_permalink( $episode->get_id() ) . '#reviews' ); ?>" class="avg-rating">
-                <span class="avg-rating-number"> <?php echo number_format( $episode->get_average_rating(), 1, '.', '' ); ?></span>
-                <span class="avg-rating-text">
-                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $episode->get_review_count(), 'masvideos' ), $episode->get_review_count() ) ) ; ?>
-                </span>
+                <div class="avg-rating__inner">
+                    <span class="avg-rating__number"> <?php echo number_format( $episode->get_average_rating(), 1, '.', '' ); ?></span>
+                    <span class="avg-rating__text">
+                        <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $episode->get_review_count(), 'masvideos' ), $episode->get_review_count() ) ) ; ?>
+                    </span>
+                </div>
             </a>
             <?php
         }
@@ -734,13 +736,48 @@ if ( ! function_exists( 'masvideos_template_single_episode_avg_rating_info' ) ) 
     }
 }
 
-if ( ! function_exists( 'masvideos_template_single_episode_sharing_info' ) ) {
+if ( ! function_exists( 'masvideos_template_single_episode_info_body_open' ) ) {
     /**
-     * Single episode sharing info open
+     * Single episode info body open
      */
-    function masvideos_template_single_episode_sharing_info() {
-        echo '<div class="episode__rating-with-sharing">';
-        echo '</div>';
+    function masvideos_template_single_episode_info_body_open() {
+        echo '<div class="episode__info--body">';
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_episode_info_body_close' ) ) {
+    /**
+     * Single episode info body close
+     */
+    function masvideos_template_single_episode_info_body_close() {
+         echo '</div>';
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
+    /**
+     * Single episode short description
+     */
+    function masvideos_template_single_episode_short_desc() {
+        global $post;
+
+        $short_description = apply_filters( 'masvideos_template_single_episode_short_desc', $post->post_excerpt );
+        vodi_pr($short_description);
+
+        if ( ! $short_description ) {
+            return;
+        }
+
+        ?>
+        <div class="episode__short-description">
+            <?php echo '<p>' . $short_description . '</p>'; ?>
+        </div>
+
+        <?php
+    }
+}
+
+
+
 

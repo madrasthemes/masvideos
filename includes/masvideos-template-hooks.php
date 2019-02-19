@@ -48,10 +48,14 @@ add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episo
 add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_info_head_open', 10 );
 add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_meta', 20 );
 add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_rating_with_sharing_open', 30 );
-add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_avg_rating_info', 40 );
-add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_sharing_info', 50 );
+add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_avg_rating', 40 );
+add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_sharing', 50 );
 add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_rating_with_sharing_close', 60 );
 add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_info_head_close', 70 );
+add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_info_body_open', 80 );
+add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_short_desc', 90 );
+//add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_tags', 100 );
+add_action( 'masvideos_single_episode_summary', 'masvideos_template_single_episode_info_body_close', 110 );
 add_action( 'masvideos_after_single_episode_summary', 'masvideos_template_single_episode_seasons_tabs', 10 );
 add_action( 'masvideos_after_single_episode_summary', 'masvideos_template_single_episode_related_tv_shows', 20 );
 add_action( 'masvideos_after_single_episode_summary', 'comments_template', 30 );
