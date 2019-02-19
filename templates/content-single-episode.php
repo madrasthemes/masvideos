@@ -40,7 +40,7 @@ if ( post_password_required() ) {
         do_action( 'masvideos_before_single_episode_summary' );
     ?>
 
-    <div class="summary entry-summary">
+    <div class="summary entry-summary episode__summary">
         <?php
             /**
              * Hook: masvideos_single_episode_summary.
