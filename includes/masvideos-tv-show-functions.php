@@ -324,7 +324,7 @@ if ( ! function_exists( 'masvideos_get_tv_show_thumbnail' ) ) {
         global $tv_show;
 
         $image_size = apply_filters( 'masvideos_tv_show_archive_thumbnail_size', $size );
-        return $tv_show ? $tv_show->get_image( $image_size , array( 'class' => 'tv-show__post--image tv_show__poster--image' ) ) : '';
+        return $tv_show ? $tv_show->get_image( $image_size , array( 'class' => 'tv-show__poster--image tv_show__poster--image' ) ) : '';
         
     }
 }
