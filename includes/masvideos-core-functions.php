@@ -65,6 +65,11 @@ function masvideos_get_template_part( $slug, $name = '' ) {
         $template = locate_template( array( "{$slug}.php", MasVideos()->template_path() . "{$slug}.php" ) );
     }
 
+    // Get default slug.php
+    if ( ! $template && ! MASVIDEOS_TEMPLATE_DEBUG_MODE ) {
+        $template = MasVideos()->plugin_path() . "/templates/{$slug}.php";
+    }
+
     // Allow 3rd party plugins to filter template file from their plugin.
     $template = apply_filters( 'masvideos_get_template_part', $template, $slug, $name );
 
