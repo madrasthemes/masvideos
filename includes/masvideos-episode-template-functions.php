@@ -589,7 +589,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
                 }
             }
 
-            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs ) );
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'episode-seasons-tabs' ) );
         }
     }
 }
@@ -644,6 +644,26 @@ if ( ! function_exists( 'masvideos_related_episodes' ) ) {
                 echo MasVideos_Shortcodes::episodes( $args );
             echo '</section>';
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_tabs' ) ) {
+
+    /**
+     * Episode tabs in the episode single.
+     */
+    function masvideos_template_single_episode_tabs() {
+        global $episode;
+
+        $tabs = apply_filters( 'masvideos_template_single_episode_tabs', array(
+            array(
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_episode_description',
+                'priority'  => 10
+            )
+        ) );
+
+        masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'episode-tabs' ) );
     }
 }
 
@@ -792,6 +812,18 @@ if ( ! function_exists( 'masvideos_template_single_episode_info_body_close' ) ) 
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_episode_description' ) ) {
+    /**
+     * Single episode description
+     */
+    function masvideos_template_single_episode_description() {
+        ?>
+        <div class="episode__description">
+            <?php the_content(); ?>
+        </div>
+        <?php
+    }
+}
 
 if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
     /**
@@ -801,7 +833,6 @@ if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
         global $post;
 
         $short_description = apply_filters( 'masvideos_template_single_episode_short_desc', $post->post_excerpt );
-        vodi_pr($short_description);
 
         if ( ! $short_description ) {
             return;
@@ -811,11 +842,6 @@ if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
         <div class="episode__short-description">
             <?php echo '<p>' . $short_description . '</p>'; ?>
         </div>
-
         <?php
     }
 }
-
-
-
-

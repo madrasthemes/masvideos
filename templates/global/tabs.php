@@ -26,11 +26,12 @@ if ( empty( $tabs ) || ! is_array( $tabs ) ) {
 
 $default_active_tab = empty( $default_active_tab ) ? 0 : $default_active_tab;
 $tab_uniqid = 'tab-' . uniqid();
+$class = empty( $class ) ? 'masvideos-tabs' : 'masvideos-tabs ' . $class;
 
 uasort( $tabs, 'masvideos_sort_priority_callback' );
 
 ?>
-<div class="masvideos-tabs">
+<div class="<?php echo esc_attr( $class ); ?>">
     <ul class="nav">
         <?php foreach ( $tabs as $key => $tab ) :
             $tab_id = $tab_uniqid . $key; ?>
