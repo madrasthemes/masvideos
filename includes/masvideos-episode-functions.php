@@ -367,3 +367,38 @@ if ( ! function_exists( 'masvideos_get_episode_thumbnail' ) ) {
         return $episode ? $episode->get_image( $image_size , array( 'class' => 'episode__poster--image' ) ) : '';
     }
 }
+
+if ( ! function_exists( 'masvideos_get_single_episode_prev_next_ids' ) ) {
+
+    /**
+     * Episode previous and next ids.
+     */
+    function masvideos_get_single_episode_prev_next_ids( $episode ) {
+        $episodes = array();
+        $prev = false;
+        $next = false;
+
+        $episode_id = $episode->get_id();
+        $tv_show_id = $episode->get_tv_show_id();
+        $tv_show = masvideos_get_tv_show( $tv_show_id );
+
+        $seasons = $tv_show->get_seasons();
+        foreach ( $seasons as $season ) {
+            if( ! empty( $season['episodes'] ) ) {
+                foreach ( $season['episodes'] as $episode ) {
+                    $episodes[] = $episode;
+                }
+            }
+        }
+
+        if( ! empty( $episodes ) ) {
+            $current_key = array_search( $episode_id, $episodes );
+            $prev_key = masvideos_array_get_adjascent_key( $current_key, $episodes, -1 );
+            $next_key = masvideos_array_get_adjascent_key( $current_key, $episodes, +1 );
+            $prev = ( $prev_key > 0 && $prev_key < sizeof( $episodes ) ) ? $episodes[$prev_key] : false;
+            $next = ( $next_key > 0 && $next_key < sizeof( $episodes ) ) ? $episodes[$next_key] : false;
+        }
+
+        return array( 'prev' => $prev, 'next' => $next );
+    }
+}

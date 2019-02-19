@@ -65,6 +65,11 @@ function masvideos_get_template_part( $slug, $name = '' ) {
         $template = locate_template( array( "{$slug}.php", MasVideos()->template_path() . "{$slug}.php" ) );
     }
 
+    // Get default slug.php
+    if ( ! $template && ! MASVIDEOS_TEMPLATE_DEBUG_MODE ) {
+        $template = MasVideos()->plugin_path() . "/templates/{$slug}.php";
+    }
+
     // Allow 3rd party plugins to filter template file from their plugin.
     $template = apply_filters( 'masvideos_get_template_part', $template, $slug, $name );
 
@@ -502,6 +507,17 @@ function masvideos_is_episode_archive() {
 function masvideos_get_term_ids( $post_id, $taxonomy ) {
     $terms = get_the_terms( $post_id, $taxonomy );
     return ( empty( $terms ) || is_wp_error( $terms ) ) ? array() : wp_list_pluck( $terms, 'term_id' );
+}
+
+function masvideos_array_get_adjascent_key( $key, $hash = array(), $increment ) {
+    $keys = array_keys( $hash );    
+    $found_index = array_search( $key, $keys );
+    if ( $found_index === false ) {
+        return false;
+    }
+    $newindex = $found_index+$increment;
+    // returns false if no result found
+    return ( $newindex > 0 && $newindex < sizeof( $hash ) ) ? $keys[$newindex] : false;
 }
 
 if ( ! function_exists( 'masvideos_sort_priority_callback' ) ) {

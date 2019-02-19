@@ -507,6 +507,44 @@ if ( ! function_exists( 'masvideos_template_single_episode_duration' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_episode_prev_navigation' ) ) {
+
+    /**
+     * Episode previous link in the episode single.
+     */
+    function masvideos_template_single_episode_prev_navigation() {
+        global $episode;
+
+        $episodes = masvideos_get_single_episode_prev_next_ids( $episode );
+
+        if( isset( $episodes['prev'] ) && $episodes['prev'] ) {
+            $episode_url = get_permalink( $episodes['prev'] );
+            echo '<div class="episode-prev__episode">';
+            echo '<a href="' . esc_url( $episode_url ) . '" class="episode-prev__episode--link">' . esc_html__( 'Previous Episode: ', 'masvideos' ) . '</a>';
+            echo '</div>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_next_navigation' ) ) {
+
+    /**
+     * Episode next link in the episode single.
+     */
+    function masvideos_template_single_episode_next_navigation() {
+        global $episode;
+
+        $episodes = masvideos_get_single_episode_prev_next_ids( $episode );
+
+        if( isset( $episodes['next'] ) && $episodes['next'] ) {
+            $episode_url = get_permalink( $episodes['next'] );
+            echo '<div class="episode-next__episode">';
+            echo '<a href="' . esc_url( $episode_url ) . '" class="episode-next__episode--link">' . esc_html__( 'Next Episode: ', 'masvideos' ) . '</a>';
+            echo '</div>';
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
 
     /**
