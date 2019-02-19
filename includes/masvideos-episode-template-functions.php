@@ -463,7 +463,12 @@ if ( ! function_exists( 'masvideos_template_single_episode_tags' ) ) {
     function masvideos_template_single_episode_tags() {
         global $episode;
 
-        $tags = get_the_term_list( $episode->get_id(), 'episode_tag', '', ', ' );
+        if ( masvideos_is_episode_archive() ) {
+            $tags = get_the_term_list( $episode->get_id(), 'episode_tag', '', ', ' );
+        } else {
+            $tv_show_id = $episode->get_tv_show_id();
+            $tags = ! empty( $tv_show_id ) ? get_the_term_list( $tv_show_id, 'tv_show_tag', '', ', ' ) : '';
+        }
 
         if( ! empty ( $tags ) ) {
             echo sprintf( '<span class="episode-tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
