@@ -674,3 +674,61 @@ if ( ! function_exists( 'masvideos_episode_review_display_comment_text' ) ) {
         echo '</div>';
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_episode_info_head_open' ) ) {
+    /**
+     * Single episode info head open
+     */
+    function masvideos_template_single_episode_info_head_open() {
+        echo '<div class="episode__info--head">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_info_head_close' ) ) {
+    /**
+     * Single episode info head close
+     */
+    function masvideos_template_single_episode_info_head_close() {
+         echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_rating_with_sharing_open' ) ) {
+    /**
+     * Single episode rating with sharing info open
+     */
+    function masvideos_template_single_episode_rating_with_sharing_open() {
+        echo '<div class="episode__rating-with-sharing">';
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_template_single_episode_rating_with_sharing_close' ) ) {
+    /**
+     * Single episode rating with sharing info close
+     */
+    function masvideos_template_single_episode_rating_with_sharing_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_rating_info' ) ) {
+    /**
+     * Single episode rating info open
+     */
+    function masvideos_template_single_episode_rating_info() {
+        echo '<div class="episode__rating-with-sharing">';
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_sharing_info' ) ) {
+    /**
+     * Single episode sharing info open
+     */
+    function masvideos_template_single_episode_sharing_info() {
+        echo '<div class="episode__rating-with-sharing">';
+        echo '</div>';
+    }
+}
+
