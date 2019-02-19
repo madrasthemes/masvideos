@@ -297,20 +297,6 @@ class MasVideos_Episodes_Query {
             );
         }
 
-        // Category Filters.
-        if ( $main_query ) {
-            $query_type = ! empty( $_GET[ 'query_type_genre' ] ) && in_array( $_GET[ 'query_type_genre' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_genre' ] ) ) : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' ); // WPCS: sanitization ok, input var ok, CSRF ok.
-            $filter_terms = ! empty( $_GET['filter_genre'] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET['filter_genre'] ) ) ) : array();
-            $terms = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
-            $tax_query[] = array(
-                'taxonomy'         => 'episode_genre',
-                'field'            => 'slug',
-                'terms'            => $terms,
-                'operator'         => 'and' === $query_type ? 'AND' : 'IN',
-                'include_children' => false,
-            );
-        }
-
         // Layered nav filters on terms.
         if ( $main_query ) {
             foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
@@ -438,10 +424,10 @@ class MasVideos_Episodes_Query {
                 foreach ( $_GET as $key => $value ) { // WPCS: input var ok, CSRF ok.
                     if ( 0 === strpos( $key, 'filter_' ) ) {
                         $attribute    = masvideos_sanitize_taxonomy_name( str_replace( 'filter_', '', $key ) );
-                        $taxonomy     = masvideos_attribute_taxonomy_name( 'episode', $attribute );
+                        $taxonomy     = in_array( $attribute, array( 'genre', 'tag' ) ) ? 'episode_' . $attribute : masvideos_attribute_taxonomy_name( 'episode', $attribute );
                         $filter_terms = ! empty( $value ) ? explode( ',', masvideos_clean( wp_unslash( $value ) ) ) : array();
 
-                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! masvideos_attribute_taxonomy_id_by_name( 'episode', $attribute ) ) {
+                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! ( in_array( $attribute, array( 'genre', 'tag' ) ) || masvideos_attribute_taxonomy_id_by_name( 'episode', $attribute ) ) ) {
                             continue;
                         }
 
@@ -745,20 +731,6 @@ class MasVideos_TV_Shows_Query {
             );
         }
 
-        // Category Filters.
-        if ( $main_query ) {
-            $query_type = ! empty( $_GET[ 'query_type_genre' ] ) && in_array( $_GET[ 'query_type_genre' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_genre' ] ) ) : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' ); // WPCS: sanitization ok, input var ok, CSRF ok.
-            $filter_terms = ! empty( $_GET['filter_genre'] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET['filter_genre'] ) ) ) : array();
-            $terms = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
-            $tax_query[] = array(
-                'taxonomy'         => 'tv_show_genre',
-                'field'            => 'slug',
-                'terms'            => $terms,
-                'operator'         => 'and' === $query_type ? 'AND' : 'IN',
-                'include_children' => false,
-            );
-        }
-
         // Layered nav filters on terms.
         if ( $main_query ) {
             foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
@@ -886,10 +858,10 @@ class MasVideos_TV_Shows_Query {
                 foreach ( $_GET as $key => $value ) { // WPCS: input var ok, CSRF ok.
                     if ( 0 === strpos( $key, 'filter_' ) ) {
                         $attribute    = masvideos_sanitize_taxonomy_name( str_replace( 'filter_', '', $key ) );
-                        $taxonomy     = masvideos_attribute_taxonomy_name( 'tv_show', $attribute );
+                        $taxonomy     = in_array( $attribute, array( 'genre', 'tag' ) ) ? 'tv_show_' . $attribute : masvideos_attribute_taxonomy_name( 'tv_show', $attribute );
                         $filter_terms = ! empty( $value ) ? explode( ',', masvideos_clean( wp_unslash( $value ) ) ) : array();
 
-                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! masvideos_attribute_taxonomy_id_by_name( 'tv_show', $attribute ) ) {
+                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! ( in_array( $attribute, array( 'genre', 'tag' ) ) || masvideos_attribute_taxonomy_id_by_name( 'tv_show', $attribute ) ) ) {
                             continue;
                         }
 
@@ -1193,20 +1165,6 @@ class MasVideos_Videos_Query {
             );
         }
 
-        // Category Filters.
-        if ( $main_query ) {
-            $query_type = ! empty( $_GET[ 'query_type_cat' ] ) && in_array( $_GET[ 'query_type_cat' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_cat' ] ) ) : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' ); // WPCS: sanitization ok, input var ok, CSRF ok.
-            $filter_terms = ! empty( $_GET['filter_cat'] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET['filter_cat'] ) ) ) : array();
-            $terms = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
-            $tax_query[] = array(
-                'taxonomy'         => 'video_cat',
-                'field'            => 'slug',
-                'terms'            => $terms,
-                'operator'         => 'and' === $query_type ? 'AND' : 'IN',
-                'include_children' => false,
-            );
-        }
-
         // Layered nav filters on terms.
         if ( $main_query ) {
             foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
@@ -1334,10 +1292,10 @@ class MasVideos_Videos_Query {
                 foreach ( $_GET as $key => $value ) { // WPCS: input var ok, CSRF ok.
                     if ( 0 === strpos( $key, 'filter_' ) ) {
                         $attribute    = masvideos_sanitize_taxonomy_name( str_replace( 'filter_', '', $key ) );
-                        $taxonomy     = masvideos_attribute_taxonomy_name( 'video', $attribute );
+                        $taxonomy     = in_array( $attribute, array( 'cat', 'tag' ) ) ? 'video_' . $attribute : masvideos_attribute_taxonomy_name( 'video', $attribute );
                         $filter_terms = ! empty( $value ) ? explode( ',', masvideos_clean( wp_unslash( $value ) ) ) : array();
 
-                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! masvideos_attribute_taxonomy_id_by_name( 'video', $attribute ) ) {
+                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! ( in_array( $attribute, array( 'cat', 'tag' ) ) || masvideos_attribute_taxonomy_id_by_name( 'video', $attribute ) ) ) {
                             continue;
                         }
 
@@ -1642,20 +1600,6 @@ class MasVideos_Movies_Query {
             );
         }
 
-        // Category Filters.
-        if ( $main_query ) {
-            $query_type = ! empty( $_GET[ 'query_type_genre' ] ) && in_array( $_GET[ 'query_type_genre' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_genre' ] ) ) : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' ); // WPCS: sanitization ok, input var ok, CSRF ok.
-            $filter_terms = ! empty( $_GET['filter_genre'] ) ? explode( ',', masvideos_clean( wp_unslash( $_GET['filter_genre'] ) ) ) : array();
-            $terms = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
-            $tax_query[] = array(
-                'taxonomy'         => 'movie_genre',
-                'field'            => 'slug',
-                'terms'            => $terms,
-                'operator'         => 'and' === $query_type ? 'AND' : 'IN',
-                'include_children' => false,
-            );
-        }
-
         // Layered nav filters on terms.
         if ( $main_query ) {
             foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
@@ -1783,10 +1727,10 @@ class MasVideos_Movies_Query {
                 foreach ( $_GET as $key => $value ) { // WPCS: input var ok, CSRF ok.
                     if ( 0 === strpos( $key, 'filter_' ) ) {
                         $attribute    = masvideos_sanitize_taxonomy_name( str_replace( 'filter_', '', $key ) );
-                        $taxonomy     = masvideos_attribute_taxonomy_name( 'movie', $attribute );
+                        $taxonomy     = in_array( $attribute, array( 'genre', 'tag' ) ) ? 'movie_' . $attribute : masvideos_attribute_taxonomy_name( 'movie', $attribute );
                         $filter_terms = ! empty( $value ) ? explode( ',', masvideos_clean( wp_unslash( $value ) ) ) : array();
 
-                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! masvideos_attribute_taxonomy_id_by_name( 'movie', $attribute ) ) {
+                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! ( in_array( $attribute, array( 'genre', 'tag' ) ) || masvideos_attribute_taxonomy_id_by_name( 'movie', $attribute ) ) ) {
                             continue;
                         }
 
