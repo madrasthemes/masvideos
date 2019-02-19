@@ -519,8 +519,8 @@ if ( ! function_exists( 'masvideos_template_single_episode_prev_navigation' ) ) 
 
         if( isset( $episodes['prev'] ) && $episodes['prev'] ) {
             $episode_url = get_permalink( $episodes['prev'] );
-            echo '<div class="episode-prev__episode">';
-            echo '<a href="' . esc_url( $episode_url ) . '" class="episode-prev__episode--link">' . esc_html__( 'Previous Episode: ', 'masvideos' ) . '</a>';
+            echo '<div class="episode__player--prev-episode">';
+            echo '<a href="' . esc_url( $episode_url ) . '" class="episode__player--prev-episode__link">' . esc_html__( 'Previous Episode ', 'masvideos' ) . '</a>';
             echo '</div>';
         }
     }
@@ -538,8 +538,8 @@ if ( ! function_exists( 'masvideos_template_single_episode_next_navigation' ) ) 
 
         if( isset( $episodes['next'] ) && $episodes['next'] ) {
             $episode_url = get_permalink( $episodes['next'] );
-            echo '<div class="episode-next__episode">';
-            echo '<a href="' . esc_url( $episode_url ) . '" class="episode-next__episode--link">' . esc_html__( 'Next Episode: ', 'masvideos' ) . '</a>';
+            echo '<div class="episode__player--next-episode">';
+            echo '<a href="' . esc_url( $episode_url ) . '" class="episode__player--next-episode__link">' . esc_html__( 'Next Episode ', 'masvideos' ) . '</a>';
             echo '</div>';
         }
     }
@@ -840,6 +840,28 @@ if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
         ?>
         <div class="episode__short-description">
             <?php echo '<p>' . $short_description . '</p>'; ?>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_player_wrap_open' ) ) {
+    /**
+     * Single episode player open
+     */
+    function masvideos_template_single_episode_player_wrap_open() {
+        ?>
+        <div class="episode__player">
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_player_wrap_close' ) ) {
+    /**
+     * Single episode player close
+     */
+    function masvideos_template_single_episode_player_wrap_close() {
+        ?>
         </div>
         <?php
     }
