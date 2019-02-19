@@ -43,7 +43,7 @@ class MasVideos_Post_Types {
 
         // For Episodes
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
-        $episodes_page_id = 0;
+        $episodes_page_id = masvideos_get_page_id( 'episodes' );
 
         if ( masvideos_is_episode_archive() && current_theme_supports( 'masvideos' ) ) {
             $has_archive = $episodes_page_id && get_post( $episodes_page_id ) ? urldecode( get_page_uri( $episodes_page_id ) ) : 'episodes';
@@ -108,7 +108,7 @@ class MasVideos_Post_Types {
 
         // For TV Shows
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
-        $tv_shows_page_id = 0;
+        $tv_shows_page_id = masvideos_get_page_id( 'tv_shows' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
             $has_archive = $tv_shows_page_id && get_post( $tv_shows_page_id ) ? urldecode( get_page_uri( $tv_shows_page_id ) ) : 'tv_shows';
@@ -172,7 +172,7 @@ class MasVideos_Post_Types {
 
         // For Videos
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
-        $videos_page_id = 0;
+        $videos_page_id = masvideos_get_page_id( 'videos' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
             $has_archive = $videos_page_id && get_post( $videos_page_id ) ? urldecode( get_page_uri( $videos_page_id ) ) : 'videos';
@@ -241,7 +241,7 @@ class MasVideos_Post_Types {
 
         // For Movies
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
-        $movies_page_id = 0;
+        $movies_page_id = masvideos_get_page_id( 'movies' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
             $has_archive = $movies_page_id && get_post( $movies_page_id ) ? urldecode( get_page_uri( $movies_page_id ) ) : 'movies';
