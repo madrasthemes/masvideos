@@ -459,6 +459,9 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
                     }
                     $updated = true;
                     break;
+                case 'episode_release_date':
+                    $updated = update_post_meta( $product->get_id(), $meta_key, $value ? $value->getTimestamp() : '' );
+                    break;
                 default:
                     $updated = update_post_meta( $episode->get_id(), $meta_key, $value );
                     break;
@@ -1049,8 +1052,9 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
 
         // Handle date queries.
         $date_queries = array(
-            'date_created'      => 'post_date',
-            'date_modified'     => 'post_modified',
+            'date_created'          => 'post_date',
+            'date_modified'         => 'post_modified',
+            'episode_release_date'  => '_episode_release_date',
         );
         foreach ( $date_queries as $query_var_key => $db_key ) {
             if ( isset( $query_vars[ $query_var_key ] ) && '' !== $query_vars[ $query_var_key ] ) {
