@@ -257,6 +257,11 @@ class MasVideos_Episodes_Query {
                 $args['orderby'] = 'date ID';
                 $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
                 break;
+            case 'release_date':
+                $args['meta_key'] = '_movie_release_date'; // @codingStandardsIgnoreLine
+                $args['orderby'] = 'meta_value';
+                $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
+                break;
             case 'rating':
                 $args['meta_key'] = '_masvideos_average_rating'; // @codingStandardsIgnoreLine
                 $args['orderby']  = array(
@@ -1520,7 +1525,7 @@ class MasVideos_Movies_Query {
                 if ( is_search() ) {
                     $orderby_value = 'relevance';
                 } else {
-                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'menu_order' ) );
+                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'release_date' ) );
                 }
             }
 
@@ -1558,6 +1563,11 @@ class MasVideos_Movies_Query {
                 break;
             case 'date':
                 $args['orderby'] = 'date ID';
+                $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
+                break;
+            case 'release_date':
+                $args['meta_key'] = '_movie_release_date'; // @codingStandardsIgnoreLine
+                $args['orderby'] = 'meta_value';
                 $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
                 break;
             case 'rating':
