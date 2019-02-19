@@ -504,6 +504,17 @@ function masvideos_get_term_ids( $post_id, $taxonomy ) {
     return ( empty( $terms ) || is_wp_error( $terms ) ) ? array() : wp_list_pluck( $terms, 'term_id' );
 }
 
+function masvideos_array_get_adjascent_key( $key, $hash = array(), $increment ) {
+    $keys = array_keys( $hash );    
+    $found_index = array_search( $key, $keys );
+    if ( $found_index === false ) {
+        return false;
+    }
+    $newindex = $found_index+$increment;
+    // returns false if no result found
+    return ( $newindex > 0 && $newindex < sizeof( $hash ) ) ? $keys[$newindex] : false;
+}
+
 if ( ! function_exists( 'masvideos_sort_priority_callback' ) ) {
     /**
      * Sort Priority Callback Function
