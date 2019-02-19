@@ -12,6 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * is_masvideos - Returns true if on a page which uses MasVideos templates.
+ *
+ * @return bool
+ */
+function is_masvideos() {
+    return apply_filters( 'is_masvideos', is_videos() || is_video_taxonomy() || is_video() || is_movies() || is_movie_taxonomy() || is_movie() || is_episodes() || is_episode_taxonomy() || is_episode() || is_tv_shows() || is_tv_show_taxonomy() || is_tv_show() );
+}
+
 if ( ! function_exists( 'is_ajax' ) ) {
 
     /**

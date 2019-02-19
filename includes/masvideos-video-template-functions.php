@@ -44,7 +44,7 @@ add_action( 'the_post', 'masvideos_setup_video_data' );
 function masvideos_setup_videos_loop( $args = array() ) {
     $default_args = array(
         'loop'         => 0,
-        'columns'      => 4,
+        'columns'      => masvideos_get_default_videos_per_row(),
         'name'         => '',
         'is_shortcode' => false,
         'is_paginated' => true,
@@ -282,6 +282,10 @@ if ( ! function_exists( 'masvideos_video_page_title' ) ) {
 
             $videos_page_id = masvideos_get_page_id( 'videos' );
             $page_title   = get_the_title( $videos_page_id );
+
+            if ( empty( $page_title ) ) {
+                $page_title = post_type_archive_title( '', false );
+            }
 
         }
 
@@ -629,6 +633,43 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
      */
     function masvideos_template_single_video_posted_on() {
         echo '<span class="video_posted_on">' . apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ) .  get_the_date() . '</span>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_related_videos' ) ) {
+
+    /**
+     * Output the related videos.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_related_videos( $video_id = false, $args = array() ) {
+        global $video;
+
+        $video_id = $video_id ? $video_id : $video->get_id();
+
+        if ( ! $video_id ) {
+            return;
+        }
+
+        $defaults = array(
+            'limit'          => 5,
+            'columns'        => 5,
+            'orderby'        => 'rand',
+            'order'          => 'desc',
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $related_video_ids = masvideos_get_related_videos( $video_id, $args['limit'] );
+        $args['ids'] = implode( ',', $related_video_ids );
+
+        if( ! empty( $related_video_ids ) ) {
+            echo '<section class="tv-show__related">';
+                echo apply_filters( 'masvideos_related_videos_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $video_id ) ), $video_id );
+                echo MasVideos_Shortcodes::videos( $args );
+            echo '</section>';
+        }
     }
 }
 

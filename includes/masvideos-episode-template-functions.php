@@ -44,7 +44,7 @@ add_action( 'the_post', 'masvideos_setup_episode_data' );
 function masvideos_setup_episodes_loop( $args = array() ) {
     $default_args = array(
         'loop'         => 0,
-        'columns'      => 4,
+        'columns'      => masvideos_get_default_episodes_per_row(),
         'name'         => '',
         'is_shortcode' => false,
         'is_paginated' => true,
@@ -284,6 +284,10 @@ if ( ! function_exists( 'masvideos_episode_page_title' ) ) {
             $episodes_page_id = masvideos_get_page_id( 'episodes' );
             $page_title   = get_the_title( $episodes_page_id );
 
+            if ( empty( $page_title ) ) {
+                $page_title = post_type_archive_title( '', false );
+            }
+
         }
 
         $page_title = apply_filters( 'masvideos_episode_page_title', $page_title );
@@ -296,12 +300,91 @@ if ( ! function_exists( 'masvideos_episode_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_loop_episode_poster_open' ) ) {
+    /**
+     * episode poster open in the loop.
+     */
+    function masvideos_template_loop_episode_poster_open() {
+        echo '<div class="episode__poster">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for episode in the loop.
+     */
+    function masvideos_template_loop_episode_link_open() {
+        global $episode;
+
+        $link = apply_filters( 'masvideos_loop_episode_link', get_the_permalink(), $episode );
+
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopEpisode-link masvideos-loop-episode__link episode__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_poster' ) ) {
+    /**
+     * episode poster in the loop.
+     */
+    function masvideos_template_loop_episode_poster() {
+        echo masvideos_get_episode_thumbnail( 'masvideos_episode_medium' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for episode in the loop.
+     */
+    function masvideos_template_loop_episode_link_close() {
+        echo '</a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_poster_close' ) ) {
+    /**
+     * episode poster close in the loop.
+     */
+    function masvideos_template_loop_episode_poster_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_body_open' ) ) {
+
+    /**
+     * episode body open in the episode loop.
+     */
+    function masvideos_template_loop_episode_body_open() {
+         global $episode;
+        echo '<div class="episode__body">';
+        $link = apply_filters( 'masvideos_loop_episode_link', get_the_permalink(), $episode );
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopEpisode-link masvideos-loop-episode__link episode__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_episode_body_close' ) ) {
+
+    /**
+     * episode body close in the episode loop.
+     */
+    function masvideos_template_loop_episode_body_close() {
+        echo '</a>';
+        echo '</div>';
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
 
     /**
      * Show the episode title in the episode loop. By default this is an H3.
      */
     function masvideos_template_loop_episode_title() {
+        global $episode;
+        $episode_number = $episode->get_episode_number();
+        if( ! empty( $episode_number ) ) {
+            echo '<span class="masvideos-loop-episode__number episode__number">' . $episode_number . '</span>';
+        }
+
         the_title( '<h3 class="masvideos-loop-episode__title  episode__title">', '</h3>' );
     }
 }
@@ -326,7 +409,21 @@ if ( ! function_exists( 'masvideos_template_single_episode_title' ) ) {
      * Output the episode title.
      */
     function masvideos_template_single_episode_title() {
-        the_title( '<h1 class="episode_title entry-title">', '</h1>' );
+        global $episode;
+
+        $before_title = '';
+
+        $tv_show_id = $episode->get_tv_show_id();
+        if( ! empty( $tv_show_id ) ) {
+            $before_title .= get_the_title( $tv_show_id ) . ' - ';
+        }
+
+        $episode_number = $episode->get_episode_number();
+        if( ! empty( $episode_number ) ) {
+            $before_title .= $episode_number . ' - ';
+        }
+
+        the_title( '<h1 class="episode_title entry-title">' . $before_title, '</h1>' );
     }
 }
 
@@ -354,6 +451,22 @@ if ( ! function_exists( 'masvideos_template_single_episode_genres' ) ) {
 
         if( ! empty ( $categories ) ) {
            echo '<span class="episode__meta--genre">' . $categories . '</span>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_tags' ) ) {
+
+    /**
+     * Episode tags in the episode single.
+     */
+    function masvideos_template_single_episode_tags() {
+        global $episode;
+
+        $tags = get_the_term_list( $episode->get_id(), 'episode_tag', '', ', ' );
+
+        if( ! empty ( $tags ) ) {
+            echo sprintf( '<span class="episode-tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
         }
     }
 }
@@ -405,6 +518,11 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
         $episode_id = $episode->get_id();
         $tv_show_id = $episode->get_tv_show_id();
         $tv_show = masvideos_get_tv_show( $tv_show_id );
+
+        if( ! $tv_show ) {
+            return;
+        }
+
         $seasons = $tv_show->get_seasons();
         if( ! empty( $seasons ) ) {
             $tabs = array();
@@ -434,6 +552,59 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
             }
 
             masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_related_tv_shows' ) ) {
+
+    /**
+     * Episode related tv shows in the episode single.
+     */
+    function masvideos_template_single_episode_related_tv_shows() {
+        global $episode;
+        
+        $tv_show_id = $episode->get_tv_show_id();
+
+        if( $tv_show_id ) {
+            masvideos_related_tv_shows( $tv_show_id );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_related_episodes' ) ) {
+
+    /**
+     * Output the related episodes.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_related_episodes( $episode_id = false, $args = array() ) {
+        global $episode;
+
+        $episode_id = $episode_id ? $episode_id : $episode->get_id();
+
+        if ( ! $episode_id ) {
+            return;
+        }
+
+        $defaults = array(
+            'limit'          => 5,
+            'columns'        => 5,
+            'orderby'        => 'rand',
+            'order'          => 'desc',
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $related_episode_ids = masvideos_get_related_episodes( $episode_id, $args['limit'] );
+        $args['ids'] = implode( ',', $related_episode_ids );
+
+        if( ! empty( $related_episode_ids ) ) {
+            echo '<section class="tv-show__related">';
+                echo apply_filters( 'masvideos_related_episodes_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $episode_id ) ), $episode_id );
+                echo MasVideos_Shortcodes::episodes( $args );
+            echo '</section>';
         }
     }
 }
@@ -503,3 +674,73 @@ if ( ! function_exists( 'masvideos_episode_review_display_comment_text' ) ) {
         echo '</div>';
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_episode_info_head_open' ) ) {
+    /**
+     * Single episode info head open
+     */
+    function masvideos_template_single_episode_info_head_open() {
+        echo '<div class="episode__info--head">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_info_head_close' ) ) {
+    /**
+     * Single episode info head close
+     */
+    function masvideos_template_single_episode_info_head_close() {
+         echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_rating_with_sharing_open' ) ) {
+    /**
+     * Single episode rating with sharing info open
+     */
+    function masvideos_template_single_episode_rating_with_sharing_open() {
+        echo '<div class="episode__rating-with-sharing">';
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_template_single_episode_rating_with_sharing_close' ) ) {
+    /**
+     * Single episode rating with sharing info close
+     */
+    function masvideos_template_single_episode_rating_with_sharing_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_avg_rating_info' ) ) {
+    /**
+     * Single episode rating info open
+     */
+    function masvideos_template_single_episode_avg_rating_info() {
+        global $episode;
+        echo '<div class="episode__rating-info">';
+
+        if ( ! empty( $episode->get_review_count() ) && $episode->get_review_count() > 0 ) {
+            ?>
+            <a href="<?php echo esc_url( get_permalink( $episode->get_id() ) . '#reviews' ); ?>" class="avg-rating">
+                <span class="avg-rating-number"> <?php echo number_format( $episode->get_average_rating(), 1, '.', '' ); ?></span>
+                <span class="avg-rating-text">
+                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $episode->get_review_count(), 'masvideos' ), $episode->get_review_count() ) ) ; ?>
+                </span>
+            </a>
+            <?php
+        }
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_sharing_info' ) ) {
+    /**
+     * Single episode sharing info open
+     */
+    function masvideos_template_single_episode_sharing_info() {
+        echo '<div class="episode__rating-with-sharing">';
+        echo '</div>';
+    }
+}
+

@@ -120,6 +120,17 @@ function masvideos_get_episode_visibility_options() {
 }
 
 /**
+ * Callback for array filter to get visible only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $episode MasVideos_Episode object.
+ * @return bool
+ */
+function masvideos_episodes_array_filter_visible( $episode ) {
+    return $episode && is_a( $episode, 'MasVideos_Episode' ) && $episode->is_visible();
+}
+
+/**
  * Callback for array filter to get episodes the user can edit only.
  *
  * @since  1.0.0
@@ -139,6 +150,170 @@ function masvideos_episodes_array_filter_editable( $episode ) {
  */
 function masvideos_episodes_array_filter_readable( $episode ) {
     return $episode && is_a( $episode, 'MasVideos_Episode' ) && current_user_can( 'read_episode', $episode->get_id() );
+}
+
+/**
+ * Sort an array of episodes by a value.
+ *
+ * @since  1.0.0
+ *
+ * @param array  $episodes List of episodes to be ordered.
+ * @param string $orderby Optional order criteria.
+ * @param string $order Ascending or descending order.
+ *
+ * @return array
+ */
+function masvideos_episodes_array_orderby( $episodes, $orderby = 'date', $order = 'desc' ) {
+    $orderby = strtolower( $orderby );
+    $order   = strtolower( $order );
+    switch ( $orderby ) {
+        case 'title':
+        case 'id':
+        case 'date':
+        case 'modified':
+        case 'menu_order':
+            usort( $episodes, 'masvideos_episodes_array_orderby_' . $orderby );
+            break;
+        default:
+            shuffle( $episodes );
+            break;
+    }
+    if ( 'desc' === $order ) {
+        $episodes = array_reverse( $episodes );
+    }
+    return $episodes;
+}
+
+/**
+ * Sort by title.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $a First MasVideos_Episode object.
+ * @param  MasVideos_Episode $b Second MasVideos_Episode object.
+ * @return int
+ */
+function masvideos_episodes_array_orderby_title( $a, $b ) {
+    return strcasecmp( $a->get_name(), $b->get_name() );
+}
+
+/**
+ * Sort by id.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $a First MasVideos_Episode object.
+ * @param  MasVideos_Episode $b Second MasVideos_Episode object.
+ * @return int
+ */
+function masvideos_episodes_array_orderby_id( $a, $b ) {
+    if ( $a->get_id() === $b->get_id() ) {
+        return 0;
+    }
+    return ( $a->get_id() < $b->get_id() ) ? -1 : 1;
+}
+
+/**
+ * Sort by date.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $a First MasVideos_Episode object.
+ * @param  MasVideos_Episode $b Second MasVideos_Episode object.
+ * @return int
+ */
+function masvideos_episodes_array_orderby_date( $a, $b ) {
+    if ( $a->get_date_created() === $b->get_date_created() ) {
+        return 0;
+    }
+    return ( $a->get_date_created() < $b->get_date_created() ) ? -1 : 1;
+}
+
+/**
+ * Sort by modified.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $a First MasVideos_Episode object.
+ * @param  MasVideos_Episode $b Second MasVideos_Episode object.
+ * @return int
+ */
+function masvideos_episodes_array_orderby_modified( $a, $b ) {
+    if ( $a->get_date_modified() === $b->get_date_modified() ) {
+        return 0;
+    }
+    return ( $a->get_date_modified() < $b->get_date_modified() ) ? -1 : 1;
+}
+
+/**
+ * Sort by menu order.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode $a First MasVideos_Episode object.
+ * @param  MasVideos_Episode $b Second MasVideos_Episode object.
+ * @return int
+ */
+function masvideos_episodes_array_orderby_menu_order( $a, $b ) {
+    if ( $a->get_menu_order() === $b->get_menu_order() ) {
+        return 0;
+    }
+    return ( $a->get_menu_order() < $b->get_menu_order() ) ? -1 : 1;
+}
+
+/**
+ * Get related episodes based on episode genre and tags.
+ *
+ * @since  1.0.0
+ * @param  int   $episode_id  Episode ID.
+ * @param  int   $limit       Limit of results.
+ * @param  array $exclude_ids Exclude IDs from the results.
+ * @return array
+ */
+function masvideos_get_related_episodes( $episode_id, $limit = 5, $exclude_ids = array() ) {
+
+    $episode_id     = absint( $episode_id );
+    $limit          = $limit >= -1 ? $limit : 5;
+    $exclude_ids    = array_merge( array( 0, $episode_id ), $exclude_ids );
+    $transient_name = 'masvideos_related_episodes_' . $episode_id;
+    $query_args     = http_build_query(
+        array(
+            'limit'       => $limit,
+            'exclude_ids' => $exclude_ids,
+        )
+    );
+
+    $transient     = get_transient( $transient_name );
+    $related_posts = $transient && isset( $transient[ $query_args ] ) ? $transient[ $query_args ] : false;
+
+    // We want to query related posts if they are not cached, or we don't have enough.
+    if ( false === $related_posts || count( $related_posts ) < $limit ) {
+
+        $genres_array = apply_filters( 'masvideos_episode_related_posts_relate_by_genre', true, $episode_id ) ? apply_filters( 'masvideos_get_related_episode_genre_terms', masvideos_get_term_ids( $episode_id, 'episode_genre' ), $episode_id ) : array();
+        $tags_array = apply_filters( 'masvideos_episode_related_posts_relate_by_tag', true, $episode_id ) ? apply_filters( 'masvideos_get_related_episode_tag_terms', masvideos_get_term_ids( $episode_id, 'episode_tag' ), $episode_id ) : array();
+
+        // Don't bother if none are set, unless masvideos_episode_related_posts_force_display is set to true in which case all episodes are related.
+        if ( empty( $genres_array ) && empty( $tags_array ) && ! apply_filters( 'masvideos_episode_related_posts_force_display', false, $episode_id ) ) {
+            $related_posts = array();
+        } else {
+            $data_store    = MasVideos_Data_Store::load( 'episode' );
+            $related_posts = $data_store->get_related_episodes( $genres_array, $tags_array, $exclude_ids, $limit + 10, $episode_id );
+        }
+
+        if ( $transient ) {
+            $transient[ $query_args ] = $related_posts;
+        } else {
+            $transient = array( $query_args => $related_posts );
+        }
+
+        set_transient( $transient_name, $transient, DAY_IN_SECONDS );
+    }
+
+    $related_posts = apply_filters(
+        'masvideos_related_episodes', $related_posts, $episode_id, array(
+            'limit'        => $limit,
+            'excluded_ids' => $exclude_ids,
+        )
+    );
+
+    shuffle( $related_posts );
+
+    return array_slice( $related_posts, 0, $limit );
 }
 
 if ( ! function_exists ( 'masvideos_the_episode' ) ) {
