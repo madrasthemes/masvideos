@@ -21,6 +21,9 @@ class MasVideos_Movies_Widget extends MasVideos_Widget {
             'limit'         => array(
                 'type'  => 'number',
                 'std'   => 5,
+                'min'   => 1,
+                'max'   => 20,
+                'step'  => 1,
                 'label' => __( 'Limit', 'masvideos' ),
             ),
             'orderby'       => array(
