@@ -21,6 +21,7 @@ require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-movies-widget.php'
 require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-tv-shows-rating-filter.php';
 require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-tv-shows-genres.php';
 require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-tv-shows-layered-nav.php';
+require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-videos-rating-filter.php';
 
 /**
  * Register Widgets.
@@ -35,5 +36,6 @@ function masvideos_register_widgets() {
     register_widget( 'MasVideos_Widget_TV_Shows_Rating_Filter' );
     register_widget( 'MasVideos_Widget_TV_Shows_Genres' );
     register_widget( 'MasVideos_Widget_TV_Shows_Layered_Nav' );
+    register_widget( 'MasVideos_Widget_Videos_Rating_Filter' );
 }
 add_action( 'widgets_init', 'masvideos_register_widgets' );
