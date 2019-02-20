@@ -460,7 +460,7 @@ class MasVideos_Episode_Data_Store_CPT extends MasVideos_Data_Store_WP implement
                     $updated = true;
                     break;
                 case 'episode_release_date':
-                    $updated = update_post_meta( $product->get_id(), $meta_key, $value ? $value->getTimestamp() : '' );
+                    $updated = update_post_meta( $episode->get_id(), $meta_key, $value ? $value->getTimestamp() : '' );
                     break;
                 default:
                     $updated = update_post_meta( $episode->get_id(), $meta_key, $value );
