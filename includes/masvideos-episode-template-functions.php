@@ -433,9 +433,10 @@ if ( ! function_exists( 'masvideos_template_single_episode_meta' ) ) {
      * Episode meta in the episode single.
      */
     function masvideos_template_single_episode_meta() {
-        echo '<div class="episode__meta">';
-            do_action( 'masvideos_single_episode_meta' );
-        echo '</div>';
+        ?>
+        <div class="episode__meta">
+            <?php do_action( 'masvideos_single_episode_meta' ); ?>
+        </div><?php
     }
 }
 
@@ -471,7 +472,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_tags' ) ) {
         }
 
         if( ! empty ( $tags ) ) {
-            echo sprintf( '<span class="episode-tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
+            echo sprintf( '<span class="episode__tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
         }
     }
 }
