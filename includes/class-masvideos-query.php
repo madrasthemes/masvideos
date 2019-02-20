@@ -1607,8 +1607,7 @@ class MasVideos_Movies_Query {
                         $year_filter_meta_query[] = $results_meta_query['meta_query'];
                     }
                 }
-                $query_type = ! empty( $_GET[ 'query_type_year' ] ) && in_array( $_GET[ 'query_type_year' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_year' ] ) ) : ''; // WPCS: sanitization ok, input var ok, CSRF ok.
-                $year_filter_meta_query['relation'] = 'and' === $query_type ? 'AND' : 'OR';
+                $year_filter_meta_query['relation'] = 'OR';
                 $meta_query['year_filter'] = $year_filter_meta_query;
             }
         }
