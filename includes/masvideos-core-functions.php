@@ -488,6 +488,32 @@ function masvideos_enqueue_js( $code ) {
 }
 
 /**
+ * Output any queued javascript code in the footer.
+ */
+function masvideos_print_js() {
+    global $masvideos_queued_js;
+
+    if ( ! empty( $masvideos_queued_js ) ) {
+        // Sanitize.
+        $masvideos_queued_js = wp_check_invalid_utf8( $masvideos_queued_js );
+        $masvideos_queued_js = preg_replace( '/&#(x)?0*(?(1)27|39);?/i', "'", $masvideos_queued_js );
+        $masvideos_queued_js = str_replace( "\r", '', $masvideos_queued_js );
+
+        $js = "<!-- MasVideos JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $masvideos_queued_js });\n</script>\n";
+
+        /**
+         * Queued jsfilter.
+         *
+         * @since 2.6.0
+         * @param string $js JavaScript code.
+         */
+        echo apply_filters( 'masvideos_queued_js', $js ); // WPCS: XSS ok.
+
+        unset( $masvideos_queued_js );
+    }
+}
+
+/**
  * Check is Episode posttype has archive
  *
  * @return bool
