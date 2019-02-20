@@ -342,7 +342,12 @@ abstract class MasVideos_Widget extends WP_Widget {
             $link = add_query_arg( 'post_type', masvideos_clean( wp_unslash( $_GET['post_type'] ) ), $link );
         }
 
-        // Min Rating Arg.
+        // Year Arg.
+        if ( isset( $_GET['year_filter'] ) ) {
+            $link = add_query_arg( 'year_filter', masvideos_clean( wp_unslash( $_GET['year_filter'] ) ), $link );
+        }
+
+        // Rating Arg.
         if ( isset( $_GET['rating_filter'] ) ) {
             $link = add_query_arg( 'rating_filter', masvideos_clean( wp_unslash( $_GET['rating_filter'] ) ), $link );
         }

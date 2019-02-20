@@ -155,6 +155,16 @@ class MasVideos_Frontend_Scripts {
             //     'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
             //     'version' => MASVIDEOS_VERSION,
             // ),
+            'masvideos-single-episode'  => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/single-episode' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'masvideos-single-tv-show'  => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/single-tv-show' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
             'masvideos-single-video'    => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/single-video' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
@@ -201,7 +211,13 @@ class MasVideos_Frontend_Scripts {
         self::register_scripts();
         self::register_styles();
 
-        // Load product pages only if supported.
+        // Load single pages only if supported.
+        if ( is_episode() ) {
+            self::enqueue_script( 'masvideos-single-episode' );
+        }
+        if ( is_tv_show() ) {
+            self::enqueue_script( 'masvideos-single-tv-show' );
+        }
         if ( is_video() ) {
             self::enqueue_script( 'masvideos-single-video' );
         }
@@ -264,6 +280,18 @@ class MasVideos_Frontend_Scripts {
                 $params = array(
                     'ajax_url'              => MasVideos()->ajax_url(),
                     'masvideos_ajax_url'    => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
+                );
+                break;
+            case 'masvideos-single-episode':
+                $params = array(
+                    'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'masvideos' ),
+                    'review_rating_required'    => get_option( 'masvideos_episode_review_rating_required' ),
+                );
+                break;
+            case 'masvideos-single-tv-show':
+                $params = array(
+                    'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'masvideos' ),
+                    'review_rating_required'    => get_option( 'masvideos_tv_show_review_rating_required' ),
                 );
                 break;
             case 'masvideos-single-video':
