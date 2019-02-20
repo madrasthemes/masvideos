@@ -1593,6 +1593,26 @@ class MasVideos_Movies_Query {
         if ( ! is_array( $meta_query ) ) {
             $meta_query = array();
         }
+
+        // Filter by release date.
+        if ( isset( $_GET[ 'year_filter' ] ) ) { // WPCS: input var ok, CSRF ok.
+            $year_filter = array_filter( array_map( 'absint', explode( ',', $_GET[ 'year_filter' ] ) ) ); // WPCS: input var ok, CSRF ok, Sanitization ok.
+            if( ! empty( $year_filter ) ) {
+                $year_filter_meta_query = array();
+                foreach ( $year_filter as $key => $year ) {
+                    $start = $year . '-01-01';
+                    $end = $year . '-12-31';
+                    $results_meta_query = MasVideos_Data_Store::load( 'movie' )->parse_date_for_wp_query( $year . '-01-01...' . $year . '-12-31', '_movie_release_date' );
+                    if( ! empty( $results_meta_query['meta_query'] ) ) {
+                        $year_filter_meta_query[] = $results_meta_query['meta_query'];
+                    }
+                }
+                $query_type = ! empty( $_GET[ 'query_type_year' ] ) && in_array( $_GET[ 'query_type_year' ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_year' ] ) ) : ''; // WPCS: sanitization ok, input var ok, CSRF ok.
+                $year_filter_meta_query['relation'] = 'and' === $query_type ? 'AND' : 'OR';
+                $meta_query['year_filter'] = $year_filter_meta_query;
+            }
+        }
+
         return array_filter( apply_filters( 'masvideos_movie_query_meta_query', $meta_query, $this ) );
     }
 
