@@ -668,6 +668,36 @@ function masvideos_movie_dropdown_genres( $args = array() ) {
 	wp_dropdown_categories( $args );
 }
 
+function masvideos_tv_show_dropdown_genres( $args = array() ) {
+    global $wp_query;
+
+    $args = wp_parse_args(
+        $args, array(
+            'pad_counts'         => 1,
+            'show_count'         => 1,
+            'hierarchical'       => 1,
+            'hide_empty'         => 1,
+            'show_uncategorized' => 1,
+            'orderby'            => 'name',
+            'selected'           => isset( $wp_query->query_vars['tv_show_genre'] ) ? $wp_query->query_vars['tv_show_genre'] : '',
+            'menu_order'         => false,
+            'show_option_none'   => esc_html__( 'Select a Genre', 'masvideos' ),
+            'option_none_value'  => '',
+            'value_field'        => 'slug',
+            'taxonomy'           => 'tv_show_genre',
+            'name'               => 'tv_show_genre',
+            'class'              => 'dropdown_tv_show_genre',
+        )
+    );
+
+    if ( 'order' === $args['orderby'] ) {
+        $args['menu_order'] = 'asc';
+        $args['orderby']    = 'name';
+    }
+
+    wp_dropdown_categories( $args );
+}
+
 /**
  * Cached version of wp_get_post_terms().
  * This is a private function (internal use ONLY).

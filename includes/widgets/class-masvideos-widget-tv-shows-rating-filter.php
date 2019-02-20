@@ -18,7 +18,7 @@ class MasVideos_Widget_Tv_Shows_Rating_Filter extends MasVideos_Widget {
 	 */
 	public function __construct() {
 		$this->widget_cssclass    = 'masvideos tv_shows_widget_rating_filter';
-		$this->widget_description = __( 'Display a list of star ratings to filter tv shows.', 'masvideos' );
+		$this->widget_description = __( 'Display a list of star ratings to filter Tv shows.', 'masvideos' );
 		$this->widget_id          = 'masvideos_tv_shows_rating_filter';
 		$this->widget_name        = __( 'Filter TV Shows by Rating', 'masvideos' );
 		$this->settings           = array(
