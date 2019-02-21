@@ -58,8 +58,9 @@ if ( ! function_exists( 'masvideos_create_new_user' ) ) {
         }
 
         // Handle password creation.
-        $password_generated = false;
-        if ( 'yes' === get_option( 'masvideos_registration_generate_password' ) && empty( $password ) ) {
+        if ( 'no' === get_option( 'masvideos_registration_generate_password' ) || ! empty( $password ) ) {
+            $password_generated = false;
+        } else {
             $password           = wp_generate_password();
             $password_generated = true;
         }
