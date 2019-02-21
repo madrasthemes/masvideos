@@ -155,6 +155,16 @@ class MasVideos_Frontend_Scripts {
             //     'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
             //     'version' => MASVIDEOS_VERSION,
             // ),
+            'select2'                   => array(
+                'src'     => self::get_asset_url( 'assets/js/select2/select2.full' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => '4.0.3',
+            ),
+            'selectWoo'                 => array(
+                'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo.full' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => '1.0.4',
+            ),
             'masvideos-single-episode'  => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/single-episode' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
@@ -186,12 +196,12 @@ class MasVideos_Frontend_Scripts {
      */
     private static function register_styles() {
         $register_styles = array(
-            // 'select2'                     => array(
-            //     'src'     => self::get_asset_url( 'assets/css/select2.css' ),
-            //     'deps'    => array(),
-            //     'version' => MASVIDEOS_VERSION,
-            //     'has_rtl' => false,
-            // ),
+            'select2'                   => array(
+                'src'     => self::get_asset_url( 'assets/css/select2.css' ),
+                'deps'    => array(),
+                'version' => MASVIDEOS_VERSION,
+                'has_rtl' => false,
+            ),
         );
         foreach ( $register_styles as $name => $props ) {
             self::register_style( $name, $props['src'], $props['deps'], $props['version'], 'all', $props['has_rtl'] );

@@ -267,3 +267,11 @@ add_action( 'masvideos_movie_review_before', 'masvideos_movie_review_display_gra
 add_action( 'masvideos_movie_review_before_comment_meta', 'masvideos_movie_review_display_rating', 10 );
 add_action( 'masvideos_movie_review_meta', 'masvideos_movie_review_display_meta', 10 );
 add_action( 'masvideos_movie_review_comment_text', 'masvideos_movie_review_display_comment_text', 10 );
+
+
+/**
+ * Footer.
+ *
+ * @see  masvideos_print_js()
+ */
+add_action( 'wp_footer', 'masvideos_print_js', 25 );

@@ -17,9 +17,9 @@ class MasVideos_Widget_Movies_Rating_Filter extends MasVideos_Widget {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->widget_cssclass    = 'masvideos masvideos-widget_rating_filter';
+		$this->widget_cssclass    = 'masvideos movies_widget_rating_filter';
 		$this->widget_description = __( 'Display a list of star ratings to filter movies.', 'masvideos' );
-		$this->widget_id          = 'masvideos_rating_filter';
+		$this->widget_id          = 'masvideos_movies_rating_filter';
 		$this->widget_name        = __( 'Filter Movies by Rating', 'masvideos' );
 		$this->settings           = array(
 			'title' => array(
@@ -119,9 +119,9 @@ class MasVideos_Widget_Movies_Rating_Filter extends MasVideos_Widget {
 			}
 
 			$class       = in_array( $rating, $rating_filter, true ) ? 'masvideos-layered-nav-rating chosen' : 'masvideos-layered-nav-rating';
-			$link        = apply_filters( 'masvideos_rating_filter_link', $link_ratings ? add_query_arg( 'rating_filter', $link_ratings ) : remove_query_arg( 'rating_filter' ) );
+			$link        = apply_filters( 'masvideos_movies_rating_filter_link', $link_ratings ? add_query_arg( 'rating_filter', $link_ratings ) : remove_query_arg( 'rating_filter' ) );
 			$rating_html = masvideos_get_star_rating_html( $rating );
-			$count_html  = esc_html( apply_filters( 'masvideos_rating_filter_count', "({$count})", $count, $rating ) );
+			$count_html  = esc_html( apply_filters( 'masvideos_movies_rating_filter_count', "({$count})", $count, $rating ) );
 
 			printf( '<li class="%s"><a href="%s"><span class="star-rating">%s</span> %s</a></li>', esc_attr( $class ), esc_url( $link ), $rating_html, $count_html ); // WPCS: XSS ok.
 		}
