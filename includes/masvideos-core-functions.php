@@ -527,6 +527,23 @@ function masvideos_print_js() {
 }
 
 /**
+ * Set a cookie - wrapper for setcookie using WP constants.
+ *
+ * @param  string  $name   Name of the cookie being set.
+ * @param  string  $value  Value of the cookie.
+ * @param  integer $expire Expiry of the cookie.
+ * @param  bool    $secure Whether the cookie should be served only over https.
+ */
+function masvideos_setcookie( $name, $value, $expire = 0, $secure = false ) {
+    if ( ! headers_sent() ) {
+        setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure, apply_filters( 'masvideos_cookie_httponly', false, $name, $value, $expire, $secure ) );
+    } elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+        headers_sent( $file, $line );
+        trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE ); // @codingStandardsIgnoreLine
+    }
+}
+
+/**
  * Check is Episode posttype has archive
  *
  * @return bool
