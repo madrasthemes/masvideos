@@ -663,10 +663,16 @@ if ( ! function_exists( 'masvideos_template_single_episode_tabs' ) ) {
 
         $tabs = apply_filters( 'masvideos_template_single_episode_tabs', array(
             array(
+                'title'     => esc_html__( 'Review', 'masvideos' ),
+                'callback'  => 'comments_template',
+                'priority'  => 10
+            ),
+            array(
                 'title'     => esc_html__( 'Description', 'masvideos' ),
                 'callback'  => 'masvideos_template_single_episode_description',
-                'priority'  => 10
+                'priority'  => 20
             )
+
         ) );
 
         masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'episode-tabs' ) );
@@ -850,6 +856,29 @@ if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
         <?php
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_episode_head_wrap_open' ) ) {
+    /**
+     * Single episode head open
+     */
+    function masvideos_template_single_episode_head_wrap_open() {
+        ?>
+        <div class="episode__head">
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_head_wrap_close' ) ) {
+    /**
+     * Single episode head close
+     */
+    function masvideos_template_single_episode_head_wrap_close() {
+        ?>
+        </div>
+        <?php
+    }
+}
+
 
 if ( ! function_exists( 'masvideos_template_single_episode_player_wrap_open' ) ) {
     /**
