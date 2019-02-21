@@ -222,6 +222,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/masvideos-template-hooks.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-template-loader.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-frontend-scripts.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-form-handler.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-session-handler.php';
         }
 
