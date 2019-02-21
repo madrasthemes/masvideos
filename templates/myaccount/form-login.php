@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-do_action( 'masvideos_before_customer_login_form' ); ?>
+do_action( 'masvideos_before_user_login_form' ); ?>
 
 <div class="masvideos-login">
 
@@ -56,4 +56,4 @@ do_action( 'masvideos_before_customer_login_form' ); ?>
 
 </div>
 
-<?php do_action( 'masvideos_after_customer_login_form' ); ?>
+<?php do_action( 'masvideos_after_user_login_form' ); ?>
