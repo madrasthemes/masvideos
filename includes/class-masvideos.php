@@ -27,6 +27,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
         protected static $_instance = null;
 
         /**
+         * Session instance.
+         *
+         * @var MasVideos_Session_Handler
+         */
+        public $session = null;
+
+        /**
          * Query instance.
          *
          * @var MasVideos_Episodes_Query
@@ -214,6 +221,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/masvideos-template-hooks.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-template-loader.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-frontend-scripts.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-session-handler.php';
         }
 
         /**
@@ -253,8 +261,9 @@ if ( ! class_exists( 'MasVideos' ) ) {
             // $this->structured_data                     = new WC_Structured_Data();
 
             // Classes/actions loaded for the frontend and for ajax requests.
-            // if ( $this->is_request( 'frontend' ) ) {
-            // }
+            if ( $this->is_request( 'frontend' ) ) {
+                $this->session = new MasVideos_Session_Handler();
+            }
 
             // Init action.
             do_action( 'masvideos_init' );
