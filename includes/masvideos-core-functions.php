@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Include core functions (available in both admin and frontend).
 require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-user-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
@@ -326,6 +327,18 @@ function masvideos_get_permalink_structure() {
     $permalinks['episode_attribute_rewrite_slug'] = untrailingslashit( $permalinks['episode_attribute_base'] );
 
     return $permalinks;
+}
+
+/**
+ * Get data if set, otherwise return a default value or null. Prevents notices when data is not set.
+ *
+ * @since  1.0.0
+ * @param  mixed  $var     Variable.
+ * @param  string $default Default value.
+ * @return mixed
+ */
+function masvideos_get_var( &$var, $default = null ) {
+    return isset( $var ) ? $var : $default;
 }
 
 /**
