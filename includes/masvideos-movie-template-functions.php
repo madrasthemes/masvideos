@@ -226,11 +226,22 @@ if ( ! function_exists( 'masvideos_movie_loop_start' ) ) {
 }
 
 if ( ! function_exists( 'masvideos_movies_loop_content' ) ) {
+
     /*
      * Output the movie loop. By default this is a UL.
      */
     function masvideos_movies_loop_content() {
         masvideos_get_template_part( 'content', 'movie' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_no_movies_found' ) ) {
+
+    /**
+     * Handles the loop when no movies were found/no movie exist.
+     */
+    function masvideos_no_movies_found() {
+        ?><p class="masvideos-info"><?php _e( 'No movies were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 

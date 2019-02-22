@@ -226,11 +226,22 @@ if ( ! function_exists( 'masvideos_episode_loop_start' ) ) {
 }
 
 if ( ! function_exists( 'masvideos_episodes_loop_content' ) ) {
+
     /*
      * Output the episode loop. By default this is a UL.
      */
     function masvideos_episodes_loop_content() {
         masvideos_get_template_part( 'content', 'episode' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_no_episodes_found' ) ) {
+
+    /**
+     * Handles the loop when no episodes were found/no episode exist.
+     */
+    function masvideos_no_episodes_found() {
+        ?><p class="masvideos-info"><?php _e( 'No episodes were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 

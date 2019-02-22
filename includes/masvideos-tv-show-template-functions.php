@@ -227,11 +227,22 @@ if ( ! function_exists( 'masvideos_tv_show_loop_start' ) ) {
 }
 
 if ( ! function_exists( 'masvideos_tv_shows_loop_content' ) ) {
+
     /*
      * Output the tv show loop. By default this is a UL.
      */
     function masvideos_tv_shows_loop_content() {
         masvideos_get_template_part( 'content', 'tv-show' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_no_tv_shows_found' ) ) {
+
+    /**
+     * Handles the loop when no tv shows were found/no tv_show exist.
+     */
+    function masvideos_no_tv_shows_found() {
+        ?><p class="masvideos-info"><?php _e( 'No tv shows were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
