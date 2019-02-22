@@ -846,7 +846,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_description' ) ) {
     function masvideos_template_single_episode_description() {
         ?>
         <div class="episode__description">
-            <?php the_content(); ?>
+            <p><?php the_content(); ?></p>
         </div>
         <?php
     }
