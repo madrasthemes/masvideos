@@ -622,7 +622,10 @@ if ( ! function_exists( 'masvideos_template_single_video_author' ) ) {
      * Output the video author.
      */
     function masvideos_template_single_video_author() {
-        echo '<span class="video_author">' .  apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ) . '<strong>' . get_the_author() . '</strong></span>';
+        $author = get_the_author();
+        if( ! empty( $author ) ) {
+            echo sprintf( '<span class="video_author">%s<strong>%s</strong>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author );
+        }
     }
 }
 
@@ -632,7 +635,10 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
      * Output the video posted on.
      */
     function masvideos_template_single_video_posted_on() {
-        echo '<span class="video_posted_on">' . apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ) .  get_the_date() . '</span>';
+        $date = get_the_date();
+        if( ! empty( $date ) ) {
+            echo sprintf( '<span class="video_posted_on">%s%s', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date );
+        }
     }
 }
 
@@ -653,7 +659,7 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
         }
 
         $defaults = array(
-            'limit'          => 5,
+            'limit'          => 10,
             'columns'        => 5,
             'orderby'        => 'rand',
             'order'          => 'desc',
@@ -666,7 +672,7 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
 
         if( ! empty( $related_video_ids ) ) {
             echo '<section class="tv-show__related">';
-                echo apply_filters( 'masvideos_related_videos_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $video_id ) ), $video_id );
+                echo apply_filters( 'masvideos_related_videos_title', sprintf( '<h2 class="tv-show__related--title">%s</h2>', esc_html__( 'Related Videos', 'masvideos' ) ), $video_id );
                 echo MasVideos_Shortcodes::videos( $args );
             echo '</section>';
         }
