@@ -21,47 +21,48 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'masvideos_before_user_register_form' ); ?>
 
 <div class="masvideos-register">
+    <div class="masvideos-register__inner">
 
-    <h2><?php esc_html_e( 'Register', 'masvideos' ); ?></h2>
+        <h2><?php esc_html_e( 'Register', 'masvideos' ); ?></h2>
 
-    <form method="post" class="masvideos-form masvideos-form-register register" <?php do_action( 'masvideos_register_form_tag' ); ?> >
+        <form method="post" class="masvideos-form masvideos-form-register register" <?php do_action( 'masvideos_register_form_tag' ); ?> >
 
-        <?php do_action( 'masvideos_register_form_start' ); ?>
+            <?php do_action( 'masvideos_register_form_start' ); ?>
 
-        <?php if ( 'no' === get_option( 'masvideos_registration_generate_username' ) ) : ?>
+            <?php if ( 'no' === get_option( 'masvideos_registration_generate_username' ) ) : ?>
 
-            <p class="masvideos-form-row masvideos-form-row--wide form-row form-row-wide">
-                <label for="reg_username"><?php esc_html_e( 'Username', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
-                <input type="text" class="masvideos-Input masvideos-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
-            </p>
+                <p class="masvideos-form-row masvideos-form-row--wide form-row form-row-wide">
+                    <label for="reg_username"><?php esc_html_e( 'Username', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
+                    <input type="text" class="masvideos-Input masvideos-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
+                </p>
 
-        <?php endif; ?>
-
-        <p class="masvideos-form-row masvideos-form-row--wide form-row form-row-wide">
-            <label for="reg_email"><?php esc_html_e( 'Email address', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
-            <input type="email" class="masvideos-Input masvideos-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
-        </p>
-
-        <?php if ( 'no' === get_option( 'masvideos_registration_generate_password' ) ) : ?>
+            <?php endif; ?>
 
             <p class="masvideos-form-row masvideos-form-row--wide form-row form-row-wide">
-                <label for="reg_password"><?php esc_html_e( 'Password', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
-                <input type="password" class="masvideos-Input masvideos-Input--text input-text" name="password" id="reg_password" autocomplete="new-password" />
+                <label for="reg_email"><?php esc_html_e( 'Email address', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
+                <input type="email" class="masvideos-Input masvideos-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
             </p>
 
-        <?php endif; ?>
+            <?php if ( 'no' === get_option( 'masvideos_registration_generate_password' ) ) : ?>
 
-        <?php do_action( 'masvideos_register_form' ); ?>
+                <p class="masvideos-form-row masvideos-form-row--wide form-row form-row-wide">
+                    <label for="reg_password"><?php esc_html_e( 'Password', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
+                    <input type="password" class="masvideos-Input masvideos-Input--text input-text" name="password" id="reg_password" autocomplete="new-password" />
+                </p>
 
-        <p class="masvideos-FormRow form-row">
-            <?php wp_nonce_field( 'masvideos-register', 'masvideos-register-nonce' ); ?>
-            <button type="submit" class="masvideos-Button button" name="register" value="<?php esc_attr_e( 'Register', 'masvideos' ); ?>"><?php esc_html_e( 'Register', 'masvideos' ); ?></button>
-        </p>
+            <?php endif; ?>
 
-        <?php do_action( 'masvideos_register_form_end' ); ?>
+            <?php do_action( 'masvideos_register_form' ); ?>
 
-    </form>
+            <p class="masvideos-FormRow form-row">
+                <?php wp_nonce_field( 'masvideos-register', 'masvideos-register-nonce' ); ?>
+                <button type="submit" class="masvideos-Button button" name="register" value="<?php esc_attr_e( 'Register', 'masvideos' ); ?>"><?php esc_html_e( 'Register', 'masvideos' ); ?></button>
+            </p>
 
+            <?php do_action( 'masvideos_register_form_end' ); ?>
+
+        </form>
+    </div>
 </div>
 
 <?php do_action( 'masvideos_after_user_register_form' ); ?>

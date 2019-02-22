@@ -20,8 +20,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 do_action( 'masvideos_before_user_register_login_form' );
 
+echo '<div class="masvideos-register-login">';
+
 masvideos_get_template( 'myaccount/form-register.php' );
 
 masvideos_get_template( 'myaccount/form-login.php' );
+
+echo '<div>';
 
 do_action( 'masvideos_after_user_register_login_form' ); ?>
