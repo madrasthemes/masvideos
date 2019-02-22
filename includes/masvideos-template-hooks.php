@@ -28,6 +28,11 @@ add_action( 'masvideos_after_main_content', 'masvideos_template_loop_content_are
 add_action( 'masvideos_before_main_content', 'masvideos_breadcrumb', 20, 0 );
 
 /**
+ * Notices.
+ */
+add_action( 'masvideos_before_user_register_login_form', 'masvideos_output_all_notices', 10 );
+
+/**
  * Episodes Loop.
  */
 add_action( 'masvideos_episodes_loop', 'masvideos_episodes_loop_content', 20 );

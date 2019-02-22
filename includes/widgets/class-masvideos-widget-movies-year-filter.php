@@ -67,7 +67,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
 
         echo '<ul>';
 
-        for ( $i = $start_year; $i <= $end_year; $i++ ) {
+        for ( $i = $end_year; $i >= $start_year; $i-- ) {
 
             $found = true;
             $link  = $this->get_current_page_url();
