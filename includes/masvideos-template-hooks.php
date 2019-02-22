@@ -37,8 +37,10 @@ add_action( 'masvideos_before_episodes_loop_item', 'masvideos_template_loop_epis
 add_action( 'masvideos_before_episodes_loop_item', 'masvideos_template_loop_episode_link_close', 60 );
 add_action( 'masvideos_before_episodes_loop_item', 'masvideos_template_loop_episode_poster_close', 70 );
 add_action( 'masvideos_before_episodes_loop_item_title', 'masvideos_template_loop_episode_body_open', 80 );
-add_action( 'masvideos_episodes_loop_item_title', 'masvideos_template_loop_episode_title', 80 );
-add_action( 'masvideos_after_episodes_loop_item_title', 'masvideos_template_loop_episode_body_close', 90 );
+add_action( 'masvideos_before_episodes_loop_item_title', 'masvideos_template_loop_episode_link_open', 90 );
+add_action( 'masvideos_episodes_loop_item_title', 'masvideos_template_loop_episode_title', 10 );
+add_action( 'masvideos_after_episodes_loop_item_title', 'masvideos_template_loop_episode_link_close', 10 );
+add_action( 'masvideos_after_episodes_loop_item_title', 'masvideos_template_loop_episode_body_close', 20 );
 
 /**
  * Episode Single.

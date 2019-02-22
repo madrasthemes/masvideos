@@ -357,8 +357,6 @@ if ( ! function_exists( 'masvideos_template_loop_episode_body_open' ) ) {
     function masvideos_template_loop_episode_body_open() {
          global $episode;
         echo '<div class="episode__body">';
-        $link = apply_filters( 'masvideos_loop_episode_link', get_the_permalink(), $episode );
-        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopEpisode-link masvideos-loop-episode__link episode__link">';
     }
 }
 
@@ -368,7 +366,6 @@ if ( ! function_exists( 'masvideos_template_loop_episode_body_close' ) ) {
      * episode body close in the episode loop.
      */
     function masvideos_template_loop_episode_body_close() {
-        echo '</a>';
         echo '</div>';
     }
 }
@@ -526,7 +523,10 @@ if ( ! function_exists( 'masvideos_template_single_episode_prev_navigation' ) ) 
         if( isset( $episodes['prev'] ) && $episodes['prev'] ) {
             $episode_url = get_permalink( $episodes['prev'] );
             echo '<div class="episode__player--prev-episode">';
-            echo '<a href="' . esc_url( $episode_url ) . '" class="episode__player--prev-episode__link">' . esc_html__( 'Previous Episode ', 'masvideos' ) . '</a>';
+            echo '<a href="' . esc_url( $episode_url ) . '" class="episode__player--prev-episode__link">';
+            echo '<span class="episode__player--next-episode__label">
+                    ' . esc_html__( 'Previous Episode ', 'masvideos' ) . '</span>';
+            echo '</a>';
             echo '</div>';
         }
     }
@@ -545,7 +545,10 @@ if ( ! function_exists( 'masvideos_template_single_episode_next_navigation' ) ) 
         if( isset( $episodes['next'] ) && $episodes['next'] ) {
             $episode_url = get_permalink( $episodes['next'] );
             echo '<div class="episode__player--next-episode">';
-            echo '<a href="' . esc_url( $episode_url ) . '" class="episode__player--next-episode__link">' . esc_html__( 'Next Episode ', 'masvideos' ) . '</a>';
+            echo '<a href="' . esc_url( $episode_url ) . '" class="episode__player--next-episode__link">';
+            echo '<span class="episode__player--next-episode__label">
+                    ' . esc_html__( 'Next Episode ', 'masvideos' ) . '</span>';
+            echo '</a>';
             echo '</div>';
         }
     }
