@@ -22,7 +22,6 @@ class MasVideos_Shortcodes {
             'mas_tv_shows'                 => __CLASS__ . '::tv_shows',
             'mas_videos'                   => __CLASS__ . '::videos',
             'mas_movies'                   => __CLASS__ . '::movies',
-            'mas_register'                 => __CLASS__ . '::register',
             'mas_register_login'           => __CLASS__ . '::register_login',
             'mas_register'                 => __CLASS__ . '::register',
             'mas_login'                    => __CLASS__ . '::login',
