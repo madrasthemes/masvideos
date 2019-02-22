@@ -573,8 +573,8 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
             foreach ( $seasons as $key => $season ) {
                 if( ! empty( $season['name'] ) && ! empty( $season['episodes'] ) ) {
                     $episode_ids = $season['episodes'];
-                    if ( ( $key = array_search( $episode_id, $episode_ids ) ) !== false ) {
-                        unset( $episode_ids[$key] );
+                    if ( ( $current_episode_key = array_search( $episode_id, $episode_ids ) ) !== false ) {
+                        unset( $episode_ids[$current_episode_key] );
                     }
                     $episode_ids = implode( ",", $episode_ids );
                     $shortcode_atts = apply_filters( 'masvideos_template_single_episode_seasons_tab_shortcode_atts', array(
