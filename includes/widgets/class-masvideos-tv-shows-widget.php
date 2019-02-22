@@ -1,18 +1,18 @@
 <?php
 /*-----------------------------------------------------------------------------------*/
-/* MasVideos Movies Widget Class
+/* MasVideos TV Shows Widget Class
 /*-----------------------------------------------------------------------------------*/
-class MasVideos_Movies_Widget extends MasVideos_Widget {
+class MasVideos_Tv_Shows_Widget extends MasVideos_Widget {
 
     public $defaults;
 
     public function __construct() {
 
-        $this->widget_cssclass    = 'masvideos masvideos_movies_widget masvideos-movies-widget';
-        $this->widget_description = __( 'Your site&#8217;s movies.', 'masvideos' );
-        $this->widget_id          = 'masvideos_movies_widget';
-        $this->widget_name        = __( 'Movies Wigdet', 'masvideos' );
-        $this->settings           = apply_filters( 'masvideos_movies_widget_settings', array(
+        $this->widget_cssclass    = 'masvideos masvideos_tv_shows_widget masvideos-tv-shows-widget';
+        $this->widget_description = __( 'Your site&#8217;s tv shows.', 'masvideos' );
+        $this->widget_id          = 'masvideos_tv_shows_widget';
+        $this->widget_name        = __( 'TV Shows Wigdet', 'masvideos' );
+        $this->settings           = apply_filters( 'masvideos_tv_shows_widget_settings', array(
             'title'         => array(
                 'type'  => 'text',
                 'std'   => __( 'Top 5 List', 'masvideos' ),
@@ -59,12 +59,12 @@ class MasVideos_Movies_Widget extends MasVideos_Widget {
             'featured'      => array(
                 'type'  => 'checkbox',
                 'std'   => 0,
-                'label' => __( 'Show Featured Movies Only', 'masvideos' ),
+                'label' => __( 'Show Featured TV Shows Only', 'masvideos' ),
             ),
             'top_rated'     => array(
                 'type'  => 'checkbox',
                 'std'   => 0,
-                'label' => __( 'Show Top Rated Movies Only', 'masvideos' ),
+                'label' => __( 'Show Top Rated TV Shows Only', 'masvideos' ),
             ),
         ) );
 
@@ -95,11 +95,11 @@ class MasVideos_Movies_Widget extends MasVideos_Widget {
 
         $this->widget_start( $args, $instance, $atts );
 
-        $atts['template'] = 'content-movie-widget';
+        $atts['template'] = 'content-tv-show-widget';
 
-        $atts = apply_filters('masvideos_movie_widget_atts', $atts, $instance );
+        $atts = apply_filters('masvideos_tv_show_widget_atts', $atts, $instance );
 
-        echo MasVideos_Shortcodes::movies( $atts );
+        echo MasVideos_Shortcodes::tv_shows( $atts );
 
         $this->widget_end( $args, $instance, $atts );
     }
