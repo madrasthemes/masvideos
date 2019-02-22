@@ -30,8 +30,7 @@ add_action( 'masvideos_before_main_content', 'masvideos_breadcrumb', 20, 0 );
 /**
  * Notices.
  */
-add_action( 'masvideos_before_user_register_form', 'masvideos_output_all_notices', 10 );
-add_action( 'masvideos_before_user_login_form', 'masvideos_output_all_notices', 10 );
+add_action( 'masvideos_before_user_register_login_form', 'masvideos_output_all_notices', 10 );
 
 /**
  * Episodes Loop.

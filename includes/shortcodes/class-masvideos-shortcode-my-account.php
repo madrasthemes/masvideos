@@ -20,6 +20,17 @@ class MasVideos_Shortcode_My_Account {
      *
      * @param array $atts Shortcode attributes.
      */
+    public static function register_login( $atts ) {
+        if ( ! is_user_logged_in() ) {
+            masvideos_get_template( 'myaccount/form-register-login.php' );
+        }
+    }
+
+    /**
+     * Output the shortcode.
+     *
+     * @param array $atts Shortcode attributes.
+     */
     public static function register( $atts ) {
         if ( ! is_user_logged_in() ) {
             masvideos_get_template( 'myaccount/form-register.php' );

@@ -23,6 +23,8 @@ class MasVideos_Shortcodes {
             'mas_videos'                   => __CLASS__ . '::videos',
             'mas_movies'                   => __CLASS__ . '::movies',
             'mas_register'                 => __CLASS__ . '::register',
+            'mas_register_login'           => __CLASS__ . '::register_login',
+            'mas_register'                 => __CLASS__ . '::register',
             'mas_login'                    => __CLASS__ . '::login',
         );
 
@@ -178,6 +180,16 @@ class MasVideos_Shortcodes {
         $shortcode = new MasVideos_Shortcode_Movies( $atts, $type );
 
         return $shortcode->get_content();
+    }
+
+    /**
+     * Register page shortcode.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function register_login( $atts ) {
+        return self::shortcode_wrapper( array( 'MasVideos_Shortcode_My_Account', 'register_login' ), $atts );
     }
 
     /**
