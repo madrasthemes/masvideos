@@ -187,6 +187,22 @@ add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_r
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_body_close', 50 );
 
 /**
+ * Videos Loop Template: Videos Widget.
+ */
+add_action( 'masvideos_before_video_widget_item', 'masvideos_template_loop_video_poster_open', 10 );
+add_action( 'masvideos_before_video_widget_item', 'masvideos_template_loop_video_link_open', 20 );
+add_action( 'masvideos_before_video_widget_item', 'masvideos_template_loop_video_poster', 30 );
+add_action( 'masvideos_before_video_widget_item', 'masvideos_template_loop_video_link_close', 40 );
+add_action( 'masvideos_before_video_widget_item', 'masvideos_template_loop_video_poster_close', 50 );
+add_action( 'masvideos_before_video_widget_item', 'masvideos_template_loop_video_body_open', 60 );
+add_action( 'masvideos_video_widget_item_title', 'masvideos_template_loop_video_link_open', 10 );
+add_action( 'masvideos_video_widget_item_title', 'masvideos_template_loop_video_title', 20 );
+add_action( 'masvideos_video_widget_item_title', 'masvideos_template_loop_video_link_close', 30 );
+add_action( 'masvideos_after_video_widget_item_title', 'masvideos_template_single_video_categories', 10 );
+add_action( 'masvideos_after_video_widget_item', 'masvideos_template_loop_video_body_close', 10 );
+
+
+/**
  * Video Single.
  */
 add_action( 'masvideos_before_single_video_summary', 'masvideos_template_single_video_video', 10 );
