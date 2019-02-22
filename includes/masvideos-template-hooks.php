@@ -35,6 +35,7 @@ add_action( 'masvideos_before_user_register_login_form', 'masvideos_output_all_n
 /**
  * Episodes Loop.
  */
+add_action( 'masvideos_no_episodes_found', 'masvideos_no_episodes_found', 10 );
 add_action( 'masvideos_episodes_loop', 'masvideos_episodes_loop_content', 20 );
 add_action( 'masvideos_before_episodes_loop_item', 'masvideos_template_loop_episode_poster_open', 30 );
 add_action( 'masvideos_before_episodes_loop_item', 'masvideos_template_loop_episode_link_open', 40 );
@@ -90,6 +91,7 @@ add_action( 'masvideos_episode_review_comment_text', 'masvideos_episode_review_d
 /**
  * TV Shows Loop.
  */
+add_action( 'masvideos_no_tv_shows_found', 'masvideos_no_tv_shows_found', 10 );
 add_action( 'masvideos_tv_shows_loop', 'masvideos_tv_shows_loop_content', 20 );
 add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_feature_badge', 10 );
 add_action( 'masvideos_before_tv_shows_loop_item', 'masvideos_template_loop_tv_show_poster_open', 30 );
@@ -177,6 +179,7 @@ add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_
 /**
  * Videos Loop.
  */
+add_action( 'masvideos_no_videos_found', 'masvideos_no_videos_found', 10 );
 add_action( 'masvideos_videos_loop', 'masvideos_videos_loop_content', 20 );
 add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_feature_badge', 10 );
 add_action( 'masvideos_before_videos_loop_item', 'masvideos_template_loop_video_container_open', 20 );
@@ -225,7 +228,8 @@ add_action( 'masvideos_after_video_widget_item', 'masvideos_template_loop_video_
 add_action( 'masvideos_before_single_video_summary', 'masvideos_template_single_video_video', 10 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_title', 5 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_meta', 10 );
-add_action( 'masvideos_after_single_video_summary', 'comments_template', 10 );
+add_action( 'masvideos_after_single_video_summary', 'masvideos_related_videos', 20 );
+add_action( 'masvideos_after_single_video_summary', 'comments_template', 30 );
 
 /**
  * Video Reviews
@@ -243,6 +247,7 @@ add_action( 'masvideos_video_review_comment_text', 'masvideos_video_review_displ
 /**
  * Movies Loop.
  */
+add_action( 'masvideos_no_movies_found', 'masvideos_no_movies_found', 10 );
 add_action( 'masvideos_movies_loop', 'masvideos_movies_loop_content', 20 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_feature_badge', 5 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_poster_open', 10 );

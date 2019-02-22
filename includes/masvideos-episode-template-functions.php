@@ -226,11 +226,22 @@ if ( ! function_exists( 'masvideos_episode_loop_start' ) ) {
 }
 
 if ( ! function_exists( 'masvideos_episodes_loop_content' ) ) {
+
     /*
      * Output the episode loop. By default this is a UL.
      */
     function masvideos_episodes_loop_content() {
         masvideos_get_template_part( 'content', 'episode' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_no_episodes_found' ) ) {
+
+    /**
+     * Handles the loop when no episodes were found/no episode exist.
+     */
+    function masvideos_no_episodes_found() {
+        ?><p class="masvideos-info"><?php _e( 'No episodes were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
@@ -573,8 +584,8 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
             foreach ( $seasons as $key => $season ) {
                 if( ! empty( $season['name'] ) && ! empty( $season['episodes'] ) ) {
                     $episode_ids = $season['episodes'];
-                    if ( ( $key = array_search( $episode_id, $episode_ids ) ) !== false ) {
-                        unset( $episode_ids[$key] );
+                    if ( ( $current_episode_key = array_search( $episode_id, $episode_ids ) ) !== false ) {
+                        unset( $episode_ids[$current_episode_key] );
                     }
                     $episode_ids = implode( ",", $episode_ids );
                     $shortcode_atts = apply_filters( 'masvideos_template_single_episode_seasons_tab_shortcode_atts', array(
@@ -632,21 +643,23 @@ if ( ! function_exists( 'masvideos_related_episodes' ) ) {
             return;
         }
 
-        $defaults = array(
+        $defaults = apply_filters( 'masvideos_related_episodes_default_args', array(
             'limit'          => 5,
             'columns'        => 5,
             'orderby'        => 'rand',
             'order'          => 'desc',
-        );
+        ) );
 
         $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_related_episodes_title', esc_html__( 'Related Episodes', 'masvideos' ), $episode_id );
 
         $related_episode_ids = masvideos_get_related_episodes( $episode_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_episode_ids );
 
         if( ! empty( $related_episode_ids ) ) {
-            echo '<section class="tv-show__related">';
-                echo apply_filters( 'masvideos_related_episodes_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $episode_id ) ), $episode_id );
+            echo '<section class="episode__related">';
+                echo sprintf( '<h2 class="episode__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::episodes( $args );
             echo '</section>';
         }
