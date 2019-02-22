@@ -574,6 +574,21 @@ if ( ! function_exists( 'masvideos_template_loop_category_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_video_categories' ) ) {
+    /**
+     * Video categories in the video single.
+     */
+    function masvideos_template_single_video_categories() {
+        global $video;
+
+        $categories = get_the_term_list( $video->get_id(), 'video_cat', '', ', ' );
+
+        if( ! empty ( $categories ) ) {
+           echo '<span class="video__meta--category">' . $categories . '</span>';
+        }
+    }
+}
+
 
 /**
  * Single
