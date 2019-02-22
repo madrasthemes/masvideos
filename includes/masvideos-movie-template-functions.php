@@ -197,6 +197,49 @@ function masvideos_movie_class( $class = '', $movie_id = null ) {
 }
 
 /**
+ * Search Form
+ */
+if ( ! function_exists( 'masvideos_get_movie_search_form' ) ) {
+
+    /**
+     * Display movie search form.
+     *
+     * Will first attempt to locate the movie-searchform.php file in either the child or.
+     * the parent, then load it. If it doesn't exist, then the default search form.
+     * will be displayed.
+     *
+     * The default searchform uses html5.
+     *
+     * @param bool $echo (default: true).
+     * @return string
+     */
+    function masvideos_get_movie_search_form( $echo = true ) {
+        global $movie_search_form_index;
+
+        ob_start();
+
+        if ( empty( $movie_search_form_index ) ) {
+            $movie_search_form_index = 0;
+        }
+
+        do_action( 'pre_masvideos_get_movie_search_form' );
+
+        masvideos_get_template( 'search-form.php', array(
+            'index' => $movie_search_form_index++,
+            'post_type' => 'movie',
+        ) );
+
+        $form = apply_filters( 'masvideos_get_movie_search_form', ob_get_clean() );
+
+        if ( ! $echo ) {
+            return $form;
+        }
+
+        echo $form; // WPCS: XSS ok.
+    }
+}
+
+/**
  * Loop
  */
 
