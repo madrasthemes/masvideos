@@ -535,7 +535,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_prev_navigation' ) ) 
             $episode_url = get_permalink( $episodes['prev'] );
             echo '<div class="episode__player--prev-episode">';
             echo '<a href="' . esc_url( $episode_url ) . '" class="episode__player--prev-episode__link">';
-            echo '<span class="episode__player--next-episode__label">
+            echo '<span class="episode__player--prev-episode__label">
                     ' . esc_html__( 'Previous Episode ', 'masvideos' ) . '</span>';
             echo '</a>';
             echo '</div>';
