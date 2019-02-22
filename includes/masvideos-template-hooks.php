@@ -192,7 +192,8 @@ add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_b
 add_action( 'masvideos_before_single_video_summary', 'masvideos_template_single_video_video', 10 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_title', 5 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_meta', 10 );
-add_action( 'masvideos_after_single_video_summary', 'comments_template', 10 );
+add_action( 'masvideos_after_single_video_summary', 'masvideos_related_videos', 20 );
+add_action( 'masvideos_after_single_video_summary', 'comments_template', 30 );
 
 /**
  * Video Reviews

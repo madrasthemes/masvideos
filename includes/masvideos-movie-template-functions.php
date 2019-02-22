@@ -857,21 +857,23 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
             return;
         }
 
-        $defaults = array(
+        $defaults = apply_filters( 'masvideos_related_movies_default_args', array(
             'limit'          => 5,
             'columns'        => 5,
             'orderby'        => 'rand',
             'order'          => 'desc',
-        );
+        ) );
 
         $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_related_movies_title', esc_html__( 'Related Movies', 'masvideos' ), $movie_id );
 
         $related_movie_ids = masvideos_get_related_movies( $movie_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_movie_ids );
 
         if( ! empty( $related_movie_ids ) ) {
-            echo '<section class="tv-show__related">';
-                echo apply_filters( 'masvideos_related_movies_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $movie_id ) ), $movie_id );
+            echo '<section class="movie__related">';
+                echo sprintf( '<h2 class="movie__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::movies( $args );
             echo '</section>';
         }

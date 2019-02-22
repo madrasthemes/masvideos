@@ -137,7 +137,7 @@ function masvideos_videos_loop() {
 }
 
 /**
- * Get the default columns setting - this is how many movies will be shown per row in loops.
+ * Get the default columns setting - this is how many videos will be shown per row in loops.
  *
  * @since 1.0.0
  * @return int
@@ -370,21 +370,6 @@ if ( ! function_exists( 'masvideos_template_loop_video_poster_close' ) ) {
      */
     function masvideos_template_loop_video_poster_close() {
         echo '</div>';
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_loop_video_duration' ) ) {
-    /**
-     * videos duration in the loop.
-     */
-    function masvideos_template_loop_video_duration() {
-        global $movie;
-
-        $duration = $movie->get_movie_run_time();
-        
-        if ( ! empty( $duration ) ) {
-            echo '<span class="video__duration">' . wp_kses_post( $duration ) . '</span>';
-        }
     }
 }
 
@@ -622,7 +607,10 @@ if ( ! function_exists( 'masvideos_template_single_video_author' ) ) {
      * Output the video author.
      */
     function masvideos_template_single_video_author() {
-        echo '<span class="video_author">' .  apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ) . '<strong>' . get_the_author() . '</strong></span>';
+        $author = get_the_author();
+        if( ! empty( $author ) ) {
+            echo sprintf( '<span class="video_author">%s<strong>%s</strong>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author );
+        }
     }
 }
 
@@ -632,7 +620,10 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
      * Output the video posted on.
      */
     function masvideos_template_single_video_posted_on() {
-        echo '<span class="video_posted_on">' . apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ) .  get_the_date() . '</span>';
+        $date = get_the_date();
+        if( ! empty( $date ) ) {
+            echo sprintf( '<span class="video_posted_on">%s%s', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date );
+        }
     }
 }
 
@@ -652,21 +643,23 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
             return;
         }
 
-        $defaults = array(
+        $defaults = apply_filters( 'masvideos_related_videos_default_args', array(
             'limit'          => 5,
             'columns'        => 5,
             'orderby'        => 'rand',
             'order'          => 'desc',
-        );
+        ) );
 
         $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_related_videos_title', esc_html__( 'Related Videos', 'masvideos' ), $video_id );
 
         $related_video_ids = masvideos_get_related_videos( $video_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_video_ids );
 
         if( ! empty( $related_video_ids ) ) {
-            echo '<section class="tv-show__related">';
-                echo apply_filters( 'masvideos_related_videos_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $video_id ) ), $video_id );
+            echo '<section class="video__related">';
+                echo sprintf( '<h2 class="video__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::videos( $args );
             echo '</section>';
         }

@@ -632,21 +632,23 @@ if ( ! function_exists( 'masvideos_related_episodes' ) ) {
             return;
         }
 
-        $defaults = array(
+        $defaults = apply_filters( 'masvideos_related_episodes_default_args', array(
             'limit'          => 5,
             'columns'        => 5,
             'orderby'        => 'rand',
             'order'          => 'desc',
-        );
+        ) );
 
         $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_related_episodes_title', esc_html__( 'Related Episodes', 'masvideos' ), $episode_id );
 
         $related_episode_ids = masvideos_get_related_episodes( $episode_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_episode_ids );
 
         if( ! empty( $related_episode_ids ) ) {
-            echo '<section class="tv-show__related">';
-                echo apply_filters( 'masvideos_related_episodes_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $episode_id ) ), $episode_id );
+            echo '<section class="episode__related">';
+                echo sprintf( '<h2 class="episode__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::episodes( $args );
             echo '</section>';
         }
