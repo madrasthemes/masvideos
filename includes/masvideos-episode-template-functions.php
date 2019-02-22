@@ -456,10 +456,15 @@ if ( ! function_exists( 'masvideos_template_single_episode_genres' ) ) {
     function masvideos_template_single_episode_genres() {
         global $episode;
 
-        $categories = get_the_term_list( $episode->get_id(), 'episode_genre', '', ', ' );
+        if ( masvideos_is_episode_archive() ) {
+            $genres = get_the_term_list( $episode->get_id(), 'episode_genre', '', ', ' );
+        } else {
+            $tv_show_id = $episode->get_tv_show_id();
+            $genres = ! empty( $tv_show_id ) ? get_the_term_list( $tv_show_id, 'tv_show_genre', '', ', ' ) : '';
+        }
 
-        if( ! empty ( $categories ) ) {
-           echo '<span class="episode__meta--genre">' . $categories . '</span>';
+        if( ! empty ( $genres ) ) {
+            echo sprintf( '<span class="episode__meta--genres">%s</span>', $genres );
         }
     }
 }
