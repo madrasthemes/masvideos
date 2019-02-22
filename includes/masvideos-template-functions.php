@@ -221,6 +221,17 @@ function masvideos_placeholder_img( $size = 'masvideos_thumbnail' ) {
     return apply_filters( 'masvideos_placeholder_img', '<img src="' . masvideos_placeholder_img_src( $size ) . '" alt="' . esc_attr__( 'Placeholder', 'masvideos' ) . '" width="' . esc_attr( $dimensions['width'] ) . '" class="masvideos-placeholder wp-post-image" height="' . esc_attr( $dimensions['height'] ) . '" />', $size, $dimensions );
 }
 
+/**
+ * Outputs all queued notices on WC pages.
+ *
+ * @since 1.0.0
+ */
+function masvideos_output_all_notices() {
+    echo '<div class="masvideos-notices-wrapper">';
+    masvideos_print_notices();
+    echo '</div>';
+}
+
 if ( ! function_exists( 'masvideos_star_rating' ) ) {
     /**
      * Output a HTML element with a star rating for a given rating.

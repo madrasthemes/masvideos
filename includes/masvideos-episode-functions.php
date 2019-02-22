@@ -382,11 +382,13 @@ if ( ! function_exists( 'masvideos_get_single_episode_prev_next_ids' ) ) {
         $tv_show_id = $episode->get_tv_show_id();
         $tv_show = masvideos_get_tv_show( $tv_show_id );
 
-        $seasons = $tv_show->get_seasons();
-        foreach ( $seasons as $season ) {
-            if( ! empty( $season['episodes'] ) ) {
-                foreach ( $season['episodes'] as $episode ) {
-                    $episodes[] = $episode;
+        if ( $tv_show ) {
+            $seasons = $tv_show->get_seasons();
+            foreach ( $seasons as $season ) {
+                if( ! empty( $season['episodes'] ) ) {
+                    foreach ( $season['episodes'] as $episode ) {
+                        $episodes[] = $episode;
+                    }
                 }
             }
         }

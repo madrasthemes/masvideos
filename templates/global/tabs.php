@@ -37,7 +37,7 @@ uasort( $tabs, 'masvideos_sort_priority_callback' );
             $tab_id = $tab_uniqid . $key; ?>
             <li class="nav-item">
                 <a href="#<?php echo esc_attr( $tab_id ); ?>" data-toggle="tab" class="nav-link<?php if ( $key == $default_active_tab ) echo esc_attr( ' active show' ); ?>">
-                    <?php echo esc_html( $tab['title'] ); ?>
+                    <?php echo wp_kses_post( $tab['title'] ); ?>
                 </a>
             </li>
         <?php endforeach; ?>

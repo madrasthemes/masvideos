@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Include core functions (available in both admin and frontend).
 require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-user-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
@@ -329,6 +330,18 @@ function masvideos_get_permalink_structure() {
 }
 
 /**
+ * Get data if set, otherwise return a default value or null. Prevents notices when data is not set.
+ *
+ * @since  1.0.0
+ * @param  mixed  $var     Variable.
+ * @param  string $default Default value.
+ * @return mixed
+ */
+function masvideos_get_var( &$var, $default = null ) {
+    return isset( $var ) ? $var : $default;
+}
+
+/**
  * Return the html selected attribute if stringified $value is found in array of stringified $options
  * or if stringified $value is the same as scalar stringified $options.
  *
@@ -510,6 +523,23 @@ function masvideos_print_js() {
         echo apply_filters( 'masvideos_queued_js', $js ); // WPCS: XSS ok.
 
         unset( $masvideos_queued_js );
+    }
+}
+
+/**
+ * Set a cookie - wrapper for setcookie using WP constants.
+ *
+ * @param  string  $name   Name of the cookie being set.
+ * @param  string  $value  Value of the cookie.
+ * @param  integer $expire Expiry of the cookie.
+ * @param  bool    $secure Whether the cookie should be served only over https.
+ */
+function masvideos_setcookie( $name, $value, $expire = 0, $secure = false ) {
+    if ( ! headers_sent() ) {
+        setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure, apply_filters( 'masvideos_cookie_httponly', false, $name, $value, $expire, $secure ) );
+    } elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+        headers_sent( $file, $line );
+        trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE ); // @codingStandardsIgnoreLine
     }
 }
 
