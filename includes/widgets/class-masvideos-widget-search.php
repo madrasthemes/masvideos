@@ -30,7 +30,7 @@ class MasVideos_Widget_Search extends MasVideos_Widget {
             'post_type' => array(
                 'type'      => 'select',
                 'std'       => 'movie',
-                'label'     => esc_html__( 'Order by', 'masvideos' ),
+                'label'     => esc_html__( 'Posttype', 'masvideos' ),
                 'options'   => array(
                     'episode'   => esc_html__( 'Episode', 'masvideos' ),
                     'tv_show'   => esc_html__( 'TV Show', 'masvideos' ),
