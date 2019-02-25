@@ -336,13 +336,15 @@ if ( ! function_exists( 'masvideos_get_tv_show_all_episodes' ) ) {
         $episodes = array();
 
         $seasons = $tv_show->get_seasons();
-        foreach ( $seasons as $season ) {
-            if( ! empty( $season['episodes'] ) ) {
-                foreach ( $season['episodes'] as $episode ) {
-                    $episodes[] = array(
-                        'season_name' => ! empty( $season['name'] ) ? $season['name'] : '',
-                        'episode' => $episode,
-                    );
+        if ( ! empty ($seasons) ) {
+            foreach ( $seasons as $season ) {
+                if( ! empty( $season['episodes'] ) ) {
+                    foreach ( $season['episodes'] as $episode ) {
+                        $episodes[] = array(
+                            'season_name' => ! empty( $season['name'] ) ? $season['name'] : '',
+                            'episode' => $episode,
+                        );
+                    }
                 }
             }
         }

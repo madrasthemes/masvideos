@@ -39,11 +39,4 @@ endwhile; // end of the loop.
  */
 do_action( 'masvideos_after_main_content' );
 
-/**
- * masvideos_sidebar hook.
- *
- * @hooked masvideos_get_sidebar - 10
- */
-do_action( 'masvideos_sidebar' );
-
 get_footer( 'episode' );

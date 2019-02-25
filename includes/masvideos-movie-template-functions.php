@@ -197,6 +197,49 @@ function masvideos_movie_class( $class = '', $movie_id = null ) {
 }
 
 /**
+ * Search Form
+ */
+if ( ! function_exists( 'masvideos_get_movie_search_form' ) ) {
+
+    /**
+     * Display movie search form.
+     *
+     * Will first attempt to locate the movie-searchform.php file in either the child or.
+     * the parent, then load it. If it doesn't exist, then the default search form.
+     * will be displayed.
+     *
+     * The default searchform uses html5.
+     *
+     * @param bool $echo (default: true).
+     * @return string
+     */
+    function masvideos_get_movie_search_form( $echo = true ) {
+        global $movie_search_form_index;
+
+        ob_start();
+
+        if ( empty( $movie_search_form_index ) ) {
+            $movie_search_form_index = 0;
+        }
+
+        do_action( 'pre_masvideos_get_movie_search_form' );
+
+        masvideos_get_template( 'search-form.php', array(
+            'index' => $movie_search_form_index++,
+            'post_type' => 'movie',
+        ) );
+
+        $form = apply_filters( 'masvideos_get_movie_search_form', ob_get_clean() );
+
+        if ( ! $echo ) {
+            return $form;
+        }
+
+        echo $form; // WPCS: XSS ok.
+    }
+}
+
+/**
  * Loop
  */
 
@@ -226,11 +269,22 @@ if ( ! function_exists( 'masvideos_movie_loop_start' ) ) {
 }
 
 if ( ! function_exists( 'masvideos_movies_loop_content' ) ) {
+
     /*
      * Output the movie loop. By default this is a UL.
      */
     function masvideos_movies_loop_content() {
         masvideos_get_template_part( 'content', 'movie' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_no_movies_found' ) ) {
+
+    /**
+     * Handles the loop when no movies were found/no movie exist.
+     */
+    function masvideos_no_movies_found() {
+        ?><p class="masvideos-info"><?php _e( 'No movies were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
@@ -406,14 +460,14 @@ if ( ! function_exists( 'masvideos_movies_catalog_ordering' ) ) {
         }
 
         $catalog_orderby_options = apply_filters( 'masvideos_movies_catalog_orderby', array(
-            'title-asc'  => esc_html__( 'Name: Ascending', 'masvideos' ),
-            'title-desc' => esc_html__( 'Name: Descending', 'masvideos' ),
-            'date'       => esc_html__( 'Latest', 'masvideos' ),
-            'menu_order' => esc_html__( 'Menu Order', 'masvideos' ),
-            'rating'     => esc_html__( 'Rating', 'masvideos' ),
+            'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
+            'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
+            'release_date'  => esc_html__( 'Latest', 'masvideos' ),
+            'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
+            'rating'        => esc_html__( 'Rating', 'masvideos' ),
         ) );
 
-        $default_orderby = masvideos_get_movies_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_movies_default_catalog_orderby', 'date' );
+        $default_orderby = masvideos_get_movies_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_movies_default_catalog_orderby', 'release_date' );
         $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
 
         if ( masvideos_get_movies_loop_prop( 'is_search' ) ) {
@@ -857,21 +911,23 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
             return;
         }
 
-        $defaults = array(
+        $defaults = apply_filters( 'masvideos_related_movies_default_args', array(
             'limit'          => 5,
             'columns'        => 5,
             'orderby'        => 'rand',
             'order'          => 'desc',
-        );
+        ) );
 
         $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_related_movies_title', esc_html__( 'Related Movies', 'masvideos' ), $movie_id );
 
         $related_movie_ids = masvideos_get_related_movies( $movie_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_movie_ids );
 
         if( ! empty( $related_movie_ids ) ) {
-            echo '<section class="tv-show__related">';
-                echo apply_filters( 'masvideos_related_movies_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $movie_id ) ), $movie_id );
+            echo '<section class="movie__related">';
+                echo sprintf( '<h2 class="movie__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::movies( $args );
             echo '</section>';
         }

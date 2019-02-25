@@ -25,6 +25,7 @@ class MasVideos_Admin {
         add_action( 'init', array( $this, 'includes' ) );
         add_action( 'admin_init', array( $this, 'buffer' ), 1 );
         add_action( 'admin_init', array( $this, 'prevent_admin_access' ) );
+        add_action( 'admin_footer', 'masvideos_print_js', 25 );
         add_action( 'wp_ajax_setup_wizard_check_jetpack', array( $this, 'setup_wizard_check_jetpack' ) );
     }
 

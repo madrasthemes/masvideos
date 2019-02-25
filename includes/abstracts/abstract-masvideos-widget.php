@@ -289,16 +289,32 @@ abstract class MasVideos_Widget extends WP_Widget {
      * @since  1.0.0
      */
     protected function get_current_page_url() {
-        if ( defined( 'VIDEOS_ON_FRONT' ) || defined( 'MOVIES_ON_FRONT' ) ) {
+        if ( defined( 'EPISODES_ON_FRONT' ) ||  defined( 'TV_SHOWS_ON_FRONT' ) || defined( 'VIDEOS_ON_FRONT' ) || defined( 'MOVIES_ON_FRONT' ) ) {
             $link = home_url();
+        } elseif ( is_episodes() ) {
+            $episodes_page_id = masvideos_get_page_id( 'episodes' );
+            $link = 0 < $episodes_page_id ? get_permalink( $episodes_page_id ) : get_post_type_archive_link( 'episode' );
+        } elseif ( is_episode_genre() ) {
+            $link = get_term_link( get_query_var( 'episode_genre' ), 'episode_genre' );
+        } elseif ( is_episode_tag() ) {
+            $link = get_term_link( get_query_var( 'episode_tag' ), 'episode_tag' );
+        } elseif ( is_tv_shows() ) {
+            $tv_shows_page_id = masvideos_get_page_id( 'tv_shows' );
+            $link = 0 < $tv_shows_page_id ? get_permalink( $tv_shows_page_id ) : get_post_type_archive_link( 'tv_show' );
+        } elseif ( is_tv_show_genre() ) {
+            $link = get_term_link( get_query_var( 'tv_show_genre' ), 'tv_show_genre' );
+        } elseif ( is_tv_show_tag() ) {
+            $link = get_term_link( get_query_var( 'tv_show_tag' ), 'tv_show_tag' );
         } elseif ( is_videos() ) {
-            $link = get_permalink( masvideos_get_page_id( 'videos' ) );
+            $videos_page_id = masvideos_get_page_id( 'videos' );
+            $link = 0 < $videos_page_id ? get_permalink( $videos_page_id ) : get_post_type_archive_link( 'video' );
         } elseif ( is_video_category() ) {
             $link = get_term_link( get_query_var( 'video_cat' ), 'video_cat' );
         } elseif ( is_video_tag() ) {
             $link = get_term_link( get_query_var( 'video_tag' ), 'video_tag' );
         } elseif ( is_movies() ) {
-            $link = get_permalink( masvideos_get_page_id( 'movies' ) );
+            $movies_page_id = masvideos_get_page_id( 'movies' );
+            $link = 0 < $movies_page_id ? get_permalink( $movies_page_id ) : get_post_type_archive_link( 'movie' );
         } elseif ( is_movie_genre() ) {
             $link = get_term_link( get_query_var( 'movie_genre' ), 'movie_genre' );
         } elseif ( is_movie_tag() ) {
@@ -326,13 +342,38 @@ abstract class MasVideos_Widget extends WP_Widget {
             $link = add_query_arg( 'post_type', masvideos_clean( wp_unslash( $_GET['post_type'] ) ), $link );
         }
 
-        // Min Rating Arg.
+        // Year Arg.
+        if ( isset( $_GET['year_filter'] ) ) {
+            $link = add_query_arg( 'year_filter', masvideos_clean( wp_unslash( $_GET['year_filter'] ) ), $link );
+        }
+
+        // Rating Arg.
         if ( isset( $_GET['rating_filter'] ) ) {
             $link = add_query_arg( 'rating_filter', masvideos_clean( wp_unslash( $_GET['rating_filter'] ) ), $link );
         }
 
         // All current filters.
-        if ( $_chosen_attributes = MasVideos_Videos_Query::get_layered_nav_chosen_attributes() ) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found, WordPress.CodeAnalysis.AssignmentInCondition.Found
+        if ( $_chosen_attributes = MasVideos_Episodes_Query::get_layered_nav_chosen_attributes() ) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found, WordPress.CodeAnalysis.AssignmentInCondition.Found
+            foreach ( $_chosen_attributes as $name => $data ) {
+                $filter_name = sanitize_title( str_replace( 'episode_', '', $name ) );
+                if ( ! empty( $data['terms'] ) ) {
+                    $link = add_query_arg( 'filter_' . $filter_name, implode( ',', $data['terms'] ), $link );
+                }
+                if ( 'or' === $data['query_type'] ) {
+                    $link = add_query_arg( 'query_type_' . $filter_name, 'or', $link );
+                }
+            }
+        } elseif ( $_chosen_attributes = MasVideos_TV_Shows_Query::get_layered_nav_chosen_attributes() ) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found, WordPress.CodeAnalysis.AssignmentInCondition.Found
+            foreach ( $_chosen_attributes as $name => $data ) {
+                $filter_name = sanitize_title( str_replace( 'tv_show_', '', $name ) );
+                if ( ! empty( $data['terms'] ) ) {
+                    $link = add_query_arg( 'filter_' . $filter_name, implode( ',', $data['terms'] ), $link );
+                }
+                if ( 'or' === $data['query_type'] ) {
+                    $link = add_query_arg( 'query_type_' . $filter_name, 'or', $link );
+                }
+            }
+        } elseif ( $_chosen_attributes = MasVideos_Videos_Query::get_layered_nav_chosen_attributes() ) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found, WordPress.CodeAnalysis.AssignmentInCondition.Found
             foreach ( $_chosen_attributes as $name => $data ) {
                 $filter_name = sanitize_title( str_replace( 'video_', '', $name ) );
                 if ( ! empty( $data['terms'] ) ) {

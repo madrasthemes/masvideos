@@ -453,6 +453,9 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                     }
                     $updated = true;
                     break;
+                case 'movie_release_date':
+                    $updated = update_post_meta( $movie->get_id(), $meta_key, $value ? $value->getTimestamp() : '' );
+                    break;
                 default:
                     $updated = update_post_meta( $movie->get_id(), $meta_key, $value );
                     break;
@@ -1043,8 +1046,9 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         // Handle date queries.
         $date_queries = array(
-            'date_created'      => 'post_date',
-            'date_modified'     => 'post_modified',
+            'date_created'          => 'post_date',
+            'date_modified'         => 'post_modified',
+            'movie_release_date'    => '_movie_release_date',
         );
         foreach ( $date_queries as $query_var_key => $db_key ) {
             if ( isset( $query_vars[ $query_var_key ] ) && '' !== $query_vars[ $query_var_key ] ) {

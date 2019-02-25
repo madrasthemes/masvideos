@@ -198,6 +198,49 @@ function masvideos_tv_show_class( $class = '', $tv_show_id = null ) {
 }
 
 /**
+ * Search Form
+ */
+if ( ! function_exists( 'masvideos_get_tv_show_search_form' ) ) {
+
+    /**
+     * Display tv show search form.
+     *
+     * Will first attempt to locate the tv_show-searchform.php file in either the child or.
+     * the parent, then load it. If it doesn't exist, then the default search form.
+     * will be displayed.
+     *
+     * The default searchform uses html5.
+     *
+     * @param bool $echo (default: true).
+     * @return string
+     */
+    function masvideos_get_tv_show_search_form( $echo = true ) {
+        global $tv_show_search_form_index;
+
+        ob_start();
+
+        if ( empty( $tv_show_search_form_index ) ) {
+            $tv_show_search_form_index = 0;
+        }
+
+        do_action( 'pre_masvideos_get_tv_show_search_form' );
+
+        masvideos_get_template( 'search-form.php', array(
+            'index' => $tv_show_search_form_index++,
+            'post_type' => 'tv_show',
+        ) );
+
+        $form = apply_filters( 'masvideos_get_tv_show_search_form', ob_get_clean() );
+
+        if ( ! $echo ) {
+            return $form;
+        }
+
+        echo $form; // WPCS: XSS ok.
+    }
+}
+
+/**
  * Loop
  */
 
@@ -227,11 +270,22 @@ if ( ! function_exists( 'masvideos_tv_show_loop_start' ) ) {
 }
 
 if ( ! function_exists( 'masvideos_tv_shows_loop_content' ) ) {
+
     /*
      * Output the tv show loop. By default this is a UL.
      */
     function masvideos_tv_shows_loop_content() {
         masvideos_get_template_part( 'content', 'tv-show' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_no_tv_shows_found' ) ) {
+
+    /**
+     * Handles the loop when no tv shows were found/no tv_show exist.
+     */
+    function masvideos_no_tv_shows_found() {
+        ?><p class="masvideos-info"><?php _e( 'No tv shows were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
@@ -1027,21 +1081,23 @@ if ( ! function_exists( 'masvideos_related_tv_shows' ) ) {
             return;
         }
 
-        $defaults = array(
+        $defaults = apply_filters( 'masvideos_related_tv_shows_default_args', array(
             'limit'          => 5,
             'columns'        => 5,
             'orderby'        => 'rand',
             'order'          => 'desc',
-        );
+        ) );
 
         $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_related_tv_shows_title', esc_html__( 'Related TV Shows', 'masvideos' ), $tv_show_id );
 
         $related_tv_show_ids = masvideos_get_related_tv_shows( $tv_show_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_tv_show_ids );
 
         if( ! empty( $related_tv_show_ids ) ) {
             echo '<section class="tv-show__related">';
-                echo apply_filters( 'masvideos_related_tv_shows_title', sprintf( '<h2 class="tv-show__related--title">%s%s</h2>', esc_html__( 'You may also like after: ', 'masvideos' ), get_the_title( $tv_show_id ) ), $tv_show_id );
+                echo sprintf( '<h2 class="tv-show__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::tv_shows( $args );
             echo '</section>';
         }
