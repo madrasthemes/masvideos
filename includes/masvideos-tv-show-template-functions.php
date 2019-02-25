@@ -144,7 +144,7 @@ function masvideos_tv_shows_loop() {
  */
 function masvideos_get_default_tv_shows_per_row() {
     $columns      = get_option( 'masvideos_tv_show_columns', 4 );
-    $tv_show_grid   = masvideos_get_theme_support( 'tv_show_grid' );
+    $tv_show_grid = masvideos_get_theme_support( 'tv_show_grid' );
     $min_columns  = isset( $tv_show_grid['min_columns'] ) ? absint( $tv_show_grid['min_columns'] ) : 0;
     $max_columns  = isset( $tv_show_grid['max_columns'] ) ? absint( $tv_show_grid['max_columns'] ) : 0;
 
@@ -158,7 +158,7 @@ function masvideos_get_default_tv_shows_per_row() {
 
     $columns = absint( $columns );
 
-    return max( 1, $columns );
+    return apply_filters( 'masvideos_tv_show_columns', max( 1, $columns ) );
 }
 
 /**
@@ -181,7 +181,7 @@ function masvideos_get_default_tv_show_rows_per_page() {
         update_option( 'masvideos_tv_show_rows', $rows );
     }
 
-    return $rows;
+    return apply_filters( 'masvideos_tv_show_rows', $rows );
 }
 
 /**
