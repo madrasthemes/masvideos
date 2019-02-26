@@ -521,6 +521,19 @@ if ( ! function_exists( 'masvideos_template_loop_video_short_desc' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_video_description' ) ) {
+    /**
+     * Single video description
+     */
+    function masvideos_template_single_video_description() {
+        ?>
+        <div class="video__description">
+            <div><?php the_content(); ?></div>
+        </div>
+        <?php
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_video_actions' ) ) {
 
     /**
