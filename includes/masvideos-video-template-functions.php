@@ -653,7 +653,7 @@ if ( ! function_exists( 'masvideos_template_single_video_title' ) ) {
      * Output the video title.
      */
     function masvideos_template_single_video_title() {
-        the_title( '<h1 class="video_title entry-title">', '</h1>' );
+        the_title( '<h1 class="single-video__title entry-title">', '</h1>' );
     }
 }
 
@@ -663,7 +663,7 @@ if ( ! function_exists( 'masvideos_template_single_video_meta' ) ) {
      * Output the video meta.
      */
     function masvideos_template_single_video_meta() {
-        echo '<p class="single_video_meta">';
+        echo '<p class="single-video__meta">';
         masvideos_template_single_video_author();
         masvideos_template_single_video_posted_on();
         echo '</p>';
@@ -727,8 +727,8 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
         $args['ids'] = implode( ',', $related_video_ids );
 
         if( ! empty( $related_video_ids ) ) {
-            echo '<section class="video__related">';
-                echo sprintf( '<h2 class="video__related--title">%s</h2>', $title );
+            echo '<section class="single-video__related">';
+                echo sprintf( '<h2 class="single-video__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::videos( $args );
             echo '</section>';
         }
