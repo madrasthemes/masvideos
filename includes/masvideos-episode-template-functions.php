@@ -197,6 +197,49 @@ function masvideos_episode_class( $class = '', $episode_id = null ) {
 }
 
 /**
+ * Search Form
+ */
+if ( ! function_exists( 'masvideos_get_episode_search_form' ) ) {
+
+    /**
+     * Display episode search form.
+     *
+     * Will first attempt to locate the episode-searchform.php file in either the child or.
+     * the parent, then load it. If it doesn't exist, then the default search form.
+     * will be displayed.
+     *
+     * The default searchform uses html5.
+     *
+     * @param bool $echo (default: true).
+     * @return string
+     */
+    function masvideos_get_episode_search_form( $echo = true ) {
+        global $episode_search_form_index;
+
+        ob_start();
+
+        if ( empty( $episode_search_form_index ) ) {
+            $episode_search_form_index = 0;
+        }
+
+        do_action( 'pre_masvideos_get_episode_search_form' );
+
+        masvideos_get_template( 'search-form.php', array(
+            'index' => $episode_search_form_index++,
+            'post_type' => 'episode',
+        ) );
+
+        $form = apply_filters( 'masvideos_get_episode_search_form', ob_get_clean() );
+
+        if ( ! $echo ) {
+            return $form;
+        }
+
+        echo $form; // WPCS: XSS ok.
+    }
+}
+
+/**
  * Loop
  */
 

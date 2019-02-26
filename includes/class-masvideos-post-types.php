@@ -170,6 +170,57 @@ class MasVideos_Post_Types {
             )
         );
 
+        register_post_type(
+            'tv_show_playlist',
+            apply_filters(
+                'masvideos_register_post_type_tv_show_playlist',
+                array(
+                    'labels'              => array(
+                        'name'                  => __( 'TV Show Playlists', 'masvideos' ),
+                        'singular_name'         => __( 'TV Show Playlist', 'masvideos' ),
+                        'all_items'             => __( 'All TV Show Playlists', 'masvideos' ),
+                        'menu_name'             => _x( 'TV Show Playlists', 'Admin menu name', 'masvideos' ),
+                        'add_new'               => __( 'Add New', 'masvideos' ),
+                        'add_new_item'          => __( 'Add new tv show playlist', 'masvideos' ),
+                        'edit'                  => __( 'Edit', 'masvideos' ),
+                        'edit_item'             => __( 'Edit tv show playlist', 'masvideos' ),
+                        'new_item'              => __( 'New tv show playlist', 'masvideos' ),
+                        'view_item'             => __( 'View tv show playlist', 'masvideos' ),
+                        'view_items'            => __( 'View tv show playlists', 'masvideos' ),
+                        'search_items'          => __( 'Search tv show playlists', 'masvideos' ),
+                        'not_found'             => __( 'No tv show playlists found', 'masvideos' ),
+                        'not_found_in_trash'    => __( 'No tv show playlists found in trash', 'masvideos' ),
+                        'parent'                => __( 'Parent tv show playlist', 'masvideos' ),
+                        'featured_image'        => __( 'TV Show Playlist image', 'masvideos' ),
+                        'set_featured_image'    => __( 'Set tv show playlist image', 'masvideos' ),
+                        'remove_featured_image' => __( 'Remove tv show playlist image', 'masvideos' ),
+                        'use_featured_image'    => __( 'Use as tv show playlist image', 'masvideos' ),
+                        'insert_into_item'      => __( 'Insert into tv show playlist', 'masvideos' ),
+                        'uploaded_to_this_item' => __( 'Uploaded to this tv show playlist', 'masvideos' ),
+                        'filter_items_list'     => __( 'Filter tv show playlists', 'masvideos' ),
+                        'items_list_navigation' => __( 'TV Show Playlists navigation', 'masvideos' ),
+                        'items_list'            => __( 'TV Show Playlists list', 'masvideos' ),
+                    ),
+                    'description'         => __( 'This is where you can add new tv show playlists to your site.', 'masvideos' ),
+                    'public'              => true,
+                    'show_ui'             => true,
+                    'capability_type'     => 'tv_show_playlist',
+                    'map_meta_cap'        => true,
+                    'publicly_queryable'  => true,
+                    'exclude_from_search' => false,
+                    'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+                    'rewrite'             => false,
+                    'query_var'           => true,
+                    'supports'            => array( 'title' ),
+                    'has_archive'         => false,
+                    'show_in_nav_menus'   => true,
+                    'show_in_menu'        => 'edit.php?post_type=tv_show',
+                    'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-welcome-view-site'
+                )
+            )
+        );
+
         // For Videos
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $videos_page_id = masvideos_get_page_id( 'videos' );
@@ -239,6 +290,57 @@ class MasVideos_Post_Types {
             )
         );
 
+        register_post_type(
+            'video_playlist',
+            apply_filters(
+                'masvideos_register_post_type_video_playlist',
+                array(
+                    'labels'              => array(
+                        'name'                  => __( 'Video Playlists', 'masvideos' ),
+                        'singular_name'         => __( 'Video Playlist', 'masvideos' ),
+                        'all_items'             => __( 'All Video Playlists', 'masvideos' ),
+                        'menu_name'             => _x( 'Video Playlists', 'Admin menu name', 'masvideos' ),
+                        'add_new'               => __( 'Add New', 'masvideos' ),
+                        'add_new_item'          => __( 'Add new video playlist', 'masvideos' ),
+                        'edit'                  => __( 'Edit', 'masvideos' ),
+                        'edit_item'             => __( 'Edit video playlist', 'masvideos' ),
+                        'new_item'              => __( 'New video playlist', 'masvideos' ),
+                        'view_item'             => __( 'View video playlist', 'masvideos' ),
+                        'view_items'            => __( 'View video playlists', 'masvideos' ),
+                        'search_items'          => __( 'Search video playlists', 'masvideos' ),
+                        'not_found'             => __( 'No video playlists found', 'masvideos' ),
+                        'not_found_in_trash'    => __( 'No video playlists found in trash', 'masvideos' ),
+                        'parent'                => __( 'Parent video playlist', 'masvideos' ),
+                        'featured_image'        => __( 'Video Playlist image', 'masvideos' ),
+                        'set_featured_image'    => __( 'Set video playlist image', 'masvideos' ),
+                        'remove_featured_image' => __( 'Remove video playlist image', 'masvideos' ),
+                        'use_featured_image'    => __( 'Use as video playlist image', 'masvideos' ),
+                        'insert_into_item'      => __( 'Insert into video playlist', 'masvideos' ),
+                        'uploaded_to_this_item' => __( 'Uploaded to this video playlist', 'masvideos' ),
+                        'filter_items_list'     => __( 'Filter video playlists', 'masvideos' ),
+                        'items_list_navigation' => __( 'Video Playlists navigation', 'masvideos' ),
+                        'items_list'            => __( 'Video Playlists list', 'masvideos' ),
+                    ),
+                    'description'         => __( 'This is where you can add new video playlists to your site.', 'masvideos' ),
+                    'public'              => true,
+                    'show_ui'             => true,
+                    'capability_type'     => 'video_playlist',
+                    'map_meta_cap'        => true,
+                    'publicly_queryable'  => true,
+                    'exclude_from_search' => false,
+                    'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+                    'rewrite'             => false,
+                    'query_var'           => true,
+                    'supports'            => array( 'title' ),
+                    'has_archive'         => false,
+                    'show_in_nav_menus'   => true,
+                    'show_in_menu'        => 'edit.php?post_type=video',
+                    'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-video-alt2'
+                )
+            )
+        );
+
         // For Movies
         $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $movies_page_id = masvideos_get_page_id( 'movies' );
@@ -297,6 +399,57 @@ class MasVideos_Post_Types {
                     'supports'            => $supports,
                     'has_archive'         => $has_archive,
                     'show_in_nav_menus'   => true,
+                    'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-editor-video'
+                )
+            )
+        );
+
+        register_post_type(
+            'movie_playlist',
+            apply_filters(
+                'masvideos_register_post_type_movie_playlist',
+                array(
+                    'labels'              => array(
+                        'name'                  => __( 'Movie Playlists', 'masvideos' ),
+                        'singular_name'         => __( 'Movie Playlist', 'masvideos' ),
+                        'all_items'             => __( 'All Movie Playlists', 'masvideos' ),
+                        'menu_name'             => _x( 'Movie Playlists', 'Admin menu name', 'masvideos' ),
+                        'add_new'               => __( 'Add New', 'masvideos' ),
+                        'add_new_item'          => __( 'Add new movie playlist', 'masvideos' ),
+                        'edit'                  => __( 'Edit', 'masvideos' ),
+                        'edit_item'             => __( 'Edit movie playlist', 'masvideos' ),
+                        'new_item'              => __( 'New movie playlist', 'masvideos' ),
+                        'view_item'             => __( 'View movie playlist', 'masvideos' ),
+                        'view_items'            => __( 'View movie playlists', 'masvideos' ),
+                        'search_items'          => __( 'Search movie playlists', 'masvideos' ),
+                        'not_found'             => __( 'No movie playlists found', 'masvideos' ),
+                        'not_found_in_trash'    => __( 'No movie playlists found in trash', 'masvideos' ),
+                        'parent'                => __( 'Parent movie playlist', 'masvideos' ),
+                        'featured_image'        => __( 'Movie Playlist image', 'masvideos' ),
+                        'set_featured_image'    => __( 'Set movie playlist image', 'masvideos' ),
+                        'remove_featured_image' => __( 'Remove movie playlist image', 'masvideos' ),
+                        'use_featured_image'    => __( 'Use as movie playlist image', 'masvideos' ),
+                        'insert_into_item'      => __( 'Insert into movie playlist', 'masvideos' ),
+                        'uploaded_to_this_item' => __( 'Uploaded to this movie playlist', 'masvideos' ),
+                        'filter_items_list'     => __( 'Filter movie playlists', 'masvideos' ),
+                        'items_list_navigation' => __( 'Movie Playlists navigation', 'masvideos' ),
+                        'items_list'            => __( 'Movie Playlists list', 'masvideos' ),
+                    ),
+                    'description'         => __( 'This is where you can add new movie playlists to your site.', 'masvideos' ),
+                    'public'              => true,
+                    'show_ui'             => true,
+                    'capability_type'     => 'movie_playlist',
+                    'map_meta_cap'        => true,
+                    'publicly_queryable'  => true,
+                    'exclude_from_search' => false,
+                    'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+                    'rewrite'             => false,
+                    'query_var'           => true,
+                    'supports'            => array( 'title' ),
+                    'has_archive'         => false,
+                    'show_in_nav_menus'   => true,
+                    'show_in_menu'        => 'edit.php?post_type=movie',
                     'show_in_rest'        => true,
                     'menu_icon'           => 'dashicons-editor-video'
                 )
@@ -817,8 +970,11 @@ class MasVideos_Post_Types {
     public static function support_jetpack_omnisearch() {
         if ( class_exists( 'Jetpack_Omnisearch_Posts' ) ) {
             new Jetpack_Omnisearch_Posts( 'video' );
+            new Jetpack_Omnisearch_Posts( 'video_playlist' );
             new Jetpack_Omnisearch_Posts( 'movie' );
+            new Jetpack_Omnisearch_Posts( 'movie_playlist' );
             new Jetpack_Omnisearch_Posts( 'tv_show' );
+            new Jetpack_Omnisearch_Posts( 'tv_show_playlist' );
             new Jetpack_Omnisearch_Posts( 'episode' );
         }
     }
@@ -831,8 +987,11 @@ class MasVideos_Post_Types {
      */
     public static function rest_api_allowed_post_types( $post_types ) {
         $post_types[] = 'video';
+        $post_types[] = 'video_playlist';
         $post_types[] = 'movie';
+        $post_types[] = 'movie_playlist';
         $post_types[] = 'tv_show';
+        $post_types[] = 'tv_show_playlist';
         $post_types[] = 'episode';
 
         return $post_types;

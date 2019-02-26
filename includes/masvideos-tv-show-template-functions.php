@@ -144,7 +144,7 @@ function masvideos_tv_shows_loop() {
  */
 function masvideos_get_default_tv_shows_per_row() {
     $columns      = get_option( 'masvideos_tv_show_columns', 4 );
-    $tv_show_grid   = masvideos_get_theme_support( 'tv_show_grid' );
+    $tv_show_grid = masvideos_get_theme_support( 'tv_show_grid' );
     $min_columns  = isset( $tv_show_grid['min_columns'] ) ? absint( $tv_show_grid['min_columns'] ) : 0;
     $max_columns  = isset( $tv_show_grid['max_columns'] ) ? absint( $tv_show_grid['max_columns'] ) : 0;
 
@@ -158,7 +158,7 @@ function masvideos_get_default_tv_shows_per_row() {
 
     $columns = absint( $columns );
 
-    return max( 1, $columns );
+    return apply_filters( 'masvideos_tv_show_columns', max( 1, $columns ) );
 }
 
 /**
@@ -181,7 +181,7 @@ function masvideos_get_default_tv_show_rows_per_page() {
         update_option( 'masvideos_tv_show_rows', $rows );
     }
 
-    return $rows;
+    return apply_filters( 'masvideos_tv_show_rows', $rows );
 }
 
 /**
@@ -195,6 +195,49 @@ function masvideos_tv_show_class( $class = '', $tv_show_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_tv_show_class( $class, $tv_show_id ) ) ) . '"';
     $class .= "tv-show";
     post_class( $class );
+}
+
+/**
+ * Search Form
+ */
+if ( ! function_exists( 'masvideos_get_tv_show_search_form' ) ) {
+
+    /**
+     * Display tv show search form.
+     *
+     * Will first attempt to locate the tv_show-searchform.php file in either the child or.
+     * the parent, then load it. If it doesn't exist, then the default search form.
+     * will be displayed.
+     *
+     * The default searchform uses html5.
+     *
+     * @param bool $echo (default: true).
+     * @return string
+     */
+    function masvideos_get_tv_show_search_form( $echo = true ) {
+        global $tv_show_search_form_index;
+
+        ob_start();
+
+        if ( empty( $tv_show_search_form_index ) ) {
+            $tv_show_search_form_index = 0;
+        }
+
+        do_action( 'pre_masvideos_get_tv_show_search_form' );
+
+        masvideos_get_template( 'search-form.php', array(
+            'index' => $tv_show_search_form_index++,
+            'post_type' => 'tv_show',
+        ) );
+
+        $form = apply_filters( 'masvideos_get_tv_show_search_form', ob_get_clean() );
+
+        if ( ! $echo ) {
+            return $form;
+        }
+
+        echo $form; // WPCS: XSS ok.
+    }
 }
 
 /**
