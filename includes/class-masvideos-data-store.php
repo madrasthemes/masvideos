@@ -35,6 +35,7 @@ class MasVideos_Data_Store {
     private $stores = array(
         'episode'             => 'MasVideos_Episode_Data_Store_CPT',
         'tv_show'             => 'MasVideos_TV_Show_Data_Store_CPT',
+        'tv_show_playlist'    => 'MasVideos_TV_Show_Playlist_Data_Store_CPT',
         'video'               => 'MasVideos_Video_Data_Store_CPT',
         'video_playlist'      => 'MasVideos_Video_Playlist_Data_Store_CPT',
         'movie'               => 'MasVideos_Movie_Data_Store_CPT',
