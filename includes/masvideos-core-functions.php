@@ -289,14 +289,17 @@ function masvideos_get_permalink_structure() {
             'video_category_base'          => _x( 'video-category', 'slug', 'masvideos' ),
             'video_tag_base'               => _x( 'video-tag', 'slug', 'masvideos' ),
             'video_attribute_base'         => '',
+            'video_playlist_base'          => _x( 'video-playlist', 'slug', 'masvideos' ),
             'movie_base'                   => _x( 'movie', 'slug', 'masvideos' ),
             'movie_genre_base'             => _x( 'movie-genre', 'slug', 'masvideos' ),
             'movie_tag_base'               => _x( 'movie-tag', 'slug', 'masvideos' ),
             'movie_attribute_base'         => '',
+            'movie_playlist_base'          => _x( 'movie-playlist', 'slug', 'masvideos' ),
             'tv_show_base'                 => _x( 'tv-show', 'slug', 'masvideos' ),
             'tv_show_genre_base'           => _x( 'tv-show-genre', 'slug', 'masvideos' ),
             'tv_show_tag_base'             => _x( 'tv-show-tag', 'slug', 'masvideos' ),
             'tv_show_attribute_base'       => '',
+            'tv_show_playlist_base'        => _x( 'tv-show-playlist', 'slug', 'masvideos' ),
             'episode_base'                 => _x( 'episode', 'slug', 'masvideos' ),
             'episode_genre_base'           => _x( 'episode-genre', 'slug', 'masvideos' ),
             'episode_tag_base'             => _x( 'episode-tag', 'slug', 'masvideos' ),
@@ -309,25 +312,28 @@ function masvideos_get_permalink_structure() {
         update_option( 'masvideos_permalinks', $permalinks );
     }
 
-    $permalinks['video_rewrite_slug']           = untrailingslashit( $permalinks['video_base'] );
-    $permalinks['video_category_rewrite_slug']  = untrailingslashit( $permalinks['video_category_base'] );
-    $permalinks['video_tag_rewrite_slug']       = untrailingslashit( $permalinks['video_tag_base'] );
-    $permalinks['video_attribute_rewrite_slug'] = untrailingslashit( $permalinks['video_attribute_base'] );
+    $permalinks['video_rewrite_slug']               = untrailingslashit( $permalinks['video_base'] );
+    $permalinks['video_category_rewrite_slug']      = untrailingslashit( $permalinks['video_category_base'] );
+    $permalinks['video_tag_rewrite_slug']           = untrailingslashit( $permalinks['video_tag_base'] );
+    $permalinks['video_attribute_rewrite_slug']     = untrailingslashit( $permalinks['video_attribute_base'] );
+    $permalinks['video_playlist_rewrite_slug']      = untrailingslashit( $permalinks['video_playlist_base'] );
 
-    $permalinks['movie_rewrite_slug']           = untrailingslashit( $permalinks['movie_base'] );
-    $permalinks['movie_genre_rewrite_slug']     = untrailingslashit( $permalinks['movie_genre_base'] );
-    $permalinks['movie_tag_rewrite_slug']       = untrailingslashit( $permalinks['movie_tag_base'] );
-    $permalinks['movie_attribute_rewrite_slug'] = untrailingslashit( $permalinks['movie_attribute_base'] );
+    $permalinks['movie_rewrite_slug']               = untrailingslashit( $permalinks['movie_base'] );
+    $permalinks['movie_genre_rewrite_slug']         = untrailingslashit( $permalinks['movie_genre_base'] );
+    $permalinks['movie_tag_rewrite_slug']           = untrailingslashit( $permalinks['movie_tag_base'] );
+    $permalinks['movie_attribute_rewrite_slug']     = untrailingslashit( $permalinks['movie_attribute_base'] );
+    $permalinks['movie_playlist_rewrite_slug']      = untrailingslashit( $permalinks['movie_playlist_base'] );
 
-    $permalinks['tv_show_rewrite_slug']           = untrailingslashit( $permalinks['tv_show_base'] );
-    $permalinks['tv_show_genre_rewrite_slug']     = untrailingslashit( $permalinks['tv_show_genre_base'] );
-    $permalinks['tv_show_tag_rewrite_slug']       = untrailingslashit( $permalinks['tv_show_tag_base'] );
-    $permalinks['tv_show_attribute_rewrite_slug'] = untrailingslashit( $permalinks['tv_show_attribute_base'] );
+    $permalinks['tv_show_rewrite_slug']             = untrailingslashit( $permalinks['tv_show_base'] );
+    $permalinks['tv_show_genre_rewrite_slug']       = untrailingslashit( $permalinks['tv_show_genre_base'] );
+    $permalinks['tv_show_tag_rewrite_slug']         = untrailingslashit( $permalinks['tv_show_tag_base'] );
+    $permalinks['tv_show_attribute_rewrite_slug']   = untrailingslashit( $permalinks['tv_show_attribute_base'] );
+    $permalinks['tv_show_playlist_rewrite_slug']    = untrailingslashit( $permalinks['tv_show_playlist_base'] );
 
-    $permalinks['episode_rewrite_slug']           = untrailingslashit( $permalinks['episode_base'] );
-    $permalinks['episode_genre_rewrite_slug']     = untrailingslashit( $permalinks['episode_genre_base'] );
-    $permalinks['episode_tag_rewrite_slug']       = untrailingslashit( $permalinks['episode_tag_base'] );
-    $permalinks['episode_attribute_rewrite_slug'] = untrailingslashit( $permalinks['episode_attribute_base'] );
+    $permalinks['episode_rewrite_slug']             = untrailingslashit( $permalinks['episode_base'] );
+    $permalinks['episode_genre_rewrite_slug']       = untrailingslashit( $permalinks['episode_genre_base'] );
+    $permalinks['episode_tag_rewrite_slug']         = untrailingslashit( $permalinks['episode_tag_base'] );
+    $permalinks['episode_attribute_rewrite_slug']   = untrailingslashit( $permalinks['episode_attribute_base'] );
 
     return $permalinks;
 }

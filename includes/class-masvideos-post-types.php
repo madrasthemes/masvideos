@@ -209,7 +209,11 @@ class MasVideos_Post_Types {
                     'publicly_queryable'  => true,
                     'exclude_from_search' => false,
                     'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
-                    'rewrite'             => false,
+                    'rewrite'             => $permalinks['tv_show_playlist_rewrite_slug'] ? array(
+                        'slug'       => $permalinks['tv_show_playlist_rewrite_slug'],
+                        'with_front' => false,
+                        'feeds'      => false,
+                    ) : false,
                     'query_var'           => true,
                     'supports'            => array( 'title', 'thumbnail', 'custom-fields' ),
                     'has_archive'         => false,
@@ -329,7 +333,11 @@ class MasVideos_Post_Types {
                     'publicly_queryable'  => true,
                     'exclude_from_search' => false,
                     'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
-                    'rewrite'             => false,
+                    'rewrite'             => $permalinks['video_playlist_rewrite_slug'] ? array(
+                        'slug'       => $permalinks['video_playlist_rewrite_slug'],
+                        'with_front' => false,
+                        'feeds'      => false,
+                    ) : false,
                     'query_var'           => true,
                     'supports'            => array( 'title', 'thumbnail', 'custom-fields' ),
                     'has_archive'         => false,
@@ -444,7 +452,11 @@ class MasVideos_Post_Types {
                     'publicly_queryable'  => true,
                     'exclude_from_search' => false,
                     'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
-                    'rewrite'             => false,
+                    'rewrite'             => $permalinks['movie_playlist_rewrite_slug'] ? array(
+                        'slug'       => $permalinks['movie_playlist_rewrite_slug'],
+                        'with_front' => false,
+                        'feeds'      => false,
+                    ) : false,
                     'query_var'           => true,
                     'supports'            => array( 'title', 'thumbnail', 'custom-fields' ),
                     'has_archive'         => false,
