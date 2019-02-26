@@ -119,14 +119,20 @@ class MasVideos_Template_Loader {
             $default_file = 'single-tv-show.php';
         } elseif ( is_tv_show_taxonomy() || is_tv_shows() ) {
             $default_file = self::$theme_support ? 'archive-tv-show.php' : '';
+        } elseif ( is_singular( 'tv_show_playlist' ) ) {
+            $default_file = 'single-tv-show-playlist.php';
         } elseif ( is_singular( 'video' ) ) {
             $default_file = 'single-video.php';
         } elseif ( is_video_taxonomy() || is_videos() ) {
             $default_file = self::$theme_support ? 'archive-video.php' : '';
+        } elseif ( is_singular( 'video_playlist' ) ) {
+            $default_file = 'single-video-playlist.php';
         } elseif ( is_singular( 'movie' ) ) {
             $default_file = 'single-movie.php';
         } elseif ( is_movie_taxonomy() || is_movies() ) {
             $default_file = self::$theme_support ? 'archive-movie.php' : '';
+        } elseif ( is_singular( 'movie_playlist' ) ) {
+            $default_file = 'single-movie-playlist.php';
         } else {
             $default_file = '';
         }
@@ -182,6 +188,15 @@ class MasVideos_Template_Loader {
             $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
         }
 
+        if ( is_singular( 'tv_show_playlist' ) ) {
+            $object       = get_queried_object();
+            $name_decoded = urldecode( $object->post_name );
+            if ( $name_decoded !== $object->post_name ) {
+                $templates[] = "single-tv-show-playlist-{$name_decoded}.php";
+            }
+            $templates[] = "single-tv-show-playlist-{$object->post_name}.php";
+        }
+
         if ( is_singular( 'video' ) ) {
             $object       = get_queried_object();
             $name_decoded = urldecode( $object->post_name );
@@ -199,6 +214,15 @@ class MasVideos_Template_Loader {
             $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
         }
 
+        if ( is_singular( 'video_playlist' ) ) {
+            $object       = get_queried_object();
+            $name_decoded = urldecode( $object->post_name );
+            if ( $name_decoded !== $object->post_name ) {
+                $templates[] = "single-video-playlist-{$name_decoded}.php";
+            }
+            $templates[] = "single-video-playlist-{$object->post_name}.php";
+        }
+
         if ( is_singular( 'movie' ) ) {
             $object       = get_queried_object();
             $name_decoded = urldecode( $object->post_name );
@@ -214,6 +238,15 @@ class MasVideos_Template_Loader {
             $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
             $templates[] = 'taxonomy-' . $object->taxonomy . '.php';
             $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
+        }
+
+        if ( is_singular( 'movie_playlist' ) ) {
+            $object       = get_queried_object();
+            $name_decoded = urldecode( $object->post_name );
+            if ( $name_decoded !== $object->post_name ) {
+                $templates[] = "single-movie-playlist-{$name_decoded}.php";
+            }
+            $templates[] = "single-movie-playlist-{$object->post_name}.php";
         }
 
         $templates[] = $default_file;
