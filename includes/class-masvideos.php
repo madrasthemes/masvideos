@@ -90,6 +90,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
         public $movie_factory = null;
 
         /**
+         * Movie Playlist factory instance.
+         *
+         * @var MasVideos_Movie_Playlist_Factory
+         */
+        public $movie_playlist_factory = null;
+
+        /**
          * Main MasVideos Instance.
          *
          * Ensures only one instance of MasVideos is loaded or can be loaded.
@@ -157,6 +164,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-tv-show-data-store-interface.php';
             include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-video-data-store-interface.php';
             include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-movie-data-store-interface.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-movie-playlist-data-store-interface.php';
 
             /**
              * Abstract classes.
@@ -167,6 +175,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-tv-show.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-video.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie-playlist.php';
 
             /**
              * Core classes.
@@ -186,6 +195,8 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-video-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-factory.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-query.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-playlist-factory.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-movie-playlist-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-shortcodes.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-gutenberg-blocks.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-structured-data.php';
@@ -199,6 +210,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-tv-show-data-store-cpt.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-video-data-store-cpt.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-movie-data-store-cpt.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-movie-playlist-data-store-cpt.php';
 
             if ( $this->is_request( 'admin' ) ) {
                 include_once MASVIDEOS_ABSPATH . 'includes/admin/class-masvideos-admin.php';
@@ -260,6 +272,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->tv_show_factory                   = new MasVideos_TV_Show_Factory();
             $this->video_factory                     = new MasVideos_Video_Factory();
             $this->movie_factory                     = new MasVideos_Movie_Factory();
+            $this->movie_playlist_factory            = new MasVideos_Movie_Playlist_Factory();
             // $this->structured_data                     = new WC_Structured_Data();
 
             // Classes/actions loaded for the frontend and for ajax requests.
