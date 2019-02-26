@@ -114,3 +114,15 @@ function masvideos_set_tv_show_playlists_loop_prop( $prop, $value = '' ) {
     }
     $GLOBALS['masvideos_tv_show_playlists_loop'][ $prop ] = $value;
 }
+
+/**
+ * Display the classes for the tv show playlist div.
+ *
+ * @since 1.0.0
+ * @param string|array           $class      One or more classes to add to the class list.
+ * @param int|WP_Post|MasVideos_TV_Show_Playlists_Query $tv_show_playlist_id TV Show Playlist ID or tv show playlist object.
+ */
+function masvideos_tv_show_playlist_class( $class = '', $tv_show_playlist_id = null ) {
+    // echo 'class="' . esc_attr( join( ' ', wc_get_tv_show_class( $class, $tv_show_playlist_id ) ) ) . '"';
+    post_class();
+}

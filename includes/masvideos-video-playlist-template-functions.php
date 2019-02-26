@@ -114,3 +114,15 @@ function masvideos_set_video_playlists_loop_prop( $prop, $value = '' ) {
     }
     $GLOBALS['masvideos_video_playlists_loop'][ $prop ] = $value;
 }
+
+/**
+ * Display the classes for the video playlist div.
+ *
+ * @since 1.0.0
+ * @param string|array           $class      One or more classes to add to the class list.
+ * @param int|WP_Post|MasVideos_Video_Playlists_Query $video_playlist_id Video Playlist ID or video playlist object.
+ */
+function masvideos_video_playlist_class( $class = '', $video_playlist_id = null ) {
+    // echo 'class="' . esc_attr( join( ' ', wc_get_video_class( $class, $video_playlist_id ) ) ) . '"';
+    post_class();
+}

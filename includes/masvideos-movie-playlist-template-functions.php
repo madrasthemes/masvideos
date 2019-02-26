@@ -114,3 +114,15 @@ function masvideos_set_movie_playlists_loop_prop( $prop, $value = '' ) {
     }
     $GLOBALS['masvideos_movie_playlists_loop'][ $prop ] = $value;
 }
+
+/**
+ * Display the classes for the movie playlist div.
+ *
+ * @since 1.0.0
+ * @param string|array           $class      One or more classes to add to the class list.
+ * @param int|WP_Post|MasVideos_Movie_Playlists_Query $movie_playlist_id Movie Playlist ID or movie playlist object.
+ */
+function masvideos_movie_playlist_class( $class = '', $movie_playlist_id = null ) {
+    // echo 'class="' . esc_attr( join( ' ', wc_get_movie_class( $class, $movie_playlist_id ) ) ) . '"';
+    post_class();
+}
