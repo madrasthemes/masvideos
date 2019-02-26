@@ -2,7 +2,7 @@
 /**
  * Movie Playlist Factory
  *
- * The MasVideos tv show factory creating the right tv show object.
+ * The MasVideos movie playlist factory creating the right movie playlist object.
  *
  * @package MasVideos/Classes
  * @version 1.0.0
@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 class MasVideos_Movie_Playlist_Factory {
 
     /**
-     * Get a tv show.
+     * Get a movie playlist.
      *
      * @param mixed $movie_playlist_id MasVideos_Movie_Playlist|WP_Post|int|bool $movie_playlist Movie Playlist instance, post instance, numeric or false to use global $post.
-     * @return MasVideos_Movie_Playlist|bool Movie Playlist object or null if the tv show cannot be loaded.
+     * @return MasVideos_Movie_Playlist|bool Movie Playlist object or null if the movie playlist cannot be loaded.
      */
     public function get_movie_playlist( $movie_playlist_id = false ) {
         $movie_playlist_id = $this->get_movie_playlist_id( $movie_playlist_id );
@@ -38,7 +38,7 @@ class MasVideos_Movie_Playlist_Factory {
     }
 
     /**
-     * Gets a tv show classname and allows filtering. Returns MasVideos_Movie_Playlist if the class does not exist.
+     * Gets a movie playlist classname and allows filtering. Returns MasVideos_Movie_Playlist if the class does not exist.
      *
      * @since  1.0.0
      * @param  int    $movie_playlist_id   Movie Playlist ID.
@@ -55,7 +55,7 @@ class MasVideos_Movie_Playlist_Factory {
     }
 
     /**
-     * Get the tv show ID depending on what was passed.
+     * Get the movie playlist ID depending on what was passed.
      *
      * @since  1.0.0
      * @param  MasVideos_Movie_Playlist|WP_Post|int|bool $movie_playlist Movie Playlist instance, post instance, numeric or false to use global $post.
