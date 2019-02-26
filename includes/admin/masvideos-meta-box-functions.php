@@ -409,3 +409,32 @@ function masvideos_wp_date_picker( $field ) {
 
     echo '</p>';
 }
+
+function masvideos_wp_upload_image( $field ) {
+    global $thepostid, $post;
+
+    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+    $field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+    $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+    $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : false;
+
+    if ( absint( $field['value'] ) ) {
+        $image = wp_get_attachment_url( $field['value'] );
+    } elseif ( $field['placeholder'] ) {
+        $image = masvideos_placeholder_img_src();
+    } else {
+        $image = '';
+    }
+
+    echo '<p id="' . esc_attr( $field['id'] ) . '_field" class="form-field media-option ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
+    ?>
+        <?php if ( isset ( $image ) ) : ?>
+        <img src="<?php echo esc_attr( $image ); ?>" class="upload_image_preview" data-placeholder-src="<?php echo esc_attr( masvideos_placeholder_img_src() ); ?>" alt="<?php echo esc_attr__( 'Image', 'masvideos' ); ?>" width="150px" height="auto" style="display:block; margin-bottom:1em;"/>
+        <?php endif; ?>
+        <input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>" class="upload_image_id" value="<?php echo esc_attr( $field['value'] ); ?>" />
+        <a href="#" class="button masvideos_upload_image_button tips"><?php echo esc_html__( 'Upload/Add image', 'masvideos' ); ?></a>
+        <a href="#" class="button masvideos_remove_image_button tips"><?php echo esc_html__( 'Remove this image', 'masvideos' ); ?></a>
+    </p>
+    <?php
+}

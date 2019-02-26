@@ -21,8 +21,11 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-page-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-episode-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-playlist-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-video-playlist-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-playlist-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-rest-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-widget-functions.php';
 
