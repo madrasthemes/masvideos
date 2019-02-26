@@ -684,13 +684,13 @@ if ( ! function_exists( 'masvideos_template_single_episode_tabs' ) ) {
 
         $tabs = apply_filters( 'masvideos_template_single_episode_tabs', array(
             array(
-                'title'     => esc_html__( 'Review', 'masvideos' ),
-                'callback'  => 'comments_template',
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_episode_description',
                 'priority'  => 10
             ),
             array(
-                'title'     => esc_html__( 'Description', 'masvideos' ),
-                'callback'  => 'masvideos_template_single_episode_description',
+                'title'     => esc_html__( 'Review', 'masvideos' ),
+                'callback'  => 'comments_template',
                 'priority'  => 20
             )
 
