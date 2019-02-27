@@ -528,7 +528,7 @@ if ( ! function_exists( 'masvideos_template_single_video_actions_bar' ) ) {
     function masvideos_template_single_video_actions_bar() {
         ?>
         <div class="video__actions-bar">
-            <div><?php masvideos_template_button_video_playlist(); ?></div>
+            <?php masvideos_template_button_video_playlist(); ?>
         </div>
         <?php
     }
@@ -779,7 +779,7 @@ if ( ! function_exists( 'masvideos_template_button_video_playlist' ) ) {
                         masvideos_template_button_toggle_user_video_playlist( $video->get_id() );
                         ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
                     } else {
-                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Sign in to add this video to a playlist.', 'masvideos' ); ?></a><?php
+                        ?><a class="login-link" href="#"><?php echo esc_html__( 'Sign in to add this video to a playlist.', 'masvideos' ); ?></a><?php
                     }
                 ?>
             </div>

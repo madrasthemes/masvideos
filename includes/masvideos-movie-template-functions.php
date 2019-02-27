@@ -952,7 +952,7 @@ if ( ! function_exists( 'masvideos_template_button_movie_playlist' ) ) {
                         masvideos_template_button_toggle_user_movie_playlist( $movie->get_id() );
                         ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
                     } else {
-                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Sign in to add this movie to a playlist.', 'masvideos' ); ?></a><?php
+                        ?><a class="login-link" href="#"><?php echo esc_html__( 'Sign in to add this movie to a playlist.', 'masvideos' ); ?></a><?php
                     }
                 ?>
             </div>

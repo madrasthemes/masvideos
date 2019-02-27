@@ -1122,7 +1122,7 @@ if ( ! function_exists( 'masvideos_template_button_tv_show_playlist' ) ) {
                         masvideos_template_button_toggle_user_tv_show_playlist( $tv_show->get_id() );
                         ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
                     } else {
-                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Sign in to add this tv show to a playlist.', 'masvideos' ); ?></a><?php
+                        ?><a class="login-link" href="#"><?php echo esc_html__( 'Sign in to add this tv show to a playlist.', 'masvideos' ); ?></a><?php
                     }
                 ?>
             </div>
