@@ -691,7 +691,7 @@ if ( ! function_exists( 'masvideos_template_single_video_author' ) ) {
     function masvideos_template_single_video_author() {
         $author = get_the_author();
         if( ! empty( $author ) ) {
-            echo sprintf( '<span class="video_author">%s<strong>%s</strong>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author );
+            echo sprintf( '<span class="video_author">%s <a href="%1$s" class="url fn" rel="author">%s</a></span>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author );
         }
     }
 }
@@ -704,7 +704,7 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
     function masvideos_template_single_video_posted_on() {
         $date = get_the_date();
         if( ! empty( $date ) ) {
-            echo sprintf( '<span class="video_posted_on">%s%s', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date );
+            echo sprintf( '<span class="video_posted_on">%s %s</span>', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date );
         }
     }
 }
