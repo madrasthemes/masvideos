@@ -730,7 +730,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_actions' ) ) {
         global $movie;
         echo '<div class="movie__actions">';
             echo '<a href="' . esc_url( get_permalink( $movie ) ) . '" class="movie-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
-            echo '<a href="#" class="movie-actions--link_add-to-playlist">' . esc_html__( '+ Playlist', 'masvideos' ) . '</a>';
+            masvideos_template_button_movie_playlist();
         echo '</div>';
     }
 }
@@ -931,6 +931,33 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
                 echo MasVideos_Shortcodes::movies( $args );
             echo '</section>';
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_button_movie_playlist' ) ) {
+    /**
+     * Button dropdown for Add/Remove movie to playlist.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_button_movie_playlist() {
+        global $movie;
+
+        ?>
+        <div class="dropdown">
+            <a class="movie-actions--link_add-to-playlist dropdown-toggle" href="<?php echo get_permalink( $movie->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+            <div class="dropdown-menu">
+                <?php
+                    if ( is_user_logged_in() ) {
+                        masvideos_template_button_toggle_user_movie_playlist( $movie->get_id() );
+                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                    } else {
+                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Sign in to add this movie to a playlist.', 'masvideos' ); ?></a><?php
+                    }
+                ?>
+            </div>
+        </div>
+        <?php
     }
 }
 
