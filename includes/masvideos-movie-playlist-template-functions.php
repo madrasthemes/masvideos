@@ -126,3 +126,55 @@ function masvideos_movie_playlist_class( $class = '', $movie_playlist_id = null 
     // echo 'class="' . esc_attr( join( ' ', wc_get_movie_class( $class, $movie_playlist_id ) ) ) . '"';
     post_class();
 }
+
+/**
+ * Loop
+ */
+
+if ( ! function_exists( 'masvideos_movie_playlist_loop_start' ) ) {
+
+    /**
+     * Output the start of a movie playlist loop. By default this is a UL.
+     *
+     * @param bool $echo Should echo?.
+     * @return string
+     */
+    function masvideos_movie_playlist_loop_start( $echo = true ) {
+        ob_start();
+
+        masvideos_set_movie_playlists_loop_prop( 'loop', 0 );
+
+        ?><div class="movie-playlists columns-<?php echo esc_attr( masvideos_get_movie_playlists_loop_prop( 'columns' ) ); ?>"><div class="movie-playlists__inner"><?php
+
+        $loop_start = apply_filters( 'masvideos_movie_playlist_loop_start', ob_get_clean() );
+
+        if ( $echo ) {
+            echo $loop_start; // WPCS: XSS ok.
+        } else {
+            return $loop_start;
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_movie_playlist_loop_end' ) ) {
+
+    /**
+     * Output the end of a movie playlist loop. By default this is a UL.
+     *
+     * @param bool $echo Should echo?.
+     * @return string
+     */
+    function masvideos_movie_playlist_loop_end( $echo = true ) {
+        ob_start();
+
+        ?></div></div><?php
+
+        $loop_end = apply_filters( 'masvideos_movie_playlist_loop_end', ob_get_clean() );
+
+        if ( $echo ) {
+            echo $loop_end; // WPCS: XSS ok.
+        } else {
+            return $loop_end;
+        }
+    }
+}
