@@ -86,6 +86,9 @@ class MasVideos_AJAX {
     public static function add_ajax_events() {
         // masvideos_EVENT => nopriv.
         $ajax_events = array(
+            'toggle_tv_show_playlist'                          => true,
+            'toggle_video_playlist'                            => true,
+            'toggle_movie_playlist'                            => true,
             'add_attribute_episode'                            => false,
             'add_new_attribute_episode'                        => false,
             'save_attributes_episode'                          => false,
@@ -839,6 +842,96 @@ class MasVideos_AJAX {
         }
 
         wp_send_json( apply_filters( 'masvideos_json_search_found_videos', $videos ) );
+    }
+
+    /**
+     * AJAX toggle tv show to playlist.
+     */
+    public static function toggle_tv_show_playlist() {
+        ob_start();
+
+        $playlist_id        = absint( $_POST['playlist_id'] );
+        $tv_show_id         = absint( $_POST['tv_show_id'] );
+        $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
+
+        if( $delete ) {
+            $tv_show_playlist = masvideos_remove_tv_show_from_playlist( $playlist_id, $tv_show_id );
+        } else {
+            $tv_show_playlist = masvideos_add_tv_show_to_playlist( $playlist_id, $tv_show_id );
+        }
+
+        if( $tv_show_playlist ) {
+            $data = array(
+                'success'       => true,
+            );
+        } else {
+            $data = array(
+                'error'         => true,
+                'tv_show_url'   => apply_filters( 'masvideos_toggle_tv_show_playlist_redirect_after_error', get_permalink( $tv_show_id ), $tv_show_id ),
+            );
+        }
+
+        wp_send_json( $data );
+    }
+
+    /**
+     * AJAX toggle video to playlist.
+     */
+    public static function toggle_video_playlist() {
+        ob_start();
+
+        $playlist_id        = absint( $_POST['playlist_id'] );
+        $video_id           = absint( $_POST['video_id'] );
+        $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
+
+        if( $delete ) {
+            $video_playlist = masvideos_remove_video_from_playlist( $playlist_id, $video_id );
+        } else {
+            $video_playlist = masvideos_add_video_to_playlist( $playlist_id, $video_id );
+        }
+
+        if( $video_playlist ) {
+            $data = array(
+                'success'       => true,
+            );
+        } else {
+            $data = array(
+                'error'         => true,
+                'video_url'     => apply_filters( 'masvideos_toggle_video_playlist_redirect_after_error', get_permalink( $video_id ), $video_id ),
+            );
+        }
+
+        wp_send_json( $data );
+    }
+
+    /**
+     * AJAX toggle movie to playlist.
+     */
+    public static function toggle_movie_playlist() {
+        ob_start();
+
+        $playlist_id        = absint( $_POST['playlist_id'] );
+        $movie_id           = absint( $_POST['movie_id'] );
+        $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
+
+        if( $delete ) {
+            $movie_playlist = masvideos_remove_movie_from_playlist( $playlist_id, $movie_id );
+        } else {
+            $movie_playlist = masvideos_add_movie_to_playlist( $playlist_id, $movie_id );
+        }
+
+        if( $movie_playlist ) {
+            $data = array(
+                'success'       => true,
+            );
+        } else {
+            $data = array(
+                'error'         => true,
+                'movie_url'     => apply_filters( 'masvideos_toggle_movie_playlist_redirect_after_error', get_permalink( $movie_id ), $movie_id ),
+            );
+        }
+
+        wp_send_json( $data );
     }
 }
 
