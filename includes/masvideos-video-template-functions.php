@@ -543,7 +543,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_actions' ) ) {
         global $video;
         echo '<div class="video__actions">';
             echo '<a href="' . esc_url( get_permalink( $video ) ) . '" class="video-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
-            echo '<a href="#" class="video-actions--link_add-to-playlist">' . esc_html__( '+ Playlist', 'masvideos' ) . '</a>';
+            masvideos_template_button_video_playlist();
         echo '</div>';
     }
 }
@@ -745,6 +745,33 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
                 echo MasVideos_Shortcodes::videos( $args );
             echo '</section>';
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_button_video_playlist' ) ) {
+    /**
+     * Button dropdown for Add/Remove video to playlist.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_button_video_playlist() {
+        global $video;
+
+        ?>
+        <div class="dropdown">
+            <a class="video-actions--link_add-to-playlist dropdown-toggle" href="<?php echo get_permalink( $video->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+            <div class="dropdown-menu">
+                <?php
+                    if ( is_user_logged_in() ) {
+                        masvideos_template_button_toggle_user_video_playlist( $video->get_id() );
+                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                    } else {
+                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Sign in to add this video to a playlist.', 'masvideos' ); ?></a><?php
+                    }
+                ?>
+            </div>
+        </div>
+        <?php
     }
 }
 

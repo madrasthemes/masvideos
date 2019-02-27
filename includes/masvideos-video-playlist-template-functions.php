@@ -178,3 +178,21 @@ if ( ! function_exists( 'masvideos_video_playlist_loop_end' ) ) {
         }
     }
 }
+
+if ( ! function_exists( 'masvideos_template_button_toggle_user_video_playlist' ) ) {
+    /**
+     * Button for Add/Remove video to playlist.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_button_toggle_user_video_playlist( $video_id ) {
+        $video_playlists = masvideos_get_current_user_video_playlists();
+        if( ! empty( $video_playlists ) ) {
+            foreach ( $video_playlists as $key => $video_playlist ) {
+                $playlist_id = $video_playlist->ID;
+                $is_video_added = masvideos_is_video_added_to_playlist( $playlist_id, $video_id );
+                ?><a class="toggle-playlist masvideos-ajax-toggle-video-playlist<?php echo $is_video_added ? ' added' : ''; ?>" href="<?php echo get_permalink( $playlist_id ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-video_id=<?php echo esc_attr( $video_id ); ?>><?php echo get_the_title( $playlist_id ); ?></a><?php
+            }
+        }
+    }
+}

@@ -101,3 +101,140 @@ function masvideos_delete_movie_playlist_transients( $post_id = 0 ) {
 
     do_action( 'masvideos_delete_movie_playlist_transients', $post_id );
 }
+
+/**
+ * Update a playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id   Playlist ID.
+ * @param  array $args Playlist arguments.
+ * @return int|WP_Error
+ */
+function masvideos_update_movie_playlist( $id = 0, $args ) {
+    $movie_playlist = masvideos_get_movie_playlist( $id );
+
+    if ( ! $movie_playlist ) {
+        $movie_playlist = new MasVideos_Movie_Playlist( $id );
+    }
+
+    $movie_playlist->set_name( $args['name'] );
+    $movie_playlist->set_status( $args['status'] );
+    $movie_playlist->save();
+
+    return $movie_playlist;
+}
+
+/**
+ * Add movie to playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id        Playlist ID.
+ * @param  int   $movie_id  Movie ID.
+ * @return int|WP_Error
+ */
+function masvideos_add_movie_to_playlist( $id, $movie_id ) {
+    $movie_playlist = masvideos_get_movie_playlist( $id );
+
+    if ( ! $movie_playlist ) {
+        return false;
+    }
+
+    if( masvideos_is_movie_added_to_playlist( $id, $movie_id ) ) {
+        return false;
+    }
+
+    $movie_ids = $movie_playlist->get_movie_ids( 'edit' );
+
+    if( is_array( $movie_ids ) ) {
+        $movie_ids[] = $movie_id;
+    } else {
+        $movie_ids = array( $movie_id );
+    }
+
+    $movie_playlist->set_movie_ids( $movie_ids );
+    $movie_playlist->save();
+
+    return $movie_playlist;
+}
+
+/**
+ * Remove movie from playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id        Playlist ID.
+ * @param  int   $movie_id  Movie ID.
+ * @return int|WP_Error
+ */
+function masvideos_remove_movie_from_playlist( $id, $movie_id ) {
+    $movie_playlist = masvideos_get_movie_playlist( $id );
+
+    if ( ! $movie_playlist ) {
+        return false;
+    }
+
+    if( ! masvideos_is_movie_added_to_playlist( $id, $movie_id ) ) {
+        return false;
+    }
+
+    $movie_ids = $movie_playlist->get_movie_ids( 'edit' );
+
+    if ( false === $key = array_search( $movie_id, $movie_ids ) ) {
+        return false;
+    }
+
+    array_splice( $movie_ids, $key, 1 );
+
+    $movie_playlist->set_movie_ids( $movie_ids );
+    $movie_playlist->save();
+
+    return $movie_playlist;
+}
+
+/**
+ * Check a movie added to a playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id        Playlist ID.
+ * @param  int   $movie_id  Movie ID.
+ * @return int|WP_Error
+ */
+function masvideos_is_movie_added_to_playlist( $id, $movie_id ) {
+    $movie_playlist = masvideos_get_movie_playlist( $id );
+
+    if ( ! $movie_playlist ) {
+        return false;
+    }
+
+    $movie_ids = $movie_playlist->get_movie_ids();
+
+    if( is_array( $movie_ids ) && in_array( $movie_id, $movie_ids ) ) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Get current user's playlists.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_get_current_user_movie_playlists() {
+    if ( is_user_logged_in() ) {
+        $current_user_id = get_current_user_id();
+
+        $args = array(
+            'post_type'         => 'movie_playlist',
+            'post_status'       => array( 'publish', 'private' ),
+            'posts_per_page'    => -1,
+            'author'            => $current_user_id
+        );
+
+        $current_user_posts = get_posts( $args );
+
+        return $current_user_posts;
+    }
+
+    return false;
+}

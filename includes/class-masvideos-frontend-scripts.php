@@ -150,38 +150,53 @@ class MasVideos_Frontend_Scripts {
     private static function register_scripts() {
         $suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $register_scripts = array(
-            // 'masvideos'                => array(
+            // 'masvideos'                     => array(
             //     'src'     => self::get_asset_url( 'assets/js/frontend/masvideos' . $suffix . '.js' ),
             //     'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
             //     'version' => MASVIDEOS_VERSION,
             // ),
-            'select2'                   => array(
+            'select2'                       => array(
                 'src'     => self::get_asset_url( 'assets/js/select2/select2.full' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => '4.0.3',
             ),
-            'selectWoo'                 => array(
+            'selectWoo'                     => array(
                 'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo.full' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => '1.0.4',
             ),
-            'masvideos-single-episode'  => array(
+            'masvideos-single-episode'      => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/single-episode' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => MASVIDEOS_VERSION,
             ),
-            'masvideos-single-tv-show'  => array(
+            'masvideos-single-tv-show'      => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/single-tv-show' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => MASVIDEOS_VERSION,
             ),
-            'masvideos-single-video'    => array(
+            'masvideos-single-video'        => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/single-video' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => MASVIDEOS_VERSION,
             ),
-            'masvideos-single-movie'    => array(
+            'masvideos-single-movie'        => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/single-movie' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'masvideos-playlist-tv-show'    => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/playlist-tv-show' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'masvideos-playlist-video'      => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/playlist-video' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'masvideos-playlist-movie'    => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/playlist-movie' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => MASVIDEOS_VERSION,
             ),
@@ -236,6 +251,10 @@ class MasVideos_Frontend_Scripts {
             self::enqueue_script( 'masvideos-single-movie' );
         }
 
+        self::enqueue_script( 'masvideos-playlist-tv-show' );
+        self::enqueue_script( 'masvideos-playlist-video' );
+        self::enqueue_script( 'masvideos-playlist-movie' );
+
         // Global frontend scripts.
         // self::enqueue_script( 'masvideos' );
 
@@ -288,8 +307,8 @@ class MasVideos_Frontend_Scripts {
         switch ( $handle ) {
             case 'masvideos':
                 $params = array(
-                    'ajax_url'              => MasVideos()->ajax_url(),
-                    'masvideos_ajax_url'    => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
+                    'ajax_url'                  => MasVideos()->ajax_url(),
+                    'masvideos_ajax_url'        => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
                 );
                 break;
             case 'masvideos-single-episode':
@@ -314,6 +333,24 @@ class MasVideos_Frontend_Scripts {
                 $params = array(
                     'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'masvideos' ),
                     'review_rating_required'    => get_option( 'masvideos_movie_review_rating_required' ),
+                );
+                break;
+            case 'masvideos-playlist-tv-show':
+                $params = array(
+                    'ajax_url'                  => MasVideos()->ajax_url(),
+                    'masvideos_ajax_url'        => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
+                );
+                break;
+            case 'masvideos-playlist-video':
+                $params = array(
+                    'ajax_url'                  => MasVideos()->ajax_url(),
+                    'masvideos_ajax_url'        => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
+                );
+                break;
+            case 'masvideos-playlist-movie':
+                $params = array(
+                    'ajax_url'                  => MasVideos()->ajax_url(),
+                    'masvideos_ajax_url'        => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
                 );
                 break;
             default:

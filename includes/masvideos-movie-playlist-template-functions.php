@@ -178,3 +178,21 @@ if ( ! function_exists( 'masvideos_movie_playlist_loop_end' ) ) {
         }
     }
 }
+
+if ( ! function_exists( 'masvideos_template_button_toggle_user_movie_playlist' ) ) {
+    /**
+     * Button for Add/Remove movie to playlist.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_button_toggle_user_movie_playlist( $movie_id ) {
+        $movie_playlists = masvideos_get_current_user_movie_playlists();
+        if( ! empty( $movie_playlists ) ) {
+            foreach ( $movie_playlists as $key => $movie_playlist ) {
+                $playlist_id = $movie_playlist->ID;
+                $is_movie_added = masvideos_is_movie_added_to_playlist( $playlist_id, $movie_id );
+                ?><a class="toggle-playlist masvideos-ajax-toggle-movie-playlist<?php echo $is_movie_added ? ' added' : ''; ?>" href="<?php echo get_permalink( $playlist_id ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-movie_id=<?php echo esc_attr( $movie_id ); ?>><?php echo get_the_title( $playlist_id ); ?></a><?php
+            }
+        }
+    }
+}

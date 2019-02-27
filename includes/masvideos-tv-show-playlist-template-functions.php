@@ -178,3 +178,21 @@ if ( ! function_exists( 'masvideos_tv_show_playlist_loop_end' ) ) {
         }
     }
 }
+
+if ( ! function_exists( 'masvideos_template_button_toggle_user_tv_show_playlist' ) ) {
+    /**
+     * Button for Add/Remove tv show to playlist.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_button_toggle_user_tv_show_playlist( $tv_show_id ) {
+        $tv_show_playlists = masvideos_get_current_user_tv_show_playlists();
+        if( ! empty( $tv_show_playlists ) ) {
+            foreach ( $tv_show_playlists as $key => $tv_show_playlist ) {
+                $playlist_id = $tv_show_playlist->ID;
+                $is_tv_show_added = masvideos_is_tv_show_added_to_playlist( $playlist_id, $tv_show_id );
+                ?><a class="toggle-playlist masvideos-ajax-toggle-tv-show-playlist<?php echo $is_tv_show_added ? ' added' : ''; ?>" href="<?php echo get_permalink( $playlist_id ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-tv_show_id=<?php echo esc_attr( $tv_show_id ); ?>><?php echo get_the_title( $playlist_id ); ?></a><?php
+            }
+        }
+    }
+}

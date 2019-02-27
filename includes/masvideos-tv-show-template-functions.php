@@ -734,7 +734,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_actions' ) ) {
             global $tv_show;
             $link = apply_filters( 'masvideos_loop_tv_show_link', get_the_permalink(), $tv_show );
             echo '<a href="' . esc_url( $link ) . '" class="tv-show-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
-            echo '<a href="#" class="tv-show-actions--link_add-to-playlist">' . esc_html__( '+ Playlist', 'masvideos' ) . '</a>';
+            masvideos_template_button_tv_show_playlist();
         echo '</div>';
     }
 }
@@ -1101,6 +1101,33 @@ if ( ! function_exists( 'masvideos_related_tv_shows' ) ) {
                 echo MasVideos_Shortcodes::tv_shows( $args );
             echo '</section>';
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_button_tv_show_playlist' ) ) {
+    /**
+     * Button dropdown for Add/Remove tv show to playlist.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_button_tv_show_playlist() {
+        global $tv_show;
+
+        ?>
+        <div class="dropdown">
+            <a class="tv-show-actions--link_add-to-playlist dropdown-toggle" href="<?php echo get_permalink( $tv_show->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+            <div class="dropdown-menu">
+                <?php
+                    if ( is_user_logged_in() ) {
+                        masvideos_template_button_toggle_user_tv_show_playlist( $tv_show->get_id() );
+                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                    } else {
+                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Sign in to add this tv show to a playlist.', 'masvideos' ); ?></a><?php
+                    }
+                ?>
+            </div>
+        </div>
+        <?php
     }
 }
 
