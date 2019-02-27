@@ -20,6 +20,7 @@ class MasVideos_Shortcodes {
         $shortcodes = array(
             'mas_episodes'                 => __CLASS__ . '::episodes',
             'mas_tv_shows'                 => __CLASS__ . '::tv_shows',
+            'mas_tv_show_playlists'        => __CLASS__ . '::tv_show_playlists',
             'mas_videos'                   => __CLASS__ . '::videos',
             'mas_video_playlists'          => __CLASS__ . '::video_playlists',
             'mas_movies'                   => __CLASS__ . '::movies',
@@ -119,6 +120,27 @@ class MasVideos_Shortcodes {
         }
 
         $shortcode = new MasVideos_Shortcode_TV_Shows( $atts, $type );
+
+        return $shortcode->get_content();
+    }
+
+    /**
+     * List multiple tv show playlists shortcode.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function tv_show_playlists( $atts ) {
+        $atts = (array) $atts;
+        $type = 'tv_show_playlists';
+
+        // Allow list tv_show_playlist based on specific cases.
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
+        }
+
+        $shortcode = new MasVideos_Shortcode_TV_Show_Playlists( $atts, $type );
 
         return $shortcode->get_content();
     }
