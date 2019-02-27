@@ -20,8 +20,11 @@ class MasVideos_Shortcodes {
         $shortcodes = array(
             'mas_episodes'                 => __CLASS__ . '::episodes',
             'mas_tv_shows'                 => __CLASS__ . '::tv_shows',
+            'mas_tv_show_playlists'        => __CLASS__ . '::tv_show_playlists',
             'mas_videos'                   => __CLASS__ . '::videos',
+            'mas_video_playlists'          => __CLASS__ . '::video_playlists',
             'mas_movies'                   => __CLASS__ . '::movies',
+            'mas_movie_playlists'          => __CLASS__ . '::movie_playlists',
             'mas_register_login'           => __CLASS__ . '::register_login',
             'mas_register'                 => __CLASS__ . '::register',
             'mas_login'                    => __CLASS__ . '::login',
@@ -122,6 +125,27 @@ class MasVideos_Shortcodes {
     }
 
     /**
+     * List multiple tv show playlists shortcode.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function tv_show_playlists( $atts ) {
+        $atts = (array) $atts;
+        $type = 'tv_show_playlists';
+
+        // Allow list tv_show_playlist based on specific cases.
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
+        }
+
+        $shortcode = new MasVideos_Shortcode_TV_Show_Playlists( $atts, $type );
+
+        return $shortcode->get_content();
+    }
+
+    /**
      * List multiple videos shortcode.
      *
      * @param array $atts Attributes.
@@ -152,6 +176,27 @@ class MasVideos_Shortcodes {
     }
 
     /**
+     * List multiple video playlists shortcode.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function video_playlists( $atts ) {
+        $atts = (array) $atts;
+        $type = 'video_playlists';
+
+        // Allow list video_playlist based on specific cases.
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
+        }
+
+        $shortcode = new MasVideos_Shortcode_Video_Playlists( $atts, $type );
+
+        return $shortcode->get_content();
+    }
+
+    /**
      * List multiple movies shortcode.
      *
      * @param array $atts Attributes.
@@ -177,6 +222,27 @@ class MasVideos_Shortcodes {
         }
 
         $shortcode = new MasVideos_Shortcode_Movies( $atts, $type );
+
+        return $shortcode->get_content();
+    }
+
+    /**
+     * List multiple movie playlists shortcode.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function movie_playlists( $atts ) {
+        $atts = (array) $atts;
+        $type = 'movie_playlists';
+
+        // Allow list movie_playlist based on specific cases.
+        if( isset( $atts['className'] ) ) {
+            $atts['class'] = $atts['className'];
+            unset( $atts['className'] );
+        }
+
+        $shortcode = new MasVideos_Shortcode_Movie_Playlists( $atts, $type );
 
         return $shortcode->get_content();
     }

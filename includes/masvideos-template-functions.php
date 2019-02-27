@@ -12,8 +12,11 @@ defined( 'ABSPATH' ) || exit;
 
 require MASVIDEOS_ABSPATH . 'includes/masvideos-episode-template-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-template-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-playlist-template-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-video-template-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-video-playlist-template-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-template-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-playlist-template-functions.php';
 
 /**
  * Handle redirects before content is output - hooked into template_redirect so is_page works.
