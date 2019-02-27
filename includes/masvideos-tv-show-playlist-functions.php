@@ -101,3 +101,140 @@ function masvideos_delete_tv_show_playlist_transients( $post_id = 0 ) {
 
     do_action( 'masvideos_delete_tv_show_playlist_transients', $post_id );
 }
+
+/**
+ * Update a playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id   Playlist ID.
+ * @param  array $args Playlist arguments.
+ * @return int|WP_Error
+ */
+function masvideos_update_tv_show_playlist( $id = 0, $args ) {
+    $tv_show_playlist = masvideos_get_tv_show_playlist( $id );
+
+    if ( ! $tv_show_playlist ) {
+        $tv_show_playlist = new MasVideos_TV_Show_Playlist( $id );
+    }
+
+    $tv_show_playlist->set_name( $args['name'] );
+    $tv_show_playlist->set_status( $args['status'] );
+    $tv_show_playlist->save();
+
+    return $tv_show_playlist;
+}
+
+/**
+ * Add tv show to playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id            Playlist ID.
+ * @param  int   $tv_show_id    TV Show ID.
+ * @return int|WP_Error
+ */
+function masvideos_add_tv_show_to_playlist( $id, $tv_show_id ) {
+    $tv_show_playlist = masvideos_get_tv_show_playlist( $id );
+
+    if ( ! $tv_show_playlist ) {
+        return false;
+    }
+
+    if( masvideos_is_tv_show_added_to_playlist( $id, $tv_show_id ) ) {
+        return false;
+    }
+
+    $tv_show_ids = $tv_show_playlist->get_tv_show_ids( 'edit' );
+
+    if( is_array( $tv_show_ids ) ) {
+        $tv_show_ids[] = $tv_show_id;
+    } else {
+        $tv_show_ids = array( $tv_show_id );
+    }
+
+    $tv_show_playlist->set_tv_show_ids( $tv_show_ids );
+    $tv_show_playlist->save();
+
+    return $tv_show_playlist;
+}
+
+/**
+ * Remove tv show from playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id            Playlist ID.
+ * @param  int   $tv_show_id    TV Show ID.
+ * @return int|WP_Error
+ */
+function masvideos_remove_tv_show_from_playlist( $id, $tv_show_id ) {
+    $tv_show_playlist = masvideos_get_tv_show_playlist( $id );
+
+    if ( ! $tv_show_playlist ) {
+        return false;
+    }
+
+    if( ! masvideos_is_tv_show_added_to_playlist( $id, $tv_show_id ) ) {
+        return false;
+    }
+
+    $tv_show_ids = $tv_show_playlist->get_tv_show_ids( 'edit' );
+
+    if ( false === $key = array_search( $tv_show_id, $tv_show_ids ) ) {
+        return false;
+    }
+
+    array_splice( $tv_show_ids, $key, 1 );
+
+    $tv_show_playlist->set_tv_show_ids( $tv_show_ids );
+    $tv_show_playlist->save();
+
+    return $tv_show_playlist;
+}
+
+/**
+ * Check a tv show added to a playlist.
+ *
+ * @since  1.0.0
+ * @param  int   $id        Playlist ID.
+ * @param  int   $tv_show_id  TV Show ID.
+ * @return int|WP_Error
+ */
+function masvideos_is_tv_show_added_to_playlist( $id, $tv_show_id ) {
+    $tv_show_playlist = masvideos_get_tv_show_playlist( $id );
+
+    if ( ! $tv_show_playlist ) {
+        return false;
+    }
+
+    $tv_show_ids = $tv_show_playlist->get_tv_show_ids();
+
+    if( is_array( $tv_show_ids ) && in_array( $tv_show_id, $tv_show_ids ) ) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Get current user's playlists.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_get_current_user_tv_show_playlists() {
+    if ( is_user_logged_in() ) {
+        $current_user_id = get_current_user_id();
+
+        $args = array(
+            'post_type'         => 'tv_show_playlist',
+            'post_status'       => array( 'publish', 'private' ),
+            'posts_per_page'    => -1,
+            'author'            => $current_user_id
+        );
+
+        $current_user_posts = get_posts( $args );
+
+        return $current_user_posts;
+    }
+
+    return false;
+}
