@@ -226,7 +226,7 @@ function masvideos_get_current_user_tv_show_playlists() {
 
         $args = array(
             'post_type'         => 'tv_show_playlist',
-            'post_status'       => array( 'publish', 'private' ),
+            'post_status'       => array_keys( masvideos_get_tv_show_playlist_visibility_options() ),
             'posts_per_page'    => -1,
             'author'            => $current_user_id
         );
@@ -237,4 +237,19 @@ function masvideos_get_current_user_tv_show_playlists() {
     }
 
     return false;
+}
+
+/**
+ * Get tv show playlist visibility options.
+ *
+ * @since 1.0.0
+ * @return array
+ */
+function masvideos_get_tv_show_playlist_visibility_options() {
+    return apply_filters(
+        'masvideos_tv_show_playlist_visibility_options', array(
+            'publish' => __( 'Public', 'masvideos' ),
+            'private' => __( 'Private', 'masvideos' ),
+        )
+    );
 }
