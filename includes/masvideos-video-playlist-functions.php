@@ -117,8 +117,12 @@ function masvideos_update_video_playlist( $id = 0, $args ) {
         $video_playlist = new MasVideos_Video_Playlist( $id );
     }
 
+    $current_user_id = get_current_user_id();
+    $slug = uniqid( $current_user_id );
+
     $video_playlist->set_name( $args['name'] );
     $video_playlist->set_status( $args['status'] );
+    $video_playlist->set_slug( $slug );
     $video_playlist->save();
 
     return $video_playlist;

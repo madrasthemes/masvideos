@@ -117,8 +117,12 @@ function masvideos_update_tv_show_playlist( $id = 0, $args ) {
         $tv_show_playlist = new MasVideos_TV_Show_Playlist( $id );
     }
 
+    $current_user_id = get_current_user_id();
+    $slug = uniqid( $current_user_id );
+
     $tv_show_playlist->set_name( $args['name'] );
     $tv_show_playlist->set_status( $args['status'] );
+    $tv_show_playlist->set_slug( $slug );
     $tv_show_playlist->save();
 
     return $tv_show_playlist;
