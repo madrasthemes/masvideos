@@ -220,9 +220,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_playlist_tv_shows' ) 
 
             $args = wp_parse_args( $args, $defaults );
 
-            add_filter( 'masvideos_loop_tv_show_link', 'masvideos_loop_tv_show_link_for_tv_show_playlist', 99, 2 );
             echo MasVideos_Shortcodes::tv_shows( $args );
-            remove_filter( 'masvideos_loop_tv_show_link', 'masvideos_loop_tv_show_link_for_tv_show_playlist', 99, 2 );
         }
     }
 }

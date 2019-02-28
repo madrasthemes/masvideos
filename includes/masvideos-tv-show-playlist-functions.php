@@ -259,21 +259,6 @@ function masvideos_single_tv_show_playlist_tv_shows( $id ) {
 }
 
 /**
- * Update single tv show's link for playlist.
- *
- * @since  1.0.0
- * @return array|boolean
- */
-function masvideos_loop_tv_show_link_for_tv_show_playlist( $link, $tv_show ) {
-
-    if ( is_tv_show_playlist() ) {
-        return add_query_arg( 'tv_show_playlist_id', get_the_ID(), $link );
-    }
-
-    return $link;
-}
-
-/**
  * Get tv show playlist visibility options.
  *
  * @since 1.0.0

@@ -220,9 +220,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_playlist_movies' ) ) {
 
             $args = wp_parse_args( $args, $defaults );
 
-            add_filter( 'masvideos_loop_movie_link', 'masvideos_loop_movie_link_for_movie_playlist', 99, 2 );
             echo MasVideos_Shortcodes::movies( $args );
-            remove_filter( 'masvideos_loop_movie_link', 'masvideos_loop_movie_link_for_movie_playlist', 99, 2 );
         }
     }
 }

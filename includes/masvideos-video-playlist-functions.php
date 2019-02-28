@@ -259,24 +259,6 @@ function masvideos_single_video_playlist_videos( $id ) {
 }
 
 /**
- * Update single video's link for playlist.
- *
- * @since  1.0.0
- * @return array|boolean
- */
-function masvideos_loop_video_link_for_video_playlist( $link, $video ) {
-
-    if ( is_video_playlist() ) {
-        global $video_playlist;
-        echo get_the_ID();
-        vodi_pr( $video_playlist );
-        return add_query_arg( 'video_playlist_id', get_the_ID(), $link );
-    }
-
-    return $link;
-}
-
-/**
  * Get video playlist visibility options.
  *
  * @since 1.0.0
