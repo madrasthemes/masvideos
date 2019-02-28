@@ -774,8 +774,9 @@ if ( ! function_exists( 'masvideos_template_single_video_related_playlist_videos
         $video_playlist_id = isset( $_GET['video_playlist_id'] ) ? absint( $_GET['video_playlist_id'] ) : 0;
 
         if( $video_playlist_id > 0 ) {
-            $title = apply_filters( 'masvideos_template_single_video_videos_playlist_title', get_the_title( $video_playlist_id ), $video_playlist_id );
             $videos_ids = masvideos_single_video_playlist_videos( $video_playlist_id );
+            $title = apply_filters( 'masvideos_template_single_video_videos_playlist_title', get_the_title( $video_playlist_id ), $video_playlist_id );
+            $count_info = apply_filters( 'masvideos_template_single_video_videos_playlist_count', count( $videos_ids ) . esc_html__( ' videos', 'masvideos' ), $video_playlist_id );
 
             if( ! empty( $videos_ids ) ) {
                 $filtered_videos_ids = $videos_ids;
@@ -795,6 +796,7 @@ if ( ! function_exists( 'masvideos_template_single_video_related_playlist_videos
                 <div class="single-video__related-playlist-videos">
                     <?php
                         echo sprintf( '<h2 class="single-video__related-playlist-videos--title">%s</h2>', $title );
+                        echo sprintf( '<a href="%s" class="single-video__related-playlist-videos--count">%s</a>', get_permalink( $video_playlist_id ), $count_info );
                         masvideos_template_single_video_playlist_videos( $video_playlist_id, $args );
                     ?>
                 </div>
