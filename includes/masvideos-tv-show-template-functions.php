@@ -1114,8 +1114,8 @@ if ( ! function_exists( 'masvideos_template_button_tv_show_playlist' ) ) {
         global $tv_show;
 
         ?>
-        <div class="dropdown">
-            <a class="tv-show-actions--link_add-to-playlist dropdown-toggle" href="<?php echo get_permalink( $tv_show->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+        <div class="tv-show-actions--link_add-to-playlist dropdown">
+            <a class="dropdown-toggle" href="<?php echo get_permalink( $tv_show->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
             <div class="dropdown-menu">
                 <?php
                     if ( is_user_logged_in() ) {

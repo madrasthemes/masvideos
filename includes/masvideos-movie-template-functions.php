@@ -944,8 +944,8 @@ if ( ! function_exists( 'masvideos_template_button_movie_playlist' ) ) {
         global $movie;
 
         ?>
-        <div class="dropdown">
-            <a class="movie-actions--link_add-to-playlist dropdown-toggle" href="<?php echo get_permalink( $movie->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+        <div class="movie-actions--link_add-to-playlist dropdown">
+            <a class="dropdown-toggle" href="<?php echo get_permalink( $movie->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
             <div class="dropdown-menu">
                 <?php
                     if ( is_user_logged_in() ) {
