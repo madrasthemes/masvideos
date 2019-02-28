@@ -114,7 +114,10 @@ function masvideos_update_movie_playlist( $id = 0, $args ) {
     $movie_playlist = masvideos_get_movie_playlist( $id );
 
     if ( ! $movie_playlist ) {
+        $current_user_id = get_current_user_id();
+        $slug = uniqid( $current_user_id );
         $movie_playlist = new MasVideos_Movie_Playlist( $id );
+        $movie_playlist->set_slug( $slug );
     }
 
     $movie_playlist->set_name( $args['name'] );
@@ -226,7 +229,7 @@ function masvideos_get_current_user_movie_playlists() {
 
         $args = array(
             'post_type'         => 'movie_playlist',
-            'post_status'       => array( 'publish', 'private' ),
+            'post_status'       => array_keys( masvideos_get_movie_playlist_visibility_options() ),
             'posts_per_page'    => -1,
             'author'            => $current_user_id
         );
@@ -237,4 +240,19 @@ function masvideos_get_current_user_movie_playlists() {
     }
 
     return false;
+}
+
+/**
+ * Get movie playlist visibility options.
+ *
+ * @since 1.0.0
+ * @return array
+ */
+function masvideos_get_movie_playlist_visibility_options() {
+    return apply_filters(
+        'masvideos_movie_playlist_visibility_options', array(
+            'publish' => __( 'Public', 'masvideos' ),
+            'private' => __( 'Private', 'masvideos' ),
+        )
+    );
 }

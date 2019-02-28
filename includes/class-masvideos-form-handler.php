@@ -19,6 +19,8 @@ class MasVideos_Form_Handler {
     public static function init() {
         add_action( 'wp_loaded', array( __CLASS__, 'process_login' ), 20 );
         add_action( 'wp_loaded', array( __CLASS__, 'process_registration' ), 20 );
+        add_action( 'wp_loaded', array( __CLASS__, 'edit_playlist' ), 20 );
+        add_action( 'wp_loaded', array( __CLASS__, 'delete_playlist' ), 20 );
     }
 
     /**
@@ -128,6 +130,119 @@ class MasVideos_Form_Handler {
             } catch ( Exception $e ) {
                 masvideos_add_notice( '<strong>' . __( 'Error:', 'masvideos' ) . '</strong> ' . $e->getMessage(), 'error' );
                 do_action( 'masvideos_registration_failed' );
+            }
+        }
+    }
+
+    /**
+     * Process the edit playlist form.
+     */
+    public static function edit_playlist() {
+        $nonce_value = isset( $_POST['_wpnonce'] ) ? $_POST['_wpnonce'] : '';
+        $nonce_value = isset( $_POST['masvideos-edit-playlist-nonce'] ) ? $_POST['masvideos-edit-playlist-nonce'] : $nonce_value;
+
+        if ( ! empty( $_POST['edit-playlist'] ) && wp_verify_nonce( $nonce_value, 'masvideos-edit-playlist' ) ) {
+            $id         = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : 0;
+            $title      = masvideos_clean( $_POST['title'] );
+            $visibility = masvideos_clean( $_POST['visibility'] );
+            $post_type  = masvideos_clean( $_POST['post_type'] );
+
+            try {
+                $validation_error = new WP_Error();
+                $validation_error = apply_filters( 'masvideos_process_edit_playlist_errors', $validation_error, $title, $visibility, $post_type );
+
+                if ( $validation_error->get_error_code() ) {
+                    throw new Exception( $validation_error->get_error_message() );
+                }
+
+                $args = array(
+                    'name'      => $title,
+                    'status'    => $visibility,
+                );
+
+                switch ( $post_type ) {
+                    case 'tv_show_playlist':
+                        $playlist = masvideos_update_tv_show_playlist( $id, $args );
+                        break;
+
+                    case 'video_playlist':
+                        $playlist = masvideos_update_video_playlist( $id, $args );
+                        break;
+
+                    case 'movie_playlist':
+                        $playlist = masvideos_update_movie_playlist( $id, $args );
+                        break;
+
+                    default:
+                        throw new Exception( '<strong>' . __( 'Error:', 'masvideos' ) . '</strong> ' . __( 'Posttype is not valid.', 'masvideos' ) );
+                        break;
+                }
+
+                if ( is_wp_error( $playlist ) ) {
+                    throw new Exception( $playlist->get_error_message() );
+                }
+
+                if ( ! empty( $_POST['redirect'] ) ) {
+                    $redirect = wp_sanitize_redirect( $_POST['redirect'] );
+                } elseif ( wp_get_raw_referer() ) {
+                    $redirect = wp_get_raw_referer();
+                } else {
+                    $redirect = admin_url();
+                }
+
+                wp_redirect( wp_validate_redirect( apply_filters( 'masvideos_edit_playlist_redirect', $redirect ), '#' ) );
+                exit;
+
+            } catch ( Exception $e ) {
+                masvideos_add_notice( '<strong>' . __( 'Error:', 'masvideos' ) . '</strong> ' . $e->getMessage(), 'error' );
+                do_action( 'masvideos_edit_playlist_failed' );
+            }
+        }
+    }
+
+    /**
+     * Process the delete playlist form.
+     */
+    public static function delete_playlist() {
+        $nonce_value = isset( $_GET['_wpnonce'] ) ? $_GET['_wpnonce'] : '';
+        $nonce_value = isset( $_GET['masvideos-delete-playlist-nonce'] ) ? $_GET['masvideos-delete-playlist-nonce'] : $nonce_value;
+
+        if ( ! empty( $_GET['action'] ) && wp_verify_nonce( $nonce_value, 'masvideos-delete-playlist' ) ) {
+            $id         = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
+            $action     = masvideos_clean( $_GET['action'] );
+
+            try {
+                $validation_error = new WP_Error();
+                $validation_error = apply_filters( 'masvideos_process_delete_playlist_errors', $validation_error, $id, $action );
+
+                if ( $validation_error->get_error_code() ) {
+                    throw new Exception( $validation_error->get_error_message() );
+                }
+
+                if( $action == 'delete' ) {
+                    $playlist = wp_delete_post( $id, true );
+                } elseif( $action == 'trash' ) {
+                    $playlist = wp_delete_post( $id );
+                }
+
+                if ( is_wp_error( $playlist ) ) {
+                    throw new Exception( $playlist->get_error_message() );
+                }
+
+                if ( ! empty( $_GET['redirect'] ) ) {
+                    $redirect = wp_sanitize_redirect( $_GET['redirect'] );
+                } elseif ( wp_get_raw_referer() ) {
+                    $redirect = wp_get_raw_referer();
+                } else {
+                    $redirect = admin_url();
+                }
+
+                wp_redirect( wp_validate_redirect( apply_filters( 'masvideos_delete_playlist_redirect', $redirect ), '#' ) );
+                exit;
+
+            } catch ( Exception $e ) {
+                masvideos_add_notice( '<strong>' . __( 'Error:', 'masvideos' ) . '</strong> ' . $e->getMessage(), 'error' );
+                do_action( 'masvideos_delete_playlist_failed' );
             }
         }
     }
