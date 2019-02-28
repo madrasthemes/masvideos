@@ -527,7 +527,7 @@ if ( ! function_exists( 'masvideos_template_single_video_actions_bar' ) ) {
      */
     function masvideos_template_single_video_actions_bar() {
         ?>
-        <div class="video__actions-bar">
+        <div class="single-video__actions-bar">
             <?php masvideos_template_button_video_playlist(); ?>
         </div>
         <?php
@@ -704,7 +704,7 @@ if ( ! function_exists( 'masvideos_template_single_video_author' ) ) {
     function masvideos_template_single_video_author() {
         $author = get_the_author();
         if( ! empty( $author ) ) {
-            echo sprintf( '<span class="video_author">%s <a href="%1$s" class="url fn" rel="author">%s</a></span>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author );
+            echo sprintf( '<span class="video_author">%s <strong>%s</strong></span>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author );
         }
     }
 }
@@ -761,6 +761,51 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_video_related_playlist_videos' ) ) {
+    /**
+     * Single video page related playlist videos.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_single_video_related_playlist_videos() {
+        global $video;
+        $video_id = $video->get_id();
+
+        $video_playlist_id = isset( $_GET['video_playlist_id'] ) ? absint( $_GET['video_playlist_id'] ) : 0;
+
+        if( $video_playlist_id > 0 ) {
+            $videos_ids = masvideos_single_video_playlist_videos( $video_playlist_id );
+            $title = apply_filters( 'masvideos_template_single_video_videos_playlist_title', get_the_title( $video_playlist_id ), $video_playlist_id );
+            $count_info = apply_filters( 'masvideos_template_single_video_videos_playlist_count', count( $videos_ids ) . esc_html__( ' videos', 'masvideos' ), $video_playlist_id );
+
+            if( ! empty( $videos_ids ) ) {
+                $filtered_videos_ids = $videos_ids;
+
+                if ( ( $current_video_key = array_search( $video_id, $filtered_videos_ids ) ) !== false ) {
+                    unset( $filtered_videos_ids[$current_video_key] );
+                }
+
+                $args = apply_filters( 'masvideos_template_single_video_videos_playlist_args', array(
+                    'limit'          => 5,
+                    'columns'        => 5,
+                    'orderby'        => 'rand',
+                    'order'          => 'desc',
+                    'ids'            => implode( ",", $filtered_videos_ids )
+                ) );
+                ?>
+                <div class="single-video__related-playlist-videos">
+                    <?php
+                        echo sprintf( '<h2 class="single-video__related-playlist-videos--title">%s</h2>', $title );
+                        echo sprintf( '<a href="%s" class="single-video__related-playlist-videos--count">%s</a>', get_permalink( $video_playlist_id ), $count_info );
+                        masvideos_template_single_video_playlist_videos( $video_playlist_id, $args );
+                    ?>
+                </div>
+                <?php
+            }
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_button_video_playlist' ) ) {
     /**
      * Button dropdown for Add/Remove video to playlist.
@@ -771,15 +816,19 @@ if ( ! function_exists( 'masvideos_template_button_video_playlist' ) ) {
         global $video;
 
         ?>
-        <div class="dropdown">
-            <a class="video-actions--link_add-to-playlist dropdown-toggle" href="<?php echo get_permalink( $video->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+        <div class="video-actions--link_add-to-playlist dropdown">
+            <a class="dropdown-toggle" href="<?php echo get_permalink( $video->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
             <div class="dropdown-menu">
                 <?php
                     if ( is_user_logged_in() ) {
                         masvideos_template_button_toggle_user_video_playlist( $video->get_id() );
-                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                        $video_playlists_page_id     = masvideos_get_page_id( 'video_playlists' );
+                        $video_playlists_page_url    = $video_playlists_page_id > 0 ?  get_permalink( $video_playlists_page_id ) : '#';
+                        ?><a class="create-playlist-link" href="<?php echo esc_attr( $video_playlists_page_url ); ?>"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
                     } else {
-                        ?><a class="login-link" href="#"><?php echo esc_html__( 'Sign in to add this video to a playlist.', 'masvideos' ); ?></a><?php
+                        $register_login_page_id     = masvideos_get_page_id( 'myaccount' );
+                        $register_login_page_url    = $register_login_page_id > 0 ?  get_permalink( $register_login_page_id ) : wp_login_url( get_permalink() );
+                        ?><a class="login-link" href="<?php echo esc_attr( $register_login_page_url ); ?>"><?php echo esc_html__( 'Sign in to add this video to a playlist.', 'masvideos' ); ?></a><?php
                     }
                 ?>
             </div>

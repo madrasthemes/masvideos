@@ -233,6 +233,7 @@ add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_m
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_actions_bar', 15 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_description', 20 );
 add_action( 'masvideos_after_single_video_summary', 'masvideos_related_videos', 50 );
+add_action( 'masvideos_after_single_video_summary', 'masvideos_template_single_video_related_playlist_videos', 55 );
 add_action( 'masvideos_after_single_video_summary', 'comments_template', 60 );
 
 /**
@@ -317,12 +318,29 @@ add_action( 'masvideos_movie_review_comment_text', 'masvideos_movie_review_displ
 
 /**
  * Movie Playlists Loop.
- *
  */
 add_action( 'masvideos_movie_playlists_loop_item_title', 'masvideos_template_loop_movie_playlist_link_open', 10 );
 add_action( 'masvideos_movie_playlists_loop_item_title', 'masvideos_template_loop_movie_playlist_title', 20 );
 add_action( 'masvideos_movie_playlists_loop_item_title', 'masvideos_template_loop_movie_playlist_link_close', 30 );
 
+/**
+ * TV Show Playlists Single.
+ */
+add_action( 'masvideos_single_tv_show_playlist_summary', 'masvideos_template_single_tv_show_playlist_title', 10 );
+add_action( 'masvideos_single_tv_show_playlist_summary', 'masvideos_template_single_tv_show_playlist_tv_shows', 20 );
+
+/**
+ * Video Playlists Single.
+ */
+add_action( 'masvideos_single_video_playlist_summary', 'masvideos_template_single_video_playlist_title', 10 );
+add_action( 'masvideos_single_video_playlist_summary', 'masvideos_template_single_video_playlist_videos', 20 );
+
+
+/**
+ * Movie Playlists Single.
+ */
+add_action( 'masvideos_single_movie_playlist_summary', 'masvideos_template_single_movie_playlist_title', 10 );
+add_action( 'masvideos_single_movie_playlist_summary', 'masvideos_template_single_movie_playlist_movies', 20 );
 
 /**
  * Footer.

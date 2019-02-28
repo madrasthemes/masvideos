@@ -243,6 +243,40 @@ function masvideos_get_current_user_tv_show_playlists() {
 }
 
 /**
+ * Get single playlist's all tv shows.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_single_tv_show_playlist_tv_shows( $id ) {
+    $tv_show_playlist = masvideos_get_tv_show_playlist( $id );
+
+    if ( ! $tv_show_playlist ) {
+        return false;
+    }
+
+    return $tv_show_playlist->get_tv_show_ids();
+}
+
+/**
+ * Update single tv show's link for playlist.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_loop_tv_show_link_for_tv_show_playlist( $link, $tv_show ) {
+    if ( is_tv_show_playlist() ) {
+        $tv_show_playlist_id = get_queried_object_id();
+        return add_query_arg( 'tv_show_playlist_id', $tv_show_playlist_id, $link );
+    } elseif( is_tv_show() ) {
+        $tv_show_playlist_id = isset( $_GET['tv_show_playlist_id'] ) ? absint( $_GET['tv_show_playlist_id'] ) : 0;
+        return add_query_arg( 'tv_show_playlist_id', $tv_show_playlist_id, $link );
+    }
+
+    return $link;  
+}
+
+/**
  * Get tv show playlist visibility options.
  *
  * @since 1.0.0
