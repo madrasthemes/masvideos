@@ -259,6 +259,24 @@ function masvideos_single_video_playlist_videos( $id ) {
 }
 
 /**
+ * Update single video's link for playlist.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_loop_video_link_for_video_playlist( $link, $video ) {
+    if ( is_video_playlist() ) {
+        $video_playlist_id = get_queried_object_id();
+        return add_query_arg( 'video_playlist_id', $video_playlist_id, $link );
+    } elseif( is_video() ) {
+        $video_playlist_id = isset( $_GET['video_playlist_id'] ) ? absint( $_GET['video_playlist_id'] ) : 0;
+        return add_query_arg( 'video_playlist_id', $video_playlist_id, $link );
+    }
+
+    return $link;  
+}
+
+/**
  * Get video playlist visibility options.
  *
  * @since 1.0.0

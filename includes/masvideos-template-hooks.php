@@ -233,6 +233,7 @@ add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_m
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_actions_bar', 15 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_description', 20 );
 add_action( 'masvideos_after_single_video_summary', 'masvideos_related_videos', 50 );
+add_action( 'masvideos_after_single_video_summary', 'masvideos_template_single_video_related_playlist_videos', 55 );
 add_action( 'masvideos_after_single_video_summary', 'comments_template', 60 );
 
 /**

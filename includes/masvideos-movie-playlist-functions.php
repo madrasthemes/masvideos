@@ -259,6 +259,24 @@ function masvideos_single_movie_playlist_movies( $id ) {
 }
 
 /**
+ * Update single movie's link for playlist.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_loop_movie_link_for_movie_playlist( $link, $movie ) {
+    if ( is_movie_playlist() ) {
+        $movie_playlist_id = get_queried_object_id();
+        return add_query_arg( 'movie_playlist_id', $movie_playlist_id, $link );
+    } elseif( is_movie() ) {
+        $movie_playlist_id = isset( $_GET['movie_playlist_id'] ) ? absint( $_GET['movie_playlist_id'] ) : 0;
+        return add_query_arg( 'movie_playlist_id', $movie_playlist_id, $link );
+    }
+
+    return $link;  
+}
+
+/**
  * Get movie playlist visibility options.
  *
  * @since 1.0.0
