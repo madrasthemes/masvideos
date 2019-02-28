@@ -196,3 +196,35 @@ if ( ! function_exists( 'masvideos_template_button_toggle_user_movie_playlist' )
         }
     }
 }
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for movie playlists in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_link_open() {
+        global $movie;
+
+        $link = apply_filters( 'masvideos_loop_movie_link', get_the_permalink(), $movie );
+
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopMoviePlaylist-link masvideos-loop-movie-playlist__link movie-playlist__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for movie playlists in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_link_close() {
+        echo '</a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_title' ) ) {
+
+    /**
+     * Show the movie playlist title in the movie playlists loop. By default this is an H3.
+     */
+    function masvideos_template_loop_movie_playlist_title() {
+        the_title( '<h3 class="masvideos-loop-movie-playlist__title  movie-playlist__title">', '</h3>' );
+    }
+}

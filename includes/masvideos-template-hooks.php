@@ -315,6 +315,14 @@ add_action( 'masvideos_movie_review_before_comment_meta', 'masvideos_movie_revie
 add_action( 'masvideos_movie_review_meta', 'masvideos_movie_review_display_meta', 10 );
 add_action( 'masvideos_movie_review_comment_text', 'masvideos_movie_review_display_comment_text', 10 );
 
+/**
+ * Movie Playlists Loop.
+ *
+ */
+add_action( 'masvideos_movie_playlists_loop_item_title', 'masvideos_template_loop_movie_playlist_link_open', 10 );
+add_action( 'masvideos_movie_playlists_loop_item_title', 'masvideos_template_loop_movie_playlist_title', 20 );
+add_action( 'masvideos_movie_playlists_loop_item_title', 'masvideos_template_loop_movie_playlist_link_close', 30 );
+
 
 /**
  * Footer.
