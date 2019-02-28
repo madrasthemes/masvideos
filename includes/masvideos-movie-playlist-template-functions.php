@@ -179,6 +179,52 @@ if ( ! function_exists( 'masvideos_movie_playlist_loop_end' ) ) {
     }
 }
 
+/**
+ * Single
+ */
+
+if ( ! function_exists( 'masvideos_template_single_movie_playlist_title' ) ) {
+
+    /**
+     * Output the movie playlist title.
+     */
+    function masvideos_template_single_movie_playlist_title() {
+        the_title( '<h1 class="movie-playlist-title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_playlist_movies' ) ) {
+
+    /**
+     * Output the movie playlist all movies.
+     */
+    function masvideos_template_single_movie_playlist_movies( $movie_playlist_id = false, $args = array() ) {
+        global $movie_playlist;
+
+        $movie_playlist_id = $movie_playlist_id ? $movie_playlist_id : $movie_playlist->get_id();
+
+        if ( ! $movie_playlist_id ) {
+            return;
+        }
+
+        $movie_ids = masvideos_single_movie_playlist_movies( $movie_playlist_id );
+
+        if( ! empty( $movie_ids ) ) {
+            $defaults = apply_filters( 'masvideos_template_single_movie_playlist_movies_default_args', array(
+                'limit'          => -1,
+                'columns'        => 5,
+                'orderby'        => 'rand',
+                'order'          => 'desc',
+                'ids'            => implode( ",", $movie_ids )
+            ) );
+
+            $args = wp_parse_args( $args, $defaults );
+
+            echo MasVideos_Shortcodes::movies( $args );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_button_toggle_user_movie_playlist' ) ) {
     /**
      * Button for Add/Remove movie to playlist.

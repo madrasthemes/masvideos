@@ -241,6 +241,23 @@ function masvideos_get_current_user_video_playlists() {
 
     return false;
 }
+
+/**
+ * Get single playlist's all videos.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_single_video_playlist_videos( $id ) {
+    $video_playlist = masvideos_get_video_playlist( $id );
+
+    if ( ! $video_playlist ) {
+        return false;
+    }
+
+    return $video_playlist->get_video_ids();
+}
+
 /**
  * Get video playlist visibility options.
  *

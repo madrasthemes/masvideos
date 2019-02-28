@@ -243,6 +243,22 @@ function masvideos_get_current_user_movie_playlists() {
 }
 
 /**
+ * Get single playlist's all movies.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_single_movie_playlist_movies( $id ) {
+    $movie_playlist = masvideos_get_movie_playlist( $id );
+
+    if ( ! $movie_playlist ) {
+        return false;
+    }
+
+    return $movie_playlist->get_movie_ids();
+}
+
+/**
  * Get movie playlist visibility options.
  *
  * @since 1.0.0

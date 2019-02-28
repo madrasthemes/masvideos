@@ -179,6 +179,52 @@ if ( ! function_exists( 'masvideos_tv_show_playlist_loop_end' ) ) {
     }
 }
 
+/**
+ * Single
+ */
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_playlist_title' ) ) {
+
+    /**
+     * Output the tv show playlist title.
+     */
+    function masvideos_template_single_tv_show_playlist_title() {
+        the_title( '<h1 class="tv_show-playlist-title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_playlist_tv_shows' ) ) {
+
+    /**
+     * Output the tv show playlist all tv shows.
+     */
+    function masvideos_template_single_tv_show_playlist_tv_shows( $tv_show_playlist_id = false, $args = array() ) {
+        global $tv_show_playlist;
+
+        $tv_show_playlist_id = $tv_show_playlist_id ? $tv_show_playlist_id : $tv_show_playlist->get_id();
+
+        if ( ! $tv_show_playlist_id ) {
+            return;
+        }
+
+        $tv_show_ids = masvideos_single_tv_show_playlist_tv_shows( $tv_show_playlist_id );
+
+        if( ! empty( $tv_show_ids ) ) {
+            $defaults = apply_filters( 'masvideos_template_single_tv_show_playlist_tv_shows_default_args', array(
+                'limit'          => -1,
+                'columns'        => 5,
+                'orderby'        => 'rand',
+                'order'          => 'desc',
+                'ids'            => implode( ",", $tv_show_ids )
+            ) );
+
+            $args = wp_parse_args( $args, $defaults );
+
+            echo MasVideos_Shortcodes::tv_shows( $args );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_button_toggle_user_tv_show_playlist' ) ) {
     /**
      * Button for Add/Remove tv show to playlist.

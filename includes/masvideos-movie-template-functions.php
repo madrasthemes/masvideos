@@ -944,15 +944,19 @@ if ( ! function_exists( 'masvideos_template_button_movie_playlist' ) ) {
         global $movie;
 
         ?>
-        <div class="dropdown">
-            <a class="movie-actions--link_add-to-playlist dropdown-toggle" href="<?php echo get_permalink( $movie->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+        <div class="movie-actions--link_add-to-playlist dropdown">
+            <a class="dropdown-toggle" href="<?php echo get_permalink( $movie->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
             <div class="dropdown-menu">
                 <?php
                     if ( is_user_logged_in() ) {
                         masvideos_template_button_toggle_user_movie_playlist( $movie->get_id() );
-                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                        $movie_playlists_page_id     = masvideos_get_page_id( 'movie_playlists' );
+                        $movie_playlists_page_url    = $movie_playlists_page_id > 0 ?  get_permalink( $movie_playlists_page_id ) : '#';
+                        ?><a class="create-playlist-link" href="<?php echo esc_attr( $movie_playlists_page_url ); ?>"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
                     } else {
-                        ?><a class="login-link" href="#"><?php echo esc_html__( 'Sign in to add this movie to a playlist.', 'masvideos' ); ?></a><?php
+                        $register_login_page_id     = masvideos_get_page_id( 'myaccount' );
+                        $register_login_page_url    = $register_login_page_id > 0 ?  get_permalink( $register_login_page_id ) : wp_login_url( get_permalink() );
+                        ?><a class="login-link" href="<?php echo esc_attr( $register_login_page_url ); ?>"><?php echo esc_html__( 'Sign in to add this movie to a playlist.', 'masvideos' ); ?></a><?php
                     }
                 ?>
             </div>

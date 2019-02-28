@@ -243,6 +243,22 @@ function masvideos_get_current_user_tv_show_playlists() {
 }
 
 /**
+ * Get single playlist's all tv shows.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_single_tv_show_playlist_tv_shows( $id ) {
+    $tv_show_playlist = masvideos_get_tv_show_playlist( $id );
+
+    if ( ! $tv_show_playlist ) {
+        return false;
+    }
+
+    return $tv_show_playlist->get_tv_show_ids();
+}
+
+/**
  * Get tv show playlist visibility options.
  *
  * @since 1.0.0
