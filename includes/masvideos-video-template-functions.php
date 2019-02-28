@@ -777,9 +777,13 @@ if ( ! function_exists( 'masvideos_template_button_video_playlist' ) ) {
                 <?php
                     if ( is_user_logged_in() ) {
                         masvideos_template_button_toggle_user_video_playlist( $video->get_id() );
-                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                        $video_playlists_page_id     = masvideos_get_page_id( 'video_playlists' );
+                        $video_playlists_page_url    = $video_playlists_page_id > 0 ?  get_permalink( $video_playlists_page_id ) : '#';
+                        ?><a class="create-playlist-link" href="<?php echo esc_attr( $video_playlists_page_url ); ?>"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
                     } else {
-                        ?><a class="login-link" href="#"><?php echo esc_html__( 'Sign in to add this video to a playlist.', 'masvideos' ); ?></a><?php
+                        $register_login_page_id     = masvideos_get_page_id( 'myaccount' );
+                        $register_login_page_url    = $register_login_page_id > 0 ?  get_permalink( $register_login_page_id ) : wp_login_url( get_permalink() );
+                        ?><a class="login-link" href="<?php echo esc_attr( $register_login_page_url ); ?>"><?php echo esc_html__( 'Sign in to add this video to a playlist.', 'masvideos' ); ?></a><?php
                     }
                 ?>
             </div>

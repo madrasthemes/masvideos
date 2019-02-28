@@ -1120,9 +1120,13 @@ if ( ! function_exists( 'masvideos_template_button_tv_show_playlist' ) ) {
                 <?php
                     if ( is_user_logged_in() ) {
                         masvideos_template_button_toggle_user_tv_show_playlist( $tv_show->get_id() );
-                        ?><a class="create-playlist-link" href="#"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                        $tv_show_playlists_page_id  = masvideos_get_page_id( 'tv_show_playlists' );
+                        $tv_show_playlists_page_url = $tv_show_playlists_page_id > 0 ?  get_permalink( $tv_show_playlists_page_id ) : '#';
+                        ?><a class="create-playlist-link" href="<?php echo esc_attr( $tv_show_playlists_page_url ); ?>"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
                     } else {
-                        ?><a class="login-link" href="#"><?php echo esc_html__( 'Sign in to add this tv show to a playlist.', 'masvideos' ); ?></a><?php
+                        $register_login_page_id     = masvideos_get_page_id( 'myaccount' );
+                        $register_login_page_url    = $register_login_page_id > 0 ?  get_permalink( $register_login_page_id ) : wp_login_url( get_permalink() );
+                        ?><a class="login-link" href="<?php echo esc_attr( $register_login_page_url ); ?>"><?php echo esc_html__( 'Sign in to add this tv show to a playlist.', 'masvideos' ); ?></a><?php
                     }
                 ?>
             </div>
