@@ -111,6 +111,18 @@ if ( ! function_exists( 'taxonomy_is_video_attribute' ) ) {
     }
 }
 
+if ( ! function_exists( 'is_video_playlist' ) ) {
+
+    /**
+     * Is_video_playlist - Returns true when viewing a single video playlist.
+     *
+     * @return bool
+     */
+    function is_video_playlist() {
+        return is_singular( array( 'video_playlist' ) );
+    }
+}
+
 if ( ! function_exists( 'is_movies' ) ) {
 
     /**
@@ -186,6 +198,18 @@ if ( ! function_exists( 'taxonomy_is_movie_attribute' ) ) {
         global $masvideos_attributes;
 
         return taxonomy_exists( $name ) && isset( $masvideos_attributes['movie'] ) && array_key_exists( $name, (array) $masvideos_attributes['movie'] );
+    }
+}
+
+if ( ! function_exists( 'is_movie_playlist' ) ) {
+
+    /**
+     * Is_movie_playlist - Returns true when viewing a single movie playlist.
+     *
+     * @return bool
+     */
+    function is_movie_playlist() {
+        return is_singular( array( 'movie_playlist' ) );
     }
 }
 
@@ -342,5 +366,17 @@ if ( ! function_exists( 'taxonomy_is_tv_show_attribute' ) ) {
         global $masvideos_attributes;
 
         return taxonomy_exists( $name ) && isset( $masvideos_attributes['tv_show'] ) && array_key_exists( $name, (array) $masvideos_attributes['tv_show'] );
+    }
+}
+
+if ( ! function_exists( 'is_tv_show_playlist' ) ) {
+
+    /**
+     * Is_tv_show_playlist - Returns true when viewing a single tv show playlist.
+     *
+     * @return bool
+     */
+    function is_tv_show_playlist() {
+        return is_singular( array( 'tv_show_playlist' ) );
     }
 }
