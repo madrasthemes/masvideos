@@ -179,6 +179,54 @@ if ( ! function_exists( 'masvideos_video_playlist_loop_end' ) ) {
     }
 }
 
+/**
+ * Single
+ */
+
+if ( ! function_exists( 'masvideos_template_single_video_playlist_title' ) ) {
+
+    /**
+     * Output the video playlist title.
+     */
+    function masvideos_template_single_video_playlist_title() {
+        the_title( '<h1 class="video-playlist-title entry-title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_playlist_videos' ) ) {
+
+    /**
+     * Output the video playlist all videos.
+     */
+    function masvideos_template_single_video_playlist_videos( $video_playlist_id = false, $args = array() ) {
+        global $video_playlist;
+
+        $video_playlist_id = $video_playlist_id ? $video_playlist_id : $video_playlist->get_id();
+
+        if ( ! $video_playlist_id ) {
+            return;
+        }
+
+        $video_ids = masvideos_single_video_playlist_videos( $video_playlist_id );
+
+        if( ! empty( $video_ids ) ) {
+            $defaults = apply_filters( 'masvideos_template_single_video_playlist_videos_default_args', array(
+                'limit'          => -1,
+                'columns'        => 5,
+                'orderby'        => 'rand',
+                'order'          => 'desc',
+                'ids'            => implode( ",", $video_ids )
+            ) );
+
+            $args = wp_parse_args( $args, $defaults );
+
+            add_filter( 'masvideos_loop_video_link', 'masvideos_loop_video_link_for_video_playlist', 99, 2 );
+            echo MasVideos_Shortcodes::videos( $args );
+            remove_filter( 'masvideos_loop_video_link', 'masvideos_loop_video_link_for_video_playlist', 99, 2 );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_button_toggle_user_video_playlist' ) ) {
     /**
      * Button for Add/Remove video to playlist.

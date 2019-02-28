@@ -315,6 +315,35 @@ add_action( 'masvideos_movie_review_before_comment_meta', 'masvideos_movie_revie
 add_action( 'masvideos_movie_review_meta', 'masvideos_movie_review_display_meta', 10 );
 add_action( 'masvideos_movie_review_comment_text', 'masvideos_movie_review_display_comment_text', 10 );
 
+/**
+ * TV Show Playlists Loop.
+ */
+
+/**
+ * TV Show Playlists Single.
+ */
+add_action( 'masvideos_single_tv_show_playlist_summary', 'masvideos_template_single_tv_show_playlist_title', 10 );
+add_action( 'masvideos_single_tv_show_playlist_summary', 'masvideos_template_single_tv_show_playlist_tv_shows', 20 );
+
+/**
+ * Video Playlists Loop.
+ */
+
+/**
+ * Video Playlists Single.
+ */
+add_action( 'masvideos_single_video_playlist_summary', 'masvideos_template_single_video_playlist_title', 10 );
+add_action( 'masvideos_single_video_playlist_summary', 'masvideos_template_single_video_playlist_videos', 20 );
+
+/**
+ * Movie Playlists Loop.
+ */
+
+/**
+ * Movie Playlists Single.
+ */
+add_action( 'masvideos_single_movie_playlist_summary', 'masvideos_template_single_movie_playlist_title', 10 );
+add_action( 'masvideos_single_movie_playlist_summary', 'masvideos_template_single_movie_playlist_movies', 20 );
 
 /**
  * Footer.

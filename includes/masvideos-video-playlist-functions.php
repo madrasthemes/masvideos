@@ -241,6 +241,41 @@ function masvideos_get_current_user_video_playlists() {
 
     return false;
 }
+
+/**
+ * Get single playlist's all videos.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_single_video_playlist_videos( $id ) {
+    $video_playlist = masvideos_get_video_playlist( $id );
+
+    if ( ! $video_playlist ) {
+        return false;
+    }
+
+    return $video_playlist->get_video_ids();
+}
+
+/**
+ * Update single video's link for playlist.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_loop_video_link_for_video_playlist( $link, $video ) {
+
+    if ( is_video_playlist() ) {
+        global $video_playlist;
+        echo get_the_ID();
+        vodi_pr( $video_playlist );
+        return add_query_arg( 'video_playlist_id', get_the_ID(), $link );
+    }
+
+    return $link;
+}
+
 /**
  * Get video playlist visibility options.
  *
