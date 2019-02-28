@@ -26,12 +26,14 @@ if( empty( $playlists ) ) {
     return;
 }
 
+$section_title = ! empty( $manage_section_title ) ? $manage_section_title : esc_html__( 'Manage Playlists', 'masvideos' );
+
 do_action( 'masvideos_before_manage_playlists' ); ?>
 
 <div class="masvideos-manage-playlists">
     <div class="masvideos-manage-playlists__inner">
 
-        <h2><?php esc_html_e( 'Manage Playlists', 'masvideos' ); ?></h2>
+        <h2><?php echo esc_html( $section_title ); ?></h2>
 
         <table>
             <thead>

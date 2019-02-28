@@ -22,14 +22,24 @@ if( ! isset( $post_type ) ) {
     return;
 }
 
-$id         = 0;
-$title      = '';
-$visibility = '';
+$create_section_title   = ! empty( $create_section_title ) ? $create_section_title : esc_html__( 'Create Playlist', 'masvideos' );
+$update_section_title   = ! empty( $update_section_title ) ? $update_section_title : esc_html__( 'Update Playlist', 'masvideos' );
+$section_title          = $create_section_title;
+
+$create_button_text     = ! empty( $create_button_text ) ? $create_button_text : esc_html__( 'Create', 'masvideos' );
+$update_button_text     = ! empty( $update_button_text ) ? $update_button_text : esc_html__( 'Update', 'masvideos' );
+$button_text            = $create_button_text;
+
+$id             = 0;
+$title          = '';
+$visibility     = '';
 
 if( ! empty( $playlist ) ) {
-    $id         = $playlist->get_id();
-    $title      = $playlist->get_name();
-    $visibility = $playlist->get_status();
+    $id             = $playlist->get_id();
+    $title          = $playlist->get_name();
+    $visibility     = $playlist->get_status();
+    $section_title  = $update_section_title;
+    $button_text    = $update_button_text;
 }
 
 do_action( 'masvideos_before_edit_playlist_form', $playlist ); ?>
@@ -37,7 +47,7 @@ do_action( 'masvideos_before_edit_playlist_form', $playlist ); ?>
 <div class="masvideos-edit-playlist">
     <div class="masvideos-edit-playlist__inner">
 
-        <h2><?php esc_html_e( 'Create Playlist', 'masvideos' ); ?></h2>
+        <h2><?php echo esc_html( $section_title ); ?></h2>
 
         <form method="post" class="masvideos-form masvideos-edit-playlist__form masvideos-edit-playlist__form--<?php esc_attr_e( $post_type ); ?>" <?php do_action( 'masvideos_edit_playlist_form_tag', $playlist ); ?> >
 
@@ -63,7 +73,7 @@ do_action( 'masvideos_before_edit_playlist_form', $playlist ); ?>
                 <input name="id" type="hidden" value="<?php echo esc_attr( $id ); ?>" />
                 <input name="post_type" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
                 <?php wp_nonce_field( 'masvideos-edit-playlist', 'masvideos-edit-playlist-nonce' ); ?>
-                <button type="submit" class="masvideos-Button button" name="edit-playlist" value="<?php esc_attr_e( 'Create', 'masvideos' ); ?>"><?php esc_html_e( 'Create', 'masvideos' ); ?></button>
+                <button type="submit" class="masvideos-Button button" name="edit-playlist" value="<?php echo esc_attr( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></button>
             </p>
 
             <?php do_action( 'masvideos_edit_playlist_form_end', $playlist ); ?>

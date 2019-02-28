@@ -63,17 +63,17 @@ class MasVideos_Shortcode_My_Account {
                 $playlist = function_exists( $playlist_func_name ) ? $playlist_func_name( $id ) : false;
             }
 
-            masvideos_get_template( 'myaccount/edit-playlist.php', array(
+            masvideos_get_template( 'myaccount/edit-playlist.php', wp_parse_args( array(
                 'post_type'     => $post_type,
                 'playlist'      => isset( $playlist ) && $playlist ? $playlist : false,
-            ) );
+            ), $atts ) );
 
             $playlists_func_name = 'masvideos_get_current_user_' . $post_type . 's';
 
-            masvideos_get_template( 'myaccount/manage-playlists.php', array(
+            masvideos_get_template( 'myaccount/manage-playlists.php', wp_parse_args( array(
                 'post_type'     => $post_type,
                 'playlists'     => function_exists( $playlists_func_name ) ? $playlists_func_name() : false
-            ) );
+            ), $atts ) );
         }
     }
 }
