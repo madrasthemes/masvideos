@@ -74,6 +74,9 @@ do_action( 'masvideos_before_edit_playlist_form', $playlist ); ?>
                 <input name="post_type" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
                 <?php wp_nonce_field( 'masvideos-edit-playlist', 'masvideos-edit-playlist-nonce' ); ?>
                 <button type="submit" class="masvideos-Button button" name="edit-playlist" value="<?php echo esc_attr( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></button>
+                <?php if( ! empty( $playlist ) ) : ?>
+                    <a href="<?php echo esc_url( get_permalink() ); ?>" ><?php echo esc_html( $create_button_text ); ?></a>
+                <?php endif; ?>
             </p>
 
             <?php do_action( 'masvideos_edit_playlist_form_end', $playlist ); ?>

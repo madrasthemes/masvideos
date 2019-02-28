@@ -187,7 +187,7 @@ class MasVideos_Form_Handler {
                 } elseif ( wp_get_raw_referer() ) {
                     $redirect = wp_get_raw_referer();
                 } else {
-                    $redirect = '#';
+                    $redirect = admin_url();
                 }
 
                 wp_redirect( wp_validate_redirect( apply_filters( 'masvideos_edit_playlist_redirect', $redirect ), '#' ) );
@@ -234,7 +234,7 @@ class MasVideos_Form_Handler {
                 } elseif ( wp_get_raw_referer() ) {
                     $redirect = wp_get_raw_referer();
                 } else {
-                    $redirect = '#';
+                    $redirect = admin_url();
                 }
 
                 wp_redirect( wp_validate_redirect( apply_filters( 'masvideos_delete_playlist_redirect', $redirect ), '#' ) );
