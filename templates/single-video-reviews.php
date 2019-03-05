@@ -31,7 +31,7 @@ if ( ! comments_open() ) {
                 $commenter = wp_get_current_commenter();
 
                 $comment_form = array(
-                    'title_reply'          => have_comments() ? __( 'Add a review', 'masvideos' ) : sprintf( __( 'Be the first to review &ldquo;%s&rdquo;', 'masvideos' ), get_the_title() ),
+                    'title_reply'          => have_comments() ? __( 'Comments', 'masvideos' ) : sprintf( __( 'Be the first to comment &ldquo;%s&rdquo;', 'masvideos' ), get_the_title() ),
                     'title_reply_to'       => __( 'Leave a Reply to %s', 'masvideos' ),
                     'title_reply_before'   => '<span id="reply-title" class="comment-reply-title">',
                     'title_reply_after'    => '</span>',
@@ -48,26 +48,10 @@ if ( ! comments_open() ) {
                 );
 
                 if ( $account_page_url = wp_login_url() ) {
-                    $comment_form['must_log_in'] = '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%s">logged in</a> to post a review.', 'masvideos' ), esc_url( $account_page_url ) ) . '</p>';
+                    $comment_form['must_log_in'] = '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%s">logged in</a> to post a comment.', 'masvideos' ), esc_url( $account_page_url ) ) . '</p>';
                 }
 
-                if ( get_option( 'masvideos_video_review_rating_required' ) === 'yes' ) {
-                    $comment_form['comment_field'] = '<div class="comment-form-rating"><label for="rating">' . esc_html__( 'Your rating', 'masvideos' ) . '</label><select name="rating" id="rating" required>
-                        <option value="">' . esc_html__( 'Rate&hellip;', 'masvideos' ) . '</option>
-                        <option value="10">10</option>
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
-                        <option value="6">6</option>
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-                    </select></div>';
-                }
-
-                $comment_form['comment_field'] .= '<p class="comment-form-comment"><label for="comment">' . esc_html__( 'Your review', 'masvideos' ) . '&nbsp;<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" required></textarea></p>';
+                $comment_form['comment_field'] .= '<p class="comment-form-comment"><label for="comment">' . esc_html__( 'Your comment', 'masvideos' ) . '&nbsp;<span class="required">*</span></label><textarea id="comment" name="comment" cols="20" rows="8" required></textarea></p>';
 
                 comment_form( apply_filters( 'masvideos_video_review_comment_form_args', $comment_form ) );
             ?>
