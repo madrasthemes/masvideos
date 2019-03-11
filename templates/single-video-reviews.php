@@ -78,7 +78,7 @@ if ( ! comments_open() ) {
 
         <?php else : ?>
 
-            <p class="masvideos-noreviews"><?php _e( 'There are no reviews yet.', 'masvideos' ); ?></p>
+            <p class="masvideos-noreviews"><?php _e( 'There are no comments yet.', 'masvideos' ); ?></p>
 
         <?php endif; ?>
     </div>
