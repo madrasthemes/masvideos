@@ -209,27 +209,6 @@ class MasVideos_Customizer {
                 'choices'     => $this->get_all_pages_array(),
             )
         );
-
-        $wp_customize->add_setting(
-            'masvideos_video_review_rating_required',
-            array(
-                'default'              => 'yes',
-                'type'                 => 'option',
-                'capability'           => 'manage_masvideos',
-                'sanitize_callback'    => 'masvideos_bool_to_string',
-                'sanitize_js_callback' => 'masvideos_string_to_bool',
-            )
-        );
-
-        $wp_customize->add_control(
-            'masvideos_video_review_rating_required',
-            array(
-                'label'    => esc_html__( 'Enable Videos Review', 'masvideos' ),
-                'section'  => 'masvideos_videos',
-                'settings' => 'masvideos_video_review_rating_required',
-                'type'     => 'checkbox',
-            )
-        );
     }
 
     /**
