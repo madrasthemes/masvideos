@@ -111,7 +111,7 @@ class MasVideos_Post_Types {
         $tv_shows_page_id = masvideos_get_page_id( 'tv_shows' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
-            $has_archive = $tv_shows_page_id && get_post( $tv_shows_page_id ) ? urldecode( get_page_uri( $tv_shows_page_id ) ) : 'tv_shows';
+            $has_archive = $tv_shows_page_id && get_post( $tv_shows_page_id ) ? urldecode( get_page_uri( $tv_shows_page_id ) ) : 'tv-shows';
         } else {
             $has_archive = false;
         }
