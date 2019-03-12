@@ -798,60 +798,11 @@ if ( ! function_exists( 'masvideos_template_single_video_related_playlist_videos
                         <?php
                             echo sprintf( '<h2 class="single-video__related-playlist-videos--title">%s</h2>', $title );
                             echo sprintf( '<a href="%s" class="single-video__related-playlist-videos--count">%s</a>', get_permalink( $video_playlist_id ), $count_info );
-                            ?>
-                        </div>
-                    <?php masvideos_template_single_video_playlist_videos( $video_playlist_id, $args ); ?>
-
-                </div>
-                <?php
-            }
-        }
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_single_video_sidebar_related_playlist_videos' ) ) {
-    /**
-     * Single video page related playlist videos.
-     *
-     * @since  1.0.0
-     */
-    function masvideos_template_single_video_sidebar_related_playlist_videos() {
-        global $video;
-        $video_id = $video->get_id();
-
-        $video_playlist_id = isset( $_GET['video_playlist_id'] ) ? absint( $_GET['video_playlist_id'] ) : 0;
-
-        if( $video_playlist_id > 0 ) {
-            $videos_ids = masvideos_single_video_playlist_videos( $video_playlist_id );
-            $title = apply_filters( 'masvideos_template_single_video_videos_playlist_title', get_the_title( $video_playlist_id ), $video_playlist_id );
-            $count_info = apply_filters( 'masvideos_template_single_video_videos_playlist_count', count( $videos_ids ) . esc_html__( ' videos', 'masvideos' ), $video_playlist_id );
-
-            if( ! empty( $videos_ids ) ) {
-                $filtered_videos_ids = $videos_ids;
-
-                if ( ( $current_video_key = array_search( $video_id, $filtered_videos_ids ) ) !== false ) {
-                    unset( $filtered_videos_ids[$current_video_key] );
-                }
-
-                $args = apply_filters( 'masvideos_template_single_video_videos_playlist_args', array(
-                    'limit'          => 5,
-                    'columns'        => 5,
-                    'orderby'        => 'rand',
-                    'order'          => 'desc',
-                    'ids'            => implode( ",", $filtered_videos_ids )
-                ) );
-                ?>
-                <div class="single-video__related-playlist-videos">
-                    <div class="single-video__related-playlist-videos--flex-header">
-                        <?php
-                            echo sprintf( '<h2 class="single-video__related-playlist-videos--title">%s</h2>', $title );
-                            echo sprintf( '<a href="%s" class="single-video__related-playlist-videos--count">%s</a>', get_permalink( $video_playlist_id ), $count_info );
-                            ?>
+                        ?>
                     </div>
-                    <div class="single-video__related-playlist-videos--content" data-simplebar>
+                    <div class="single-video__related-playlist-videos--content">
                         <?php masvideos_template_single_video_playlist_videos( $video_playlist_id, $args ); ?>
                     </div>
-
                 </div>
                 <?php
             }
