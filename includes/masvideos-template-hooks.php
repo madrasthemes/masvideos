@@ -180,6 +180,7 @@ add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_sh
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_meta', 20 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_rating_with_sharing_open', 30 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_avg_rating', 40 );
+add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_button_tv_show_playlist', 45 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_sharing', 50 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_rating_with_sharing_close', 60 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_info_head_close', 70 );

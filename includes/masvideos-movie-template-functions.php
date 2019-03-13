@@ -651,7 +651,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_poster_close' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_body_open' ) ) {
 
     /**
-     * video body open in the video loop.
+     * movie body open in the movie loop.
      */
     function masvideos_template_loop_movie_body_open() {
         echo '<div class="movie__body">';
@@ -661,7 +661,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_body_open' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_info_open' ) ) {
 
     /**
-     * video info open in the video loop.
+     * movie info open in the movie loop.
      */
     function masvideos_template_loop_movie_info_open() {
         echo '<div class="movie__info">';
@@ -671,7 +671,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_info_open' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_info_head_open' ) ) {
 
     /**
-     * video info body open in the video loop.
+     * movie info body open in the movie loop.
      */
     function masvideos_template_loop_movie_info_head_open() {
         echo '<div class="movie__info--head">';
@@ -691,7 +691,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_title' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_short_desc' ) ) {
 
     /**
-     * video short description in the video loop.
+     * movie short description in the movie loop.
      */
     function masvideos_template_loop_movie_short_desc() {
         global $post;
@@ -714,7 +714,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_short_desc' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_info_head_close' ) ) {
 
     /**
-     * video info body close in the video loop.
+     * movie info body close in the movie loop.
      */
     function masvideos_template_loop_movie_info_head_close() {
         echo '</div>';
@@ -724,7 +724,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_info_head_close' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_actions' ) ) {
 
     /**
-     * video actions in the video loop.
+     * movie actions in the movie loop.
      */
     function masvideos_template_loop_movie_actions() {
         global $movie;
@@ -738,7 +738,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_actions' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_info_close' ) ) {
 
     /**
-     * video info close in the video loop.
+     * movie info close in the movie loop.
      */
     function masvideos_template_loop_movie_info_close() {
         echo '</div>';
@@ -748,7 +748,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_info_close' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_review_info_open' ) ) {
 
     /**
-     * video review info open in the video loop.
+     * movie review info open in the movie loop.
      */
     function masvideos_template_loop_movie_review_info_open() {
         echo '<div class="movie__review-info">';
@@ -779,7 +779,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_avg_rating' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_viewers_count' ) ) {
 
     /**
-     * video actions in the video loop.
+     * movie actions in the movie loop.
      */
     function masvideos_template_loop_movie_viewers_count() {
         echo '<div class="viewers-count"></div>';
@@ -789,7 +789,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_viewers_count' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_review_info_close' ) ) {
 
     /**
-     * video review info close in the video loop.
+     * movie review info close in the movie loop.
      */
     function masvideos_template_loop_movie_review_info_close() {
         echo '</div>';
@@ -799,7 +799,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_review_info_close' ) ) {
 if ( ! function_exists( 'masvideos_template_loop_movie_body_close' ) ) {
 
     /**
-     * video body close in the video loop.
+     * movie body close in the movie loop.
      */
     function masvideos_template_loop_movie_body_close() {
         echo '</div>';
@@ -912,15 +912,15 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
         }
 
         $defaults = apply_filters( 'masvideos_related_movies_default_args', array(
-            'limit'          => 5,
-            'columns'        => 5,
+            'limit'          => 8,
+            'columns'        => 8,
             'orderby'        => 'rand',
             'order'          => 'desc',
         ) );
 
         $args = wp_parse_args( $args, $defaults );
 
-        $title = apply_filters( 'masvideos_related_movies_title', esc_html__( 'Related Movies', 'masvideos' ), $movie_id );
+        $title = apply_filters( 'masvideos_related_movies_title', esc_html__( 'You Also May Like', 'masvideos' ), $movie_id );
 
         $related_movie_ids = masvideos_get_related_movies( $movie_id, $args['limit'] );
         $args['ids'] = implode( ',', $related_movie_ids );
