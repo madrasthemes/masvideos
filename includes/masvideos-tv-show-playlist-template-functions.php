@@ -285,7 +285,9 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_poster' ) ) {
         $tv_show_ids = masvideos_single_tv_show_playlist_tv_shows( get_the_ID() );
 
         if( $tv_show_ids ) {
-            echo get_the_post_thumbnail( end( $tv_show_ids ), 'masvideos_tv_show_medium', array( 'class' => 'tv-show-playlist__poster--image' ) );
+            $recently_added_tv_show = masvideos_get_tv_show( end( $tv_show_ids ) );
+            $image_size = apply_filters( 'masvideos_tv_show_playlist_thumbnail_size', 'masvideos_tv_show_medium' );
+            echo is_object( $recently_added_tv_show ) ? $recently_added_tv_show->get_image( $image_size , array( 'class' => 'tv-show-playlist__poster--image' ) ) : '';
         }
     }
 }
