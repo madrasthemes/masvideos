@@ -313,9 +313,21 @@ add_action( 'masvideos_after_movie_widget_item', 'masvideos_template_loop_movie_
 /**
  * Movie Single.
  */
-add_action( 'masvideos_before_single_movie_summary', 'masvideos_template_single_movie_movie', 10 );
+add_action( 'masvideos_before_single_movie_summary', 'masvideos_template_single_movie_head_wrap_open', 10 );
+add_action( 'masvideos_before_single_movie_summary', 'masvideos_template_single_movie_player_wrap_open', 30 );
+add_action( 'masvideos_before_single_movie_summary', 'masvideos_template_single_movie_movie', 40 );
+add_action( 'masvideos_before_single_movie_summary', 'masvideos_template_single_movie_player_wrap_close', 50 );
+add_action( 'masvideos_before_single_movie_summary', 'masvideos_template_single_movie_head_wrap_close', 70 );
 add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_title', 5 );
-add_action( 'masvideos_after_single_movie_summary', 'comments_template', 10 );
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_meta', 20 );
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_avg_rating', 40 );
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_button_movie_playlist', 45 );
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_sharing', 50 );
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_poster', 50 );
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_description', 90 );
+add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_tags', 100 );
+add_action( 'masvideos_after_single_movie_summary', 'masvideos_related_movies', 20 );
+add_action( 'masvideos_after_single_movie_summary', 'comments_template', 30 );
 
 add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_genres', 10 );
 add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_release_year', 20 );
