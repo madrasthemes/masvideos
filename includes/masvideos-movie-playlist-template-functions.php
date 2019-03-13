@@ -124,7 +124,8 @@ function masvideos_set_movie_playlists_loop_prop( $prop, $value = '' ) {
  */
 function masvideos_movie_playlist_class( $class = '', $movie_playlist_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_movie_class( $class, $movie_playlist_id ) ) ) . '"';
-    post_class();
+    $class .= "movie-playlist";
+    post_class( $class );
 }
 
 /**
@@ -251,19 +252,9 @@ if ( ! function_exists( 'masvideos_template_loop_movie_playlist_link_open' ) ) {
      */
     function masvideos_template_loop_movie_playlist_link_open() {
         global $movie;
-
         $link = apply_filters( 'masvideos_loop_movie_link', get_the_permalink(), $movie );
 
-        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopMoviePlaylist-link masvideos-loop-movie-playlist__link movie-playlist__link">';
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_loop_movie_playlist_link_close' ) ) {
-    /**
-     * Insert the opening anchor tag for movie playlists in the loop.
-     */
-    function masvideos_template_loop_movie_playlist_link_close() {
-        echo '</a>';
+        ?><a href="<?php echo esc_url( $link ); ?>" class="masvideos-LoopMoviePlaylist-link masvideos-loop-movie-playlist__link movie-playlist__link"><?php
     }
 }
 
@@ -274,5 +265,106 @@ if ( ! function_exists( 'masvideos_template_loop_movie_playlist_title' ) ) {
      */
     function masvideos_template_loop_movie_playlist_title() {
         the_title( '<h3 class="masvideos-loop-movie-playlist__title  movie-playlist__title">', '</h3>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_poster_open' ) ) {
+    /**
+     * movies playlist poster open in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_poster_open() {
+        ?><div class="movie-playlist__poster"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_poster' ) ) {
+    /**
+     * movies playlist poster in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_poster() {
+        $movie_ids = masvideos_single_movie_playlist_movies( get_the_ID() );
+
+        if( $movie_ids ) {
+            echo get_the_post_thumbnail( end( $movie_ids ), 'masvideos_movie_medium', array( 'class' => 'movie-playlist__poster--image' ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_poster_close' ) ) {
+    /**
+     * movies playlist poster close in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_poster_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_info_open' ) ) {
+    /**
+     * movies playlist info open in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_info_open() {
+        ?><div class="movie-playlist__info"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_author' ) ) {
+    /**
+     * movies playlist author info in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_author() {
+        global $movie_playlist;
+        ?>
+        <div class="movie-playlist__author-info">
+            <div class="movie-playlist__author--image">
+                <?php echo get_avatar( $movie_playlist, apply_filters( 'masvideos_movie_review_gravatar_size', '60' ), '' ); ?>
+            </div>
+            <h6 class="movie-playlist__author--name"><?php echo sprintf( '%s %s', esc_html__( 'By: ', 'masvideos' ), get_the_author() ); ?></h6>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_meta' ) ) {
+    /**
+     * movies playlist meta in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_meta() {
+        ?><div class="movie-playlist__meta"><?php
+            do_action( 'masvideos_template_loop_movie_playlist_meta' );
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_info_close' ) ) {
+    /**
+     * movies playlist poster close in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_info_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for movie playlists in the loop.
+     */
+    function masvideos_template_loop_movie_playlist_link_close() {
+        ?></a><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_movie_playlist_movies_count' ) ) {
+    /**
+     * movies playlist meta movies conut close in the loop..
+     */
+    function masvideos_template_loop_movie_playlist_movies_count() {
+        ?><span class="movie-playlist__meta--movies-count"><?php
+            $movies_count = count( masvideos_single_movie_playlist_movies( get_the_ID() ) );
+
+            if( $movies_count > 0 ) {
+                printf( _n( '%s Movie', '%s Movies', $movies_count, 'vodi' ), number_format_i18n( $movies_count ) );
+            }
+        ?></span><?php
     }
 }
