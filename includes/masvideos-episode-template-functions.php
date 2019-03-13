@@ -743,72 +743,6 @@ if ( ! function_exists( 'masvideos_template_single_episode_tabs' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_episode_comments' ) ) {
-
-    /**
-     * Output the Review comments template.
-     *
-     * @param WP_Comment $comment Comment object.
-     * @param array      $args Arguments.
-     * @param int        $depth Depth.
-     */
-    function masvideos_episode_comments( $comment, $args, $depth ) {
-        $GLOBALS['comment'] = $comment; // WPCS: override ok.
-        masvideos_get_template( 'single-episode/review.php', array(
-            'comment' => $comment,
-            'args'    => $args,
-            'depth'   => $depth,
-        ) );
-    }
-}
-
-if ( ! function_exists( 'masvideos_episode_review_display_gravatar' ) ) {
-    /**
-     * Display the review authors gravatar
-     *
-     * @param array $comment WP_Comment.
-     * @return void
-     */
-    function masvideos_episode_review_display_gravatar( $comment ) {
-        echo get_avatar( $comment, apply_filters( 'masvideos_episode_review_gravatar_size', '60' ), '' );
-    }
-}
-
-if ( ! function_exists( 'masvideos_episode_review_display_rating' ) ) {
-    /**
-     * Display the reviewers star rating
-     *
-     * @return void
-     */
-    function masvideos_episode_review_display_rating() {
-        if ( post_type_supports( 'episode', 'comments' ) ) {
-            masvideos_get_template( 'single-episode/review-rating.php' );
-        }
-    }
-}
-
-if ( ! function_exists( 'masvideos_episode_review_display_meta' ) ) {
-    /**
-     * Display the review authors meta (name, verified owner, review date)
-     *
-     * @return void
-     */
-    function masvideos_episode_review_display_meta() {
-        masvideos_get_template( 'single-episode/review-meta.php' );
-    }
-}
-
-if ( ! function_exists( 'masvideos_episode_review_display_comment_text' ) ) {
-    /**
-     * Display the review content.
-     */
-    function masvideos_episode_review_display_comment_text() {
-        echo '<div class="description">';
-        comment_text();
-        echo '</div>';
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_single_episode_info_head_open' ) ) {
     /**
      * Single episode info head open
@@ -963,5 +897,71 @@ if ( ! function_exists( 'masvideos_template_single_episode_player_wrap_close' ) 
         ?>
         </div>
         <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_comments' ) ) {
+
+    /**
+     * Output the Review comments template.
+     *
+     * @param WP_Comment $comment Comment object.
+     * @param array      $args Arguments.
+     * @param int        $depth Depth.
+     */
+    function masvideos_episode_comments( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment; // WPCS: override ok.
+        masvideos_get_template( 'single-episode/review.php', array(
+            'comment' => $comment,
+            'args'    => $args,
+            'depth'   => $depth,
+        ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_gravatar' ) ) {
+    /**
+     * Display the review authors gravatar
+     *
+     * @param array $comment WP_Comment.
+     * @return void
+     */
+    function masvideos_episode_review_display_gravatar( $comment ) {
+        echo get_avatar( $comment, apply_filters( 'masvideos_episode_review_gravatar_size', '60' ), '' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_rating' ) ) {
+    /**
+     * Display the reviewers star rating
+     *
+     * @return void
+     */
+    function masvideos_episode_review_display_rating() {
+        if ( post_type_supports( 'episode', 'comments' ) ) {
+            masvideos_get_template( 'single-episode/review-rating.php' );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_meta' ) ) {
+    /**
+     * Display the review authors meta (name, verified owner, review date)
+     *
+     * @return void
+     */
+    function masvideos_episode_review_display_meta() {
+        masvideos_get_template( 'single-episode/review-meta.php' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_episode_review_display_comment_text' ) ) {
+    /**
+     * Display the review content.
+     */
+    function masvideos_episode_review_display_comment_text() {
+        echo '<div class="description">';
+        comment_text();
+        echo '</div>';
     }
 }

@@ -134,6 +134,26 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
+            'masvideos_movies_page_id',
+            array(
+                'default'       => '',
+                'type'          => 'option',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_movies_page_id',
+            array(
+                'label'       => esc_html__( 'Movies Page', 'masvideos' ),
+                'section'     => 'masvideos_movies',
+                'settings'    => 'masvideos_movies_page_id',
+                'type'        => 'select',
+                'choices'     => $this->get_all_pages_array(),
+            )
+        );
+
+        $wp_customize->add_setting(
             'masvideos_movie_review_rating_required',
             array(
                 'default'              => 'yes',
@@ -171,23 +191,22 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
-            'masvideos_video_review_rating_required',
+            'masvideos_videos_page_id',
             array(
-                'default'              => 'yes',
-                'type'                 => 'option',
-                'capability'           => 'manage_masvideos',
-                'sanitize_callback'    => 'masvideos_bool_to_string',
-                'sanitize_js_callback' => 'masvideos_string_to_bool',
+                'default'       => '',
+                'type'          => 'option',
+                'capability'    => 'manage_masvideos',
             )
         );
 
         $wp_customize->add_control(
-            'masvideos_video_review_rating_required',
+            'masvideos_videos_page_id',
             array(
-                'label'    => esc_html__( 'Enable Videos Review', 'masvideos' ),
-                'section'  => 'masvideos_videos',
-                'settings' => 'masvideos_video_review_rating_required',
-                'type'     => 'checkbox',
+                'label'       => esc_html__( 'Videos Page', 'masvideos' ),
+                'section'     => 'masvideos_videos',
+                'settings'    => 'masvideos_videos_page_id',
+                'type'        => 'select',
+                'choices'     => $this->get_all_pages_array(),
             )
         );
     }
@@ -204,6 +223,26 @@ class MasVideos_Customizer {
                 'title'    => esc_html__( 'TV Shows', 'masvideos' ),
                 'priority' => 40,
                 'panel'    => 'masvideos',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_tv_shows_page_id',
+            array(
+                'default'       => '',
+                'type'          => 'option',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_tv_shows_page_id',
+            array(
+                'label'       => esc_html__( 'TV Shows Page', 'masvideos' ),
+                'section'     => 'masvideos_tv_shows',
+                'settings'    => 'masvideos_tv_shows_page_id',
+                'type'        => 'select',
+                'choices'     => $this->get_all_pages_array(),
             )
         );
 
