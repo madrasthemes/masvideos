@@ -124,7 +124,8 @@ function masvideos_set_tv_show_playlists_loop_prop( $prop, $value = '' ) {
  */
 function masvideos_tv_show_playlist_class( $class = '', $tv_show_playlist_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_tv_show_class( $class, $tv_show_playlist_id ) ) ) . '"';
-    post_class();
+    $class .= "tv-show-playlist";
+    post_class( $class );
 }
 
 /**
@@ -242,5 +243,130 @@ if ( ! function_exists( 'masvideos_template_button_toggle_user_tv_show_playlist'
                 ?><a class="toggle-playlist masvideos-ajax-toggle-tv-show-playlist<?php echo $is_tv_show_added ? ' added' : ''; ?>" href="<?php echo get_permalink( $playlist_id ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-tv_show_id=<?php echo esc_attr( $tv_show_id ); ?>><?php echo get_the_title( $playlist_id ); ?></a><?php
             }
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for tv_show playlists in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_link_open() {
+        global $tv_show;
+        $link = apply_filters( 'masvideos_loop_tv_show_link', get_the_permalink(), $tv_show );
+
+        ?><a href="<?php echo esc_url( $link ); ?>" class="masvideos-LoopMoviePlaylist-link masvideos-loop-tv-show-playlist__link tv-show-playlist__link"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_title' ) ) {
+
+    /**
+     * Show the tv_show playlist title in the tv_show playlists loop. By default this is an H3.
+     */
+    function masvideos_template_loop_tv_show_playlist_title() {
+        the_title( '<h3 class="masvideos-loop-tv-show-playlist__title  tv-show-playlist__title">', '</h3>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_poster_open' ) ) {
+    /**
+     * tv_shows playlist poster open in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_poster_open() {
+        ?><div class="tv-show-playlist__poster"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_poster' ) ) {
+    /**
+     * tv_shows playlist poster in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_poster() {
+        $tv_show_ids = masvideos_single_tv_show_playlist_tv_shows( get_the_ID() );
+
+        if( $tv_show_ids ) {
+            $recently_added_tv_show = masvideos_get_tv_show( end( $tv_show_ids ) );
+            $image_size = apply_filters( 'masvideos_tv_show_playlist_thumbnail_size', 'masvideos_tv_show_medium' );
+            echo is_object( $recently_added_tv_show ) ? $recently_added_tv_show->get_image( $image_size , array( 'class' => 'tv-show-playlist__poster--image' ) ) : '';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_poster_close' ) ) {
+    /**
+     * tv_shows playlist poster close in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_poster_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_info_open' ) ) {
+    /**
+     * tv_shows playlist info open in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_info_open() {
+        ?><div class="tv-show-playlist__info"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_author' ) ) {
+    /**
+     * tv_shows playlist author info in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_author() {
+        global $tv_show_playlist;
+        ?>
+        <div class="tv-show-playlist__author-info">
+            <div class="tv-show-playlist__author--image">
+                <?php echo get_avatar( $tv_show_playlist, apply_filters( 'masvideos_tv_show_review_gravatar_size', '60' ), '' ); ?>
+            </div>
+            <h6 class="tv-show-playlist__author--name"><?php echo sprintf( '%s %s', esc_html__( 'By: ', 'masvideos' ), get_the_author() ); ?></h6>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_meta' ) ) {
+    /**
+     * tv_shows playlist meta in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_meta() {
+        ?><div class="tv-show-playlist__meta"><?php
+            do_action( 'masvideos_template_loop_tv_show_playlist_meta' );
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_info_close' ) ) {
+    /**
+     * tv_shows playlist poster close in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_info_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for tv_show playlists in the loop.
+     */
+    function masvideos_template_loop_tv_show_playlist_link_close() {
+        ?></a><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_tv_shows_count' ) ) {
+    /**
+     * tv_shows playlist meta tv_shows conut close in the loop..
+     */
+    function masvideos_template_loop_tv_show_playlist_tv_shows_count() {
+        ?><span class="tv-show-playlist__meta--tv_shows-count"><?php
+            $tv_shows_count = count( masvideos_single_tv_show_playlist_tv_shows( get_the_ID() ) );
+
+            if( $tv_shows_count > 0 ) {
+                printf( _n( '%s TV Show', '%s TV Shows', $tv_shows_count, 'vodi' ), number_format_i18n( $tv_shows_count ) );
+            }
+        ?></span><?php
     }
 }
