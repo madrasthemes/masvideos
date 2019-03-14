@@ -116,7 +116,7 @@ add_action( 'masvideos_after_tv_shows_loop_item_title', 'masvideos_template_loop
 add_action( 'masvideos_after_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_actions', 20 );
 add_action( 'masvideos_after_tv_shows_loop_item_title', 'masvideos_template_loop_tv_show_info_close', 30 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_review_info_open', 10 );
-add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_avg_rating', 20 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_single_tv_show_avg_rating', 20 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_viewers_count', 30 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_review_info_close', 40 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_body_close', 50 );
@@ -144,7 +144,7 @@ add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_sh
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_seasons_episode_wrap_close', 220 );
 
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_review_info_open', 230 );
-add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_avg_rating', 240 );
+add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_single_tv_show_avg_rating', 240 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_viewers_count', 250 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_review_info_close', 260 );
 add_action( 'masvideos_after_tv_shows_loop_item', 'masvideos_template_loop_tv_show_actions', 270 );
@@ -220,7 +220,7 @@ add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_v
 add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_video_actions', 20 );
 add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_video_info_close', 30 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_review_info_open', 10 );
-add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_avg_rating', 20 );
+add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_single_video_avg_rating', 20 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_viewers_count', 30 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_review_info_close', 40 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_body_close', 50 );
@@ -289,7 +289,7 @@ add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_m
 add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_actions', 20 );
 add_action( 'masvideos_after_movies_loop_item_title', 'masvideos_template_loop_movie_info_close', 30 );
 add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_review_info_open', 10 );
-add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_avg_rating', 20 );
+add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_single_movie_avg_rating', 20 );
 add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_viewers_count', 30 );
 add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_review_info_close', 40 );
 add_action( 'masvideos_after_movies_loop_item', 'masvideos_template_loop_movie_body_close', 50 );

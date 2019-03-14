@@ -395,7 +395,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_link_open' ) ) {
 
         $link = apply_filters( 'masvideos_loop_video_link', get_the_permalink(), $video );
 
-        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopMovie-link masvideos-loop-video__link video__link">';
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">';
     }
 }
 
@@ -581,16 +581,6 @@ if ( ! function_exists( 'masvideos_template_loop_video_review_info_open' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_video_avg_rating' ) ) {
-
-    /**
-     * video avg rating in the video loop.
-     */
-    function masvideos_template_loop_video_avg_rating() {
-        echo '<a href="#" class="avg-rating"></a>';
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_video_viewers_count' ) ) {
 
     /**
@@ -719,6 +709,29 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
         if( ! empty( $date ) ) {
             echo sprintf( '<span class="video_posted_on">%s %s</span>', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date );
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_avg_rating' ) ) {
+
+    /**
+     * Single video average rating
+     */
+    function masvideos_template_single_video_avg_rating() {
+        global $video;
+
+        ?><div class="video__avg-rating">
+        <?php if ( ! empty( $video->get_review_count() ) && $video->get_review_count() > 0 ) { ?>
+            <a href="<?php echo esc_url( get_permalink( $video->get_id() ) . '#reviews' ); ?>" class="avg-rating">
+                <div class="avg-rating__inner">
+                    <span class="avg-rating__number"> <?php echo number_format( $video->get_average_rating(), 1, '.', '' ); ?></span>
+                    <span class="avg-rating__text">
+                        <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $video->get_review_count(), 'masvideos' ), $video->get_review_count() ) ) ; ?>
+                    </span>
+                </div>
+            </a>
+        <?php } ?>
+        </div><?php
     }
 }
 

@@ -759,27 +759,6 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_review_info_open' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_tv_show_avg_rating' ) ) {
-
-    /**
-     * tv show avg rating in the tv show loop.
-     */
-    function masvideos_template_loop_tv_show_avg_rating() {
-        global $tv_show;
-
-        if ( ! empty( $tv_show->get_review_count() ) && $tv_show->get_review_count() > 0 ) {
-            ?>
-            <a href="<?php echo esc_url( get_permalink( $tv_show->get_id() ) . '#reviews' ); ?>" class="avg-rating">
-                <span class="avg-rating-number"> <?php echo number_format( $tv_show->get_average_rating(), 1, '.', '' ); ?></span>
-                <span class="avg-rating-text">
-                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $tv_show->get_review_count(), 'masvideos' ), $tv_show->get_review_count() ) ) ; ?>
-                </span>
-            </a>
-            <?php
-        }
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_tv_show_viewers_count' ) ) {
 
     /**
@@ -1195,7 +1174,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_avg_rating' ) ) {
     function masvideos_template_single_tv_show_avg_rating() {
         global $tv_show;
         ?>
-        <div class="tv-show__rating">
+        <div class="tv-show__avg-rating">
 
         <?php if ( ! empty( $tv_show->get_review_count() ) && $tv_show->get_review_count() > 0 ) { ?>
             <a href="<?php echo esc_url( get_permalink( $tv_show->get_id() ) . '#reviews' ); ?>" class="avg-rating">
