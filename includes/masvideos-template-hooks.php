@@ -220,7 +220,6 @@ add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_v
 add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_video_actions', 20 );
 add_action( 'masvideos_after_videos_loop_item_title', 'masvideos_template_loop_video_info_close', 30 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_review_info_open', 10 );
-add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_single_video_avg_rating', 20 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_viewers_count', 30 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_review_info_close', 40 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_body_close', 50 );
