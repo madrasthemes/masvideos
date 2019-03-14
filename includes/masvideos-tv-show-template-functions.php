@@ -948,13 +948,13 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_seasons' ) ) {
  * Single
  */
 
-if ( ! function_exists( 'masvideos_template_single_tv_show_tv_show' ) ) {
+if ( ! function_exists( 'masvideos_template_single_tv_show_poster' ) ) {
 
     /**
-     * Output the tv show.
+     * Output the tv show poster.
      */
-    function masvideos_template_single_tv_show_tv_show() {
-        masvideos_the_tv_show();
+    function masvideos_template_single_tv_show_poster() {
+        echo masvideos_get_tv_show_thumbnail( 'masvideos_tv_show_large' );
     }
 }
 
@@ -992,6 +992,22 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_genres' ) ) {
 
         if( ! empty ( $categories ) ) {
            echo '<span class="tv-show__meta--genre">' . $categories . '</span>';
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_tags' ) ) {
+
+    /**
+     * TV Show tags in the tv show single.
+     */
+    function masvideos_template_single_tv_show_tags() {
+        global $tv_show;
+
+        $tags = get_the_term_list( $tv_show->get_id(), 'tv_show_tag', '', ', ' );
+
+        if( ! empty ( $tags ) ) {
+            echo sprintf( '<span class="tv-show__tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
         }
     }
 }
@@ -1135,6 +1151,140 @@ if ( ! function_exists( 'masvideos_template_button_tv_show_playlist' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_tv_show_info_head_open' ) ) {
+    /**
+     * Single tv show info head open
+     */
+    function masvideos_template_single_tv_show_info_head_open() {
+        ?><div class="tv-show__info--head"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_info_head_close' ) ) {
+    /**
+     * Single tv show info head close
+     */
+    function masvideos_template_single_tv_show_info_head_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_rating_with_sharing_open' ) ) {
+    /**
+     * Single tv show rating with sharing info open
+     */
+    function masvideos_template_single_tv_show_rating_with_sharing_open() {
+        ?><div class="tv-show__rating-with-sharing"><?php
+    }
+}
+
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_rating_with_sharing_close' ) ) {
+    /**
+     * Single tv show rating with sharing info close
+     */
+    function masvideos_template_single_tv_show_rating_with_sharing_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_avg_rating' ) ) {
+    /**
+     * Single tv show rating open
+     */
+    function masvideos_template_single_tv_show_avg_rating() {
+        global $tv_show;
+        ?>
+        <div class="tv-show__rating">
+
+        <?php if ( ! empty( $tv_show->get_review_count() ) && $tv_show->get_review_count() > 0 ) { ?>
+            <a href="<?php echo esc_url( get_permalink( $tv_show->get_id() ) . '#reviews' ); ?>" class="avg-rating">
+                <div class="avg-rating__inner">
+                    <span class="avg-rating__number"> <?php echo number_format( $tv_show->get_average_rating(), 1, '.', '' ); ?></span>
+                    <span class="avg-rating__text">
+                        <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $tv_show->get_review_count(), 'masvideos' ), $tv_show->get_review_count() ) ) ; ?>
+                    </span>
+                </div>
+            </a>
+        <?php } ?>
+        </div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_info_body_open' ) ) {
+    /**
+     * Single tv show info body open
+     */
+    function masvideos_template_single_tv_show_info_body_open() {
+        ?><div class="tv-show__info--body"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_info_body_close' ) ) {
+    /**
+     * Single tv show info body close
+     */
+    function masvideos_template_single_tv_show_info_body_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_description' ) ) {
+    /**
+     * Single tv show description
+     */
+    function masvideos_template_single_tv_show_description() {
+        ?>
+        <div class="tv-show__description">
+            <div><?php the_content(); ?></div>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_short_desc' ) ) {
+    /**
+     * Single tv show short description
+     */
+    function masvideos_template_single_tv_show_short_desc() {
+        global $post;
+
+        $short_description = apply_filters( 'masvideos_template_single_tv_show_short_desc', $post->post_excerpt );
+
+        if ( ! $short_description ) {
+            return;
+        }
+
+        ?>
+        <div class="tv-show__short-description">
+            <?php echo '<p>' . $short_description . '</p>'; ?>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_head_wrap_open' ) ) {
+    /**
+     * Single tv show head open
+     */
+    function masvideos_template_single_tv_show_head_wrap_open() {
+        ?>
+        <div class="tv-show__head">
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_head_wrap_close' ) ) {
+    /**
+     * Single tv show head close
+     */
+    function masvideos_template_single_tv_show_head_wrap_close() {
+        ?>
+        </div>
+        <?php
+    }
+}
+
 if ( ! function_exists( 'masvideos_tv_show_comments' ) ) {
 
     /**
@@ -1200,4 +1350,3 @@ if ( ! function_exists( 'masvideos_tv_show_review_display_comment_text' ) ) {
         echo '</div>';
     }
 }
-
