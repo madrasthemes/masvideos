@@ -42,6 +42,7 @@ class MasVideos_Meta_Box_Movie_Data {
 
         include 'views/html-movie-data-general.php';
         include 'views/html-movie-data-attributes.php';
+        include 'views/html-movie-data-linked-movies.php';
     }
 
     /**
@@ -52,13 +53,19 @@ class MasVideos_Meta_Box_Movie_Data {
     private static function get_movie_data_tabs() {
         $tabs = apply_filters(
             'masvideos_movie_data_tabs', array(
-                'general'        => array(
+                'general'       => array(
                     'label'    => __( 'General', 'masvideos' ),
                     'target'   => 'general_movie_data',
                     'class'    => array(),
                     'priority' => 10,
                 ),
-                'attribute'      => array(
+                'linked_movie'  => array(
+                    'label'    => __( 'Linked Movies', 'masvideos' ),
+                    'target'   => 'linked_movie_data',
+                    'class'    => array(),
+                    'priority' => 20,
+                ),
+                'attribute'     => array(
                     'label'    => __( 'Attributes', 'masvideos' ),
                     'target'   => 'movie_attributes',
                     'class'    => array(),
@@ -217,6 +224,7 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_release_date'        => isset( $_POST['_movie_release_date'] ) ? masvideos_clean( $_POST['_movie_release_date'] ) : null,
                 'movie_run_time'            => isset( $_POST['_movie_run_time'] ) ? masvideos_clean( $_POST['_movie_run_time'] ) : null,
                 'movie_censor_rating'       => isset( $_POST['_movie_censor_rating'] ) ? masvideos_clean( $_POST['_movie_censor_rating'] ) : null,
+                'recommended_movie_ids'     => isset( $_POST['recommended_movie_ids'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['recommended_movie_ids'] ) ) : array(),
                 // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );

@@ -60,7 +60,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'attributes'            => array(),
         'default_attributes'    => array(),
         'menu_order'            => 0,
-        'genre_ids'          => array(),
+        'genre_ids'             => array(),
         'tag_ids'               => array(),
         'image_id'              => '',
         'movie_choice'          => '',
@@ -74,6 +74,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'movie_release_date'    => '',
         'movie_run_time'        => '',
         'movie_censor_rating'   => '',
+        'recommended_movie_ids' => array(),
     );
 
     /**
@@ -419,6 +420,17 @@ class MasVideos_Movie extends MasVideos_Data {
         return $this->get_prop( 'movie_censor_rating', $context );
     }
 
+    /**
+     * Get Recommended Movie IDs.
+     *
+     * @since 3.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_recommended_movie_ids( $context = 'view' ) {
+        return $this->get_prop( 'recommended_movie_ids', $context );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Setters
@@ -732,6 +744,16 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_movie_censor_rating( $movie_censor_rating = '' ) {
         $this->set_prop( 'movie_censor_rating', $movie_censor_rating );
+    }
+
+    /**
+     * Set Recommended Movie IDs.
+     *
+     * @since 3.0.0
+     * @param array $recommended_movie_ids from the recommended movies.
+     */
+    public function set_recommended_movie_ids( $recommended_movie_ids ) {
+        $this->set_prop( 'recommended_movie_ids', array_filter( (array) $recommended_movie_ids ) );
     }
 
     /*
