@@ -962,6 +962,42 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_movie_tabs' ) ) {
+
+    /**
+     * Episode tabs in the movie single.
+     */
+    function masvideos_template_single_movie_tabs() {
+        global $movie;
+
+        $tabs = apply_filters( 'masvideos_template_single_movie_tabs', array(
+            array(
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_movie_description_tab',
+                'priority'  => 10
+            ),
+            array(
+                'title'     => esc_html__( 'Review', 'masvideos' ),
+                'callback'  => 'comments_template',
+                'priority'  => 20
+            )
+        ) );
+
+        masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-tabs' ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_description_tab' ) ) {
+    /**
+     * Single movie description tab
+     */
+    function masvideos_template_single_movie_description_tab() {
+        echo '<div class="movie__description-tab">';
+            do_action( 'masvideos_single_movie_description_tab' );
+        echo '</div>';
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_button_movie_playlist' ) ) {
     /**
      * Button dropdown for Add/Remove movie to playlist.
