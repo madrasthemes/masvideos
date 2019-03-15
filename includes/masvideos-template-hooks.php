@@ -196,6 +196,19 @@ add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_
 add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_release_year', 20 );
 
 /**
+ * TV Show Reviews
+ *
+ * @see masvideos_tv_show_review_display_gravatar()
+ * @see masvideos_tv_show_review_display_rating()
+ * @see masvideos_tv_show_review_display_meta()
+ * @see masvideos_tv_show_review_display_comment_text()
+ */
+add_action( 'masvideos_tv_show_review_before', 'masvideos_tv_show_review_display_gravatar', 10 );
+add_action( 'masvideos_tv_show_review_before_comment_meta', 'masvideos_tv_show_review_display_rating', 10 );
+add_action( 'masvideos_tv_show_review_meta', 'masvideos_tv_show_review_display_meta', 10 );
+add_action( 'masvideos_tv_show_review_comment_text', 'masvideos_tv_show_review_display_comment_text', 10 );
+
+/**
  * Videos Loop.
  */
 add_action( 'masvideos_no_videos_found', 'masvideos_no_videos_found', 10 );
