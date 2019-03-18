@@ -1169,21 +1169,39 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_info_head_close' ) ) 
     }
 }
 
-if ( ! function_exists( 'masvideos_template_single_tv_show_rating_with_sharing_open' ) ) {
+if ( ! function_exists( 'masvideos_template_single_tv_show_meta_right_open' ) ) {
     /**
-     * Single tv show rating with sharing info open
+     * Single tv show meta right open
      */
-    function masvideos_template_single_tv_show_rating_with_sharing_open() {
-        ?><div class="tv-show__rating-with-sharing"><?php
+    function masvideos_template_single_tv_show_meta_right_open() {
+        ?><div class="tv-show__meta--right"><?php
     }
 }
 
 
-if ( ! function_exists( 'masvideos_template_single_tv_show_rating_with_sharing_close' ) ) {
+if ( ! function_exists( 'masvideos_template_single_tv_show_meta_right_close' ) ) {
     /**
-     * Single tv show rating with sharing info close
+     * Single tv show meta right close
      */
-    function masvideos_template_single_tv_show_rating_with_sharing_close() {
+    function masvideos_template_single_tv_show_meta_right_close() {
+        ?></div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_rating_with_playlist_open' ) ) {
+    /**
+     * Single tv show rating with playlist info open
+     */
+    function masvideos_template_single_tv_show_rating_with_playlist_open() {
+        ?><div class="tv-show__rating-with-playlist"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_rating_with_playlist_close' ) ) {
+    /**
+     * Single tv show rating with playlist info close
+     */
+    function masvideos_template_single_tv_show_rating_with_playlist_close() {
         ?></div><?php
     }
 }
@@ -1269,7 +1287,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_head_wrap_open' ) ) {
      */
     function masvideos_template_single_tv_show_head_wrap_open() {
         ?>
-        <div class="tv-show__head">
+        <div class="tv-show__head"><div class="tv-show__head--inner">
         <?php
     }
 }
@@ -1280,7 +1298,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_head_wrap_close' ) ) 
      */
     function masvideos_template_single_tv_show_head_wrap_close() {
         ?>
-        </div>
+        </div></div>
         <?php
     }
 }
