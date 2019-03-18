@@ -124,6 +124,7 @@ class MasVideos_Shortcode_Videos {
                 'terms_operator' => 'IN',      // Operator to compare terms. Possible values are 'IN', 'NOT IN', 'AND'.
                 'tag'            => '',        // Comma separated tag slugs.
                 'visibility'     => 'visible', // Possible values are 'visible', 'catalog', 'search', 'hidden', 'featured'.
+                'status'         => 'publish', // Possible values are 'publish', 'future'.
                 'class'          => '',        // HTML class.
                 'template'       => '',        // Template file to run.
                 'page'           => 1,         // Page for pagination.
@@ -148,17 +149,17 @@ class MasVideos_Shortcode_Videos {
     protected function parse_query_args() {
         $query_args = array(
             'post_type'           => 'video',
-            'post_status'         => 'publish',
             'ignore_sticky_posts' => true,
             'no_found_rows'       => false === masvideos_string_to_bool( $this->attributes['paginate'] ),
             'orderby'             => empty( $_GET['orderby'] ) ? $this->attributes['orderby'] : masvideos_clean( wp_unslash( $_GET['orderby'] ) ),
         );
 
-        $orderby_value         = explode( '-', $query_args['orderby'] );
-        $orderby               = esc_attr( $orderby_value[0] );
-        $order                 = ! empty( $orderby_value[1] ) ? $orderby_value[1] : strtoupper( $this->attributes['order'] );
-        $query_args['orderby'] = $orderby;
-        $query_args['order']   = $order;
+        $orderby_value              = explode( '-', $query_args['orderby'] );
+        $orderby                    = esc_attr( $orderby_value[0] );
+        $order                      = ! empty( $orderby_value[1] ) ? $orderby_value[1] : strtoupper( $this->attributes['order'] );
+        $query_args['orderby']      = $orderby;
+        $query_args['order']        = $order;
+        $query_args['post_status']  = isset( $this->attributes['status'] ) && in_array( $this->attributes['status'], array( 'publish', 'future' ) ) ? $this->attributes['status'] : 'publish';
 
         if ( masvideos_string_to_bool( $this->attributes['paginate'] ) ) {
             $this->attributes['page'] = absint( empty( $_GET['video-page'] ) ? 1 : $_GET['video-page'] ); // WPCS: input var ok, CSRF ok.

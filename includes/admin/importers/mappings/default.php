@@ -53,6 +53,7 @@ function masvideos_importer_default_english_mappings( $mappings ) {
 		'External URL'                            => 'movie_url',
 		'Button text'                             => 'button_text',
 		'Position'                                => 'menu_order',
+		'Recommended Movie'                       => 'recommended_movie_ids',
 	);
 
 	return array_merge( $mappings, $new_mappings );

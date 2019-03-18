@@ -787,7 +787,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_avg_rating' ) ) {
     function masvideos_template_single_episode_avg_rating() {
         global $episode;
         ?>
-        <div class="episode__rating">
+        <div class="episode__avg-rating">
 
         <?php if ( ! empty( $episode->get_review_count() ) && $episode->get_review_count() > 0 ) { ?>
             <a href="<?php echo esc_url( get_permalink( $episode->get_id() ) . '#reviews' ); ?>" class="avg-rating">

@@ -755,27 +755,6 @@ if ( ! function_exists( 'masvideos_template_loop_movie_review_info_open' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_loop_movie_avg_rating' ) ) {
-
-    /**
-     * movie avg rating in the movie loop.
-     */
-    function masvideos_template_loop_movie_avg_rating() {
-        global $movie;
-
-        if ( ! empty( $movie->get_review_count() ) && $movie->get_review_count() > 0 ) {
-            ?>
-            <a href="<?php echo esc_url( get_permalink( $movie->get_id() ) . '#reviews' ); ?>" class="avg-rating">
-                <span class="avg-rating-number"> <?php echo number_format( $movie->get_average_rating(), 1, '.', '' ); ?></span>
-                <span class="avg-rating-text">
-                    <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> Votes', $movie->get_review_count(), 'masvideos' ), $movie->get_review_count() ) ) ; ?>
-                </span>
-            </a>
-            <?php
-        }
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_movie_viewers_count' ) ) {
 
     /**
@@ -929,7 +908,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_avg_rating' ) ) {
     function masvideos_template_single_movie_avg_rating() {
         global $movie;
 
-        ?><div class="movie__rating">
+        ?><div class="movie__avg-rating">
         <?php if ( ! empty( $movie->get_review_count() ) && $movie->get_review_count() > 0 ) { ?>
             <a href="<?php echo esc_url( get_permalink( $movie->get_id() ) . '#reviews' ); ?>" class="avg-rating">
                 <div class="avg-rating__inner">
@@ -982,6 +961,42 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
             echo '</div>';
             echo '</section>';
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_tabs' ) ) {
+
+    /**
+     * Episode tabs in the movie single.
+     */
+    function masvideos_template_single_movie_tabs() {
+        global $movie;
+
+        $tabs = apply_filters( 'masvideos_template_single_movie_tabs', array(
+            array(
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_movie_description_tab',
+                'priority'  => 10
+            ),
+            array(
+                'title'     => esc_html__( 'Review', 'masvideos' ),
+                'callback'  => 'comments_template',
+                'priority'  => 20
+            )
+        ) );
+
+        masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-tabs' ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_description_tab' ) ) {
+    /**
+     * Single movie description tab
+     */
+    function masvideos_template_single_movie_description_tab() {
+        echo '<div class="movie__description-tab">';
+            do_action( 'masvideos_single_movie_description_tab' );
+        echo '</div>';
     }
 }
 

@@ -512,6 +512,7 @@ class MasVideos_Movie_CSV_Importer_Controller {
 					__( 'Movie Release Date', 'masvideos' )        => 'movie_release_date',
 					__( 'Movie Run Time', 'masvideos' )            => 'movie_run_time',
 					__( 'Movie Censor Rating', 'masvideos' )       => 'movie_censor_rating',
+					__( 'Recommended Movie', 'masvideos' )         => 'recommended_movie_ids',
 				)
 			)
 		);
@@ -641,6 +642,7 @@ class MasVideos_Movie_CSV_Importer_Controller {
 			'movie_release_date'     => __( 'Movie Release Date', 'masvideos' ),
 			'movie_run_time'         => __( 'Movie Run Time', 'masvideos' ),
 			'movie_censor_rating'    => __( 'Movie Censor Rating', 'masvideos' ),
+			'recommended_movie_ids'  => __( 'Recommended Movies', 'masvideos' ),
 			'attributes'             => array(
 				'name'    => __( 'Attributes', 'masvideos' ),
 				'options' => array(
