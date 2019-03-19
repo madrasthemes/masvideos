@@ -75,7 +75,7 @@ function masvideos_get_episode_terms( $episode_id, $taxonomy, $args = array() ) 
     }
 
     if ( empty( $args['orderby'] ) && taxonomy_is_episode_attribute( $taxonomy ) ) {
-        $args['orderby'] = masvideos_attribute_orderby( $taxonomy );
+        $args['orderby'] = masvideos_attribute_orderby( 'episode', $taxonomy );
     }
 
     // Support ordering by parent.
@@ -287,7 +287,7 @@ function masvideos_get_tv_show_terms( $tv_show_id, $taxonomy, $args = array() ) 
     }
 
     if ( empty( $args['orderby'] ) && taxonomy_is_tv_show_attribute( $taxonomy ) ) {
-        $args['orderby'] = masvideos_attribute_orderby( $taxonomy );
+        $args['orderby'] = masvideos_attribute_orderby( 'tv_show', $taxonomy );
     }
 
     // Support ordering by parent.
@@ -499,7 +499,7 @@ function masvideos_get_movie_terms( $movie_id, $taxonomy, $args = array() ) {
 	}
 
 	if ( empty( $args['orderby'] ) && taxonomy_is_movie_attribute( $taxonomy ) ) {
-		$args['orderby'] = masvideos_attribute_orderby( $taxonomy );
+		$args['orderby'] = masvideos_attribute_orderby( 'movie', $taxonomy );
 	}
 
 	// Support ordering by parent.
@@ -741,7 +741,7 @@ function masvideos_get_video_terms( $video_id, $taxonomy, $args = array() ) {
     }
 
     if ( empty( $args['orderby'] ) && taxonomy_is_video_attribute( $taxonomy ) ) {
-        $args['orderby'] = masvideos_attribute_orderby( $taxonomy );
+        $args['orderby'] = masvideos_attribute_orderby( 'video', $taxonomy );
     }
 
     // Support ordering by parent.

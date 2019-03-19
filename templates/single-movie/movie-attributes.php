@@ -24,13 +24,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php foreach ( $attributes as $attribute ) : ?>
 		<tr>
-			<th><?php echo masvideos_attribute_label( $attribute->get_name() ); ?></th>
+			<th><?php echo masvideos_movie_attribute_label( $attribute->get_name() ); ?></th>
 			<td><?php
 				$values = array();
 
 				if ( $attribute->is_taxonomy() ) {
 					$attribute_taxonomy = $attribute->get_taxonomy_object();
-					$attribute_values = masvideos_get_product_terms( $product->get_id(), $attribute->get_name(), array( 'fields' => 'all' ) );
+					$attribute_values = masvideos_get_movie_terms( $movie->get_id(), $attribute->get_name(), array( 'fields' => 'all' ) );
 
 					foreach ( $attribute_values as $attribute_value ) {
 						$value_name = esc_html( $attribute_value->name );
