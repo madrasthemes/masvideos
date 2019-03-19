@@ -1038,7 +1038,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_description' ) ) {
     function masvideos_template_single_movie_description() {
         ?>
         <div class="movie__description">
-            <?php do_action( 'masvideos_single_movie_description_tab_content' ); ?>
+            <div><?php the_content(); ?></div>
         </div>
         <?php
     }
@@ -1191,32 +1191,6 @@ if ( ! function_exists( 'masvideos_template_single_movie_rating_with_playlist_wr
     }
 }
 
-if ( ! function_exists( 'masvideos_template_single_movie_tabs' ) ) {
-
-    /**
-     * Episode tabs in the movie single.
-     */
-    function masvideos_template_single_movie_tabs() {
-        global $movie;
-
-        $tabs = apply_filters( 'masvideos_template_single_movie_tabs', array(
-            array(
-                'title'     => esc_html__( 'Description', 'masvideos' ),
-                'callback'  => 'masvideos_template_single_movie_description',
-                'priority'  => 10
-            ),
-            array(
-                'title'     => esc_html__( 'Review', 'masvideos' ),
-                'callback'  => 'comments_template',
-                'priority'  => 20
-            )
-
-        ) );
-
-        masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-tabs' ) );
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_single_movie_info_left_wrap_open' ) ) {
     function masvideos_template_single_movie_info_left_wrap_open() {
         ?>
@@ -1248,4 +1222,18 @@ if ( ! function_exists( 'masvideos_template_single_movie_info_right_wrap_close' 
         </div>
         <?php
     }
+}
+
+/**
+ * Outputs a list of movie attributes for a movie.
+ *
+ * @since  3.0.0
+ * @param  Mas Videos $movie Movie Object.
+ */
+function masvideos_display_movie_attributes( $movie ) {
+    masvideos_get_template( 'single-movie/movie-attributes.php', array(
+        'movie'            => $movie,
+        'attributes'         => array_filter( $movie->get_attributes(), 'masvideos_attributes_array_filter_visible' ),
+        'display_dimensions' => apply_filters( 'masvideos_movie_enable_dimensions_display' ),
+    ) );
 }
