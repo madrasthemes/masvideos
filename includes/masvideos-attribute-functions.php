@@ -444,30 +444,54 @@ function masvideos_check_if_attribute_name_is_reserved( $attribute_name ) {
 }
 
 /**
- * Callback for array filter to get visible only.
+ * Callback for episode array filter to get visible only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Episode_Attribute $attribute Attribute data.
+ * @return bool
+ */
+function masvideos_attributes_episode_array_filter_visible( $attribute ) {
+    $class_name = 'MasVideos_Episode_Attribute';
+
+    return $class_name && $attribute && is_a( $attribute, $class_name ) && $attribute->get_visible() && ( ! $attribute->is_taxonomy() || taxonomy_exists( $attribute->get_name() ) );
+}
+
+/**
+ * Callback for tv show array filter to get visible only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_TV_Show_Attribute $attribute Attribute data.
+ * @return bool
+ */
+function masvideos_attributes_tv_show_array_filter_visible( $attribute ) {
+    $class_name = 'MasVideos_TV_Show_Attribute';
+
+    return $class_name && $attribute && is_a( $attribute, $class_name ) && $attribute->get_visible() && ( ! $attribute->is_taxonomy() || taxonomy_exists( $attribute->get_name() ) );
+}
+
+/**
+ * Callback for video array filter to get visible only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Video_Attribute $attribute Attribute data.
+ * @return bool
+ */
+function masvideos_attributes_video_array_filter_visible( $attribute ) {
+    $class_name = 'MasVideos_Video_Attribute';
+
+    return $class_name && $attribute && is_a( $attribute, $class_name ) && $attribute->get_visible() && ( ! $attribute->is_taxonomy() || taxonomy_exists( $attribute->get_name() ) );
+}
+
+/**
+ * Callback for movie array filter to get visible only.
  *
  * @since  1.0.0
  * @param  MasVideos_Movie_Attribute $attribute Attribute data.
  * @return bool
  */
-function masvideos_attributes_array_filter_visible( $post_type, $attribute ) {
-    switch ( $post_type ) {
-        case 'episode':
-            $class_name = 'MasVideos_Episode_Attribute';
-            break;
-        case 'tv_show':
-            $class_name = 'MasVideos_TV_Show_Attribute';
-            break;
-        case 'video':
-            $class_name = 'MasVideos_Video_Attribute';
-            break;
-        case 'movie':
-            $class_name = 'MasVideos_Movie_Attribute';
-            break;
-        default:
-            $class_name = false;
-            break;
-    }
+function masvideos_attributes_movie_array_filter_visible( $attribute ) {
+    $class_name = 'MasVideos_Movie_Attribute';
+
     return $class_name && $attribute && is_a( $attribute, $class_name ) && $attribute->get_visible() && ( ! $attribute->is_taxonomy() || taxonomy_exists( $attribute->get_name() ) );
 }
 

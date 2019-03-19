@@ -1033,9 +1033,25 @@ if ( ! function_exists( 'masvideos_template_single_movie_description_tab' ) ) {
      * Single movie description tab
      */
     function masvideos_template_single_movie_description_tab() {
+        global $movie;
         echo '<div class="movie__description-tab">';
-            do_action( 'masvideos_single_movie_description_tab' );
+            do_action( 'masvideos_single_movie_description_tab', $movie );
         echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_display_movie_attributes' ) ) {
+    /**
+     * Outputs a list of movie attributes for a movie.
+     *
+     * @since  1.0.0
+     * @param  Mas_Videos $movie Movie Object.
+     */
+    function masvideos_display_movie_attributes( $movie ) {
+        masvideos_get_template( 'single-movie/movie-attributes.php', array(
+            'movie'         => $movie,
+            'attributes'    => array_filter( $movie->get_attributes(), 'masvideos_attributes_movie_array_filter_visible' ),
+        ) );
     }
 }
 
@@ -1261,18 +1277,4 @@ if ( ! function_exists( 'masvideos_template_single_movie_info_right_wrap_close' 
         </div>
         <?php
     }
-}
-
-/**
- * Outputs a list of movie attributes for a movie.
- *
- * @since  3.0.0
- * @param  Mas Videos $movie Movie Object.
- */
-function masvideos_display_movie_attributes( $movie ) {
-    masvideos_get_template( 'single-movie/movie-attributes.php', array(
-        'movie'            => $movie,
-        'attributes'         => array_filter( $movie->get_attributes(), 'masvideos_attributes_array_filter_visible' ),
-        'display_dimensions' => apply_filters( 'masvideos_movie_enable_dimensions_display' ),
-    ) );
 }
