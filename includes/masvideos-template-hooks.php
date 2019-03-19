@@ -365,7 +365,7 @@ add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_loop_m
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_info_left_wrap_close', 150 );
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_info_right_wrap_open', 160 );
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_sharing', 170 );
-//add_action( 'masvideos_single_movie_description_tab', 'masvideos_display_movie_attributes', 180 );
+add_action( 'masvideos_single_movie_description_tab', 'masvideos_display_movie_attributes', 180 );
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_tags', 190 );
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_info_right_wrap_close', 200 );
 /**

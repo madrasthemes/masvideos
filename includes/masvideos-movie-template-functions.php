@@ -981,8 +981,8 @@ if ( ! function_exists( 'masvideos_recommended_movies' ) ) {
         }
 
         $defaults = apply_filters( 'masvideos_recommended_movies_default_args', array(
-            'limit'          => 8,
-            'columns'        => 8,
+            'limit'          => 4,
+            'columns'        => 4,
             'orderby'        => 'post__in',
             'order'          => 'asc',
         ) );
