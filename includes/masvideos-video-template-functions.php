@@ -193,7 +193,7 @@ function masvideos_get_default_video_rows_per_page() {
  */
 function masvideos_video_class( $class = '', $video_id = null ) {
     // echo 'class="' . esc_attr( join( ' ', wc_get_video_class( $class, $video_id ) ) ) . '"';
-    post_class();
+    post_class( $class );
 }
 
 /**

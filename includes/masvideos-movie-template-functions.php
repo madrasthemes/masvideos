@@ -964,6 +964,45 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_recommended_movies' ) ) {
+
+    /**
+     * Output the recommended movies.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_recommended_movies( $movie_id = false, $args = array() ) {
+        global $movie;
+
+        $movie_id = $movie_id ? $movie_id : $movie->get_id();
+
+        if ( ! $movie_id ) {
+            return;
+        }
+
+        $defaults = apply_filters( 'masvideos_recommended_movies_default_args', array(
+            'limit'          => 8,
+            'columns'        => 8,
+            'orderby'        => 'post__in',
+            'order'          => 'asc',
+        ) );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_recommended_movies_title', esc_html__( 'We Recommend', 'masvideos' ), $movie_id );
+
+        $recommended_movie_ids = $movie->get_recommended_movie_ids();
+        $args['ids'] = implode( ',', $recommended_movie_ids );
+
+        if( ! empty( $recommended_movie_ids ) ) {
+            echo '<section class="movie__recommended">';
+                echo sprintf( '<h2 class="movie__recommended--title">%s</h2>', $title );
+                echo MasVideos_Shortcodes::movies( $args );
+            echo '</section>';
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_single_movie_tabs' ) ) {
 
     /**

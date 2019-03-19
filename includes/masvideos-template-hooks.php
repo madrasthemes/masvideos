@@ -340,7 +340,9 @@ add_action( 'masvideos_single_movie_summary', 'masvideos_template_button_movie_p
 add_action( 'masvideos_single_movie_summary', 'masvideos_template_single_movie_rating_with_playlist_wrap_close', 50 );
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_related_movies', 20 );
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_movie_tabs', 30 );
-add_action( 'masvideos_after_single_movie_summary', 'comments_template', 40 );
+
+add_action( 'masvideos_after_single_movie_summary', 'masvideos_recommended_movies', 30 );
+add_action( 'masvideos_after_single_movie_summary', 'comments_template', 30 );
 
 add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_genres', 10 );
 add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_release_year', 20 );
