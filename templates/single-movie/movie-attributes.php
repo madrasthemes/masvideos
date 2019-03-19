@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					}
 				}
 
-				echo apply_filters( 'masvideos_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );
+				echo apply_filters( 'masvideos_movie_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );
 			?></td>
 		</tr>
 	<?php endforeach; ?>
