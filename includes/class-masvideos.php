@@ -202,6 +202,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-datetime.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-post-types.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-post-data.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-ajax.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-comments.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
