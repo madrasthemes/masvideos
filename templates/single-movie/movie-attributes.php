@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<table class="movie_attributes">
+<table class="movie__attributes">
 
 	<?php foreach ( $attributes as $attribute ) : ?>
 		<tr>
