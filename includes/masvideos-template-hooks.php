@@ -344,8 +344,8 @@ add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_m
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_recommended_movies', 30 );
 add_action( 'masvideos_after_single_movie_summary', 'comments_template', 30 );
 
-add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_genres', 10 );
-add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_release_year', 20 );
+add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_release_year', 10 );
+add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_genres', 20 );
 
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_info_left_wrap_open', 10 );
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_loop_movie_poster_open', 10 );
