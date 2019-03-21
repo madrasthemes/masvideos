@@ -153,6 +153,33 @@ class MasVideos_Customizer {
             )
         );
 
+        $wp_customize->add_setting(
+            'masvideos_default_movies_catalog_orderby',
+            array(
+                'default'           => 'release_date',
+                'type'              => 'option',
+                'capability'        => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_default_movies_catalog_orderby',
+            array(
+                'label'       => esc_html__( 'Default movie sorting', 'masvideos' ),
+                'description' => esc_html__( 'How should movies be sorted in the catalog by default?', 'masvideos' ),
+                'section'     => 'masvideos_movies',
+                'settings'    => 'masvideos_default_movies_catalog_orderby',
+                'type'        => 'select',
+                'choices'     => apply_filters( 'masvideos_default_movies_catalog_orderby_options', array(
+                    'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
+                    'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
+                    'release_date'  => esc_html__( 'Latest', 'masvideos' ),
+                    'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
+                    'rating'        => esc_html__( 'Rating', 'masvideos' ),
+                ) ),
+            )
+        );
+
         // The following settings should be hidden if the theme is declaring the values.
         if ( ! has_filter( 'masvideos_movie_columns' ) ) {
             $wp_customize->add_setting(
@@ -363,6 +390,33 @@ class MasVideos_Customizer {
                 'settings'    => 'masvideos_tv_shows_page_id',
                 'type'        => 'select',
                 'choices'     => $this->get_all_pages_array(),
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_default_tv_shows_catalog_orderby',
+            array(
+                'default'           => 'date',
+                'type'              => 'option',
+                'capability'        => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_default_tv_shows_catalog_orderby',
+            array(
+                'label'       => esc_html__( 'Default tv show sorting', 'masvideos' ),
+                'description' => esc_html__( 'How should tv shows be sorted in the catalog by default?', 'masvideos' ),
+                'section'     => 'masvideos_tv_shows',
+                'settings'    => 'masvideos_default_tv_shows_catalog_orderby',
+                'type'        => 'select',
+                'choices'     => apply_filters( 'masvideos_default_tv_shows_catalog_orderby_options', array(
+                    'title-asc'  => esc_html__( 'Name: Ascending', 'masvideos' ),
+                    'title-desc' => esc_html__( 'Name: Descending', 'masvideos' ),
+                    'date'       => esc_html__( 'Latest', 'masvideos' ),
+                    'menu_order' => esc_html__( 'Menu Order', 'masvideos' ),
+                    'rating'     => esc_html__( 'Rating', 'masvideos' ),
+                ) ),
             )
         );
 
