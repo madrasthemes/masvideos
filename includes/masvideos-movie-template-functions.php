@@ -467,7 +467,7 @@ if ( ! function_exists( 'masvideos_movies_catalog_ordering' ) ) {
             'rating'        => esc_html__( 'Rating', 'masvideos' ),
         ) );
 
-        $default_orderby = masvideos_get_movies_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_movies_default_catalog_orderby', 'release_date' );
+        $default_orderby = masvideos_get_movies_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_default_movies_catalog_orderby', 'release_date' );
         $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
 
         if ( masvideos_get_movies_loop_prop( 'is_search' ) ) {

@@ -468,7 +468,7 @@ if ( ! function_exists( 'masvideos_tv_shows_catalog_ordering' ) ) {
             'rating'     => esc_html__( 'Rating', 'masvideos' ),
         ) );
 
-        $default_orderby = masvideos_get_tv_shows_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_tv_shows_default_catalog_orderby', 'date' );
+        $default_orderby = masvideos_get_tv_shows_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_default_tv_shows_catalog_orderby', 'date' );
         $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
 
         if ( masvideos_get_tv_shows_loop_prop( 'is_search' ) ) {
