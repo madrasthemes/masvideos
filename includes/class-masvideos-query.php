@@ -217,7 +217,7 @@ class MasVideos_Episodes_Query {
                 if ( is_search() ) {
                     $orderby_value = 'relevance';
                 } else {
-                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'menu_order' ) );
+                    $orderby_value = apply_filters( 'masvideos_default_episode_catalog_orderby', get_option( 'masvideos_default_episode_catalog_orderby', 'menu_order' ) );
                 }
             }
 
@@ -271,7 +271,7 @@ class MasVideos_Episodes_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_episode_catalog_ordering_args', $args );
     }
 
     /**
@@ -656,7 +656,7 @@ class MasVideos_TV_Shows_Query {
                 if ( is_search() ) {
                     $orderby_value = 'relevance';
                 } else {
-                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'menu_order' ) );
+                    $orderby_value = apply_filters( 'masvideos_default_tv_show_catalog_orderby', get_option( 'masvideos_default_tv_show_catalog_orderby', 'menu_order' ) );
                 }
             }
 
@@ -705,7 +705,7 @@ class MasVideos_TV_Shows_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_tv_show_catalog_ordering_args', $args );
     }
 
     /**
@@ -1090,7 +1090,7 @@ class MasVideos_Videos_Query {
                 if ( is_search() ) {
                     $orderby_value = 'relevance';
                 } else {
-                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'menu_order' ) );
+                    $orderby_value = apply_filters( 'masvideos_default_video_catalog_orderby', get_option( 'masvideos_default_video_catalog_orderby', 'menu_order' ) );
                 }
             }
 
@@ -1139,7 +1139,7 @@ class MasVideos_Videos_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_video_catalog_ordering_args', $args );
     }
 
     /**
@@ -1525,7 +1525,7 @@ class MasVideos_Movies_Query {
                 if ( is_search() ) {
                     $orderby_value = 'relevance';
                 } else {
-                    $orderby_value = apply_filters( 'masvideos_default_catalog_orderby', get_option( 'masvideos_default_catalog_orderby', 'release_date' ) );
+                    $orderby_value = apply_filters( 'masvideos_default_movie_catalog_orderby', get_option( 'masvideos_default_movie_catalog_orderby', 'release_date' ) );
                 }
             }
 
@@ -1579,7 +1579,7 @@ class MasVideos_Movies_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_movie_catalog_ordering_args', $args );
     }
 
     /**
