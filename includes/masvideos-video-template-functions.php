@@ -158,7 +158,7 @@ function masvideos_get_default_videos_per_row() {
 
     $columns = absint( $columns );
 
-    return max( 1, $columns );
+    return apply_filters( 'masvideos_video_columns', max( 1, $columns ) );
 }
 
 /**
@@ -181,7 +181,7 @@ function masvideos_get_default_video_rows_per_page() {
         update_option( 'masvideos_video_rows', $rows );
     }
 
-    return $rows;
+    return apply_filters( 'masvideos_video_rows', $rows );
 }
 
 /**

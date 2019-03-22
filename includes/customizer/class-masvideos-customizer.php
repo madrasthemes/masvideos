@@ -154,6 +154,93 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
+            'masvideos_default_movies_catalog_orderby',
+            array(
+                'default'           => 'release_date',
+                'type'              => 'option',
+                'capability'        => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_default_movies_catalog_orderby',
+            array(
+                'label'       => esc_html__( 'Default movie sorting', 'masvideos' ),
+                'description' => esc_html__( 'How should movies be sorted in the catalog by default?', 'masvideos' ),
+                'section'     => 'masvideos_movies',
+                'settings'    => 'masvideos_default_movies_catalog_orderby',
+                'type'        => 'select',
+                'choices'     => apply_filters( 'masvideos_default_movies_catalog_orderby_options', array(
+                    'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
+                    'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
+                    'release_date'  => esc_html__( 'Latest', 'masvideos' ),
+                    'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
+                    'rating'        => esc_html__( 'Rating', 'masvideos' ),
+                ) ),
+            )
+        );
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_movie_columns' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_movie_columns',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_movie_columns',
+                array(
+                    'label'       => esc_html__( 'Movies per row', 'masvideos' ),
+                    'description' => esc_html__( 'How many movies should be shown per row?', 'masvideos' ),
+                    'section'     => 'masvideos_movies',
+                    'settings'    => 'masvideos_movie_columns',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'movie_grid::min_columns', 1 ),
+                        'max'  => masvideos_get_theme_support( 'movie_grid::max_columns', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_movie_rows' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_movie_rows',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_movie_rows',
+                array(
+                    'label'       => esc_html__( 'Rows per page', 'masvideos' ),
+                    'description' => esc_html__( 'How many rows of movies should be shown per page?', 'masvideos' ),
+                    'section'     => 'masvideos_movies',
+                    'settings'    => 'masvideos_movie_rows',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'movie_grid::min_rows', 1 ),
+                        'max'  => masvideos_get_theme_support( 'movie_grid::max_rows', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
+
+        $wp_customize->add_setting(
             'masvideos_movie_review_rating_required',
             array(
                 'default'              => 'yes',
@@ -209,6 +296,66 @@ class MasVideos_Customizer {
                 'choices'     => $this->get_all_pages_array(),
             )
         );
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_video_columns' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_video_columns',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_video_columns',
+                array(
+                    'label'       => esc_html__( 'Videos per row', 'masvideos' ),
+                    'description' => esc_html__( 'How many videos should be shown per row?', 'masvideos' ),
+                    'section'     => 'masvideos_videos',
+                    'settings'    => 'masvideos_video_columns',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'video_grid::min_columns', 1 ),
+                        'max'  => masvideos_get_theme_support( 'video_grid::max_columns', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_video_rows' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_video_rows',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_video_rows',
+                array(
+                    'label'       => esc_html__( 'Rows per page', 'masvideos' ),
+                    'description' => esc_html__( 'How many rows of videos should be shown per page?', 'masvideos' ),
+                    'section'     => 'masvideos_videos',
+                    'settings'    => 'masvideos_video_rows',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'video_grid::min_rows', 1 ),
+                        'max'  => masvideos_get_theme_support( 'video_grid::max_rows', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
     }
 
     /**
@@ -247,6 +394,93 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
+            'masvideos_default_tv_shows_catalog_orderby',
+            array(
+                'default'           => 'date',
+                'type'              => 'option',
+                'capability'        => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_default_tv_shows_catalog_orderby',
+            array(
+                'label'       => esc_html__( 'Default tv show sorting', 'masvideos' ),
+                'description' => esc_html__( 'How should tv shows be sorted in the catalog by default?', 'masvideos' ),
+                'section'     => 'masvideos_tv_shows',
+                'settings'    => 'masvideos_default_tv_shows_catalog_orderby',
+                'type'        => 'select',
+                'choices'     => apply_filters( 'masvideos_default_tv_shows_catalog_orderby_options', array(
+                    'title-asc'  => esc_html__( 'Name: Ascending', 'masvideos' ),
+                    'title-desc' => esc_html__( 'Name: Descending', 'masvideos' ),
+                    'date'       => esc_html__( 'Latest', 'masvideos' ),
+                    'menu_order' => esc_html__( 'Menu Order', 'masvideos' ),
+                    'rating'     => esc_html__( 'Rating', 'masvideos' ),
+                ) ),
+            )
+        );
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_tv_show_columns' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_tv_show_columns',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_tv_show_columns',
+                array(
+                    'label'       => esc_html__( 'TV Shows per row', 'masvideos' ),
+                    'description' => esc_html__( 'How many tv shows should be shown per row?', 'masvideos' ),
+                    'section'     => 'masvideos_tv_shows',
+                    'settings'    => 'masvideos_tv_show_columns',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'tv_show_grid::min_columns', 1 ),
+                        'max'  => masvideos_get_theme_support( 'tv_show_grid::max_columns', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_tv_show_rows' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_tv_show_rows',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_tv_show_rows',
+                array(
+                    'label'       => esc_html__( 'Rows per page', 'masvideos' ),
+                    'description' => esc_html__( 'How many rows of tv shows should be shown per page?', 'masvideos' ),
+                    'section'     => 'masvideos_tv_shows',
+                    'settings'    => 'masvideos_tv_show_rows',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'tv_show_grid::min_rows', 1 ),
+                        'max'  => masvideos_get_theme_support( 'tv_show_grid::max_rows', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
+
+        $wp_customize->add_setting(
             'masvideos_tv_show_review_rating_required',
             array(
                 'default'              => 'yes',
@@ -263,6 +497,27 @@ class MasVideos_Customizer {
                 'label'    => esc_html__( 'Enable TV Shows Review', 'masvideos' ),
                 'section'  => 'masvideos_tv_shows',
                 'settings' => 'masvideos_tv_show_review_rating_required',
+                'type'     => 'checkbox',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_episode_review_rating_required',
+            array(
+                'default'              => 'yes',
+                'type'                 => 'option',
+                'capability'           => 'manage_masvideos',
+                'sanitize_callback'    => 'masvideos_bool_to_string',
+                'sanitize_js_callback' => 'masvideos_string_to_bool',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_episode_review_rating_required',
+            array(
+                'label'    => esc_html__( 'Enable Episodes Review', 'masvideos' ),
+                'section'  => 'masvideos_tv_shows',
+                'settings' => 'masvideos_episode_review_rating_required',
                 'type'     => 'checkbox',
             )
         );
