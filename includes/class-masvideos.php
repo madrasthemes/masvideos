@@ -301,7 +301,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->video_playlist_factory            = new MasVideos_Video_Playlist_Factory();
             $this->movie_factory                     = new MasVideos_Movie_Factory();
             $this->movie_playlist_factory            = new MasVideos_Movie_Playlist_Factory();
-            // $this->structured_data                     = new WC_Structured_Data();
+            $this->structured_data                   = new MasVideos_Structured_Data();
 
             // Classes/actions loaded for the frontend and for ajax requests.
             if ( $this->is_request( 'frontend' ) ) {
