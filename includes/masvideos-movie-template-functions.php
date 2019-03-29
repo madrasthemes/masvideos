@@ -704,7 +704,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_short_desc' ) ) {
 
         ?>
         <div class="movie__short-description">
-            <?php echo '<p>' . $short_description . '</p>'; ?>
+            <?php echo '<div>' . $short_description . '</div>'; ?>
         </div>
 
         <?php
@@ -1060,7 +1060,8 @@ if ( ! function_exists( 'masvideos_display_movie_attributes' ) ) {
      * @since  1.0.0
      * @param  Mas_Videos $movie Movie Object.
      */
-    function masvideos_display_movie_attributes( $movie ) {
+    function masvideos_display_movie_attributes() {
+        global $movie;
         masvideos_get_template( 'single-movie/movie-attributes.php', array(
             'movie'         => $movie,
             'attributes'    => array_filter( $movie->get_attributes(), 'masvideos_attributes_movie_array_filter_visible' ),

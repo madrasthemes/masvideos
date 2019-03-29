@@ -780,6 +780,22 @@ if ( ! function_exists( 'masvideos_template_single_episode_rating_with_sharing_c
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_episode_rating_with_playlist_wrap_open' ) ) {
+    function masvideos_template_single_episode_rating_with_playlist_wrap_open() {
+        ?>
+        <div class="episode__rating-with-playlist">
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_rating_with_playlist_wrap_close' ) ) {
+    function masvideos_template_single_episode_rating_with_playlist_wrap_close() {
+        ?>
+        </div>
+        <?php
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_single_episode_avg_rating' ) ) {
     /**
      * Single episode rating open
@@ -800,6 +816,37 @@ if ( ! function_exists( 'masvideos_template_single_episode_avg_rating' ) ) {
             </a>
         <?php } ?>
         </div><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_button_episode_playlist' ) ) {
+    /**
+     * Button dropdown for Add/Remove episode to playlist.
+     *
+     * @since  1.0.0
+     */
+    function masvideos_template_button_episode_playlist() {
+        global $episode;
+
+        ?>
+        <div class="episode-actions--link_add-to-playlist dropdown">
+            <a class="dropdown-toggle" href="<?php echo get_permalink( $episode->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+            <div class="dropdown-menu">
+                <?php
+                    if ( is_user_logged_in() ) {
+                        masvideos_template_button_toggle_user_episode_playlist( $episode->get_id() );
+                        $episode_playlists_page_id     = masvideos_get_page_id( 'episode_playlists' );
+                        $episode_playlists_page_url    = $episode_playlists_page_id > 0 ?  get_permalink( $episode_playlists_page_id ) : '#';
+                        ?><a class="create-playlist-link" href="<?php echo esc_attr( $episode_playlists_page_url ); ?>"><?php echo esc_html__( 'Create a playlist', 'masvideos' ); ?></a><?php
+                    } else {
+                        $register_login_page_id     = masvideos_get_page_id( 'myaccount' );
+                        $register_login_page_url    = $register_login_page_id > 0 ?  get_permalink( $register_login_page_id ) : wp_login_url( get_permalink() );
+                        ?><a class="login-link" href="<?php echo esc_attr( $register_login_page_url ); ?>"><?php echo esc_html__( 'Sign in to add this episode to a playlist.', 'masvideos' ); ?></a><?php
+                    }
+                ?>
+            </div>
+        </div>
+        <?php
     }
 }
 

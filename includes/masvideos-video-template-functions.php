@@ -514,7 +514,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_short_desc' ) ) {
 
         ?>
         <div class="video__short-description">
-            <?php echo '<p>' . $short_description . '</p>'; ?>
+            <?php echo '<div>' . $short_description . '</div>'; ?>
         </div>
 
         <?php

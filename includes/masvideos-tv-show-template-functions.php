@@ -717,7 +717,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_short_desc' ) ) {
 
         ?>
         <div class="tv-show__short-description">
-            <?php echo '<p>' . $short_description . '</p>'; ?>
+            <?php echo '<div>' . $short_description . '</div>'; ?>
         </div>
 
         <?php
