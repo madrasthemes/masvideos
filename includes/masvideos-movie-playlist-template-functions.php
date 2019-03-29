@@ -315,11 +315,10 @@ if ( ! function_exists( 'masvideos_template_loop_movie_playlist_author' ) ) {
      * movies playlist author info in the loop.
      */
     function masvideos_template_loop_movie_playlist_author() {
-        global $movie_playlist;
         ?>
         <div class="movie-playlist__author-info">
             <div class="movie-playlist__author--image">
-                <?php echo get_avatar( $movie_playlist, apply_filters( 'masvideos_movie_review_gravatar_size', '60' ), '' ); ?>
+                <?php echo get_avatar( get_the_author_meta( 'ID' ), apply_filters( 'masvideos_movie_review_gravatar_size', '60' ), '' ); ?>
             </div>
             <h6 class="movie-playlist__author--name"><?php echo sprintf( '%s %s', esc_html__( 'By: ', 'masvideos' ), get_the_author() ); ?></h6>
         </div>

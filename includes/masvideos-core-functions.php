@@ -600,3 +600,16 @@ if ( ! function_exists( 'masvideos_sort_priority_callback' ) ) {
         return ( $a['priority'] < $b['priority'] ) ? -1 : 1;
     }
 }
+
+if ( ! function_exists( 'masvideos_is_active_theme' ) ) {
+    /**
+     * See if theme/s is activate or not.
+     *
+     * @since 1.0.0
+     * @param string|array $theme Theme name or array of theme names to check.
+     * @return boolean
+     */
+    function masvideos_is_active_theme( $theme ) {
+        return is_array( $theme ) ? in_array( get_template(), $theme, true ) : get_template() === $theme;
+    }
+}
