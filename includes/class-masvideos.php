@@ -246,10 +246,27 @@ if ( ! class_exists( 'MasVideos' ) ) {
                 $this->frontend_includes();
             }
 
+            $this->theme_support_includes();
+
             $this->episode_query = new MasVideos_Episodes_Query();
             $this->tv_show_query = new MasVideos_TV_Shows_Query();
             $this->video_query = new MasVideos_Videos_Query();
             $this->movie_query = new MasVideos_Movies_Query();
+        }
+
+        /**
+         * Include classes for theme support.
+         *
+         * @since 3.3.0
+         */
+        private function theme_support_includes() {
+            if ( masvideos_is_active_theme( array( 'twentynineteen' ) ) ) {
+                switch ( get_template() ) {
+                    case 'twentynineteen':
+                        include_once MASVIDEOS_ABSPATH . 'includes/theme-support/class-masvideos-twenty-nineteen.php';
+                        break;
+                }
+            }
         }
 
         /**
@@ -301,7 +318,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->video_playlist_factory            = new MasVideos_Video_Playlist_Factory();
             $this->movie_factory                     = new MasVideos_Movie_Factory();
             $this->movie_playlist_factory            = new MasVideos_Movie_Playlist_Factory();
-            // $this->structured_data                     = new WC_Structured_Data();
+            $this->structured_data                   = new MasVideos_Structured_Data();
 
             // Classes/actions loaded for the frontend and for ajax requests.
             if ( $this->is_request( 'frontend' ) ) {
