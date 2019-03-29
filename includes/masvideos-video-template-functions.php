@@ -919,3 +919,49 @@ if ( ! function_exists( 'masvideos_video_review_display_comment_text' ) ) {
         echo '</div>';
     }
 }
+
+if ( ! function_exists( 'masvideos_videos_pagination' ) ) {
+    /**
+     * Display Pagination.
+     */
+    function masvideos_videos_pagination() {
+        if ( ! masvideos_get_videos_loop_prop( 'is_paginated' ) || ! masvideos_videos_will_display() ) {
+            return;
+        }
+
+        $args = array(
+            'total'   => masvideos_get_videos_loop_prop( 'total_pages' ),
+            'current' => masvideos_get_videos_loop_prop( 'current_page' ),
+            'base'    => esc_url_raw( add_query_arg( 'movie-page', '%#%', false ) ),
+            'format'  => '?movie-page=%#%',
+        );
+
+        if ( ! masvideos_get_videos_loop_prop( 'is_shortcode' ) ) {
+            $args['format'] = '';
+            $args['base']   = esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) );
+        }
+
+        if (  $args['total'] <= 1 ) {
+            return;
+        }
+        ?>
+
+        <nav class="masvideos-pagination masvideos-videos-pagination">
+            <?php
+                echo paginate_links( apply_filters( 'masvideos_videos_pagination_args', array( // WPCS: XSS ok.
+                    'base'         => $args['base'],
+                    'format'       => $args['format'],
+                    'add_args'     => false,
+                    'current'      => max( 1, $args['current'] ),
+                    'total'        => $args['total'],
+                    'prev_text'    => '&larr;',
+                    'next_text'    => '&rarr;',
+                    'type'         => 'list',
+                    'end_size'     => 3,
+                    'mid_size'     => 3,
+                ) ) );
+            ?>
+        </nav>
+        <?php
+    }
+}
