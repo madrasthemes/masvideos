@@ -39,6 +39,11 @@ class MasVideos_Post_Types {
 
         do_action( 'masvideos_register_post_type' );
 
+        // If theme support changes, we may need to flush permalinks since some are changed based on this flag.
+        if ( update_option( 'current_theme_supports_masvideos', current_theme_supports( 'masvideos' ) ? 'yes' : 'no' ) ) {
+            update_option( 'masvideos_queue_flush_rewrite_rules', 'yes' );
+        }
+
         $permalinks = masvideos_get_permalink_structure();
 
         // For Episodes
@@ -233,11 +238,6 @@ class MasVideos_Post_Types {
             $has_archive = $videos_page_id && get_post( $videos_page_id ) ? urldecode( get_page_uri( $videos_page_id ) ) : 'videos';
         } else {
             $has_archive = false;
-        }
-
-        // If theme support changes, we may need to flush permalinks since some are changed based on this flag.
-        if ( update_option( 'current_theme_supports_masvideos', current_theme_supports( 'masvideos' ) ? 'yes' : 'no' ) ) {
-            update_option( 'masvideos_queue_flush_rewrite_rules', 'yes' );
         }
 
         register_post_type(

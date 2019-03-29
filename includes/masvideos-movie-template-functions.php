@@ -459,7 +459,7 @@ if ( ! function_exists( 'masvideos_movies_catalog_ordering' ) ) {
             return;
         }
 
-        $catalog_orderby_options = apply_filters( 'masvideos_movies_catalog_orderby', array(
+        $catalog_orderby_options = apply_filters( 'masvideos_default_movies_catalog_orderby_options', array(
             'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
             'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
             'release_date'  => esc_html__( 'Latest', 'masvideos' ),
@@ -467,7 +467,7 @@ if ( ! function_exists( 'masvideos_movies_catalog_ordering' ) ) {
             'rating'        => esc_html__( 'Rating', 'masvideos' ),
         ) );
 
-        $default_orderby = masvideos_get_movies_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_movies_default_catalog_orderby', 'release_date' );
+        $default_orderby = masvideos_get_movies_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_default_movies_catalog_orderby', get_option( 'masvideos_default_movies_catalog_orderby', 'release_date' ) );
         $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
 
         if ( masvideos_get_movies_loop_prop( 'is_search' ) ) {
@@ -1047,7 +1047,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_description_tab' ) ) {
      */
     function masvideos_template_single_movie_description_tab() {
         global $movie;
-        echo '<div class="movie__description-tab">';
+        echo '<div id="movie__description-tab" class="movie__description-tab">';
             do_action( 'masvideos_single_movie_description_tab', $movie );
         echo '</div>';
     }
@@ -1097,6 +1097,24 @@ if ( ! function_exists( 'masvideos_template_button_movie_playlist' ) ) {
             </div>
         </div>
         <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_summary_open' ) ) {
+    /**
+     * Single movie summary open
+     */
+    function masvideos_template_single_movie_summary_open() {
+        ?><div class="summary entry-summary"><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_summary_close' ) ) {
+    /**
+     * Single movie summary close
+     */
+    function masvideos_template_single_movie_summary_close() {
+        ?></div><?php
     }
 }
 
