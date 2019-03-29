@@ -246,10 +246,27 @@ if ( ! class_exists( 'MasVideos' ) ) {
                 $this->frontend_includes();
             }
 
+            $this->theme_support_includes();
+
             $this->episode_query = new MasVideos_Episodes_Query();
             $this->tv_show_query = new MasVideos_TV_Shows_Query();
             $this->video_query = new MasVideos_Videos_Query();
             $this->movie_query = new MasVideos_Movies_Query();
+        }
+
+        /**
+         * Include classes for theme support.
+         *
+         * @since 3.3.0
+         */
+        private function theme_support_includes() {
+            if ( masvideos_is_active_theme( array( 'twentynineteen' ) ) ) {
+                switch ( get_template() ) {
+                    case 'twentynineteen':
+                        include_once MASVIDEOS_ABSPATH . 'includes/theme-support/class-masvideos-twenty-nineteen.php';
+                        break;
+                }
+            }
         }
 
         /**
