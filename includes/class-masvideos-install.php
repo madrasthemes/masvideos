@@ -20,8 +20,8 @@ class MasVideos_Install {
      */
     private static $db_updates = array(
         '1.0.0' => array(
-            'wc_update_100_attributes',
-            'wc_update_100_db_version',
+            'masvideos_update_100_attributes',
+            'masvideos_update_100_db_version',
         ),
     );
 
@@ -67,6 +67,7 @@ class MasVideos_Install {
         self::create_roles();
         self::setup_environment();
         self::create_terms();
+        self::maybe_enable_setup_wizard();
         self::update_version();
         self::maybe_update_db_version();
 
@@ -178,6 +179,18 @@ class MasVideos_Install {
      */
     private static function is_new_install() {
         return is_null( get_option( 'masvideos_version', null ) ) && is_null( get_option( 'masvideos_db_version', null ) );
+    }
+
+    /**
+     * See if we need the wizard or not.
+     *
+     * @since 3.2.0
+     */
+    private static function maybe_enable_setup_wizard() {
+        if ( apply_filters( 'masvideos_enable_setup_wizard', self::is_new_install() ) ) {
+            MasVideos_Admin_Notices::add_notice( 'install' );
+            set_transient( '_masvideos_activation_redirect', 1, 30 );
+        }
     }
 
     /**

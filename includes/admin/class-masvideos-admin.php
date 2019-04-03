@@ -49,6 +49,11 @@ class MasVideos_Admin {
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-taxonomies.php';
         include_once dirname( __FILE__ ) . '/class-masvideos-admin-importers.php';
 
+        // Setup/welcome
+        if ( isset( $_GET['masvideos-setup'] ) && $_GET['masvideos-setup'] ) { // WPCS: CSRF ok, input var ok.
+            include_once dirname( __FILE__ ) . '/class-masvideos-admin-setup-wizard.php';
+        }
+
         // Importers
         if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
             include_once dirname( __FILE__ ) . '/class-masvideos-admin-importers.php';
