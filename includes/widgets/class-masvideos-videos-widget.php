@@ -11,7 +11,7 @@ class MasVideos_Videos_Widget extends MasVideos_Widget {
         $this->widget_cssclass    = 'masvideos masvideos_videos_widget masvideos-videos-widget';
         $this->widget_description = __( 'Your site&#8217;s videos.', 'masvideos' );
         $this->widget_id          = 'masvideos_videos_widget';
-        $this->widget_name        = __( 'Videos Wigdet', 'masvideos' );
+        $this->widget_name        = __( 'MasVideos Videos', 'masvideos' );
         $this->settings           = apply_filters( 'masvideos_videos_widget_settings', array(
             'title'         => array(
                 'type'  => 'text',

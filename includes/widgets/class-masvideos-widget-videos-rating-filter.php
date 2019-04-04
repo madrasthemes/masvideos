@@ -20,7 +20,7 @@ class MasVideos_Widget_Videos_Rating_Filter extends MasVideos_Widget {
 		$this->widget_cssclass    = 'masvideos videos_widget_rating_filter';
 		$this->widget_description = __( 'Display a list of star ratings to filter videos.', 'masvideos' );
 		$this->widget_id          = 'masvideos_videos_rating_filter';
-		$this->widget_name        = __( 'Filter Videos by Rating', 'masvideos' );
+		$this->widget_name        = __( 'MasVideos Filter Videos by Rating', 'masvideos' );
 		$this->settings           = array(
 			'title' => array(
 				'type'  => 'text',
