@@ -223,3 +223,15 @@
 // 		color: rgba(#000, 0.75);
 // 	}
 // }
+
+/* Calculates maximum width for post content */
+@mixin postContentMaxWidth() {
+
+	@include media(tablet) {
+		max-width: $size__site-tablet-content;
+	}
+
+	@include media(desktop) {
+		max-width: $size__site-desktop-content;
+	}
+}
