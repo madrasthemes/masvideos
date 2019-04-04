@@ -361,96 +361,8 @@ if ( ! function_exists( 'masvideos_tv_shows_control_bar' ) ) {
      */
     function masvideos_tv_shows_control_bar() {
         echo '<div class="masvideos-control-bar masvideos-tv-shows-control-bar">';
-            masviseos_tv_shows_per_page();
             masvideos_tv_shows_catalog_ordering();
         echo '</div>';
-    }
-}
-
-if ( ! function_exists( 'masviseos_tv_shows_per_page' ) ) {
-    /**
-     * Outputs a dropdown for user to select how many tv shows to show per page
-     */
-    function masviseos_tv_shows_per_page() {
-
-        global $wp_query;
-
-        $action             = '';
-        $cat                = '';
-        $cat                = $wp_query->get_queried_object();
-        $method             = apply_filters( 'masvideos_tv_shows_mpp_method', 'post' );
-        $return_to_first    = apply_filters( 'masvideos_tv_shows_mpp_return_to_first', false );
-        $total              = $wp_query->found_posts;
-        $per_page           = $wp_query->get( 'posts_per_page' );
-        $_per_page          = 2;
-
-        // Generate per page options
-        $tv_shows_per_page_options = array();
-        while( $_per_page < $total ) {
-            $tv_shows_per_page_options[] = $_per_page;
-            $_per_page = $_per_page * 2;
-        }
-
-        if ( empty( $tv_shows_per_page_options ) ) {
-            return;
-        }
-
-        $tv_shows_per_page_options[] = -1;
-
-        // Set action url if option behaviour is true
-        // Paste QUERY string after for filter and orderby support
-        $query_string = ! empty( $_SERVER['QUERY_STRING'] ) ? '?' . add_query_arg( array( 'mpp' => false ), $_SERVER['QUERY_STRING'] ) : null;
-
-        if ( isset( $cat->term_id ) && isset( $cat->taxonomy ) && $return_to_first ) :
-            $action = get_term_link( $cat->term_id, $cat->taxonomy ) . $query_string;
-        elseif ( $return_to_first ) :
-            $action = get_permalink( masviseos_get_page_id( 'tv_shows' ) ) . $query_string;
-        endif;
-
-        // Only show on tv show categories
-        if ( ! masvideos_tv_shows_will_display() ) :
-            return;
-        endif;
-
-        do_action( 'masviseos_mpp_before_dropdown_form' );
-
-        ?><form method="POST" action="<?php echo esc_url( $action ); ?>" class="form-masviseos-mpp"><?php
-
-             do_action( 'masviseos_mpp_before_dropdown' );
-
-            ?><select name="mpp" onchange="this.form.submit()" class="masviseos-mmpp-select c-select"><?php
-
-                foreach( $tv_shows_per_page_options as $key => $value ) :
-
-                    ?><option value="<?php echo esc_attr( $value ); ?>" <?php selected( $value, $per_page ); ?>><?php
-                        $mpp_text = apply_filters( 'masviseos_mpp_text', __( 'Show %s', 'masvideos' ), $value );
-                        esc_html( printf( $mpp_text, $value == -1 ? __( 'All', 'masvideos' ) : $value ) ); // Set to 'All' when value is -1
-                    ?></option><?php
-
-                endforeach;
-
-            ?></select><?php
-
-            // Keep query string vars intact
-            foreach ( $_GET as $key => $val ) :
-
-                if ( 'mpp' === $key || 'submit' === $key ) :
-                    continue;
-                endif;
-                if ( is_array( $val ) ) :
-                    foreach( $val as $inner_val ) :
-                        ?><input type="hidden" name="<?php echo esc_attr( $key ); ?>[]" value="<?php echo esc_attr( $inner_val ); ?>" /><?php
-                    endforeach;
-                else :
-                    ?><input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $val ); ?>" /><?php
-                endif;
-            endforeach;
-
-            do_action( 'masviseos_mpp_after_dropdown' );
-
-        ?></form><?php
-
-        do_action( 'masviseos_mpp_after_dropdown_form' );
     }
 }
 
@@ -800,14 +712,16 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_new_episode' ) ) {
             end( $all_episodes );
             $latest_episode_key = key( $all_episodes );
             $episode = masvideos_get_episode( $all_episodes[$latest_episode_key]['episode'] );
-            $episode_url = get_permalink( $episode->get_ID() );
-            $episode_title = $episode->get_episode_number();
-            if( empty( $episode_title ) ) {
-                $episode_title = $episode->get_title();
+            if ( $episode ) {
+                $episode_url = get_permalink( $episode->get_ID() );
+                $episode_title = $episode->get_episode_number();
+                if( empty( $episode_title ) ) {
+                    $episode_title = $episode->get_title();
+                }
+                echo '<div class="tv-show__episode">'. esc_html__( 'Newest Episode: ', 'masvideos' );
+                echo '<a href="' . esc_url( $episode_url ) . '" class="tv-show__episode--link">' . $episode_title . '</a>';
+                echo '</div>';
             }
-            echo '<div class="tv-show__episode">'. esc_html__( 'Newest Episode: ', 'masvideos' );
-            echo '<a href="' . esc_url( $episode_url ) . '" class="tv-show__episode--link">' . $episode_title . '</a>';
-            echo '</div>';
         }
     }
 }

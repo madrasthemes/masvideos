@@ -353,6 +353,57 @@ if ( ! function_exists( 'masvideos_video_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_videos_control_bar' ) ) {
+    /**
+     * Display Control Bar.
+     */
+    function masvideos_videos_control_bar() {
+        echo '<div class="masvideos-control-bar masvideos-videos-control-bar">';
+            masvideos_videos_catalog_ordering();
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_videos_catalog_ordering' ) ) {
+    function masvideos_videos_catalog_ordering() {
+        if ( ! masvideos_get_videos_loop_prop( 'is_paginated' ) || ! masvideos_videos_will_display() ) {
+            return;
+        }
+
+        $catalog_orderby_options = apply_filters( 'masvideos_default_videos_catalog_orderby_options', array(
+            'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
+            'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
+            'release_date'  => esc_html__( 'Latest', 'masvideos' ),
+            'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
+            'rating'        => esc_html__( 'Rating', 'masvideos' ),
+        ) );
+
+        $default_orderby = masvideos_get_videos_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_default_videos_catalog_orderby', get_option( 'masvideos_default_videos_catalog_orderby', 'release_date' ) );
+        $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
+
+        if ( masvideos_get_videos_loop_prop( 'is_search' ) ) {
+            $catalog_orderby_options = array_merge( array( 'relevance' => esc_html__( 'Relevance', 'masvideos' ) ), $catalog_orderby_options );
+
+            unset( $catalog_orderby_options['menu_order'] );
+        }
+
+        if ( ! array_key_exists( $orderby, $catalog_orderby_options ) ) {
+            $orderby = current( array_keys( $catalog_orderby_options ) );
+        }
+
+        ?>
+        <form method="get">
+            <select name="orderby" class="orderby" onchange="this.form.submit();">
+                <?php foreach ( $catalog_orderby_options as $id => $name ) : ?>
+                    <option value="<?php echo esc_attr( $id ); ?>" <?php selected( $orderby, $id ); ?>><?php echo esc_html( $name ); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="hidden" name="paged" value="1" />
+        </form>
+        <?php
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_video_feature_badge' ) ) {
     /**
      * videos container open in the loop.
@@ -932,8 +983,8 @@ if ( ! function_exists( 'masvideos_videos_pagination' ) ) {
         $args = array(
             'total'   => masvideos_get_videos_loop_prop( 'total_pages' ),
             'current' => masvideos_get_videos_loop_prop( 'current_page' ),
-            'base'    => esc_url_raw( add_query_arg( 'movie-page', '%#%', false ) ),
-            'format'  => '?movie-page=%#%',
+            'base'    => esc_url_raw( add_query_arg( 'video-page', '%#%', false ) ),
+            'format'  => '?video-page=%#%',
         );
 
         if ( ! masvideos_get_videos_loop_prop( 'is_shortcode' ) ) {
