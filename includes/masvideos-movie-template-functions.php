@@ -354,12 +354,29 @@ if ( ! function_exists( 'masvideos_movie_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_display_movie_page_title' ) ) {
+    /**
+     * Outputs Mas Movies Title
+     */
+    function masvideos_display_movie_page_title() {
+
+        if ( apply_filters( 'masvideos_display_movie_page_title', true ) ) {
+            ?>
+            <header class="page-header">
+                <h1 class="page-title"><?php masvideos_movie_page_title(); ?></h1>
+            </header>
+            <?php
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_movies_control_bar' ) ) {
     /**
      * Display Control Bar.
      */
     function masvideos_movies_control_bar() {
         echo '<div class="masvideos-control-bar masvideos-movies-control-bar">';
+            masvideos_movies_count();
             masvideos_movies_catalog_ordering();
         echo '</div>';
     }
