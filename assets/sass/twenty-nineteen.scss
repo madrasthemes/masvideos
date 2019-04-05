@@ -45,16 +45,35 @@ $highlights-color: #0073aa;
 .masvideos-control-bar {
 	display: flex;
 	margin-bottom: 1em;
+	flex-direction: column;
+	align-items: center;
 
 	form {
-		margin-left: auto;
+		@media only screen and (min-width: 768px) {
+			margin-left: auto;
+		}
+	}
+
+	.masvideos-result-count {
+		margin: 0;
+	}
+
+	@media only screen and (min-width: 768px) {
+		flex-direction: row;
+		align-items: flex-start;
 	}
 }
 
 .masvideos-page-control-bar {
 	display: flex;
 	align-items: center;
+	flex-direction: column;
 	justify-content: space-between;
+
+	@media only screen and (min-width: 768px) {
+		flex-direction: row;
+		align-items: flex-start;
+	}
 }
 
 .masvideos-pagination {
@@ -153,16 +172,6 @@ $highlights-color: #0073aa;
 
 .masvideos-info {
 	background: $highlights-color;
-}
-
-.masvideos-archive .page-title {
-	font-size: 1.6875em;
-	font-weight: 700;
-	font-family: $headings;
-
-	@media only screen and (min-width: 768px) {
-		font-size: 2.25em;
-	}
 }
 
 .woocommerce-result-count {
@@ -270,12 +279,6 @@ $highlights-color: #0073aa;
 			margin-right: 0;
 			margin-bottom: 2.5rem;
 
-			.avatar {
-				max-height: 36px;
-				width: auto;
-				float: right;
-			}
-
 			p.meta {
 				margin-bottom: 0.5em;
 			}
@@ -354,7 +357,7 @@ $highlights-color: #0073aa;
 .single-movie .masvideos-Reviews,
 .movie__recommended {
 	margin: calc(2 * 1rem) 1rem;
-	@include media-breakpoint-up(md) {
+	@media only screen and (min-width: 768px) {
 		margin: 0 calc(10% + 60px);
 	}
 }
@@ -362,6 +365,11 @@ $highlights-color: #0073aa;
 .masvideos-tabs,
 .movie__recommended{
 	margin-bottom: 40px;
+}
+
+.single-tv_show .masvideos-tabs,
+.single-episode .masvideos-tabs {
+	margin: 0;
 }
 
 .movie__meta,
@@ -427,60 +435,89 @@ $highlights-color: #0073aa;
 /**
  * Archive Pages
  */
+
+.masvideos.archive .page-header {
+	margin: 0;
+
+	.page-title {
+		font-size: 1.6875em;
+		font-weight: 700;
+		font-family: $headings;
+		margin: 1rem 0;
+		display: block;
+		color: #111;
+
+		@media only screen and (min-width: 768px) {
+			font-size: 2.25em;
+		}
+	}
+}
+
+.tv-show__hover-area {
+	display: none;
+}
+
 .videos__inner,
 .movies__inner,
-.tv-shows__inner {
+.tv-shows__inner,
+.episodes__inner {
     @include make-row();
 }
 
 .videos__inner > .video,
 .movies__inner > .movie,
-.tv-shows__inner > .tv-show  {
+.tv-shows__inner > .tv-show,
+.episodes__inner > .episode  {
     @include make-col-ready();
     margin-top: 0;
 }
 
 .videos,
 .movies,
-.tv-shows {
+.tv-shows,
+.episodes {
 	>.videos__inner .video,
 	>.movies__inner .movie,
-	>.tv-shows__inner > .tv-show {
+	>.tv-shows__inner > .tv-show,
+	>.episodes__inner > .episode {
         @include make-col(6);
         padding-right: 6px;
         padding-left: 6px;
 
-        @include media-breakpoint-up(md) {
+        @media only screen and (min-width: 768px) {
             @include make-col(6);
             padding-right: 15px;
             padding-left: 15px;
         }
 
-        @include media-breakpoint-up(lg) {
+        @media only screen and (min-width: 992px) {
             @include make-col(3);
         }
     }
        
 	
-	@include media-breakpoint-up(lg) {
+	@media only screen and (min-width: 992px) {
         &.columns-1 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(12);
             }
         }
         &.columns-2 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(6);
             }
         }
         &.columns-3 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(4);
             }
         }
@@ -488,7 +525,8 @@ $highlights-color: #0073aa;
         &.columns-4 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(3);
             }
         }
@@ -496,7 +534,8 @@ $highlights-color: #0073aa;
         &.columns-5 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(2.4);
             }
         }
@@ -504,7 +543,8 @@ $highlights-color: #0073aa;
         &.columns-6 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(2);
             }
         }
@@ -512,7 +552,8 @@ $highlights-color: #0073aa;
         &.columns-7 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(1.71428571);
             }
         }
@@ -520,7 +561,8 @@ $highlights-color: #0073aa;
         &.columns-8 {
             >.videos__inner .video,
             >.movies__inner .movie,
-            >.tv-shows__inner > .tv-show {
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
                 @include make-col(1.5);
             }
         }
@@ -533,11 +575,13 @@ $highlights-color: #0073aa;
 
 .single-video .video,
 .single-movie .movie,
-.single-tv_show .tv-show {
+.single-tv_show .tv-show,
+.single-episode .episode{
 	.wp-video,
 	.movie__head,
-	.tv-show__head {
-		@include media-breakpoint-up(lg) {
+	.tv-show__head,
+	.episode__head {
+		@media only screen and (min-width: 992px) {
 			position: relative;
 			float: left;
 			width: 48%;
@@ -549,7 +593,7 @@ $highlights-color: #0073aa;
 		padding: 0;
 		max-width: 100%;
 
-		@include media-breakpoint-up(lg) {
+		@media only screen and (min-width: 992px) {
 			float: right;
 			width: 48%;
 			clear: none;
@@ -560,7 +604,8 @@ $highlights-color: #0073aa;
 	.single-video__related,
 	.movie__related,
 	.single-tv_show__related,
-	.masvideos-Reviews {
+	.masvideos-Reviews,
+	.masvideos-tabs {
 		clear: both;
 	}
 }
@@ -575,7 +620,7 @@ $highlights-color: #0073aa;
 		justify-content: space-between;
 		flex-direction: column;
 
-		@include media-breakpoint-up(lg) {
+		@media only screen and (min-width: 992px) {
 			flex-direction: row;
 		}
 
@@ -585,13 +630,13 @@ $highlights-color: #0073aa;
 				align-items: center;
 				flex-direction: column;
 
-				@include media-breakpoint-up(lg) {
+				@media only screen and (min-width: 992px) {
 					flex-direction: row;
 				}
 
 				flex: 0 0 100%;
 				max-width: 100%;
-				@include media-breakpoint-up(lg) {
+				@media only screen and (min-width: 992px) {
 					flex: 0 0 60%;
 			    	max-width: 60%;
 				}
@@ -600,7 +645,7 @@ $highlights-color: #0073aa;
 			&__info--right {
 				flex: 0 0 100%;
 				max-width: 100%;
-				@include media-breakpoint-up(lg) {
+				@media only screen and (min-width: 992px) {
 					flex: 0 0 40%;
 				    max-width: 40%;
 				}
@@ -610,14 +655,14 @@ $highlights-color: #0073aa;
 				flex: 0 0 100%;
 				max-width: 100%;
 
-				@include media-breakpoint-up(lg) {
+				@media only screen and (min-width: 992px) {
 					margin-right: 40px;
 				    flex: 0 0 24.1%;
 				    max-width: 24.1%;
 				}
 			}
 			&__body {
-				@include media-breakpoint-down(md) {
+				@media only screen and (max-width: 768px) {
 					flex: 0 0 100%;
 					max-width: 100%;
 				}

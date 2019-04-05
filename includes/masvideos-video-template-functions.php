@@ -353,12 +353,29 @@ if ( ! function_exists( 'masvideos_video_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_display_video_page_title' ) ) {
+    /**
+     * Outputs Mas Movies Title
+     */
+    function masvideos_display_video_page_title() {
+
+        if ( apply_filters( 'masvideos_display_video_page_title', true ) ) {
+            ?>
+            <header class="page-header">
+                <h1 class="page-title"><?php masvideos_video_page_title(); ?></h1>
+            </header>
+            <?php
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_videos_control_bar' ) ) {
     /**
      * Display Control Bar.
      */
     function masvideos_videos_control_bar() {
         echo '<div class="masvideos-control-bar masvideos-videos-control-bar">';
+            masvideos_videos_count();
             masvideos_videos_catalog_ordering();
         echo '</div>';
     }
@@ -400,6 +417,39 @@ if ( ! function_exists( 'masvideos_videos_catalog_ordering' ) ) {
             </select>
             <input type="hidden" name="paged" value="1" />
         </form>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_videos_count' ) ) {
+
+    /**
+     * Output the result count text (Showing x - x of x results).
+     */
+    function masvideos_videos_count() {
+        if ( ! masvideos_get_videos_loop_prop( 'is_paginated' ) || ! masvideos_videos_will_display() ) {
+            return;
+        }
+        $args = array(
+            'total'    => masvideos_get_videos_loop_prop( 'total' ),
+            'per_page' => masvideos_get_videos_loop_prop( 'per_page' ),
+            'current'  => masvideos_get_videos_loop_prop( 'current_page' ),
+        );
+
+        ?>
+        <p class="masvideos-result-count masvideos-videos-result-count">
+            <?php
+            if ( $args['total'] <= $args['per_page'] || -1 === $args['per_page'] ) {
+                /* translators: %d: total results */
+                printf( _n( 'Showing the single result', 'Showing all %d results', $args['total'], 'masvideos' ), $args['total'] );
+            } else {
+                $first = ( $args['per_page'] * $args['current'] ) - $args['per_page'] + 1;
+                $last  = min( $args['total'], $args['per_page'] * $args['current'] );
+                /* translators: 1: first result 2: last result 3: total results */
+                printf( _nx( 'Showing the single result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), $first, $last, $args['total'] );
+            }
+            ?>
+        </p>
         <?php
     }
 }

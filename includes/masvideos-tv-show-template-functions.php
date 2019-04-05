@@ -355,12 +355,29 @@ if ( ! function_exists( 'masvideos_tv_show_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_display_tv_show_page_title' ) ) {
+    /**
+     * Outputs Mas Movies Title
+     */
+    function masvideos_display_tv_show_page_title() {
+
+        if ( apply_filters( 'masvideos_display_tv_show_page_title', true ) ) {
+            ?>
+            <header class="page-header">
+                <h1 class="page-title"><?php masvideos_tv_show_page_title(); ?></h1>
+            </header>
+            <?php
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_tv_shows_control_bar' ) ) {
     /**
      * Display Control Bar.
      */
     function masvideos_tv_shows_control_bar() {
         echo '<div class="masvideos-control-bar masvideos-tv-shows-control-bar">';
+            masvideos_tv_shows_count();
             masvideos_tv_shows_catalog_ordering();
         echo '</div>';
     }
