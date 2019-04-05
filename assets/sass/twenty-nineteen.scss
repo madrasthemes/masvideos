@@ -238,6 +238,7 @@ $highlights-color: #0073aa;
 
 		li {
 			margin-right: 1rem;
+			display: inline-block;
 
 			a {
 				color: $body-color;
@@ -416,7 +417,7 @@ $highlights-color: #0073aa;
 		margin-right: 0.5em;
 	}
 
-	&--genre {
+	&--genre  {
 		&:before {
 			content: "";
 		    width: 16px;
@@ -439,11 +440,12 @@ $highlights-color: #0073aa;
 		    vertical-align: middle;
 		    margin-right: 4px;
 		    background-repeat: no-repeat;
-			background-image: url('data:image/svg+xml;utf8,<svg class="svg-icon" width="16" height="16" fill="rgb(118, 118, 118)" aria-hidden="true" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><path id="a" d="M0 0h24v24H0V0z"></path></defs><clipPath id="b"><use xlink:href="#a" overflow="visible"></use></clipPath><path clip-path="url(#b)" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"></path></svg>');
+			background-image: url('data:image/svg+xml;utf8,<svg width="16" height="16" fill="rgb(118, 118, 118)" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="clock" class="svg-inline--fa fa-clock fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="rgb(118, 118, 118)" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm57.1 350.1L224.9 294c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v137.7l63.5 46.2c5.4 3.9 6.5 11.4 2.6 16.8l-28.2 38.8c-3.9 5.3-11.4 6.5-16.8 2.6z"></path></svg>');
 			
 		}
 	}
 }
+
 
 /**
  * Archive Pages
