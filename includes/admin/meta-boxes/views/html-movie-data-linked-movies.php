@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
     <div class="options_group">
         <p class="form-field">
-            <label for="linked_recommended_movie_ids"><?php esc_html_e( 'Linked Movies', 'masvideos' ); ?></label>
+            <label for="linked_recommended_movie_ids"><?php esc_html_e( 'Recommended Movies', 'masvideos' ); ?></label>
             <select class="multiselect movies masvideos-enhanced-search" multiple="multiple" style="width: 50%;" id="linked_recommended_movie_ids" name="recommended_movie_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a recommended movie&hellip;', 'masvideos' ); ?>" data-action="masvideos_json_search_movies" data-sortable="true" data-exclude="<?php echo intval( $post->ID ); ?>" data-nonce_key="search_movies_nonce">
                 <?php $movie_ids = $movie_object->get_recommended_movie_ids( 'edit' );
 
