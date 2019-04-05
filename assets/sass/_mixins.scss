@@ -228,7 +228,7 @@
 @mixin postContentMaxWidth() {
 
 	@include media(tablet) {
-		max-width: $size__site-tablet-content;
+		max-width: calc(8 * (100vw / 12) - 28px);
 	}
 
 	@include media(desktop) {

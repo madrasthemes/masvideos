@@ -36,7 +36,9 @@ $highlights-color: #0073aa;
 
 
 .masvideos-breadcrumb {
-	margin-bottom: 1rem;
+	margin-bottom: 3rem;
+	font-size: 0.88889em;
+	font-family: $headings;
 }
 
 .masvideos-control-bar {
@@ -77,9 +79,131 @@ $highlights-color: #0073aa;
 		padding: 0 calc(.5 * 1rem);
 		display: inline-block;
 	}
+
+	@media only screen and (min-width: 768px) {
+		span.page-numbers,
+		a.page-numbers,
+		.next.page-numbers,
+		.prev.page-numbers {
+			padding: 1rem;
+		}
+	}
 }
 
-.masvideos-tabs {
+.video__badge,
+.movie__badge,
+.tv-show__badge {
+	position: absolute;
+	top: 0;
+	left: 15px;
+	display: inline-block;
+	background: $highlights-color;
+	color: #fff;
+	display: inline-block;
+	font-family: $headings;
+	font-size: 0.71111em;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	padding: 0.5rem;
+	position: absolute;
+	text-transform: uppercase;
+	top: 0;
+	z-index: 1;
+}
+
+.masvideos-message,
+.masvideos-error,
+.masvideos-info {
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+	background: #eee;
+	font-size: 0.88889em;
+	font-family: $headings;
+	list-style: none;
+	overflow: hidden;
+}
+
+.masvideos-message {
+	background: #eee;
+	color: $body-color;
+}
+
+.masvideos-error,
+.masvideos-info {
+	color: #fff;
+
+	a {
+		color: #fff;
+
+		&:hover {
+			color: #fff;
+		}
+
+		&.button {
+			background: #111;
+		}
+	}
+}
+
+.masvideos-error {
+	background: firebrick;
+}
+
+.masvideos-info {
+	background: $highlights-color;
+}
+
+.masvideos-archive .page-title {
+	font-size: 1.6875em;
+	font-weight: 700;
+	font-family: $headings;
+
+	@media only screen and (min-width: 768px) {
+		font-size: 2.25em;
+	}
+}
+
+.woocommerce-result-count {
+	margin: 0;
+	padding: 0.75rem 0;
+}
+
+.star-rating {
+	overflow: hidden;
+	position: relative;
+	height: 1em;
+	line-height: 1;
+	font-size: 1em;
+	width: 5.4em;
+	font-family: 'star';
+
+	&::before {
+		content: '\73\73\73\73\73';
+		float: left;
+		top: 0;
+		left: 0;
+		position: absolute;
+	}
+
+	span {
+		overflow: hidden;
+		float: left;
+		top: 0;
+		left: 0;
+		position: absolute;
+		padding-top: 1.5em;
+	}
+
+	span::before {
+		content: '\53\53\53\53\53';
+		top: 0;
+		position: absolute;
+		left: 0;
+	}
+}
+
+/*.masvideos-tabs {
 
 	ul {
 		list-style: none;
@@ -90,6 +214,151 @@ $highlights-color: #0073aa;
 
 			& + li {
 				margin-left: 1rem;
+			}
+		}
+	}
+
+	.tab-content > .tab-pane {
+      display: none;
+    }
+
+    .tab-content > .active {
+      display: block;
+    }
+}*/
+
+.masvideos-tabs {
+	margin: 0 0 2rem;
+
+	ul {
+		margin: 0 0 1.5rem;
+		padding: 0;
+		font-family: $headings;
+		list-style: none;
+
+		li {
+			margin-right: 1rem;
+
+			a {
+				color: $body-color;
+				text-decoration: none;
+				font-weight: 700;
+			}
+
+			&.active {
+				a {
+					color: $highlights-color;
+					box-shadow: 0 2px 0 $highlights-color;
+				}
+			}
+		}
+	}
+
+	.panel {
+		> * {
+			margin-top: 0 !important;
+		}
+
+		h2 {
+			margin: 0 0 1rem;
+			font-size: 1em;
+
+			&:before {
+				content: none;
+			}
+		}
+	}
+
+	#comments {
+		padding-top: 0;
+	}
+
+	.comment-reply-title {
+		font-family: $headings;
+		font-size: 1em;
+		font-weight: bold;
+		margin: 0 0 0.75rem;
+		display: block;
+	}
+
+	#reviews {
+		ol.commentlist {
+			padding: 0;
+		}
+
+		li.review,
+		li.comment {
+			list-style: none;
+			margin-right: 0;
+			margin-bottom: 2.5rem;
+
+			.avatar {
+				max-height: 36px;
+				width: auto;
+				float: right;
+			}
+
+			p.meta {
+				margin-bottom: 0.5em;
+			}
+		}
+
+		p.stars {
+			margin-top: 0;
+
+			a {
+				position: relative;
+				height: 1em;
+				width: 1em;
+				text-indent: -999em;
+				display: inline-block;
+				text-decoration: none;
+				box-shadow: none;
+
+				&::before {
+					display: block;
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 1em;
+					height: 1em;
+					line-height: 1;
+					font-family: 'WooCommerce';
+					content: '\e021';
+					text-indent: 0;
+				}
+
+				&:hover {
+					~ a::before {
+						content: '\e021';
+					}
+				}
+			}
+
+			&:hover {
+				a {
+					&::before {
+						content: '\e020';
+					}
+				}
+			}
+
+			&.selected {
+				a.active {
+					&::before {
+						content: '\e020';
+					}
+
+					~ a::before {
+						content: '\e021';
+					}
+				}
+
+				a:not( .active ) {
+					&::before {
+						content: '\e020';
+					}
+				}
 			}
 		}
 	}
@@ -115,6 +384,65 @@ $highlights-color: #0073aa;
 .masvideos-tabs,
 .movie__recommended{
 	margin-bottom: 40px;
+}
+
+.movie__meta,
+.video__meta,
+.tv-show__meta{
+
+	font-weight: 500;
+
+	> span {
+
+		margin-right: 1rem;
+		display: inline-block;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	a {
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	.svg-icon {
+		position: relative;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: 0.5em;
+	}
+
+	&--genre {
+		&:before {
+			content: "";
+		    width: 16px;
+		    height: 16px;
+		    display: inline-block;
+		    vertical-align: middle;
+		    margin-right: 4px;
+		    background-repeat: no-repeat;
+			background-image: url('data:image/svg+xml;utf8,<svg class="svg-icon" width="16" height="16" fill="rgb(118, 118, 118)" aria-hidden="true" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>');
+			
+		}
+	}
+
+	&--release-year {
+		&:before {
+			content: "";
+		    width: 16px;
+		    height: 16px;
+		    display: inline-block;
+		    vertical-align: middle;
+		    margin-right: 4px;
+		    background-repeat: no-repeat;
+			background-image: url('data:image/svg+xml;utf8,<svg class="svg-icon" width="16" height="16" fill="rgb(118, 118, 118)" aria-hidden="true" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><path id="a" d="M0 0h24v24H0V0z"></path></defs><clipPath id="b"><use xlink:href="#a" overflow="visible"></use></clipPath><path clip-path="url(#b)" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"></path></svg>');
+			
+		}
+	}
 }
 
 /**
