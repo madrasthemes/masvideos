@@ -287,6 +287,7 @@ add_action( 'masvideos_video_review_comment_text', 'masvideos_video_review_displ
  * Movies Loop.
  */
 add_action( 'masvideos_no_movies_found', 'masvideos_no_movies_found', 10 );
+add_action( 'masvideos_movies_loop', 'masvideos_movies_loop_content', 20 );
 add_action( 'masvideos_before_movies_loop', 'masvideos_display_movie_page_title', 5 );
 add_action( 'masvideos_before_movies_loop', 'masvideos_movies_control_bar', 10 );
 add_action( 'masvideos_before_movies_loop_item', 'masvideos_template_loop_movie_feature_badge', 5 );
