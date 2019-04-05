@@ -297,6 +297,33 @@ class MasVideos_Customizer {
             )
         );
 
+        $wp_customize->add_setting(
+            'masvideos_default_videos_catalog_orderby',
+            array(
+                'default'           => 'date',
+                'type'              => 'option',
+                'capability'        => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_default_videos_catalog_orderby',
+            array(
+                'label'       => esc_html__( 'Default video sorting', 'masvideos' ),
+                'description' => esc_html__( 'How should videos be sorted in the catalog by default?', 'masvideos' ),
+                'section'     => 'masvideos_videos',
+                'settings'    => 'masvideos_default_videos_catalog_orderby',
+                'type'        => 'select',
+                'choices'     => apply_filters( 'masvideos_default_videos_catalog_orderby_options', array(
+                    'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
+                    'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
+                    'date'          => esc_html__( 'Latest', 'masvideos' ),
+                    'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
+                    'rating'        => esc_html__( 'Rating', 'masvideos' ),
+                ) ),
+            )
+        );
+
         // The following settings should be hidden if the theme is declaring the values.
         if ( ! has_filter( 'masvideos_video_columns' ) ) {
             $wp_customize->add_setting(
