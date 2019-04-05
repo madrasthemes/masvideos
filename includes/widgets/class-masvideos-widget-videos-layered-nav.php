@@ -20,7 +20,7 @@ class MasVideos_Widget_Videos_Layered_Nav extends MasVideos_Widget {
         $this->widget_cssclass    = 'masvideos widget_layered_nav masvideos-widget-videos-layered-nav';
         $this->widget_description = esc_html__( 'Display a list of attributes to filter videos in your site.', 'masvideos' );
         $this->widget_id          = 'masvideos_widget_videos_layered_nav';
-        $this->widget_name        = esc_html__( 'Filter Videos by Attribute', 'masvideos' );
+        $this->widget_name        = esc_html__( 'MasVideos Filter Videos by Attribute', 'masvideos' );
         parent::__construct();
     }
 
