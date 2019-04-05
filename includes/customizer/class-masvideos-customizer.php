@@ -30,7 +30,7 @@ class MasVideos_Customizer {
             'priority'       => 200,
             'capability'     => 'manage_masvideos',
             'theme_supports' => '',
-            'title'          => esc_html__( 'Masvideos', 'masvideos' ),
+            'title'          => esc_html__( 'MAS Videos', 'masvideos' ),
         ) );
 
         $this->add_myaccount_section( $wp_customize );
