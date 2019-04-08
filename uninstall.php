@@ -13,7 +13,7 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 global $wpdb;
 
 /*
- * Only remove ALL product and page data if MASVIDEOS_REMOVE_ALL_DATA constant is set to true in user's
+ * Only remove ALL movie, video, tv show and page data if MASVIDEOS_REMOVE_ALL_DATA constant is set to true in user's
  * wp-config.php. This is to prevent data loss when deleting the plugin from the backend
  * and to ensure only the site owner can perform this action.
  */
