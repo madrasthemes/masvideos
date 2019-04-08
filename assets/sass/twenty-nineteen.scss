@@ -42,6 +42,13 @@ $highlights-color: #0073aa;
 	font-family: $headings;
 }
 
+.masvideos-loop-video__title,
+.masvideos-loop-movie__title,
+.masvideos-loop-tv-show__title,
+.masvideos-loop-episode__title {
+	font-size: 1.3em;
+}
+
 .masvideos-control-bar {
 	display: flex;
 	margin-bottom: 1em;
