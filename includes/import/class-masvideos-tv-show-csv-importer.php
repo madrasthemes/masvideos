@@ -767,7 +767,7 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
             }
 
             if ( $id_exists && ! $update_existing ) {
-                $data['skipped'][] = new WP_Error( 'masvideos_tv_show_importer_error', __( 'A tv show with this ID already exists.', 'woocommerce' ), array(
+                $data['skipped'][] = new WP_Error( 'masvideos_tv_show_importer_error', __( 'A tv show with this ID already exists.', 'masvideos' ), array(
                     'id'  => $id,
                     'row' => $this->get_row_id( $parsed_data ),
                 ) );
@@ -775,7 +775,7 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
             }
 
             if ( $update_existing && $id  && ! $id_exists ) {
-                $data['skipped'][] = new WP_Error( 'masvideos_tv_show_importer_error', __( 'No matching tv show exists to update.', 'woocommerce' ), array(
+                $data['skipped'][] = new WP_Error( 'masvideos_tv_show_importer_error', __( 'No matching tv show exists to update.', 'masvideos' ), array(
                     'id'  => $id,
                     'row' => $this->get_row_id( $parsed_data ),
                 ) );

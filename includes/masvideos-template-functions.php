@@ -269,11 +269,11 @@ if ( ! function_exists( 'masvideos_star_rating' ) ) {
      
         if ( $r['number'] ) {
             /* translators: 1: The rating, 2: The number of ratings */
-            $format = _n( '%1$s rating based on %2$s rating', '%1$s rating based on %2$s ratings', $r['number'] );
+            $format = _n( '%1$s rating based on %2$s rating', '%1$s rating based on %2$s ratings', $r['number'], 'masvideos' );
             $title = sprintf( $format, number_format_i18n( $rating, 1 ), number_format_i18n( $r['number'] ) );
         } else {
             /* translators: 1: The rating */
-            $title = sprintf( __( '%s rating' ), number_format_i18n( $rating, 1 ) );
+            $title = sprintf( __( '%s rating', 'masvideos' ), number_format_i18n( $rating, 1 ) );
         }
      
         $output = '<div class="star-rating">';

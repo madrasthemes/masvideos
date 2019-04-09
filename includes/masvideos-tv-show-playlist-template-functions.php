@@ -365,7 +365,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_tv_shows_count
             $tv_shows_count = count( masvideos_single_tv_show_playlist_tv_shows( get_the_ID() ) );
 
             if( $tv_shows_count > 0 ) {
-                printf( _n( '%s TV Show', '%s TV Shows', $tv_shows_count, 'vodi' ), number_format_i18n( $tv_shows_count ) );
+                printf( _n( '%s TV Show', '%s TV Shows', $tv_shows_count, 'masvideos' ), number_format_i18n( $tv_shows_count ) );
             }
         ?></span><?php
     }

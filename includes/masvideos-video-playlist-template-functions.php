@@ -365,7 +365,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_playlist_videos_count' ) 
             $videos_count = count( masvideos_single_video_playlist_videos( get_the_ID() ) );
 
             if( $videos_count > 0 ) {
-                printf( _n( '%s Video', '%s Videos', $videos_count, 'vodi' ), number_format_i18n( $videos_count ) );
+                printf( _n( '%s Video', '%s Videos', $videos_count, 'masvideos' ), number_format_i18n( $videos_count ) );
             }
         ?></span><?php
     }

@@ -49,18 +49,18 @@ do_action( 'masvideos_before_edit_playlist_form', $playlist ); ?>
 
         <h2><?php echo esc_html( $section_title ); ?></h2>
 
-        <form method="post" class="masvideos-form masvideos-edit-playlist__form masvideos-edit-playlist__form--<?php esc_attr_e( $post_type ); ?>" <?php do_action( 'masvideos_edit_playlist_form_tag', $playlist ); ?> >
+        <form method="post" class="masvideos-form masvideos-edit-playlist__form masvideos-edit-playlist__form--<?php echo esc_attr( $post_type ); ?>" <?php do_action( 'masvideos_edit_playlist_form_tag', $playlist ); ?> >
 
             <?php do_action( 'masvideos_edit_playlist_form_start', $playlist ); ?>
 
             <p class="masvideos-form-row masvideos-form-row--wide form-row form-row-wide">
-                <label for="<?php esc_attr_e( $post_type ); ?>-title"><?php esc_html_e( 'Title', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
-                <input type="text" class="masvideos-Input masvideos-Input--text input-text" name="title" id="<?php esc_attr_e( $post_type ); ?>-title" value="<?php echo esc_attr( $title ); ?>" /><?php // @codingStandardsIgnoreLine ?>
+                <label for="<?php echo esc_attr( $post_type ); ?>-title"><?php esc_html_e( 'Title', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
+                <input type="text" class="masvideos-Input masvideos-Input--text input-text" name="title" id="<?php echo esc_attr( $post_type ); ?>-title" value="<?php echo esc_attr( $title ); ?>" /><?php // @codingStandardsIgnoreLine ?>
             </p>
 
             <p class="masvideos-form-row masvideos-form-row--wide form-row form-row-wide">
-                <label for="<?php esc_attr_e( $post_type ); ?>-visibility"><?php esc_html_e( 'Visibility', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
-                <select class="masvideos-Input masvideos-Input--select input-select" name="visibility" id="<?php esc_attr_e( $post_type ); ?>-visibility">
+                <label for="<?php echo esc_attr( $post_type ); ?>-visibility"><?php esc_html_e( 'Visibility', 'masvideos' ); ?>&nbsp;<span class="required">*</span></label>
+                <select class="masvideos-Input masvideos-Input--select input-select" name="visibility" id="<?php echo esc_attr( $post_type ); ?>-visibility">
                     <?php foreach ( masvideos_get_movie_playlist_visibility_options() as $key => $value ) : ?>
                         <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $visibility, $key ); ?>><?php echo esc_attr( $value ); ?></option><?php // @codingStandardsIgnoreLine ?>
                     <?php endforeach; ?>

@@ -716,7 +716,7 @@ class MasVideos_Video_CSV_Importer extends MasVideos_Video_Importer {
             }
 
             if ( $id_exists && ! $update_existing ) {
-                $data['skipped'][] = new WP_Error( 'masvideos_video_importer_error', __( 'A video with this ID already exists.', 'woocommerce' ), array(
+                $data['skipped'][] = new WP_Error( 'masvideos_video_importer_error', __( 'A video with this ID already exists.', 'masvideos' ), array(
                     'id'  => $id,
                     'row' => $this->get_row_id( $parsed_data ),
                 ) );
@@ -724,7 +724,7 @@ class MasVideos_Video_CSV_Importer extends MasVideos_Video_Importer {
             }
 
             if ( $update_existing && $id  && ! $id_exists ) {
-                $data['skipped'][] = new WP_Error( 'masvideos_video_importer_error', __( 'No matching video exists to update.', 'woocommerce' ), array(
+                $data['skipped'][] = new WP_Error( 'masvideos_video_importer_error', __( 'No matching video exists to update.', 'masvideos' ), array(
                     'id'  => $id,
                     'row' => $this->get_row_id( $parsed_data ),
                 ) );
