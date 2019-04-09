@@ -1,2 +1,264 @@
-@import 'mixins';
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/grid";
+@import "node_modules/bootstrap/scss/dropdown";
 @import 'starrating';
+
+
+.masvideos-control-bar {
+	display: flex;
+	margin-bottom: 1em;
+	flex-direction: column;
+	align-items: center;
+
+	form {
+		@media only screen and (min-width: 768px) {
+			margin-left: auto;
+		}
+	}
+
+	.masvideos-result-count {
+		margin: 0;
+	}
+
+	@media only screen and (min-width: 768px) {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+}
+
+.masvideos-page-control-bar {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-between;
+
+	@media only screen and (min-width: 768px) {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+}
+
+
+/**
+ * Archive Pages
+ */
+
+.tv-show__hover-area {
+	display: none;
+}
+
+.videos__inner,
+.movies__inner,
+.tv-shows__inner,
+.episodes__inner {
+    @include make-row();
+}
+
+.videos__inner > .video,
+.movies__inner > .movie,
+.tv-shows__inner > .tv-show,
+.episodes__inner > .episode  {
+    @include make-col-ready();
+    margin-top: 0;
+}
+
+.videos,
+.movies,
+.tv-shows,
+.episodes {
+	>.videos__inner .video,
+	>.movies__inner .movie,
+	>.tv-shows__inner > .tv-show,
+	>.episodes__inner > .episode {
+        @include make-col(6);
+        padding-right: 6px;
+        padding-left: 6px;
+
+        @media only screen and (min-width: 768px) {
+            @include make-col(6);
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        @media only screen and (min-width: 992px) {
+            @include make-col(3);
+        }
+    }
+       
+	
+	@media only screen and (min-width: 992px) {
+        &.columns-1 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(12);
+            }
+        }
+        &.columns-2 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(6);
+            }
+        }
+        &.columns-3 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(4);
+            }
+        }
+
+        &.columns-4 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(3);
+            }
+        }
+
+        &.columns-5 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(2.4);
+            }
+        }
+
+        &.columns-6 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(2);
+            }
+        }
+
+        &.columns-7 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(1.71428571);
+            }
+        }
+
+        &.columns-8 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(1.5);
+            }
+        }
+    }
+}
+
+/**
+ * Single page
+ */
+
+.single-video .video,
+.single-movie .movie,
+.single-tv_show .tv-show,
+.single-episode .episode{
+	.wp-video,
+	.movie__head,
+	.tv-show__head,
+	.episode__head {
+		@media only screen and (min-width: 992px) {
+			position: relative;
+			float: left;
+			width: 48%;
+		}
+	}
+
+	div.summary {
+		margin: 0;
+		padding: 0;
+		max-width: 100%;
+
+		@media only screen and (min-width: 992px) {
+			float: right;
+			width: 48%;
+			clear: none;
+			
+		}
+	}
+
+	.single-video__related,
+	.movie__related,
+	.single-tv_show__related,
+	.masvideos-Reviews,
+	.masvideos-tabs {
+		clear: both;
+	}
+}
+
+/**
+ * Single Movie
+ */
+
+.single-movie {
+	.movie__description-tab {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+
+		@media only screen and (min-width: 992px) {
+			flex-direction: row;
+		}
+
+		.movie{
+			&__info--left {
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+
+				@media only screen and (min-width: 992px) {
+					flex-direction: row;
+				}
+
+				flex: 0 0 100%;
+				max-width: 100%;
+				@media only screen and (min-width: 992px) {
+					flex: 0 0 60%;
+			    	max-width: 60%;
+				}
+			}
+
+			&__info--right {
+				flex: 0 0 100%;
+				max-width: 100%;
+				@media only screen and (min-width: 992px) {
+					flex: 0 0 40%;
+				    max-width: 40%;
+				}
+			}
+
+			&__poster {
+				flex: 0 0 100%;
+				max-width: 100%;
+
+				@media only screen and (min-width: 992px) {
+					margin-right: 40px;
+				    flex: 0 0 24.1%;
+				    max-width: 24.1%;
+				}
+			}
+			&__body {
+				@media only screen and (max-width: 768px) {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+			}
+		}
+	}
+}

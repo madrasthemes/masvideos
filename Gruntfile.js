@@ -163,6 +163,26 @@ module.exports = function( grunt ) {
             }
         },
 
+        // Autoprefixer.
+        postcss: {
+            options: {
+                processors: [
+                    require( 'autoprefixer' )({
+                        browsers: [
+                            '> 0.1%',
+                            'ie 8',
+                            'ie 9'
+                        ]
+                    })
+                ]
+            },
+            dist: {
+                src: [
+                    '<%= dirs.css %>/*.css'
+                ]
+            }
+        },
+
         // Watch changes for assets.
         watch: {
             css: {
@@ -236,28 +256,35 @@ module.exports = function( grunt ) {
 
         // Clean the directory.
         clean: {
-            dist: [
+            main: [
+                '<%= pkg.name %>/',
                 '<%= pkg.name %>*.zip'
             ]
         },
 
-        // Autoprefixer.
-        postcss: {
-            options: {
-                processors: [
-                    require( 'autoprefixer' )({
-                        browsers: [
-                            '> 0.1%',
-                            'ie 8',
-                            'ie 9'
-                        ]
-                    })
-                ]
-            },
-            dist: {
-                src: [
-                    '<%= dirs.css %>/*.css'
-                ]
+        // Creates deploy-able plugin
+        copy: {
+            main: {
+                files: [ {
+                    expand: true,
+                    src: [
+                        '**',
+                        '!.*',
+                        '!.*/**',
+                        '.htaccess',
+                        '!Gruntfile.js',
+                        '!README.md',
+                        '!package.json',
+                        '!package-lock.json',
+                        '!node_modules/**',
+                        '!<%= pkg.name %>/**',
+                        '!<%= pkg.name %>.zip',
+                        '!none',
+                        '!.DS_Store',
+                        '!npm-debug.log'
+                    ],
+                    dest: '<%= pkg.name %>/'
+                } ]
             }
         },
 
@@ -277,7 +304,10 @@ module.exports = function( grunt ) {
                         '!Gruntfile.js',
                         '!README.md',
                         '!package.json',
+                        '!package-lock.json',
                         '!node_modules/**',
+                        '!<%= pkg.name %>/**',
+                        '!<%= pkg.name %>.zip',
                         '!none',
                         '!.DS_Store',
                         '!npm-debug.log'
@@ -299,6 +329,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
+    grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-browserify' );
 
@@ -328,6 +359,11 @@ module.exports = function( grunt ) {
     ]);
 
     grunt.registerTask( 'deploy', [
+        'clean:main',
+        'copy:main'
+    ]);
+
+    grunt.registerTask( 'build', [
         'compress:build'
     ]);
 };
