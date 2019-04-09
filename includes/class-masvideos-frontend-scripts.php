@@ -150,11 +150,6 @@ class MasVideos_Frontend_Scripts {
     private static function register_scripts() {
         $suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $register_scripts = array(
-            // 'masvideos'                     => array(
-            //     'src'     => self::get_asset_url( 'assets/js/frontend/masvideos' . $suffix . '.js' ),
-            //     'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
-            //     'version' => MASVIDEOS_VERSION,
-            // ),
             'select2'                       => array(
                 'src'     => self::get_asset_url( 'assets/js/select2/select2.full' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
@@ -164,6 +159,26 @@ class MasVideos_Frontend_Scripts {
                 'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo.full' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => '1.0.4',
+            ),
+            'popper'                        => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/popper' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'bootstrap-util'                => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/bootstrap-util' . $suffix . '.js' ),
+                'deps'    => array( 'jquery', 'popper' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'bootstrap-tab'                 => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/bootstrap-tab' . $suffix . '.js' ),
+                'deps'    => array( 'jquery', 'popper', 'bootstrap-util' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'bootstrap-dropdown'            => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/bootstrap-dropdown' . $suffix . '.js' ),
+                'deps'    => array( 'jquery', 'popper', 'bootstrap-util' ),
+                'version' => MASVIDEOS_VERSION,
             ),
             'masvideos-single-episode'      => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/single-episode' . $suffix . '.js' ),
@@ -240,9 +255,11 @@ class MasVideos_Frontend_Scripts {
         if ( is_episode() ) {
             self::enqueue_script( 'masvideos-single-episode' );
         }
+
         if ( is_tv_show() ) {
             self::enqueue_script( 'masvideos-single-tv-show' );
         }
+
         if ( is_video() ) {
             self::enqueue_script( 'masvideos-single-video' );
         }
@@ -251,12 +268,17 @@ class MasVideos_Frontend_Scripts {
             self::enqueue_script( 'masvideos-single-movie' );
         }
 
+        // Global frontend scripts.
+        if ( apply_filters( 'masvideos_enqueue_bootstrap_js', true ) ) {
+            self::enqueue_script( 'popper' );
+            self::enqueue_script( 'bootstrap-util' );
+            self::enqueue_script( 'bootstrap-tab' );
+            self::enqueue_script( 'bootstrap-dropdown' );
+        }
+
         self::enqueue_script( 'masvideos-playlist-tv-show' );
         self::enqueue_script( 'masvideos-playlist-video' );
         self::enqueue_script( 'masvideos-playlist-movie' );
-
-        // Global frontend scripts.
-        // self::enqueue_script( 'masvideos' );
 
         // CSS Styles.
         $enqueue_styles = self::get_styles();
