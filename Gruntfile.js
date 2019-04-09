@@ -140,7 +140,7 @@ module.exports = function( grunt ) {
 
         // Generate RTL .css files
         rtlcss: {
-            woocommerce: {
+            main: {
                 expand: true,
                 cwd: '<%= dirs.css %>',
                 src: [
@@ -210,7 +210,7 @@ module.exports = function( grunt ) {
             },
             dist: {
                 options: {
-                    potFilename: 'masvideos.pot',
+                    potFilename: '<%= pkg.name %>.pot',
                     exclude: [
                         'apigen/.*',
                         'tests/.*',
@@ -223,7 +223,7 @@ module.exports = function( grunt ) {
         // Check textdomain errors.
         checktextdomain: {
             options:{
-                text_domain: 'masvideos',
+                text_domain: '<%= pkg.name %>',
                 keywords: [
                     '__:1,2d',
                     '_e:1,2d',
@@ -279,6 +279,7 @@ module.exports = function( grunt ) {
                         '!node_modules/**',
                         '!<%= pkg.name %>/**',
                         '!<%= pkg.name %>.zip',
+                        '!assets/esnext/**',
                         '!none',
                         '!.DS_Store',
                         '!npm-debug.log'
@@ -308,6 +309,7 @@ module.exports = function( grunt ) {
                         '!node_modules/**',
                         '!<%= pkg.name %>/**',
                         '!<%= pkg.name %>.zip',
+                        '!assets/esnext/**',
                         '!none',
                         '!.DS_Store',
                         '!npm-debug.log'
