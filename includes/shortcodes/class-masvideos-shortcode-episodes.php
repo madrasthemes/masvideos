@@ -117,8 +117,8 @@ class MasVideos_Shortcode_Episodes {
                 'orderby'        => 'title',   // menu_order, title, date, rand, price, popularity, rating, or id.
                 'order'          => 'ASC',     // ASC or DESC.
                 'ids'            => '',        // Comma separated IDs.
-                'category'       => '',        // Comma separated category slugs or ids.
-                'cat_operator'   => 'IN',      // Operator to compare categories. Possible values are 'IN', 'NOT IN', 'AND'.
+                'genre'          => '',        // Comma separated genre slugs or ids.
+                'genre_operator' => 'IN',      // Operator to compare genres. Possible values are 'IN', 'NOT IN', 'AND'.
                 'attribute'      => '',        // Single attribute slug.
                 'terms'          => '',        // Comma separated term slugs or ids.
                 'terms_operator' => 'IN',      // Operator to compare terms. Possible values are 'IN', 'NOT IN', 'AND'.
@@ -197,8 +197,8 @@ class MasVideos_Shortcode_Episodes {
         // Attributes.
         $this->set_attributes_query_args( $query_args );
 
-        // Categories.
-        $this->set_categories_query_args( $query_args );
+        // Genres.
+        $this->set_genres_query_args( $query_args );
 
         // Tags.
         $this->set_tags_query_args( $query_args );
@@ -275,39 +275,39 @@ class MasVideos_Shortcode_Episodes {
     }
 
     /**
-     * Set categories query args.
+     * Set genres query args.
      *
      * @since 1.0.0
      * @param array $query_args Query args.
      */
-    protected function set_categories_query_args( &$query_args ) {
-        if ( ! empty( $this->attributes['category'] ) ) {
-            $categories = array_map( 'sanitize_title', explode( ',', $this->attributes['category'] ) );
+    protected function set_genres_query_args( &$query_args ) {
+        if ( ! empty( $this->attributes['genre'] ) ) {
+            $genres     = array_map( 'sanitize_title', explode( ',', $this->attributes['genre'] ) );
             $field      = 'slug';
 
-            if ( is_numeric( $categories[0] ) ) {
+            if ( is_numeric( $genres[0] ) ) {
                 $field = 'term_id';
-                $categories = array_map( 'absint', $categories );
+                $genres = array_map( 'absint', $genres );
                 // Check numeric slugs.
-                foreach ( $categories as $cat ) {
-                    $the_cat = get_term_by( 'slug', $cat, 'episode_genre' );
-                    if ( false !== $the_cat ) {
-                        $categories[] = $the_cat->term_id;
+                foreach ( $genres as $genre ) {
+                    $the_genre = get_term_by( 'slug', $genre, 'episode_genre' );
+                    if ( false !== $the_genre ) {
+                        $genres[] = $the_genre->term_id;
                     }
                 }
             }
 
             $query_args['tax_query'][] = array(
                 'taxonomy'         => 'episode_genre',
-                'terms'            => $categories,
+                'terms'            => $genres,
                 'field'            => $field,
-                'operator'         => $this->attributes['cat_operator'],
+                'operator'         => $this->attributes['genre_operator'],
 
                 /*
-                 * When cat_operator is AND, the children categories should be excluded,
-                 * as only episodes belonging to all the children categories would be selected.
+                 * When genre_operator is AND, the children genres should be excluded,
+                 * as only episodes belonging to all the children genres would be selected.
                  */
-                'include_children' => 'AND' === $this->attributes['cat_operator'] ? false : true,
+                'include_children' => 'AND' === $this->attributes['genre_operator'] ? false : true,
             );
         }
     }
