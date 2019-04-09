@@ -24,6 +24,7 @@ export class ShortcodeAtts extends Component {
         this.onChangeOrder = this.onChangeOrder.bind(this);
         this.onChangeIds = this.onChangeIds.bind(this);
         this.onChangeCategory = this.onChangeCategory.bind(this);
+        this.onChangeGenre = this.onChangeGenre.bind(this);
         this.onChangeFeatured = this.onChangeFeatured.bind(this);
         this.onChangeTopRated = this.onChangeTopRated.bind(this);
     }
@@ -140,7 +141,7 @@ export class ShortcodeAtts extends Component {
                     updateSelectedPostIds={ this.onChangeIds }
                 />
                 ) : '' }
-                { !( ( postType == 'video' ) && hideFields && hideFields.includes('category') ) ? (
+                { ( postType === 'video' ) && !( hideFields && hideFields.includes('category') ) ? (
                 <TermSelector
                     postType = { postType }
                     taxonomy = { catTaxonomy }

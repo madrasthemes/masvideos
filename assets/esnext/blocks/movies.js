@@ -9,7 +9,7 @@ const { ServerSideRender, Disabled, PanelBody } = wp.components;
 registerBlockType( 'masvideos/movies', {
     title: __('Movies Block', 'masvideos'),
 
-    icon: 'format-video',
+    icon: 'editor-video',
 
     category: 'masvideos-blocks',
 
