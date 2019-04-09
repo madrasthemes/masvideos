@@ -28,12 +28,15 @@ export class PostSelector extends Component {
             filterLoading: false,
             filterPosts: [],
             initialLoading: false,
+            selectedPosts: [],
         };
 
         this.addPost = this.addPost.bind(this);
         this.removePost = this.removePost.bind(this);
         this.handleInputFilterChange = this.handleInputFilterChange.bind(this);
         this.doPostFilter = debounce(this.doPostFilter.bind(this), 300);
+        this.getSelectedPostIds = this.getSelectedPostIds.bind(this);
+        this.getSelectedPosts = this.getSelectedPosts.bind(this);
     }
 
     /**
@@ -51,10 +54,17 @@ export class PostSelector extends Component {
                     types: response
                 }, () => {
                     this.retrieveSelectedPosts()
-                        .then(() => {
-                            this.setState({
-                                initialLoading: false,
-                            });
+                        .then(( selectedPosts ) => {
+                            if( selectedPosts ) {
+                                this.setState({
+                                    initialLoading: false,
+                                    selectedPosts: selectedPosts,
+                                });
+                            } else {
+                                this.setState({
+                                    initialLoading: false,
+                                });
+                            }
                         })
                 });
             });
@@ -66,7 +76,7 @@ export class PostSelector extends Component {
      * @returns {Promise<T>}
      */
     getPosts(args = {}) {
-        const { selectedPostIds } = this.props;
+        const postIds = this.getSelectedPostIds();
 
         const defaultArgs = {
             per_page: 10,
@@ -85,7 +95,7 @@ export class PostSelector extends Component {
             .then(response => {
                 if (requestArguments.search) {
                     this.setState({
-                        filterPosts: response.filter(({ id }) => selectedPostIds.indexOf(id) === -1),
+                        filterPosts: response.filter(({ id }) => postIds.indexOf(id) === -1),
                     });
 
                     return response;
@@ -104,13 +114,28 @@ export class PostSelector extends Component {
      * Gets the selected posts by id from the `posts` state object and sorts them by their position in the selected array.
      * @returns Array of objects.
      */
-    getSelectedPosts() {
+    getSelectedPostIds() {
         const { selectedPostIds } = this.props;
-        return this.state.posts
-            .filter(({ id }) => selectedPostIds.indexOf(id) !== -1)
+
+        if( selectedPostIds ) {
+            const postIds = Array.isArray( selectedPostIds ) ? selectedPostIds : selectedPostIds.split(',');
+            return postIds;
+        }
+
+        return [];
+    }
+
+    /**
+     * Gets the selected posts by id from the `posts` state object and sorts them by their position in the selected array.
+     * @returns Array of objects.
+     */
+    getSelectedPosts( postIds ) {
+        const postList = this.state.filtering && !this.state.filterLoading ? this.state.filterPosts : [];
+        const selectedPosts = postList
+            .filter(({ id }) => postIds.indexOf(id) !== -1)
             .sort((a, b) => {
-                const aIndex = this.props.selectedPostIds.indexOf(a.id);
-                const bIndex = this.props.selectedPostIds.indexOf(b.id);
+                const aIndex = postIds.indexOf(a.id);
+                const bIndex = postIds.indexOf(b.id);
 
                 if (aIndex > bIndex) {
                     return 1;
@@ -122,6 +147,10 @@ export class PostSelector extends Component {
 
                 return 0;
             });
+
+        this.setState({
+            selectedPosts: selectedPosts,
+        });
     }
 
     /**
@@ -132,15 +161,25 @@ export class PostSelector extends Component {
         const { postType, selectedPostIds } = this.props;
         const { types } = this.state;
 
-        if ( selectedPostIds && !selectedPostIds.length > 0 ) {
+        const postIds = this.getSelectedPostIds().join(',');
+
+        if ( ! postIds ) {
             // return a fake promise that auto resolves.
             return new Promise((resolve) => resolve());
         }
 
-        return this.getPosts({
-            include: this.props.selectedPostIds.join(','),
+        let post_args = {
+            include: postIds,
             per_page: 100,
             postType
+        };
+
+        if( this.props.postStatus ) {
+            post_args.status = this.props.postStatus;
+        }
+
+        return this.getPosts({
+            ...post_args
         });
     }
 
@@ -161,10 +200,16 @@ export class PostSelector extends Component {
             });
         }
 
-        this.props.updateSelectedPostIds([
-            ...this.props.selectedPostIds,
-            post_id
-        ]);
+        if( this.props.selectSingle ) {
+            const selectedPostIds = [ post_id ];
+            this.props.updateSelectedPostIds( selectedPostIds );
+            this.getSelectedPosts( selectedPostIds );
+        } else {
+            const postIds = this.getSelectedPostIds();
+            const selectedPostIds = [ ...postIds, post_id ];
+            this.props.updateSelectedPostIds( selectedPostIds );
+            this.getSelectedPosts( selectedPostIds );
+        }
     }
 
     /**
@@ -172,9 +217,10 @@ export class PostSelector extends Component {
      * @param {Integer} post_id
      */
     removePost(post_id) {
-        this.props.updateSelectedPostIds([
-            ...this.props.selectedPostIds
-        ].filter(id => id !== post_id));
+        const postIds = this.getSelectedPostIds();
+        const selectedPostIds = [ ...postIds ].filter(id => id !== post_id);
+        this.props.updateSelectedPostIds( selectedPostIds );
+        this.getSelectedPosts( selectedPostIds );
     }
 
     /**
@@ -209,52 +255,59 @@ export class PostSelector extends Component {
             filterLoading: true
         });
 
-        this.getPosts()
-            .then(() => {
-                this.setState({
-                    filterLoading: false
-                });
+        let post_args = {};
+
+        if( this.props.postStatus ) {
+            post_args.status = this.props.postStatus;
+        }
+
+        this.getPosts({
+            ...post_args
+        }).then(() => {
+            this.setState({
+                filterLoading: false
             });
+        });
     }
 
     /**
      * Renders the PostSelector component.
      */
     render() {
-        const isFiltered = this.state.filtering;
-        const postList = isFiltered && !this.state.filterLoading ? this.state.filterPosts : [];
-        const SelectedPostList  = this.getSelectedPosts();
+        const postList = this.state.filtering && !this.state.filterLoading ? this.state.filterPosts : [];
 
         const addIcon = <Icon icon="plus" />;
         const removeIcon = <Icon icon="minus" />;
 
+        const searchinputuniqueId = 'searchinput-' + Math.random().toString(36).substr(2, 16);
+
         return (
             <div className="components-base-control components-post-selector">
                 <div className="components-base-control__field--selected">
-                    <h2>{__('Search Post', 'masvideos')}</h2>
+                    <h2>{__('Search Post', 'vodi')}</h2>
                     <ItemList
-                        items={SelectedPostList}
+                        items={ [...this.state.selectedPosts] }
                         loading={this.state.initialLoading}
                         action={this.removePost}
                         icon={removeIcon}
                     />
                 </div>
                 <div className="components-base-control__field">
-                    <label htmlFor="searchinput" className="components-base-control__label">
+                    <label htmlFor={searchinputuniqueId} className="components-base-control__label">
                         <Icon icon="search" />
                     </label>
                     <input
                         className="components-text-control__input"
-                        id="searchinput"
+                        id={searchinputuniqueId}
                         type="search"
-                        placeholder={__('Please enter your search query...', 'masvideos')}
+                        placeholder={__('Please enter your search query...', 'vodi')}
                         value={this.state.filter}
                         onChange={this.handleInputFilterChange}
                     />
                     <ItemList
                         items={postList}
                         loading={this.state.initialLoading||this.state.loading||this.state.filterLoading}
-                        filtered={isFiltered}
+                        filtered={this.state.filtering}
                         action={this.addPost}
                         icon={addIcon}
                     />

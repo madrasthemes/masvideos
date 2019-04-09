@@ -230,10 +230,12 @@ export class TermSelector extends Component {
         const addIcon = <Icon icon="plus" />;
         const removeIcon = <Icon icon="minus" />;
 
+        const searchinputuniqueId = 'searchinput-' + Math.random().toString(36).substr(2, 16);
+
         return (
             <div className="components-base-control components-term-selector">
                 <div className="components-base-control__field--selected">
-                    <h2>{__('Search Term', 'masvideos')}</h2>
+                    <h2>{__('Search Term', 'vodi')}</h2>
                     <ItemList
                         items={SelectedTermList}
                         loading={this.state.initialLoading}
@@ -242,14 +244,14 @@ export class TermSelector extends Component {
                     />
                 </div>
                 <div className="components-base-control__field">
-                    <label htmlFor="searchinput" className="components-base-control__label">
+                    <label htmlFor={searchinputuniqueId} className="components-base-control__label">
                         <Icon icon="search" />
                     </label>
                     <input
                         className="components-text-control__input"
-                        id="searchinput"
+                        id={searchinputuniqueId}
                         type="search"
-                        placeholder={__('Please enter your search query...', 'masvideos')}
+                        placeholder={__('Please enter your search query...', 'vodi')}
                         value={this.state.filter}
                         onChange={this.handleInputFilterChange}
                     />

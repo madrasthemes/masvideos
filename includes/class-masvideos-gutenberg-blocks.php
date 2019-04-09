@@ -79,7 +79,7 @@ class MasVideos_Gutenberg_Blocks {
                         'ids'           => array(
                             'type'      => 'string',
                         ),
-                        'category'      => array(
+                        'genre'         => array(
                             'type'      => 'string',
                         ),
                         'featured'      => array(
@@ -96,6 +96,45 @@ class MasVideos_Gutenberg_Blocks {
                     ),
                     'editor_script'   => 'masvideos-movies', 
                     'render_callback' => array( 'MasVideos_Shortcodes', 'movies' ),
+                ),
+                'tv-shows'    => array(
+                    'attributes'        => array(
+                        'limit'         => array(
+                            'type'      => 'number',
+                            'default'   => 10
+                        ),
+                        'columns'       => array(
+                            'type'      => 'number',
+                            'default'   => 4
+                        ),
+                        'orderby'       => array(
+                            'type'      => 'string',
+                            'default'   => 'date'
+                        ),
+                        'order'         => array(
+                            'type'      => 'string',
+                            'default'   => 'DESC'
+                        ),
+                        'ids'           => array(
+                            'type'      => 'string',
+                        ),
+                        'genre'         => array(
+                            'type'      => 'string',
+                        ),
+                        'featured'      => array(
+                            'type'      => 'boolean',
+                            'default'   => false
+                        ),
+                        'top_rated'     => array(
+                            'type'      => 'boolean',
+                            'default'   => false
+                        ),
+                        'className'     => array(
+                            'type'      => 'string',
+                        ),
+                    ),
+                    'editor_script'   => 'masvideos-tv-shows', 
+                    'render_callback' => array( 'MasVideos_Shortcodes', 'tv_shows' ),
                 ),
             );
 
@@ -115,7 +154,7 @@ class MasVideos_Gutenberg_Blocks {
             array(
                 array(
                     'slug' => 'masvideos-blocks',
-                    'title' => esc_html__( 'MasVideos Blocks', 'masvideos' ),
+                    'title' => esc_html__( 'MAS Videos Blocks', 'masvideos' ),
                 ),
             )
         );

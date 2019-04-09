@@ -6,10 +6,10 @@ const { InspectorControls } = wp.editor;
 const { Fragment } = wp.element;
 const { ServerSideRender, Disabled, PanelBody } = wp.components;
 
-registerBlockType( 'masvideos/movies', {
-    title: __('Movies Block', 'masvideos'),
+registerBlockType( 'masvideos/tv-shows', {
+    title: __('TV Shows Block', 'masvideos'),
 
-    icon: 'editor-video',
+    icon: 'welcome-view-site',
 
     category: 'masvideos-blocks',
 
@@ -24,12 +24,12 @@ registerBlockType( 'masvideos/movies', {
             <Fragment>
                 <InspectorControls>
                     <PanelBody
-                        title={__('Movies Attributes', 'masvideos')}
+                        title={__('TV Shows Attributes', 'masvideos')}
                         initialOpen={ true }
                     >
                         <ShortcodeAtts
-                            postType = 'movie'
-                            catTaxonomy = 'movie_genre'
+                            postType = 'tv_show'
+                            catTaxonomy = 'tv_show_genre'
                             attributes = { { ...attributes } }
                             updateShortcodeAtts = { onChangeShortcodeAtts }
                         />
@@ -37,7 +37,7 @@ registerBlockType( 'masvideos/movies', {
                 </InspectorControls>
                 <Disabled>
                     <ServerSideRender
-                        block = "masvideos/movies"
+                        block = "masvideos/tv-shows"
                         attributes = { attributes }
                     />
                 </Disabled>

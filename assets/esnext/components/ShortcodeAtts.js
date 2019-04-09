@@ -24,6 +24,7 @@ export class ShortcodeAtts extends Component {
         this.onChangeOrder = this.onChangeOrder.bind(this);
         this.onChangeIds = this.onChangeIds.bind(this);
         this.onChangeCategory = this.onChangeCategory.bind(this);
+        this.onChangeGenre = this.onChangeGenre.bind(this);
         this.onChangeFeatured = this.onChangeFeatured.bind(this);
         this.onChangeTopRated = this.onChangeTopRated.bind(this);
     }
@@ -64,6 +65,12 @@ export class ShortcodeAtts extends Component {
         });
     }
 
+    onChangeGenre( newGenre ) {
+        this.props.updateShortcodeAtts({
+            genre: newGenre.join(',')
+        });
+    }
+
     onChangeFeatured( newFeatured ) {
         this.props.updateShortcodeAtts({
             featured: newFeatured
@@ -80,68 +87,92 @@ export class ShortcodeAtts extends Component {
      * Renders the ShortcodeAtts component.
      */
     render() {
-        const { attributes, postType, catTaxonomy } = this.props;
-        const { limit, columns, orderby, order, ids, category, featured, top_rated } = attributes;
+        const { attributes, postType, catTaxonomy, hideFields } = this.props;
+        const { limit, columns, orderby, order, ids, category, genre, featured, top_rated } = attributes;
 
         return (
             <div>
+                { !( hideFields && hideFields.includes('limit') ) ? (
                 <RangeControl
-                    label={__('Limit', 'masvideos')}
+                    label={__('Limit', 'vodi')}
                     value={ limit }
                     onChange={ this.onChangeLimit }
                     min={ 1 }
                     max={ 50 }
                 />
+                ) : '' }
+                { !( hideFields && hideFields.includes('columns') ) ? (
                 <RangeControl
-                    label={__('Columns', 'masvideos')}
+                    label={__('Columns', 'vodi')}
                     value={ columns }
                     onChange={ this.onChangeColumns }
                     min={ 1 }
-                    max={ 10 }
+                    max={ 6 }
                 />
+                ) : '' }
+                { !( hideFields && hideFields.includes('orderby') ) ? (
                 <SelectControl
-                    label={__('Orderby', 'masvideos')}
+                    label={__('Orderby', 'vodi')}
                     value={ orderby }
                     options={ [
-                        { label: __('Title', 'masvideos'), value: 'title' },
-                        { label: __('Date', 'masvideos'), value: 'date' },
-                        { label: __('ID', 'masvideos'), value: 'id' },
-                        { label: __('Random', 'masvideos'), value: 'rand' },
+                        { label: __('Title', 'vodi'), value: 'title' },
+                        { label: __('Date', 'vodi'), value: 'date' },
+                        { label: __('ID', 'vodi'), value: 'id' },
+                        { label: __('Random', 'vodi'), value: 'rand' },
                     ] }
                     onChange={ this.onChangeOrderby }
                 />
+                ) : '' }
+                { !( hideFields && hideFields.includes('order') ) ? (
                 <SelectControl
-                    label={__('Order', 'masvideos')}
+                    label={__('Order', 'vodi')}
                     value={ order }
                     options={ [
-                        { label: __('ASC', 'masvideos'), value: 'ASC' },
-                        { label: __('DESC', 'masvideos'), value: 'DESC' },
+                        { label: __('ASC', 'vodi'), value: 'ASC' },
+                        { label: __('DESC', 'vodi'), value: 'DESC' },
                     ] }
                     onChange={ this.onChangeOrder }
                 />
+                ) : '' }
+                { !( hideFields && hideFields.includes('ids') ) ? (
                 <PostSelector
                     postType = { postType }
                     selectedPostIds={ ids ? ids.split(',').map(Number) : [] }
                     updateSelectedPostIds={ this.onChangeIds }
                 />
+                ) : '' }
+                { ( postType === 'video' ) && !( hideFields && hideFields.includes('category') ) ? (
                 <TermSelector
                     postType = { postType }
                     taxonomy = { catTaxonomy }
                     selectedTermIds={ category ? category.split(',').map(Number) : [] }
                     updateSelectedTermIds={ this.onChangeCategory }
                 />
+                ) : (
+                !( hideFields && hideFields.includes('genre') ) ? (
+                <TermSelector
+                    postType = { postType }
+                    taxonomy = { catTaxonomy }
+                    selectedTermIds={ genre ? genre.split(',').map(Number) : [] }
+                    updateSelectedTermIds={ this.onChangeGenre }
+                />
+                ) : '' ) }
+                { !( hideFields && hideFields.includes('featured') ) ? (
                 <CheckboxControl
-                    label={__('Featured', 'masvideos')}
-                    help={__('Check to select featured posts.', 'masvideos')}
+                    label={__('Featured', 'vodi')}
+                    help={__('Check to select featured posts.', 'vodi')}
                     checked={ featured }
                     onChange={ this.onChangeFeatured }
                 />
+                ) : '' }
+                { !( hideFields && hideFields.includes('top_rated') ) ? (
                 <CheckboxControl
-                    label={__('Top Rated', 'masvideos')}
-                    help={__('Check to select top rated posts.', 'masvideos')}
+                    label={__('Top Rated', 'vodi')}
+                    help={__('Check to select top rated posts.', 'vodi')}
                     checked={ top_rated }
                     onChange={ this.onChangeTopRated }
                 />
+                ) : '' }
             </div>
         );
     }
