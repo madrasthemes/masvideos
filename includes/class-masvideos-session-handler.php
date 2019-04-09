@@ -64,7 +64,7 @@ class MasVideos_Session_Handler {
 
             }
 
-            // Use PHP SESSION (must be enabled via the EDD_USE_PHP_SESSIONS constant)
+            // Use PHP SESSION (must be enabled via the MASVIDEOS_USE_PHP_SESSIONS constant)
             add_action( 'init', array( $this, 'maybe_start_session' ), -2 );
 
         } else {
@@ -79,14 +79,14 @@ class MasVideos_Session_Handler {
                 define( 'WP_SESSION_COOKIE', 'masvideos_wp_session' );
             }
 
-            // if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-            //     require_once EDD_PLUGIN_DIR . 'includes/libraries/class-recursive-arrayaccess.php';
-            // }
+            if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
+                require_once MASVIDEOS_ABSPATH . 'includes/libraries/class-recursive-arrayaccess.php';
+            }
 
-            // if ( ! class_exists( 'WP_Session' ) ) {
-            //     require_once EDD_PLUGIN_DIR . 'includes/libraries/class-wp-session.php';
-            //     require_once EDD_PLUGIN_DIR . 'includes/libraries/wp-session.php';
-            // }
+            if ( ! class_exists( 'WP_Session' ) ) {
+                require_once MASVIDEOS_ABSPATH . 'includes/libraries/class-wp-session.php';
+                require_once MASVIDEOS_ABSPATH . 'includes/libraries/wp-session.php';
+            }
 
             add_filter( 'wp_session_expiration_variant', array( $this, 'set_expiration_variant_time' ), 99999 );
             add_filter( 'wp_session_expiration', array( $this, 'set_expiration_time' ), 99999 );
@@ -230,7 +230,7 @@ class MasVideos_Session_Handler {
      *
      * @return boolean
      * Checks to see if the server supports PHP sessions
-     * or if the EDD_USE_PHP_SESSIONS constant is defined
+     * or if the MASVIDEOS_USE_PHP_SESSIONS constant is defined
      *
      * @since 1.0.0
      * @return boolean $ret True if we are using PHP sessions, false otherwise
@@ -264,10 +264,10 @@ class MasVideos_Session_Handler {
             $ret = $masvideos_use_php_sessions;
         }
 
-        // Enable or disable PHP Sessions based on the EDD_USE_PHP_SESSIONS constant
-        if ( defined( 'EDD_USE_PHP_SESSIONS' ) && EDD_USE_PHP_SESSIONS ) {
+        // Enable or disable PHP Sessions based on the MASVIDEOS_USE_PHP_SESSIONS constant
+        if ( defined( 'MASVIDEOS_USE_PHP_SESSIONS' ) && MASVIDEOS_USE_PHP_SESSIONS ) {
             $ret = true;
-        } else if ( defined( 'EDD_USE_PHP_SESSIONS' ) && ! EDD_USE_PHP_SESSIONS ) {
+        } else if ( defined( 'MASVIDEOS_USE_PHP_SESSIONS' ) && ! MASVIDEOS_USE_PHP_SESSIONS ) {
             $ret = false;
         }
 
