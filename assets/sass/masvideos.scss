@@ -1,2 +1,646 @@
-@import 'mixins';
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/grid";
 @import 'starrating';
+
+
+.masvideos-breadcrumb {
+	margin-bottom: 3rem;
+	font-size: 0.88889em;
+}
+
+.masvideos-loop-video__title,
+.masvideos-loop-movie__title,
+.masvideos-loop-tv-show__title,
+.masvideos-loop-episode__title {
+	font-size: 1.3em;
+}
+
+.masvideos-control-bar {
+	display: flex;
+	margin-bottom: 1em;
+	flex-direction: column;
+	align-items: center;
+
+	form {
+		@media only screen and (min-width: 768px) {
+			margin-left: auto;
+		}
+	}
+
+	.masvideos-result-count {
+		margin: 0;
+	}
+
+	@media only screen and (min-width: 768px) {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+}
+
+.masvideos-page-control-bar {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-between;
+
+	@media only screen and (min-width: 768px) {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+}
+
+.masvideos-pagination {
+	font-size: 0.88889em;
+
+	ul.page-numbers {
+		margin: 0;
+		padding: 0;
+		display: block;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		line-height: 1.2;
+		list-style: none;
+		display: flex;
+		align-items: center;
+	}
+
+	span.page-numbers,
+	a.page-numbers,
+	.next.page-numbers,
+	.prev.page-numbers {
+		padding: 0 calc(.5 * 1rem);
+		display: inline-block;
+	}
+
+	@media only screen and (min-width: 768px) {
+		span.page-numbers,
+		a.page-numbers,
+		.next.page-numbers,
+		.prev.page-numbers {
+			padding: 1rem;
+		}
+	}
+}
+
+.video__badge,
+.movie__badge,
+.tv-show__badge {
+	position: absolute;
+	top: 0;
+	left: 15px;
+	display: inline-block;
+	background: $highlights-color;
+	color: #fff;
+	display: inline-block;
+	font-family: $headings;
+	font-size: 0.71111em;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	padding: 0.5rem;
+	position: absolute;
+	text-transform: uppercase;
+	top: 0;
+	z-index: 1;
+}
+
+.masvideos-message,
+.masvideos-error,
+.masvideos-info {
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+	background: #eee;
+	font-size: 0.88889em;
+	font-family: $headings;
+	list-style: none;
+	overflow: hidden;
+}
+
+.masvideos-message {
+	background: #eee;
+	color: $body-color;
+}
+
+.masvideos-error,
+.masvideos-info {
+	color: #fff;
+
+	a {
+		color: #fff;
+
+		&:hover {
+			color: #fff;
+		}
+
+		&.button {
+			background: #111;
+		}
+	}
+}
+
+.masvideos-error {
+	background: firebrick;
+}
+
+.masvideos-info {
+	background: $highlights-color;
+}
+
+.woocommerce-result-count {
+	margin: 0;
+	padding: 0.75rem 0;
+}
+
+.star-rating {
+	overflow: hidden;
+	position: relative;
+	height: 1em;
+	line-height: 1;
+	font-size: 1em;
+	width: 5.4em;
+	font-family: 'star';
+
+	&::before {
+		content: '\73\73\73\73\73';
+		float: left;
+		top: 0;
+		left: 0;
+		position: absolute;
+	}
+
+	span {
+		overflow: hidden;
+		float: left;
+		top: 0;
+		left: 0;
+		position: absolute;
+		padding-top: 1.5em;
+	}
+
+	span::before {
+		content: '\53\53\53\53\53';
+		top: 0;
+		position: absolute;
+		left: 0;
+	}
+}
+
+.masvideos-tabs {
+	margin: 0 0 2rem;
+
+	ul {
+		margin: 0 0 1.5rem;
+		padding: 0;
+		font-family: $headings;
+		list-style: none;
+
+		li {
+			margin-right: 1rem;
+			display: inline-block;
+
+			a {
+				color: $body-color;
+				text-decoration: none;
+				font-weight: 700;
+			}
+
+			&.active {
+				a {
+					color: $highlights-color;
+					box-shadow: 0 2px 0 $highlights-color;
+				}
+			}
+		}
+	}
+
+	.panel {
+		> * {
+			margin-top: 0 !important;
+		}
+
+		h2 {
+			margin: 0 0 1rem;
+			font-size: 1em;
+
+			&:before {
+				content: none;
+			}
+		}
+	}
+
+	#comments {
+		padding-top: 0;
+	}
+
+	.comment-reply-title {
+		font-family: $headings;
+		font-size: 1em;
+		font-weight: bold;
+		margin: 0 0 0.75rem;
+		display: block;
+	}
+
+	#reviews {
+		ol.commentlist {
+			padding: 0;
+		}
+
+		li.review,
+		li.comment {
+			list-style: none;
+			margin-right: 0;
+			margin-bottom: 2.5rem;
+
+			p.meta {
+				margin-bottom: 0.5em;
+			}
+		}
+
+		p.stars {
+			margin-top: 0;
+
+			a {
+				position: relative;
+				height: 1em;
+				width: 1em;
+				text-indent: -999em;
+				display: inline-block;
+				text-decoration: none;
+				box-shadow: none;
+
+				&::before {
+					display: block;
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 1em;
+					height: 1em;
+					line-height: 1;
+					font-family: 'WooCommerce';
+					content: '\e021';
+					text-indent: 0;
+				}
+
+				&:hover {
+					~ a::before {
+						content: '\e021';
+					}
+				}
+			}
+
+			&:hover {
+				a {
+					&::before {
+						content: '\e020';
+					}
+				}
+			}
+
+			&.selected {
+				a.active {
+					&::before {
+						content: '\e020';
+					}
+
+					~ a::before {
+						content: '\e021';
+					}
+				}
+
+				a:not( .active ) {
+					&::before {
+						content: '\e020';
+					}
+				}
+			}
+		}
+	}
+
+	.tab-content > .tab-pane {
+      display: none;
+    }
+
+    .tab-content > .active {
+      display: block;
+    }
+}
+
+.masvideos-tabs,
+.single-movie .masvideos-Reviews,
+.movie__recommended {
+	margin: calc(2 * 1rem) 1rem;
+	@media only screen and (min-width: 768px) {
+		margin: 0 calc(10% + 60px);
+	}
+}
+
+.masvideos-tabs,
+.movie__recommended{
+	margin-bottom: 40px;
+}
+
+.single-tv_show .masvideos-tabs,
+.single-episode .masvideos-tabs {
+	margin: 0;
+}
+
+.movie__meta,
+.video__meta,
+.tv-show__meta{
+
+	font-weight: 500;
+
+	> span {
+
+		margin-right: 1rem;
+		display: inline-block;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	a {
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	.svg-icon {
+		position: relative;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: 0.5em;
+	}
+
+	&--genre  {
+		&:before {
+			content: "";
+		    width: 16px;
+		    height: 16px;
+		    display: inline-block;
+		    vertical-align: middle;
+		    margin-right: 4px;
+		    background-repeat: no-repeat;
+			background-image: url('data:image/svg+xml;utf8,<svg class="svg-icon" width="16" height="16" fill="rgb(118, 118, 118)" aria-hidden="true" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>');
+			
+		}
+	}
+
+	&--release-year {
+		&:before {
+			content: "";
+		    width: 16px;
+		    height: 16px;
+		    display: inline-block;
+		    vertical-align: middle;
+		    margin-right: 4px;
+		    background-repeat: no-repeat;
+			background-image: url('data:image/svg+xml;utf8,<svg width="16" height="16" fill="rgb(118, 118, 118)" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="clock" class="svg-inline--fa fa-clock fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="rgb(118, 118, 118)" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm57.1 350.1L224.9 294c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v137.7l63.5 46.2c5.4 3.9 6.5 11.4 2.6 16.8l-28.2 38.8c-3.9 5.3-11.4 6.5-16.8 2.6z"></path></svg>');
+			
+		}
+	}
+}
+
+
+/**
+ * Archive Pages
+ */
+
+.masvideos.archive .page-header {
+	margin: 0;
+
+	.page-title {
+		font-size: 1.6875em;
+		font-weight: 700;
+		font-family: $headings;
+		margin: 1rem 0;
+		display: block;
+		color: #111;
+
+		@media only screen and (min-width: 768px) {
+			font-size: 2.25em;
+		}
+	}
+}
+
+.tv-show__hover-area {
+	display: none;
+}
+
+.videos__inner,
+.movies__inner,
+.tv-shows__inner,
+.episodes__inner {
+    @include make-row();
+}
+
+.videos__inner > .video,
+.movies__inner > .movie,
+.tv-shows__inner > .tv-show,
+.episodes__inner > .episode  {
+    @include make-col-ready();
+    margin-top: 0;
+}
+
+.videos,
+.movies,
+.tv-shows,
+.episodes {
+	>.videos__inner .video,
+	>.movies__inner .movie,
+	>.tv-shows__inner > .tv-show,
+	>.episodes__inner > .episode {
+        @include make-col(6);
+        padding-right: 6px;
+        padding-left: 6px;
+
+        @media only screen and (min-width: 768px) {
+            @include make-col(6);
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        @media only screen and (min-width: 992px) {
+            @include make-col(3);
+        }
+    }
+       
+	
+	@media only screen and (min-width: 992px) {
+        &.columns-1 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(12);
+            }
+        }
+        &.columns-2 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(6);
+            }
+        }
+        &.columns-3 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(4);
+            }
+        }
+
+        &.columns-4 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(3);
+            }
+        }
+
+        &.columns-5 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(2.4);
+            }
+        }
+
+        &.columns-6 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(2);
+            }
+        }
+
+        &.columns-7 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(1.71428571);
+            }
+        }
+
+        &.columns-8 {
+            >.videos__inner .video,
+            >.movies__inner .movie,
+            >.tv-shows__inner > .tv-show,
+            >.episodes__inner > .episode {
+                @include make-col(1.5);
+            }
+        }
+    }
+}
+
+/**
+ * Single page
+ */
+
+.single-video .video,
+.single-movie .movie,
+.single-tv_show .tv-show,
+.single-episode .episode{
+	.wp-video,
+	.movie__head,
+	.tv-show__head,
+	.episode__head {
+		@media only screen and (min-width: 992px) {
+			position: relative;
+			float: left;
+			width: 48%;
+		}
+	}
+
+	div.summary {
+		margin: 0;
+		padding: 0;
+		max-width: 100%;
+
+		@media only screen and (min-width: 992px) {
+			float: right;
+			width: 48%;
+			clear: none;
+			
+		}
+	}
+
+	.single-video__related,
+	.movie__related,
+	.single-tv_show__related,
+	.masvideos-Reviews,
+	.masvideos-tabs {
+		clear: both;
+	}
+}
+
+/**
+ * Single Movie
+ */
+
+.single-movie {
+	.movie__description-tab {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+
+		@media only screen and (min-width: 992px) {
+			flex-direction: row;
+		}
+
+		.movie{
+			&__info--left {
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+
+				@media only screen and (min-width: 992px) {
+					flex-direction: row;
+				}
+
+				flex: 0 0 100%;
+				max-width: 100%;
+				@media only screen and (min-width: 992px) {
+					flex: 0 0 60%;
+			    	max-width: 60%;
+				}
+			}
+
+			&__info--right {
+				flex: 0 0 100%;
+				max-width: 100%;
+				@media only screen and (min-width: 992px) {
+					flex: 0 0 40%;
+				    max-width: 40%;
+				}
+			}
+
+			&__poster {
+				flex: 0 0 100%;
+				max-width: 100%;
+
+				@media only screen and (min-width: 992px) {
+					margin-right: 40px;
+				    flex: 0 0 24.1%;
+				    max-width: 24.1%;
+				}
+			}
+			&__body {
+				@media only screen and (max-width: 768px) {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+			}
+		}
+	}
+}
