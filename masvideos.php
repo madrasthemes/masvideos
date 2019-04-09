@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: MAS Videos
- * Plugin URI: https://madrasthemes.com/masvideos
- * Description: This plugins helps to run videos, movies and series in your site.
- * Version: 0.0.24
+ * Plugin URI: https://github.com/madrasthemes/masvideos
+ * Description: This is a free plugin that allows you to to create and listings the movies, videos and tv shows.
+ * Version: 1.0.0
  * Author: MadrasThemes
  * Author URI: https://madrasthemes.com/
- * Requires at least: 4.8
- * Tested up to: 4.8
+ * Requires at least: 5.0
+ * Tested up to: 5.1.1
  *
  * Text Domain: masvideos
  * Domain Path: /languages/
