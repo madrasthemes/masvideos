@@ -69,5 +69,5 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Changelog ==
 
-= 1.0.0 - 2019-04-09 =
+= 1.0.0 - 2019-04-10 =
 * Initial Release
