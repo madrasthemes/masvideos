@@ -187,7 +187,7 @@ $highlights-color: #0073aa;
 	padding: 0.75rem 0;
 }
 
-#reviews .star-rating {
+#reviews.masvideos-Reviews .star-rating {
 	width: auto;
 
 	&:before {
@@ -424,7 +424,6 @@ $highlights-color: #0073aa;
 	}
 }
 
-
 /**
  * Archive Pages
  */
@@ -463,6 +462,24 @@ $highlights-color: #0073aa;
 .episodes__inner > .episode  {
     @include make-col-ready();
     margin-top: 0;
+}
+
+.video-actions--link_add-to-playlist.dropdown,
+.movie-actions--link_add-to-playlist.dropdown,
+.tv-show-actions--link_add-to-playlist.dropdown {
+	.dropdown-menu {
+		a {
+			display: block;
+		    width: 100%;
+		    padding: 3px 1.5rem;
+		    clear: both;
+		    font-weight: 400;
+		    text-align: inherit;
+		    white-space: nowrap;
+		    background: 0 0;
+		    border: 0;
+		}
+	}
 }
 
 .videos,

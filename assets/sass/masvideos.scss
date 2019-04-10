@@ -13,6 +13,8 @@
 	align-items: center;
 
 	form {
+		margin-bottom: 0;
+
 		@media only screen and (min-width: 768px) {
 			margin-left: auto;
 		}
@@ -40,6 +42,16 @@
 	}
 }
 
+.masvideos-Reviews .star-rating {
+	width: auto;
+	height: auto !important;
+	float: none !important;
+
+	&:before {
+		content: none;
+	}
+}
+
 
 /**
  * Archive Pages
@@ -63,6 +75,114 @@
     @include make-col-ready();
     margin-top: 0;
 }
+
+.video-actions--link_add-to-playlist.dropdown,
+.movie-actions--link_add-to-playlist.dropdown,
+.tv-show-actions--link_add-to-playlist.dropdown {
+	.dropdown-menu {
+		a {
+			display: block;
+		    width: 100%;
+		    padding: 3px 1.5rem;
+		    clear: both;
+		    font-weight: 400;
+		    text-align: inherit;
+		    white-space: nowrap;
+		    background: 0 0;
+		    border: 0;
+		}
+	}
+}
+
+.video__badge,
+.movie__badge,
+.tv-show__badge {
+	position: absolute;
+	top: 0;
+	border: 1px solid;
+    border-color: #43454b;
+    color: #43454b;
+    padding: .202em .6180469716em;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1em;
+    border-radius: 3px;
+
+}
+
+    
+.masvideos-pagination {
+	.page-numbers {
+		list-style: none;
+
+		li {
+			display: inline-block;
+
+			.page-numbers.current {
+			    background-color: #e6e6e6;
+				color: #636363;
+			}
+
+			.page-numbers {
+				border-left-width: 0;
+			    display: inline-block;
+			    padding: .3342343017em .875em;
+			    background-color: rgba(0,0,0,.025);
+			    color: #43454b;
+			}
+		}
+	}
+}
+
+.masvideos-tabs {
+	clear: both;
+	overflow: hidden;
+	padding: 1em 0;
+
+	ul.nav {
+		list-style: none;
+		margin-left: 0;
+		text-align: left;
+		@media only screen and (min-width: 768px) {
+			@include make-col(3);
+			float: left;
+		}
+
+		li {
+			display: block;
+			margin: 0;
+			position: relative;
+
+			a {
+				padding: 1em 0;
+				display: block;
+			}
+		}
+	}
+
+	.tab-content {
+		@media only screen and (min-width: 768px) {
+			@include make-col(9);
+			float: left;
+		}
+
+		h2:first-of-type {
+			font-size: ms(3);
+			margin-bottom: 1em;
+		}
+	}
+
+	.tab-content > .tab-pane {
+      display: none;
+    }
+
+    .tab-content > .active {
+      display: block;
+    }
+}
+
 
 .videos,
 .movies,
