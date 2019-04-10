@@ -1066,3 +1066,25 @@ if ( ! function_exists( 'masvideos_videos_pagination' ) ) {
         <?php
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_video_player_wrap_open' ) ) {
+    /**
+     * Single video player open
+     */
+    function masvideos_template_single_video_player_wrap_open() {
+        ?>
+        <div class="video__player">
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_player_wrap_close' ) ) {
+    /**
+     * Single video player close
+     */
+    function masvideos_template_single_video_player_wrap_close() {
+        ?>
+        </div>
+        <?php
+    }
+}
