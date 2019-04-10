@@ -1,5 +1,5 @@
 === MAS Videos ===
-Contributors: madrasthemes, farookibrahim, ibndawood
+Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.1.1
@@ -58,6 +58,10 @@ Bugs can be reported either in our support forum or preferably on the [MAS Video
 = Can I contribute? =
 
 Yes you can! Join in on our [GitHub repository](https://github.com/madrasthemes/masvideos/) :)
+
+== Documentation ==
+
+All of our online documentation can be found on [our documentation site](https://docs.madrasthemes.com/masvideos/).
 
 == Screenshots ==
 
