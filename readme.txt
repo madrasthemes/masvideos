@@ -7,11 +7,23 @@ Stable tag: 1.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-MAS Videos is a free plugin that allows you to to create and listings the movies, videos and tv shows.
+MAS Videos is a free plugin that allows you to to create and list movies, videos and TV shows.
 
 == Description ==
 
-MAS Videos is a free plugin that allows you to to create and listings the movies, videos and tv shows.
+MAS Videos is a free plugin that allows you to to create and list movies, videos and TV shows. Have you ever wished to build a website similar to YouTube, Netflix or a simple video based website using WordPress ? MAS Videos allows you to do just that. You can create a website similar to YouTube, Netflix or any video based website.
+
+= MAS Videos' Features =
+
+MAS Videos is free and has many advanced features to suit your needs. 
+
+* You can add, edit and manage Movies, TV Shows and Videos just like you manage your posts
+* Create and assign attributes such as Director, Actor, etc to your Movies, TV Shows and Videos
+* Use WordPress' embed feature to embed Videos, Movies and TV Shows
+* Gutenberg blocks for Movies, TV Shows and Videos
+* Shortcodes and Widgets to display Movies, TV Shows and Videos
+* Manage Playlist using your WP user account. 
+* Allows registered users to upload their own videos just like YouTube.
 
 == Installation ==
 
