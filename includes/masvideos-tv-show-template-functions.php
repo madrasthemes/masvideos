@@ -659,8 +659,8 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_actions' ) ) {
      * TV Show actions in the tv show loop.
      */
     function masvideos_template_loop_tv_show_actions() {
+        global $tv_show;
         echo '<div class="tv-show__actions">';
-            global $tv_show;
             $link = apply_filters( 'masvideos_loop_tv_show_link', get_the_permalink(), $tv_show );
             echo '<a href="' . esc_url( $link ) . '" class="tv-show-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
             masvideos_template_button_tv_show_playlist();
