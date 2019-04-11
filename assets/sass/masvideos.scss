@@ -105,6 +105,7 @@
 
 	.movie-actions--link_watch {
 		line-height: 1.2;
+		margin-left: 5px;
 	}
 
 	@media only screen and (min-width: 1199px) {
@@ -142,7 +143,7 @@
 // 	font-weight: 700;
 // 	line-height: 1.5;
 // 	outline: none;
-// 	padding: 6px 12px;
+// 	padding: 6px 10px;
 // 	text-decoration: none;
 // 	display: inline-block;
 // 	vertical-align: bottom;
@@ -207,6 +208,36 @@
 			    color: #43454b;
 			}
 		}
+	}
+}
+
+.movie__avg-rating,
+.tv-show__avg-rating {
+	.avg-rating {
+		display: flex;
+		&:before {
+			font-family: dashicons;
+			content: "\f155";
+		}
+	}
+
+	.avg-rating__inner {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.avg-rating__number,
+	.avg-rating__text {
+		display: block;
+		line-height: 1;
+
+	}
+}
+
+.single-moviem,
+.single-tv_show {
+	.movie__avg-rating {
+		margin-bottom: 20px;
 	}
 }
 

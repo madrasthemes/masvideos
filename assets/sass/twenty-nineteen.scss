@@ -424,6 +424,7 @@ $font__line-height-heading: 1.2;
 
 	.movie-actions--link_watch {
 		line-height: 1.2;
+		margin-left: 5px;
 	}
 
 	@media only screen and (min-width: 1199px) {
@@ -447,7 +448,7 @@ $font__line-height-heading: 1.2;
 	font-weight: 700;
 	line-height: 1.5;
 	outline: none;
-	padding: 6px 12px;
+	padding: 6px 10px;
 	text-decoration: none;
 	display: inline-block;
 	vertical-align: bottom;
@@ -481,7 +482,8 @@ $font__line-height-heading: 1.2;
 	}
 }
 
-.movie__avg-rating {
+.movie__avg-rating,
+.tv-show__avg-rating {
 	.avg-rating {
 		display: flex;
 		&:before {
@@ -500,6 +502,13 @@ $font__line-height-heading: 1.2;
 		display: block;
 		line-height: 1;
 
+	}
+}
+
+.single-movie,
+.single-tv_show {
+	.movie__avg-rating {
+		margin-bottom: 20px;
 	}
 }
 
