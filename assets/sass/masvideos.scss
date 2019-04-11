@@ -1,10 +1,13 @@
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/buttons";
 @import "node_modules/bootstrap/scss/grid";
 @import "node_modules/bootstrap/scss/dropdown";
 @import 'starrating';
 
+$color_body: #eeeeee;
+$body-color: #333;
 
 .masvideos-control-bar {
 	display: flex;
@@ -60,6 +63,12 @@
 .tv-show__hover-area {
 	display: none;
 }
+
+ .post-type-archive-movie {
+ 	.movies>.movies__inner .movie {
+ 		margin-bottom: 20px;
+ 	}
+ }
 
 .masvideos-loop-video__title,
 .masvideos-loop-movie__title,
@@ -139,45 +148,38 @@
 	}
 }
 
-// .movie-actions--link_add-to-playlist > a,
-// .tv-show-actions--link_add-to-playlist > a,
-// .video-actions--link_add-to-playlist > a {
-// 	transition: background 150ms ease-in-out;
-// 	background: $color__background-button;
-// 	border: none;
-// 	border-radius: 5px;
-// 	box-sizing: border-box;
-// 	color: $color__background-body;
-// 	font-family: $font__heading;
-// 	font-size: $font__size-sm;
-// 	font-weight: 700;
-// 	line-height: 1.5;
-// 	outline: none;
-// 	padding: 6px 10px;
-// 	text-decoration: none;
-// 	display: inline-block;
-// 	vertical-align: bottom;
+.movie-actions--link_add-to-playlist > a,
+.tv-show-actions--link_add-to-playlist > a,
+.video-actions--link_add-to-playlist > a {
+	border: 0;
+    background: 0 0;
+    background-color: $color_body;
+    border-color: $color_body;
+    color: $body-color;
+    cursor: pointer;
+    padding: .6180469716em 1.41575em;
+    text-decoration: none;
+    font-weight: 600;
+    text-shadow: none;
+    display: inline-block;
+    outline: 0;
+    -webkit-appearance: none;
+    border-radius: 0;
 
-// 	&:hover {
-// 		background: $color__background-button-hover;
-// 		cursor: pointer;
-// 	}
+  @include hover-focus() {
+    color: $body-color;
+    text-decoration: none;
+    background-color: #d5d5d5;
+    border-color: #d5d5d5;
+  }
 
-// 	&:visited {
-// 		color: $color__background-body;
-// 		text-decoration: none;
-// 	}
+  &:focus,
+  &.focus {
+    outline: 0;
+    box-shadow: $btn-focus-box-shadow;
+  }
 
-// 	&:focus {
-// 		background: $color__background-button-hover;
-// 		outline: thin dotted;
-// 		outline-offset: -4px;
-// 	}
-
-// 	&:after {
-// 		vertical-align: middle;
-// 	}
-// }
+}
 
 .video__badge,
 .movie__badge,
@@ -245,7 +247,7 @@
 	}
 }
 
-.single-moviem,
+.single-movie,
 .single-tv_show {
 	.movie__avg-rating,
 	.tv-show__avg-rating {
