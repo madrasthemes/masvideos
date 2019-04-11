@@ -658,7 +658,8 @@ if ( ! function_exists( 'masvideos_template_loop_movie_actions' ) ) {
     function masvideos_template_loop_movie_actions() {
         global $movie;
         echo '<div class="movie__actions">';
-            echo '<a href="' . esc_url( get_permalink( $movie ) ) . '" class="movie-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
+            $link = apply_filters( 'masvideos_loop_movie_link', get_the_permalink(), $movie );
+            echo '<a href="' . esc_url( $link ) . '" class="movie-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
             masvideos_template_button_movie_playlist();
         echo '</div>';
     }
@@ -869,8 +870,8 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
         }
 
         $defaults = apply_filters( 'masvideos_related_movies_default_args', array(
-            'limit'          => 8,
-            'columns'        => 8,
+            'limit'          => 6,
+            'columns'        => 6,
             'orderby'        => 'rand',
             'order'          => 'desc',
         ) );

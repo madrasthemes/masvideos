@@ -1,5 +1,5 @@
 === MAS Videos ===
-Contributors: madrasthemes, farookibrahim, ibndawood
+Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.1.1
@@ -59,11 +59,29 @@ Bugs can be reported either in our support forum or preferably on the [MAS Video
 
 Yes you can! Join in on our [GitHub repository](https://github.com/madrasthemes/masvideos/) :)
 
+== Documentation ==
+
+All of our online documentation can be found on [our documentation site](https://docs.madrasthemes.com/masvideos/).
+
 == Screenshots ==
 
-1. screenshot-1.png
+1. MAS Videos movies admin.
+2. Movie data panel.
+3. MAS Videos videos admin.
+4. Video data panel.
+5. MAS Videos TV shows admin.
+6. TV Show data panel.
+7. MAS Videos episodes admin.
+8. Episode data panel.
+9. A movie archive (grid).
+10. A single movie page.
+11. A video archive (grid).
+12. A single video page.
+13. A TV show archive (grid).
+14. A single TV show page.
+15. A single Episode page.
 
 == Changelog ==
 
-= 1.0.0 - 2019-04-09 =
+= 1.0.0 - 2019-04-11 =
 * Initial Release
