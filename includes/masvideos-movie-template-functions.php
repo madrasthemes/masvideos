@@ -870,8 +870,8 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
         }
 
         $defaults = apply_filters( 'masvideos_related_movies_default_args', array(
-            'limit'          => 8,
-            'columns'        => 8,
+            'limit'          => 6,
+            'columns'        => 6,
             'orderby'        => 'rand',
             'order'          => 'desc',
         ) );
