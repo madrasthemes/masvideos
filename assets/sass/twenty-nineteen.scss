@@ -11,9 +11,18 @@
 
 $headings: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
 $body: "NonBreakingSpaceOverride", "Hoefler Text", "Baskerville Old Face", Garamond, "Times New Roman", serif;
+$font__heading: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
 $body-color: #111;
+$color__background-body: #fff;
 $highlights-color: #0073aa;
+$color__background-button: #0073aa;
+$color__background-button-hover: #111;
+$font__size_base: 22px;
+$font__size-ratio: 1.125;
+$font__size-sm:    1em / (1 * $font__size-ratio);
+$font__line-height-heading: 1.2;
+
 
 /**
  * Layout stuff
@@ -409,7 +418,8 @@ $highlights-color: #0073aa;
 		}
 	}
 
-	&--release-year {
+	&--release-year,
+	&--last-seen {
 		&:before {
 			content: "";
 		    width: 16px;
@@ -447,6 +457,78 @@ $highlights-color: #0073aa;
 
 .tv-show__hover-area {
 	display: none;
+}
+
+
+.movie__short-description,
+.video__short-description,
+.tv-show__short-description {
+	display: none;
+}
+
+.masvideos {
+	.summary {
+		.movie__short-description {
+			display: block;
+		}
+	}
+}
+
+.movie-actions--link_add-to-playlist > a {
+	transition: background 150ms ease-in-out;
+	background: $color__background-button;
+	border: none;
+	border-radius: 5px;
+	box-sizing: border-box;
+	color: $color__background-body;
+	font-family: $font__heading;
+	font-size: $font__size-sm;
+	font-weight: 700;
+	line-height: 2;
+	outline: none;
+	padding: .2rem 1rem;
+	text-decoration: none;
+	display: inline-block;
+	vertical-align: bottom;
+
+	&:hover {
+		background: $color__background-button-hover;
+		cursor: pointer;
+	}
+
+	&:visited {
+		color: $color__background-body;
+		text-decoration: none;
+	}
+
+	&:focus {
+		background: $color__background-button-hover;
+		outline: thin dotted;
+		outline-offset: -4px;
+	}
+
+	&:after {
+		vertical-align: middle;
+	}
+}
+
+
+.masvideos-page {
+	.site-content{
+		overflow: visible;
+	}
+}
+
+.movie__avg-rating {
+	.avg-rating {
+		&:before {
+			width: 20px;
+			height: 20px;
+			display: block;
+			color: red;
+			background-image: url('data:image/svg+xml;utf8,<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star" class="svg-inline--fa fa-star fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path></svg>');
+		}
+	}
 }
 
 .videos__inner,
