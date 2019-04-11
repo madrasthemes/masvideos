@@ -61,6 +61,14 @@
 	display: none;
 }
 
+.masvideos-loop-video__title,
+.masvideos-loop-movie__title,
+.masvideos-loop-tv-show__title,
+.masvideos-loop-episode__title {
+	font-size: 1.3em;
+	margin-top: 0;
+}
+
 .videos__inner,
 .movies__inner,
 .tv-shows__inner,
@@ -103,7 +111,9 @@
 	margin-bottom: 20px;
 	flex-direction: column;
 
-	.movie-actions--link_watch {
+	.movie-actions--link_watch,
+	.video-actions--link_watch,
+	.tv-show-actions--link_watch {
 		line-height: 1.2;
 		margin-right: 5px;
 	}
@@ -212,7 +222,8 @@
 }
 
 .movie__avg-rating,
-.tv-show__avg-rating {
+.tv-show__avg-rating,
+.episode__avg-rating {
 	.avg-rating {
 		display: flex;
 		&:before {
@@ -236,7 +247,8 @@
 
 .single-moviem,
 .single-tv_show {
-	.movie__avg-rating {
+	.movie__avg-rating,
+	.tv-show__avg-rating {
 		margin-bottom: 20px;
 	}
 }

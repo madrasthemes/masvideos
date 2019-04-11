@@ -57,6 +57,7 @@ $font__line-height-heading: 1.2;
 .masvideos-loop-tv-show__title,
 .masvideos-loop-episode__title {
 	font-size: 1.3em;
+	margin-top: 0;
 }
 
 .masvideos-control-bar {
@@ -317,7 +318,8 @@ $font__line-height-heading: 1.2;
 
 .movie__meta,
 .video__meta,
-.tv-show__meta{
+.tv-show__meta,
+.episode__meta{
 
 	font-weight: 500;
 
@@ -360,7 +362,9 @@ $font__line-height-heading: 1.2;
 	}
 
 	&--release-year,
-	&--last-seen {
+	&--last-seen,
+	&--duration,
+	&--release-date {
 		&:before {
 			content: "";
 		    width: 16px;
@@ -422,7 +426,9 @@ $font__line-height-heading: 1.2;
 	margin-bottom: 20px;
 	flex-direction: column;
 
-	.movie-actions--link_watch {
+	.movie-actions--link_watch,
+	.video-actions--link_watch,
+	.tv-show-actions--link_watch {
 		line-height: 1.2;
 		margin-right: 5px;
 	}
@@ -483,7 +489,8 @@ $font__line-height-heading: 1.2;
 }
 
 .movie__avg-rating,
-.tv-show__avg-rating {
+.tv-show__avg-rating,
+.episode__avg-rating {
 	.avg-rating {
 		display: flex;
 		&:before {
@@ -507,7 +514,8 @@ $font__line-height-heading: 1.2;
 
 .single-movie,
 .single-tv_show {
-	.movie__avg-rating {
+	.movie__avg-rating,
+	.tv-show__avg-rating {
 		margin-bottom: 20px;
 	}
 }
