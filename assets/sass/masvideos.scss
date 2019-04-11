@@ -94,6 +94,20 @@
 	}
 }
 
+.movie__short-description,
+.video__short-description,
+.tv-show__short-description {
+	display: none;
+}
+
+.masvideos {
+	.summary {
+		.movie__short-description {
+			display: block;
+		}
+	}
+}
+
 .video__badge,
 .movie__badge,
 .tv-show__badge {
