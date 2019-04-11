@@ -79,6 +79,8 @@
 .video-actions--link_add-to-playlist.dropdown,
 .movie-actions--link_add-to-playlist.dropdown,
 .tv-show-actions--link_add-to-playlist.dropdown {
+	position: relative;
+
 	.dropdown-menu {
 		a {
 			display: block;
@@ -87,11 +89,29 @@
 		    clear: both;
 		    font-weight: 400;
 		    text-align: inherit;
-		    white-space: nowrap;
+		    white-space: normal;
 		    background: 0 0;
 		    border: 0;
 		}
 	}
+}
+
+.tv-show__actions,
+.movie__actions,
+.video__actions {
+	display: flex;
+	margin-bottom: 20px;
+	flex-direction: column;
+
+	.movie-actions--link_watch {
+		line-height: 1.2;
+	}
+
+	@media only screen and (min-width: 1199px) {
+		flex-direction: row;
+		align-items: center;
+	}
+
 }
 
 .movie__short-description,
@@ -107,6 +127,46 @@
 		}
 	}
 }
+
+// .movie-actions--link_add-to-playlist > a,
+// .tv-show-actions--link_add-to-playlist > a,
+// .video-actions--link_add-to-playlist > a {
+// 	transition: background 150ms ease-in-out;
+// 	background: $color__background-button;
+// 	border: none;
+// 	border-radius: 5px;
+// 	box-sizing: border-box;
+// 	color: $color__background-body;
+// 	font-family: $font__heading;
+// 	font-size: $font__size-sm;
+// 	font-weight: 700;
+// 	line-height: 1.5;
+// 	outline: none;
+// 	padding: 6px 12px;
+// 	text-decoration: none;
+// 	display: inline-block;
+// 	vertical-align: bottom;
+
+// 	&:hover {
+// 		background: $color__background-button-hover;
+// 		cursor: pointer;
+// 	}
+
+// 	&:visited {
+// 		color: $color__background-body;
+// 		text-decoration: none;
+// 	}
+
+// 	&:focus {
+// 		background: $color__background-button-hover;
+// 		outline: thin dotted;
+// 		outline-offset: -4px;
+// 	}
+
+// 	&:after {
+// 		vertical-align: middle;
+// 	}
+// }
 
 .video__badge,
 .movie__badge,

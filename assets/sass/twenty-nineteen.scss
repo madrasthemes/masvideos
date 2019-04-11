@@ -474,7 +474,27 @@ $font__line-height-heading: 1.2;
 	}
 }
 
-.movie-actions--link_add-to-playlist > a {
+.tv-show__actions,
+.movie__actions,
+.video__actions {
+	display: flex;
+	margin-bottom: 20px;
+	flex-direction: column;
+
+	.movie-actions--link_watch {
+		line-height: 1.2;
+	}
+
+	@media only screen and (min-width: 1199px) {
+		flex-direction: row;
+		align-items: center;
+	}
+
+}
+
+.movie-actions--link_add-to-playlist > a,
+.tv-show-actions--link_add-to-playlist > a,
+.video-actions--link_add-to-playlist > a {
 	transition: background 150ms ease-in-out;
 	background: $color__background-button;
 	border: none;
@@ -484,9 +504,9 @@ $font__line-height-heading: 1.2;
 	font-family: $font__heading;
 	font-size: $font__size-sm;
 	font-weight: 700;
-	line-height: 2;
+	line-height: 1.5;
 	outline: none;
-	padding: .2rem 1rem;
+	padding: 6px 12px;
 	text-decoration: none;
 	display: inline-block;
 	vertical-align: bottom;
@@ -494,6 +514,7 @@ $font__line-height-heading: 1.2;
 	&:hover {
 		background: $color__background-button-hover;
 		cursor: pointer;
+		color: $color__background-body;
 	}
 
 	&:visited {
@@ -521,13 +542,23 @@ $font__line-height-heading: 1.2;
 
 .movie__avg-rating {
 	.avg-rating {
+		display: flex;
 		&:before {
-			width: 20px;
-			height: 20px;
-			display: block;
-			color: red;
-			background-image: url('data:image/svg+xml;utf8,<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star" class="svg-inline--fa fa-star fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path></svg>');
+			font-family: dashicons;
+			content: "\f155";
 		}
+	}
+
+	.avg-rating__inner {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.avg-rating__number,
+	.avg-rating__text {
+		display: block;
+		line-height: 1;
+
 	}
 }
 
@@ -549,6 +580,8 @@ $font__line-height-heading: 1.2;
 .video-actions--link_add-to-playlist.dropdown,
 .movie-actions--link_add-to-playlist.dropdown,
 .tv-show-actions--link_add-to-playlist.dropdown {
+	position: relative;
+
 	.dropdown-menu {
 		a {
 			display: block;
@@ -557,7 +590,7 @@ $font__line-height-heading: 1.2;
 		    clear: both;
 		    font-weight: 400;
 		    text-align: inherit;
-		    white-space: nowrap;
+		    white-space: normal;
 		    background: 0 0;
 		    border: 0;
 		}
