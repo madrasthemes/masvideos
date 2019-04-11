@@ -275,65 +275,6 @@ $font__line-height-heading: 1.2;
 				margin-bottom: 0.5em;
 			}
 		}
-
-		p.stars {
-			margin-top: 0;
-
-			a {
-				position: relative;
-				height: 1em;
-				width: 1em;
-				text-indent: -999em;
-				display: inline-block;
-				text-decoration: none;
-				box-shadow: none;
-
-				&::before {
-					display: block;
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 1em;
-					height: 1em;
-					line-height: 1;
-					font-family: 'WooCommerce';
-					content: '\e021';
-					text-indent: 0;
-				}
-
-				&:hover {
-					~ a::before {
-						content: '\e021';
-					}
-				}
-			}
-
-			&:hover {
-				a {
-					&::before {
-						content: '\e020';
-					}
-				}
-			}
-
-			&.selected {
-				a.active {
-					&::before {
-						content: '\e020';
-					}
-
-					~ a::before {
-						content: '\e021';
-					}
-				}
-
-				a:not( .active ) {
-					&::before {
-						content: '\e020';
-					}
-				}
-			}
-		}
 	}
 
 	.tab-content > .tab-pane {
@@ -742,6 +683,7 @@ $font__line-height-heading: 1.2;
 .single-movie {
 	.movie__description-tab {
 		display: flex;
+        flex-wrap: wrap;
 		justify-content: space-between;
 		flex-direction: column;
 

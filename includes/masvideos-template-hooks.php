@@ -357,6 +357,8 @@ add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_rele
 add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_genres', 20 );
 
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_description', 130 );
+add_action( 'masvideos_single_movie_description_tab', 'masvideos_display_movie_attributes', 180 );
+add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_tags', 190 );
 
 /**
  * Movie Reviews

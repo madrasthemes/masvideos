@@ -403,6 +403,7 @@
 .single-movie {
 	.movie__description-tab {
 		display: flex;
+        flex-wrap: wrap;
 		justify-content: space-between;
 		flex-direction: column;
 
