@@ -949,25 +949,45 @@ if ( ! function_exists( 'masvideos_recommended_movie_thumbnail_size' ) ) {
 if ( ! function_exists( 'masvideos_template_single_movie_tabs' ) ) {
 
     /**
-     * Episode tabs in the movie single.
+     * Movie tabs in the movie single.
      */
     function masvideos_template_single_movie_tabs() {
-        global $movie;
+        global $movie, $post;
 
-        $tabs = apply_filters( 'masvideos_template_single_movie_tabs', array(
-            array(
+        $tabs = array();
+        
+        // Description tab - shows movie content.
+        if ( $post->post_content ) {
+            $tabs['description'] = array(
                 'title'     => esc_html__( 'Description', 'masvideos' ),
                 'callback'  => 'masvideos_template_single_movie_description_tab',
                 'priority'  => 10
-            ),
-            array(
+            );
+        }
+
+        // Sources tab - shows link sources.
+        if ( $movie && ( $movie->has_sources() ) ) {
+            $tabs['sources'] = array(
+                'title'     => esc_html__( 'Sources', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_movie_sources',
+                'priority'  => 30
+            );
+        }
+
+        // Reviews tab - shows comments.
+        if ( comments_open() ) {
+            $tabs['reviews'] = array(
                 'title'     => esc_html__( 'Review', 'masvideos' ),
                 'callback'  => 'comments_template',
                 'priority'  => 20
-            )
-        ) );
+            );
+        }
 
-        masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-tabs' ) );
+        $tabs = apply_filters( 'masvideos_template_single_movie_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-tabs' ) );
+        }
     }
 }
 
@@ -980,6 +1000,16 @@ if ( ! function_exists( 'masvideos_template_single_movie_description_tab' ) ) {
         echo '<div id="movie__description-tab" class="movie__description-tab">';
             do_action( 'masvideos_single_movie_description_tab', $movie );
         echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_sources' ) ) {
+
+    /**
+     * Movie sources in the movie single.
+     */
+    function masvideos_template_single_movie_sources() {
+        masvideos_get_template( 'single-movie/sources.php' );
     }
 }
 

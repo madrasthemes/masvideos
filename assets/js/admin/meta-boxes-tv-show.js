@@ -38,7 +38,7 @@ jQuery( function( $ ) {
         $( datepicker ).change();
     }
 
-    $( '._tv_show_release_date_field' ).each( function() {
+    $( '.tv_show_date_picker' ).each( function() {
         $( this ).find( 'input' ).datepicker({
             defaultDate: '',
             dateFormat: 'yy-mm-dd',

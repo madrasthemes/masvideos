@@ -38,7 +38,7 @@ jQuery( function( $ ) {
         $( datepicker ).change();
     }
 
-    $( '._episode_release_date_field' ).each( function() {
+    $( '.episode_date_picker' ).each( function() {
         $( this ).find( 'input' ).datepicker({
             defaultDate: '',
             dateFormat: 'yy-mm-dd',
@@ -49,6 +49,118 @@ jQuery( function( $ ) {
             }
         });
         $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
+    });
+
+    // Source Tables.
+
+    // Initial order.
+    var masvideos_source_items = $( '.episode_sources' ).find( '.masvideos_source' ).get();
+
+    masvideos_source_items.sort( function( a, b ) {
+       var compA = parseInt( $( a ).attr( 'rel' ), 10 );
+       var compB = parseInt( $( b ).attr( 'rel' ), 10 );
+       return ( compA < compB ) ? -1 : ( compA > compB ) ? 1 : 0;
+    });
+    $( masvideos_source_items ).each( function( index, el ) {
+        $( '.episode_sources' ).append( el );
+    });
+
+    function episode_source_row_indexes() {
+        $( '.episode_sources .masvideos_source' ).each( function( index, el ) {
+            $( '.source_position', el ).val( parseInt( $( el ).index( '.episode_sources .masvideos_source' ), 10 ) );
+        });
+    }
+
+    // Add a new source (via ajax).
+    $( 'button.add_episode_source' ).on( 'click', function() {
+        var size         = $( '.episode_sources .masvideos_source' ).length;
+        var $wrapper     = $( this ).closest( '#episode_sources' );
+        var $sources     = $wrapper.find( '.episode_sources' );
+        var data         = {
+            action:   'masvideos_add_source_episode',
+            i:        size,
+            security: masvideos_admin_meta_boxes.add_source_episode_nonce
+        };
+
+        // $wrapper.block({
+        //     message: null,
+        //     overlayCSS: {
+        //         background: '#fff',
+        //         opacity: 0.6
+        //     }
+        // });
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
+            $sources.append( response );
+
+            $( document.body ).trigger( 'masvideos-enhanced-select-init' );
+            episode_source_row_indexes();
+            // $wrapper.unblock();
+
+            $( document.body ).trigger( 'masvideos_added_source_episode' );
+        });
+
+        return false;
+    });
+
+    $( '.episode_sources' ).on( 'blur', 'input.source_name', function() {
+        $( this ).closest( '.masvideos_source' ).find( 'strong.source_name' ).text( $( this ).val() );
+    });
+
+    $( '.episode_sources' ).on( 'click', '.remove_row', function() {
+        if ( window.confirm( masvideos_admin_meta_boxes.remove_source ) ) {
+            var $parent = $( this ).parent().parent();
+
+            $parent.find( 'select, input[type=text]' ).val( '' );
+            $parent.hide();
+            episode_source_row_indexes();
+        }
+        return false;
+    });
+
+    // Source ordering.
+    $( '.episode_sources' ).sortable({
+        items: '.masvideos_source',
+        cursor: 'move',
+        axis: 'y',
+        handle: 'h3',
+        scrollSensitivity: 40,
+        forcePlaceholderSize: true,
+        helper: 'clone',
+        opacity: 0.65,
+        placeholder: 'masvideos-metabox-sortable-placeholder',
+        start: function( event, ui ) {
+            ui.item.css( 'background-color', '#f6f6f6' );
+        },
+        stop: function( event, ui ) {
+            ui.item.removeAttr( 'style' );
+            episode_source_row_indexes();
+        }
+    });
+
+    // Save sources and update variations.
+    $( '.save_sources_episode' ).on( 'click', function() {
+
+        // $( '#masvideos-episode-data' ).block({
+        //     message: null,
+        //     overlayCSS: {
+        //         background: '#fff',
+        //         opacity: 0.6
+        //     }
+        // });
+
+        var data = {
+            post_id     : masvideos_admin_meta_boxes.post_id,
+            data        : $( '.episode_sources' ).find( 'input, select, textarea' ).serialize(),
+            action      : 'masvideos_save_sources_episode',
+            security    : masvideos_admin_meta_boxes.save_sources_episode_nonce
+        };
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function() {
+            // Reload variations panel.
+            var this_page = window.location.toString();
+            this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+        });
     });
 
     // Attribute Tables.

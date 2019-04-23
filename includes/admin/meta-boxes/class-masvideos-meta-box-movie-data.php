@@ -41,8 +41,9 @@ class MasVideos_Meta_Box_Movie_Data {
         global $post, $thepostid, $movie_object;
 
         include 'views/html-movie-data-general.php';
-        include 'views/html-movie-data-attributes.php';
         include 'views/html-movie-data-linked-movies.php';
+        include 'views/html-movie-data-attributes.php';
+        include 'views/html-movie-data-sources.php';
     }
 
     /**
@@ -70,6 +71,12 @@ class MasVideos_Meta_Box_Movie_Data {
                     'target'   => 'movie_attributes',
                     'class'    => array(),
                     'priority' => 50,
+                ),
+                'source'        => array(
+                    'label'    => __( 'Sources', 'masvideos' ),
+                    'target'   => 'movie_sources',
+                    'class'    => array(),
+                    'priority' => 60,
                 ),
             )
         );
@@ -99,6 +106,54 @@ class MasVideos_Meta_Box_Movie_Data {
         }
 
         return $a['priority'] < $b['priority'] ? -1 : 1;
+    }
+
+    /**
+     * Prepare sources for save.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public static function prepare_sources( $data = false ) {
+        $sources = array();
+
+        if ( ! $data ) {
+            $data = $_POST;
+        }
+
+        if ( isset( $data['source_names'], $data['source_link'] ) ) {
+            $source_names         = $data['source_names'];
+            $source_choice        = $data['source_choice'];
+            $source_embed_content = $data['source_embed_content'];
+            $source_link          = $data['source_link'];
+            $source_quality       = $data['source_quality'];
+            $source_language      = $data['source_language'];
+            $source_player        = $data['source_player'];
+            $source_date_added    = $data['source_date_added'];
+            $source_position      = $data['source_position'];
+            $source_names_max_key = max( array_keys( $source_names ) );
+
+            for ( $i = 0; $i <= $source_names_max_key; $i++ ) {
+                if ( empty( $source_names[ $i ] ) ) {
+                    continue;
+                }
+
+                $source = array(
+                    'name'          => isset( $source_names[ $i ] ) ? masvideos_clean( $source_names[ $i ] ) : '',
+                    'choice'        => isset( $source_choice[ $i ] ) ? masvideos_clean( $source_choice[ $i ] ) : '',
+                    'embed_content' => isset( $source_embed_content[ $i ] ) ? masvideos_sanitize_textarea_iframe( $source_embed_content[ $i ] ) : '',
+                    'link'          => isset( $source_link[ $i ] ) ? masvideos_clean( $source_link[ $i ] ) : '',
+                    'quality'       => isset( $source_quality[ $i ] ) ? masvideos_clean( $source_quality[ $i ] ) : '',
+                    'language'      => isset( $source_language[ $i ] ) ? masvideos_clean( $source_language[ $i ] ) : '',
+                    'player'        => isset( $source_player[ $i ] ) ? masvideos_clean( $source_player[ $i ] ) : '',
+                    'date_added'    => isset( $source_date_added[ $i ] ) ? masvideos_clean( $source_date_added[ $i ] ) : '',
+                    'position'      => isset( $source_position[ $i ] ) ? absint( $source_position[ $i ] ) : 0
+                );
+                $sources[] = $source;
+            }
+        }
+        return $sources;
     }
 
     /**

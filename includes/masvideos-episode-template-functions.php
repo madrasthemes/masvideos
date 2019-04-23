@@ -723,23 +723,42 @@ if ( ! function_exists( 'masvideos_template_single_episode_tabs' ) ) {
      * Episode tabs in the episode single.
      */
     function masvideos_template_single_episode_tabs() {
-        global $episode;
+        global $episode, $post;
 
-        $tabs = apply_filters( 'masvideos_template_single_episode_tabs', array(
-            array(
+        $tabs = array();
+        
+        // Description tab - shows episode content.
+        if ( $post->post_content ) {
+            $tabs['description'] = array(
                 'title'     => esc_html__( 'Description', 'masvideos' ),
                 'callback'  => 'masvideos_template_single_episode_description',
                 'priority'  => 10
-            ),
-            array(
+            );
+        }
+
+        // Sources tab - shows link sources.
+        if ( $episode && ( $episode->has_sources() ) ) {
+            $tabs['sources'] = array(
+                'title'     => esc_html__( 'Sources', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_episode_sources',
+                'priority'  => 30
+            );
+        }
+
+        // Reviews tab - shows comments.
+        if ( comments_open() ) {
+            $tabs['reviews'] = array(
                 'title'     => esc_html__( 'Review', 'masvideos' ),
                 'callback'  => 'comments_template',
                 'priority'  => 20
-            )
+            );
+        }
 
-        ) );
+        $tabs = apply_filters( 'masvideos_template_single_episode_tabs', $tabs );
 
-        masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'episode-tabs' ) );
+        if( ! empty( $tabs ) ) {
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'episode-tabs' ) );
+        }
     }
 }
 
@@ -899,6 +918,16 @@ if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
             <?php echo '<p>' . $short_description . '</p>'; ?>
         </div>
         <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_episode_sources' ) ) {
+
+    /**
+     * Episode sources in the episode single.
+     */
+    function masvideos_template_single_episode_sources() {
+        masvideos_get_template( 'single-episode/sources.php' );
     }
 }
 

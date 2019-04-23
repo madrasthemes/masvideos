@@ -59,6 +59,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'reviews_allowed'       => true,
         'attributes'            => array(),
         'default_attributes'    => array(),
+        'sources'               => array(),
         'menu_order'            => 0,
         'genre_ids'             => array(),
         'tag_ids'               => array(),
@@ -257,6 +258,17 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function get_default_attributes( $context = 'view' ) {
         return $this->get_prop( 'default_attributes', $context );
+    }
+
+    /**
+     * Get sources.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_sources( $context = 'view' ) {
+        return $this->get_prop( 'sources', $context );
     }
 
     /**
@@ -594,6 +606,16 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
+     * Set sources. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $sources List of sources.
+     */
+    public function set_sources( $sources ) {
+        $this->set_prop( 'sources', $sources );
+    }
+
+    /**
      * Set menu order.
      *
      * @since 1.0.0
@@ -855,6 +877,32 @@ class MasVideos_Movie extends MasVideos_Data {
         }
 
         return apply_filters( 'masvideos_movie_is_visible', $visible, $this->get_id() );
+    }
+
+    /**
+     * Returns whether or not the movie has any sources.
+     *
+     * @return boolean
+     */
+    public function has_sources() {
+        $sources = $this->get_sources();
+        if( ! empty( $sources ) ) {
+            foreach ( $sources as $source ) {
+                $source_src = '';
+                $source_choice = ! empty( $source['choice'] ) ? $source['choice'] : '';
+
+                if ( $source_choice == 'movie_embed' && ! empty( $source['embed_content'] ) ) {
+                    $source_src = $source['embed_content'];
+                } elseif ( $source_choice == 'movie_url' && ! empty( $source['link'] ) ) {
+                    $source_src = $source['link'];
+                }
+
+                if( ! empty( $source_src ) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
