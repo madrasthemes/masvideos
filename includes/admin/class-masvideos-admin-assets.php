@@ -135,6 +135,8 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'featured_label'                => __( 'Featured', 'masvideos' ),
                     'plugin_url'                    => MasVideos()->plugin_url(),
                     'ajax_url'                      => admin_url( 'admin-ajax.php' ),
+                    'add_source_episode_nonce'      => wp_create_nonce( 'add-source-episode' ),
+                    'save_sources_episode_nonce'    => wp_create_nonce( 'save-sources-episode' ),
                     'add_attribute_episode_nonce'   => wp_create_nonce( 'add-attribute-episode' ),
                     'save_attributes_episode_nonce' => wp_create_nonce( 'save-attributes-episode' ),
                     'search_episodes_nonce'         => wp_create_nonce( 'search-episodes' ),

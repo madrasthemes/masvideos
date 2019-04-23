@@ -38,18 +38,18 @@ jQuery( function( $ ) {
         $( datepicker ).change();
     }
 
-    // $( '.sale_price_dates_fields' ).each( function() {
-    //     $( this ).find( 'input' ).datepicker({
-    //         defaultDate: '',
-    //         dateFormat: 'yy-mm-dd',
-    //         numberOfMonths: 1,
-    //         showButtonPanel: true,
-    //         onSelect: function() {
-    //             date_picker_select( $( this ) );
-    //         }
-    //     });
-    //     $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
-    // });
+    $( '.video_date_picker' ).each( function() {
+        $( this ).find( 'input' ).datepicker({
+            defaultDate: '',
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths: 1,
+            showButtonPanel: true,
+            onSelect: function() {
+                date_picker_select( $( this ) );
+            }
+        });
+        $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
+    });
 
     // Attribute Tables.
 

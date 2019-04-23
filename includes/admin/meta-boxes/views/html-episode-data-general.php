@@ -68,6 +68,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 'value'         => $episode_object->get_episode_release_date( 'edit' ) && ( $date = $episode_object->get_episode_release_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '',
                 'label'         => __( 'Episode Release Date', 'masvideos' ),
                 'description'   => __( 'Enter the release date of the episode.', 'masvideos' ),
+                'wrapper_class' => 'episode_date_picker',
             )
         );
 
