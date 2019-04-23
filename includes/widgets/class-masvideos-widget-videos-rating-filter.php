@@ -123,7 +123,7 @@ class MasVideos_Widget_Videos_Rating_Filter extends MasVideos_Widget {
 			$rating_html = masvideos_get_star_rating_html( $rating );
 			$count_html  = esc_html( apply_filters( 'masvideos_videos_rating_filter_count', "({$count})", $count, $rating ) );
 
-			printf( '<li class="%s"><a href="%s"><span class="star-rating">%s</span> %s</a></li>', esc_attr( $class ), esc_url( $link ), $rating_html, $count_html ); // WPCS: XSS ok.
+			printf( '<li class="%s"><a href="%s"><div class="star-rating">%s</div> %s</a></li>', esc_attr( $class ), esc_url( $link ), $rating_html, $count_html ); // WPCS: XSS ok.
 		}
 
 		echo '</ul>';

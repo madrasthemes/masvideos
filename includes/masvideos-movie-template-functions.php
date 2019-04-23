@@ -888,7 +888,7 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
             echo '<section class="movie__related--inner">';
                 echo sprintf( '<h2 class="movie__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::movies( $args );
-            echo '</div>';
+            echo '</section>';
             echo '</section>';
         }
     }
