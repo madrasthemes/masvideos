@@ -880,6 +880,32 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
+     * Returns whether or not the movie has any sources.
+     *
+     * @return boolean
+     */
+    public function has_sources() {
+        $sources = $this->get_sources();
+        if( ! empty( $sources ) ) {
+            foreach ( $sources as $source ) {
+                $source_src = '';
+                $source_choice = ! empty( $source['choice'] ) ? $source['choice'] : '';
+
+                if ( $source_choice == 'movie_embed' && ! empty( $source['embed_content'] ) ) {
+                    $source_src = $source['embed_content'];
+                } elseif ( $source_choice == 'movie_url' && ! empty( $source['link'] ) ) {
+                    $source_src = $source['link'];
+                }
+
+                if( ! empty( $source_src ) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns whether or not the movie has any visible attributes.
      *
      * @return boolean
