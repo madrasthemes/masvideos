@@ -38,7 +38,7 @@ jQuery( function( $ ) {
         $( datepicker ).change();
     }
 
-    $( '._episode_release_date_field' ).each( function() {
+    $( '.episode_date_picker' ).each( function() {
         $( this ).find( 'input' ).datepicker({
             defaultDate: '',
             dateFormat: 'yy-mm-dd',
