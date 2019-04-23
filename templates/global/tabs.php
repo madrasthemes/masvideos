@@ -34,6 +34,9 @@ uasort( $tabs, 'masvideos_sort_priority_callback' );
 <div class="<?php echo esc_attr( $class ); ?>">
     <ul class="nav">
         <?php foreach ( $tabs as $key => $tab ) :
+            if ( ! is_numeric( $key ) && ! $default_active_tab ) {
+                $default_active_tab = $key;
+            }
             $tab_id = $tab_uniqid . $key; ?>
             <li class="nav-item">
                 <a href="#<?php echo esc_attr( $tab_id ); ?>" data-toggle="tab" class="nav-link<?php if ( $key == $default_active_tab ) echo esc_attr( ' active show' ); ?>">
