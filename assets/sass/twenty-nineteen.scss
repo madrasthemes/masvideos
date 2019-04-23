@@ -437,7 +437,10 @@ $font__line-height-heading: 1.2;
 	.video-actions--link_watch,
 	.tv-show-actions--link_watch {
 		line-height: 1.2;
-		margin-right: 5px;
+
+		@media only screen and (min-width: 1199px) {
+            margin-right: 10px;
+        }
 	}
 
 	@media only screen and (min-width: 1199px) {
@@ -760,4 +763,15 @@ $font__line-height-heading: 1.2;
 			}
 		}
 	}
+}
+
+.masvideos-videos-pagination {
+    border-top: 1px solid #e8e8e8;
+    padding-top: 20px;
+    margin-bottom: 15px;
+
+    .page-numbers {
+    	flex-wrap: wrap;
+    	justify-content: center;
+    }
 }

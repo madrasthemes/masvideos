@@ -25,6 +25,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     protected $internal_meta_keys = array(
         '_visibility',
         '_default_attributes',
+        '_sources',
         '_movie_attributes',
         '_featured',
         '_masvideos_rating_count',
@@ -299,6 +300,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         $movie->set_props(
             array(
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
+                'sources'               => get_post_meta( $id, '_sources', true ),
                 'genre_ids'             => $this->get_term_ids( $movie, 'movie_genre' ),
                 'tag_ids'               => $this->get_term_ids( $movie, 'movie_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_movie_image_gallery', true ) ) ),
@@ -417,6 +419,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     protected function update_post_meta( &$movie, $force = false ) {
         $meta_key_to_props = array(
             '_default_attributes'           => 'default_attributes',
+            '_sources'                      => 'sources',
             '_movie_image_gallery'          => 'gallery_image_ids',
             '_thumbnail_id'                 => 'image_id',
             '_movie_choice'                 => 'movie_choice',

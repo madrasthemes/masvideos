@@ -65,21 +65,21 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Screenshots ==
 
-1. MAS Videos movies admin.
-2. Movie data panel.
-3. MAS Videos videos admin.
-4. Video data panel.
-5. MAS Videos TV shows admin.
-6. TV Show data panel.
-7. MAS Videos episodes admin.
-8. Episode data panel.
-9. A movie archive (grid).
-10. A single movie page.
-11. A video archive (grid).
-12. A single video page.
-13. A TV show archive (grid).
-14. A single TV show page.
-15. A single Episode page.
+1. A movie archive (grid).
+2. A single movie page.
+3. A video archive (grid).
+4. A single video page.
+5. A TV show archive (grid).
+6. A single TV show page.
+7. A single Episode page.
+8. MAS Videos movies admin.
+9. Movie data panel.
+10. MAS Videos videos admin.
+11. Video data panel.
+12. MAS Videos TV shows admin.
+13. TV Show data panel.
+14. MAS Videos episodes admin.
+15. Episode data panel.
 
 == Changelog ==
 

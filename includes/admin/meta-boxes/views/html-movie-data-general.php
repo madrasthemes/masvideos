@@ -59,6 +59,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 'value'         => $movie_object->get_movie_release_date( 'edit' ) && ( $date = $movie_object->get_movie_release_date( 'edit' )->getOffsetTimestamp() ) ? date_i18n( 'Y-m-d', $date ) : '',
                 'label'         => __( 'Movie Release Date', 'masvideos' ),
                 'description'   => __( 'Enter the release date of the movie.', 'masvideos' ),
+                'wrapper_class' => 'movie_date_picker',
             )
         );
 

@@ -241,6 +241,7 @@ add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_r
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_viewers_count', 30 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_review_info_close', 40 );
 add_action( 'masvideos_after_videos_loop_item', 'masvideos_template_loop_video_body_close', 50 );
+add_action( 'masvideos_after_videos_loop', 'masvideos_videos_pagination',    20 );
 
 /**
  * Videos Loop Template: Videos Widget.

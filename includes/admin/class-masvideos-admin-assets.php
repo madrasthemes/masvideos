@@ -146,6 +146,8 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'add_attribute_video_nonce'     => wp_create_nonce( 'add-attribute-video' ),
                     'save_attributes_video_nonce'   => wp_create_nonce( 'save-attributes-video' ),
                     'search_videos_nonce'           => wp_create_nonce( 'search-videos' ),
+                    'add_source_movie_nonce'        => wp_create_nonce( 'add-source-movie' ),
+                    'save_sources_movie_nonce'      => wp_create_nonce( 'save-sources-movie' ),
                     'add_attribute_movie_nonce'     => wp_create_nonce( 'add-attribute-movie' ),
                     'save_attributes_movie_nonce'   => wp_create_nonce( 'save-attributes-movie' ),
                     'search_movies_nonce'           => wp_create_nonce( 'search-movies' ),

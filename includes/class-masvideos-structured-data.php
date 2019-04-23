@@ -203,7 +203,9 @@ class MasVideos_Structured_Data {
 			$markup['contentUrl']	= wp_get_attachment_url( $episode->get_episode_attachment_id() );
 		} elseif ( $episode_choice == 'episode_embed' ) {
 			preg_match( '/src="([^"]+)"/', $episode->get_episode_embed_content(), $match );
-			$markup['embedUrl']		= $match[1];
+			if( isset( $match[1] ) ) {
+				$markup['embedUrl']		= $match[1];
+			}
 		} elseif ( $episode_choice == 'episode_url' ) {
 			$markup['contentUrl']	= $episode->get_episode_url_link();
 		}
@@ -274,7 +276,9 @@ class MasVideos_Structured_Data {
 			$markup['contentUrl']	= wp_get_attachment_url( $movie->get_movie_attachment_id() );
 		} elseif ( $movie_choice == 'movie_embed' ) {
 			preg_match( '/src="([^"]+)"/', $movie->get_movie_embed_content(), $match );
-			$markup['embedUrl']		= $match[1];
+			if( isset( $match[1] ) ) {
+				$markup['embedUrl']		= $match[1];
+			}
 		} elseif ( $movie_choice == 'movie_url' ) {
 			$markup['contentUrl']	= $movie->get_movie_url_link();
 		}
@@ -313,7 +317,9 @@ class MasVideos_Structured_Data {
             $markup['contentUrl']   = wp_get_attachment_url( $video->get_video_attachment_id() );
         } elseif ( $video_choice == 'video_embed' ) {
             preg_match( '/src="([^"]+)"/', $video->get_video_embed_content(), $match );
-            $markup['embedUrl']     = $match[1];
+            if( isset( $match[1] ) ) {
+				$markup['embedUrl']		= $match[1];
+			}
         } elseif ( $video_choice == 'video_url' ) {
             $markup['contentUrl']   = $video->get_video_url_link();
         }
