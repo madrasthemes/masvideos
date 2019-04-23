@@ -89,6 +89,8 @@ class MasVideos_AJAX {
             'toggle_tv_show_playlist'                          => true,
             'toggle_video_playlist'                            => true,
             'toggle_movie_playlist'                            => true,
+            'add_source_episode'                               => false,
+            'save_sources_episode'                             => false,
             'add_attribute_episode'                            => false,
             'add_new_attribute_episode'                        => false,
             'save_attributes_episode'                          => false,
@@ -121,6 +123,80 @@ class MasVideos_AJAX {
                 add_action( 'masvideos_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
             }
         }
+    }
+
+    /**
+     * Add an source row.
+     */
+    public static function add_source_episode() {
+        ob_start();
+
+        check_ajax_referer( 'add-source-episode', 'security' );
+
+        if ( ! current_user_can( 'edit_episodes' ) ) {
+            wp_die( -1 );
+        }
+
+        $i             = absint( $_POST['i'] );
+        $metabox_class = array();
+        $source        = array(
+            'name'          => sprintf( __( 'Source %d', 'masvideos' ), $i+1 ),
+            'image_id'      => 0,
+            'episodes'      => array(),
+            'year'          => '',
+            'description'   => '',
+            'position'      => 0
+        );
+
+        include 'admin/meta-boxes/views/html-episode-source.php';
+        wp_die();
+    }
+
+    /**
+     * Save sources via ajax.
+     */
+    public static function save_sources_episode() {
+        check_ajax_referer( 'save-sources-episode', 'security' );
+
+        if ( ! current_user_can( 'edit_episodes' ) ) {
+            wp_die( -1 );
+        }
+
+        try {
+            parse_str( $_POST['data'], $data );
+
+            $sources      = MasVideos_Meta_Box_Episode_Data::prepare_sources( $data );
+            $episode_id     = absint( $_POST['post_id'] );
+            $classname    = MasVideos_Episode_Factory::get_episode_classname( $episode_id );
+            $episode        = new $classname( $episode_id );
+
+            $episode->set_sources( $sources );
+            $episode->save();
+
+            $response = array();
+
+            ob_start();
+            $sources    = $episode->get_sources( 'edit' );
+            $i          = -1;
+
+            foreach ( $data['source_names'] as $source_name ) {
+                $source = isset( $sources[ sanitize_title( $source_name ) ] ) ? $sources[ sanitize_title( $source_name ) ] : false;
+                if ( ! $source ) {
+                    continue;
+                }
+                $i++;
+                $metabox_class = array();
+
+                include( 'admin/meta-boxes/views/html-episode-source.php' );
+            }
+
+            $response['html'] = ob_get_clean();
+
+            wp_send_json_success( $response );
+        } catch ( Exception $e ) {
+            wp_send_json_error( array( 'error' => $e->getMessage() ) );
+        }
+        wp_die();
     }
 
     /**

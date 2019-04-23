@@ -59,6 +59,7 @@ class MasVideos_Episode extends MasVideos_Data {
         'reviews_allowed'       => true,
         'attributes'            => array(),
         'default_attributes'    => array(),
+        'sources'               => array(),
         'menu_order'            => 0,
         'genre_ids'             => array(),
         'tag_ids'               => array(),
@@ -258,6 +259,17 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function get_default_attributes( $context = 'view' ) {
         return $this->get_prop( 'default_attributes', $context );
+    }
+
+    /**
+     * Get sources.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_sources( $context = 'view' ) {
+        return $this->get_prop( 'sources', $context );
     }
 
     /**
@@ -603,6 +615,16 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function set_default_attributes( $default_attributes ) {
         $this->set_prop( 'default_attributes', array_map( 'strval', array_filter( (array) $default_attributes, 'masvideos_array_filter_default_attributes' ) ) );
+    }
+
+    /**
+     * Set sources. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $sources List of sources.
+     */
+    public function set_sources( $sources ) {
+        $this->set_prop( 'sources', $sources );
     }
 
     /**
