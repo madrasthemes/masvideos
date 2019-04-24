@@ -434,7 +434,7 @@ class MasVideos_Shortcode_Movies {
      * Set movie as visible when quering for hidden movies.
      *
      * @since  1.0.0
-     * @param  bool $visibility Product visibility.
+     * @param  bool $visibility Movie visibility.
      * @return bool
      */
     public function set_movie_as_visible( $visibility ) {

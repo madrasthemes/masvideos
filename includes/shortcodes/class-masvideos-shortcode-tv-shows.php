@@ -434,7 +434,7 @@ class MasVideos_Shortcode_TV_Shows {
      * Set tv_show as visible when quering for hidden tv_shows.
      *
      * @since  1.0.0
-     * @param  bool $visibility Product visibility.
+     * @param  bool $visibility TV Show visibility.
      * @return bool
      */
     public function set_tv_show_as_visible( $visibility ) {

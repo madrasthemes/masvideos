@@ -2,7 +2,7 @@
 /**
  * Video Reviews
  *
- * Functions for displaying product reviews data meta box.
+ * Functions for displaying video reviews data meta box.
  *
  * @package MasVideos/Admin/Meta Boxes
  */

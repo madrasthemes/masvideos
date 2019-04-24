@@ -1,9 +1,9 @@
 <?php
 /**
- * Abstract Product importer
+ * Abstract TV Show importer
  *
- * @package  WooCommerce/Import
- * @version  3.1.0
+ * @package  MasVideos/Import
+ * @version  1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

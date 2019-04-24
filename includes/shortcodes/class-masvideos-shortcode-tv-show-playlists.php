@@ -206,7 +206,7 @@ class MasVideos_Shortcode_TV_Show_Playlists {
      * Set tv_show_playlist as visible when quering for hidden tv_show_playlists.
      *
      * @since  1.0.0
-     * @param  bool $visibility Product visibility.
+     * @param  bool $visibility TV Show Playlist visibility.
      * @return bool
      */
     public function set_tv_show_playlist_as_visible( $visibility ) {

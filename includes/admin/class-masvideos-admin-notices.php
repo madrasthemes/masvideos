@@ -136,7 +136,7 @@ class MasVideos_Admin_Notices {
             'plugins',
         );
 
-        // Notices should only show on WooCommerce screens, the main dashboard, and on the plugins screen.
+        // Notices should only show on MasVideos screens, the main dashboard, and on the plugins screen.
         if ( ! in_array( $screen_id, masvideos_get_screen_ids(), true ) && ! in_array( $screen_id, $show_on_screens, true ) ) {
             return;
         }

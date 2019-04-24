@@ -3,8 +3,8 @@
  * Handles taxonomies in admin
  *
  * @class    MasVideos_Admin_Taxonomies
- * @version  2.3.10
- * @package  WooCommerce/Admin
+ * @version  1.0.0
+ * @package  MasVideos/Admin
  * @genre Class
  * @author   WooThemes
  */

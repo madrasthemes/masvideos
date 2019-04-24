@@ -153,7 +153,7 @@ function masvideos_attribute_taxonomy_id_by_name( $post_type, $name ) {
  * Get a episode attributes label.
  *
  * @param string $name Attribute name.
- * @param MasVideos_Episode $episode Product data.
+ * @param MasVideos_Episode $episode Episode data.
  * @return string
  */
 function masvideos_episode_attribute_label( $name, $episode = '' ) {
@@ -185,7 +185,7 @@ function masvideos_episode_attribute_label( $name, $episode = '' ) {
  * Get a tv show attributes label.
  *
  * @param string $name Attribute name.
- * @param MasVideos_TV_Show $tv_show Product data.
+ * @param MasVideos_TV_Show $tv_show TV Show data.
  * @return string
  */
 function masvideos_tv_show_attribute_label( $name, $tv_show = '' ) {
@@ -217,7 +217,7 @@ function masvideos_tv_show_attribute_label( $name, $tv_show = '' ) {
  * Get a video attributes label.
  *
  * @param string $name Attribute name.
- * @param MasVideos_Video $video Product data.
+ * @param MasVideos_Video $video Video data.
  * @return string
  */
 function masvideos_video_attribute_label( $name, $video = '' ) {
@@ -249,7 +249,7 @@ function masvideos_video_attribute_label( $name, $video = '' ) {
  * Get a movie attributes label.
  *
  * @param string $name Attribute name.
- * @param MasVideos_Movie $movie Product data.
+ * @param MasVideos_Movie $movie Movie data.
  * @return string
  */
 function masvideos_movie_attribute_label( $name, $movie = '' ) {
@@ -802,7 +802,7 @@ function masvideos_delete_attribute( $id ) {
 }
 
 /**
- * Used to sort products attributes with uasort.
+ * Used to sort movies attributes with uasort.
  *
  * @since 1.0.0
  * @param array $a First attribute to compare.

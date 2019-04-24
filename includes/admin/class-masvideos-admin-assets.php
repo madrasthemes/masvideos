@@ -130,7 +130,7 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'click_to_toggle'               => __( 'Click to toggle', 'masvideos' ),
                     'values_label'                  => __( 'Value(s)', 'masvideos' ),
                     'text_attribute_tip'            => __( 'Enter some text, or some attributes by pipe (|) separating values.', 'masvideos' ),
-                    'visible_label'                 => __( 'Visible on the product page', 'masvideos' ),
+                    'visible_label'                 => __( 'Visible on the masvideos page', 'masvideos' ),
                     'new_attribute_prompt'          => __( 'Enter a name for the new attribute term:', 'masvideos' ),
                     'featured_label'                => __( 'Featured', 'masvideos' ),
                     'plugin_url'                    => MasVideos()->plugin_url(),
