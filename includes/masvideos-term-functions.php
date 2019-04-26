@@ -37,7 +37,7 @@ function masvideos_get_object_terms( $object_id, $taxonomy, $field = null, $inde
  * This is a private function (internal use ONLY).
  *
  * @since  1.0.0
- * @param  int    $episode_id Product ID.
+ * @param  int    $episode_id Episode ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array
@@ -64,7 +64,7 @@ function _masvideos_get_cached_episode_terms( $episode_id, $taxonomy, $args = ar
  * NOTE: At this point in time, ordering by menu_order for example isn't possible with this function. wp_get_post_terms has no.
  *   filters which we can utilise to modify it's query. https://core.trac.wordpress.org/ticket/19094.
  *
- * @param  int    $episode_id Product ID.
+ * @param  int    $episode_id Episode ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array
@@ -249,7 +249,7 @@ function masvideos_episode_dropdown_categories( $args = array() ) {
  * This is a private function (internal use ONLY).
  *
  * @since  1.0.0
- * @param  int    $tv_show_id Product ID.
+ * @param  int    $tv_show_id TV Show ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array
@@ -276,7 +276,7 @@ function _masvideos_get_cached_tv_show_terms( $tv_show_id, $taxonomy, $args = ar
  * NOTE: At this point in time, ordering by menu_order for example isn't possible with this function. wp_get_post_terms has no.
  *   filters which we can utilise to modify it's query. https://core.trac.wordpress.org/ticket/19094.
  *
- * @param  int    $tv_show_id Product ID.
+ * @param  int    $tv_show_id TV Show ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array
@@ -461,7 +461,7 @@ function masvideos_tv_show_dropdown_categories( $args = array() ) {
  * This is a private function (internal use ONLY).
  *
  * @since  1.0.0
- * @param  int    $movie_id Product ID.
+ * @param  int    $movie_id   Movie ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array
@@ -488,7 +488,7 @@ function _masvideos_get_cached_movie_terms( $movie_id, $taxonomy, $args = array(
  * NOTE: At this point in time, ordering by menu_order for example isn't possible with this function. wp_get_post_terms has no.
  *   filters which we can utilise to modify it's query. https://core.trac.wordpress.org/ticket/19094.
  *
- * @param  int    $movie_id Product ID.
+ * @param  int    $movie_id   Movie ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array
@@ -703,7 +703,7 @@ function masvideos_tv_show_dropdown_genres( $args = array() ) {
  * This is a private function (internal use ONLY).
  *
  * @since  1.0.0
- * @param  int    $video_id Product ID.
+ * @param  int    $video_id   Video ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array
@@ -730,7 +730,7 @@ function _masvideos_get_cached_video_terms( $video_id, $taxonomy, $args = array(
  * NOTE: At this point in time, ordering by menu_order for example isn't possible with this function. wp_get_post_terms has no.
  *   filters which we can utilise to modify it's query. https://core.trac.wordpress.org/ticket/19094.
  *
- * @param  int    $video_id Product ID.
+ * @param  int    $video_id   Video ID.
  * @param  string $taxonomy   Taxonomy slug.
  * @param  array  $args       Query arguments.
  * @return array

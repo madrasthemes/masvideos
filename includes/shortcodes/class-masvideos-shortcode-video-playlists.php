@@ -206,7 +206,7 @@ class MasVideos_Shortcode_Video_Playlists {
      * Set video_playlist as visible when quering for hidden video_playlists.
      *
      * @since  1.0.0
-     * @param  bool $visibility Product visibility.
+     * @param  bool $visibility Video Playlist visibility.
      * @return bool
      */
     public function set_video_playlist_as_visible( $visibility ) {

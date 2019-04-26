@@ -24,38 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <tr>
                     <td>
                         <div class="options_group">
+                            <input type="hidden" name="source_choice[<?php echo esc_attr( $i ); ?>]" class="source_choice" value="movie_embed" />
                             <?php
-                                masvideos_wp_select(
-                                    array(
-                                        'id'            => 'source_choice[' . $i . ']',
-                                        'value'         => $source['choice'],
-                                        'label'         => __( 'Choose Movie Method', 'masvideos' ),
-                                        'options'       => array(
-                                            'movie_embed'   => __( 'Embed Movie', 'masvideos' ),
-                                            'movie_url'     => __( 'Movie URL', 'masvideos' ),
-                                        ),
-                                        'class'         => 'show_hide_select',
-                                    )
-                                );
-
                                 masvideos_wp_embed_video(
                                     array(
                                         'id'            => 'source_embed_content[' . $i . ']',
                                         'value'         => $source['embed_content'],
                                         'label'         => __( 'Embed Content', 'masvideos' ),
                                         'description'   => __( 'Enter the embed content to the movie.', 'masvideos' ),
-                                        'wrapper_class' => 'show_if_movie_embed hide',
-                                    )
-                                );
-
-                                masvideos_wp_video_url(
-                                    array(
-                                        'id'            => 'source_link[' . $i . ']',
-                                        'value'         => $source['link'],
-                                        'label'         => __( 'Link', 'masvideos' ),
-                                        'placeholder'   => 'http://',
-                                        'description'   => __( 'Enter the external URL to the movie.', 'masvideos' ),
-                                        'wrapper_class' => 'show_if_movie_url hide',
                                     )
                                 );
                             ?>

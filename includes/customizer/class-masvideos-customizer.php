@@ -1,9 +1,9 @@
 <?php
 /**
- * Adds options to the customizer for WooCommerce.
+ * Adds options to the customizer for MasVideos.
  *
- * @version 3.3.0
- * @package WooCommerce
+ * @version 1.0.0
+ * @package MasVideos
  */
 
 defined( 'ABSPATH' ) || exit;

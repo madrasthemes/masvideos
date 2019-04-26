@@ -25,9 +25,9 @@ class MasVideos_Data_Store {
      * Contains an array of default MasVideos_Data supported data stores.
      * Format of object name => class name.
      * Example: 'movie' => 'MasVideos_Movie_Data_Store_CPT'
-     * You can also pass something like product_<type> for product stores and
+     * You can also pass something like movie_<type> for movie stores and
      * that type will be used first when available, if a store is requested like
-     * this and doesn't exist, then the store would fall back to 'product'.
+     * this and doesn't exist, then the store would fall back to 'movie'.
      * Ran through `masvideos_data_stores`.
      *
      * @var array
@@ -58,7 +58,7 @@ class MasVideos_Data_Store {
 
 
     /**
-     * Tells MasVideos_Data_Store which object (coupon, product, order, etc)
+     * Tells MasVideos_Data_Store which object (coupon, movie, order, etc)
      * store we want to work with.
      *
      * @throws Exception When validation fails.
@@ -69,7 +69,7 @@ class MasVideos_Data_Store {
         $this->stores      = apply_filters( 'masvideos_data_stores', $this->stores );
 
         // If this object type can't be found, check to see if we can load one
-        // level up (so if product-type isn't found, we try product).
+        // level up (so if movie-type isn't found, we try movie).
         if ( ! array_key_exists( $object_type, $this->stores ) ) {
             $pieces      = explode( '-', $object_type );
             $object_type = $pieces[0];

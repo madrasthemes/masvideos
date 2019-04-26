@@ -888,7 +888,7 @@ if ( ! function_exists( 'masvideos_related_movies' ) ) {
             echo '<section class="movie__related--inner">';
                 echo sprintf( '<h2 class="movie__related--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::movies( $args );
-            echo '</div>';
+            echo '</section>';
             echo '</section>';
         }
     }
@@ -920,7 +920,6 @@ if ( ! function_exists( 'masvideos_recommended_movies' ) ) {
         $args = wp_parse_args( $args, $defaults );
 
         $title = apply_filters( 'masvideos_recommended_movies_title', esc_html__( 'We Recommend', 'masvideos' ), $movie_id );
-        add_filter ( 'masvideos_movie_archive_thumbnail_size', 'masvideos_recommended_movie_thumbnail_size' );
 
         $recommended_movie_ids = $movie->get_recommended_movie_ids();
         $args['ids'] = implode( ',', $recommended_movie_ids );
@@ -931,18 +930,6 @@ if ( ! function_exists( 'masvideos_recommended_movies' ) ) {
                 echo MasVideos_Shortcodes::movies( $args );
             echo '</section>';
         }
-        remove_filter ( 'masvideos_movie_archive_thumbnail_size', 'masvideos_recommended_movie_thumbnail_size' );
-    }
-}
-
-if ( ! function_exists( 'masvideos_recommended_movie_thumbnail_size' ) ) {
-    /**
-     * Get the masvideos thumbnail, or the placeholder if not set.
-     */
-    function masvideos_recommended_movie_thumbnail_size() {
-
-        return 'masvideos_movie_large';
-
     }
 }
 

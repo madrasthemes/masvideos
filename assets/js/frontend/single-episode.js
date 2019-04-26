@@ -35,4 +35,10 @@ jQuery( function( $ ) {
 
     // Init Star Ratings
     $( '#rating' ).trigger( 'init' );
+
+    $( '.single-episode .episode-play-source' ).on( 'click', function(e) {
+        e.preventDefault();
+        var $content = $(this).data( 'content' );
+        $( '.episode__player' ).html( $content );
+    });
 } );

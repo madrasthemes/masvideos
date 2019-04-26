@@ -351,7 +351,7 @@ jQuery( function( $ ) {
         });
     });
 
-    // Product gallery file uploads.
+    // Movie gallery file uploads.
     var movie_gallery_frame;
     var $image_gallery_ids = $( '#movie_image_gallery' );
     var $movie_images    = $( '#movie_images_container' ).find( 'ul.movie_images' );

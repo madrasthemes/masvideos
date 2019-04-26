@@ -435,7 +435,7 @@ class MasVideos_Shortcode_Videos {
      * Set video as visible when quering for hidden videos.
      *
      * @since  1.0.0
-     * @param  bool $visibility Product visibility.
+     * @param  bool $visibility Video visibility.
      * @return bool
      */
     public function set_video_as_visible( $visibility ) {

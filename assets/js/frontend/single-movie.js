@@ -35,4 +35,10 @@ jQuery( function( $ ) {
 
     // Init Star Ratings
     $( '#rating' ).trigger( 'init' );
+
+    $( '.single-movie .movie-play-source' ).on( 'click', function(e) {
+        e.preventDefault();
+        var $content = $(this).data( 'content' );
+        $( '.movie__player' ).html( $content );
+    });
 } );

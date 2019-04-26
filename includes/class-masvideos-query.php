@@ -271,7 +271,7 @@ class MasVideos_Episodes_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_episodes_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_episodes_catalog_ordering_args', $args, $orderby, $order );
     }
 
     /**
@@ -705,7 +705,7 @@ class MasVideos_TV_Shows_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_tv_shows_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_tv_shows_catalog_ordering_args', $args, $orderby, $order );
     }
 
     /**
@@ -1139,7 +1139,7 @@ class MasVideos_Videos_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_videos_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_videos_catalog_ordering_args', $args, $orderby, $order );
     }
 
     /**
@@ -1579,7 +1579,7 @@ class MasVideos_Movies_Query {
                 break;
         }
 
-        return apply_filters( 'masvideos_get_movies_catalog_ordering_args', $args );
+        return apply_filters( 'masvideos_get_movies_catalog_ordering_args', $args, $orderby, $order );
     }
 
     /**
