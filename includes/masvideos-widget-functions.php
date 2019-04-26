@@ -33,6 +33,7 @@ require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-widget-videos-laye
 require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-videos-widget.php';
 require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-movies-tags-filter-widgets.php';
 require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-tv-shows-tags-filter-widgets.php';
+require MASVIDEOS_ABSPATH . 'includes/widgets/class-masvideos-videos-tags-filter-widgets.php';
 
 /**
  * Register Widgets.
@@ -59,5 +60,6 @@ function masvideos_register_widgets() {
     register_widget( 'MasVideos_TV_Shows_Genres_Filter_Widget' );
     register_widget( 'MasVideos_Movies_Tags_Filter_Widget' );
     register_widget( 'MasVideos_TV_Shows_Tags_Filter_Widget' );
+    register_widget( 'MasVideos_Videos_Tags_Filter_Widget' );
 }
 add_action( 'widgets_init', 'masvideos_register_widgets' );
