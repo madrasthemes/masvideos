@@ -1293,3 +1293,16 @@
         padding: 3px 0;
     }
 }
+
+.column-thumb {
+    width: 60px;
+
+    @media only screen and (max-width: 782px) {
+        display: none !important;
+
+        &:before {
+            position: relative !important;
+            float: left;
+        }
+    }
+}
