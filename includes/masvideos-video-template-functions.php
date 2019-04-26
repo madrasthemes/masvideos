@@ -584,7 +584,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_meta' ) ) {
      */
     function masvideos_template_loop_video_meta() {
         echo '<div class="video__meta">';
-            echo '<span class="video__meta--last-update">' . human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) . esc_html__( ' ago', 'masvideos' ) . '</span>';
+            echo '<span class="video__meta--last-update">' . human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) . ' ' .  esc_html__( 'ago', 'masvideos' ) . '</span>';
         echo '</div>';
     }
 }
