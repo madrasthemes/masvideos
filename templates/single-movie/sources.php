@@ -40,22 +40,22 @@ $sources = $movie->get_sources();
     <tbody>
         <?php foreach ( $sources as $key => $source ) : ?>
             <?php
-                $source_src = '';
+                $source_content = '';
                 $source_choice = ! empty( $source['choice'] ) ? $source['choice'] : '';
 
                 if ( $source_choice == 'movie_embed' && ! empty( $source['embed_content'] ) ) {
-                    $source_src = $source['embed_content'];
+                    $source_content = '<div class="wp-video">' . $source['embed_content'] . '</div>';
                 } elseif ( $source_choice == 'movie_url' && ! empty( $source['link'] ) ) {
-                    $source_src = $source['link'];
+                    $source_content = do_shortcode('[video src="' . $source['link'] . '"]');
                 }
 
-                if( empty( $source_src ) ) {
+                if( empty( $source_content ) ) {
                     continue;
                 }
             ?>
             <tr>
                 <td>
-                    <a href="#" class="play-source-link">
+                    <a href="#" class="movie-play-source" data-content="<?php echo esc_attr( htmlspecialchars( $source_content ) ); ?>">
                         <span><?php echo esc_html__( 'Play Now', 'masvideos' ) ?></span>
                     </a>
                 </td>

@@ -83,7 +83,7 @@ function masvideos_get_template_part( $slug, $name = '' ) {
 }
 
 /**
- * Get other templates (e.g. product attributes) passing attributes and including the file.
+ * Get other templates (e.g. movie attributes) passing attributes and including the file.
  *
  * @access public
  * @param string $template_name Template name.

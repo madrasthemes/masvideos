@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="episode_sources masvideos-metaboxes">
         <?php
-        // Movie Sources
+        // Episode Sources
         $sources = $episode_object->get_sources( 'edit' );
         $i          = -1;
 

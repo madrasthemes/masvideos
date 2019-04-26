@@ -351,7 +351,7 @@ jQuery( function( $ ) {
         });
     });
 
-    // Product gallery file uploads.
+    // Episode gallery file uploads.
     var episode_gallery_frame;
     var $image_gallery_ids = $( '#episode_image_gallery' );
     var $episode_images    = $( '#episode_images_container' ).find( 'ul.episode_images' );

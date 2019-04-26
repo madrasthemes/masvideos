@@ -687,15 +687,6 @@
                 content: '\f107';
             }
 
-            &.inventory_options a::before {
-                content: '\f481';
-            }
-
-            &.shipping_options a::before {
-                font-family: 'WooCommerce';
-                content: '\e01a';
-            }
-
             &.linked_movie_options a::before {
                 content: '\f103';
             }
@@ -707,25 +698,6 @@
             &.advanced_options a::before {
                 font-family: 'Dashicons';
                 content: '\f111';
-            }
-
-            &.variations_options a::before {
-                content: '\f509';
-            }
-
-            &.usage_restriction_options a::before {
-                font-family: 'WooCommerce';
-                content: '\e602';
-            }
-
-            &.usage_limit_options a::before {
-                font-family: 'WooCommerce';
-                content: '\e601';
-            }
-
-            &.general_coupon_data a::before {
-                font-family: 'WooCommerce';
-                content: '\e600';
             }
 
             &.active a {

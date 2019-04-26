@@ -434,7 +434,7 @@ class MasVideos_Shortcode_Episodes {
      * Set episode as visible when quering for hidden episodes.
      *
      * @since  1.0.0
-     * @param  bool $visibility Product visibility.
+     * @param  bool $visibility Episode visibility.
      * @return bool
      */
     public function set_episode_as_visible( $visibility ) {

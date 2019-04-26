@@ -239,7 +239,7 @@ jQuery( function( $ ) {
         });
     });
 
-    // Product gallery file uploads.
+    // Video gallery file uploads.
     var video_gallery_frame;
     var $image_gallery_ids = $( '#video_image_gallery' );
     var $video_images    = $( '#video_images_container' ).find( 'ul.video_images' );
