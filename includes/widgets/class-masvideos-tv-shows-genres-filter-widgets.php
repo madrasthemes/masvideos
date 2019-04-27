@@ -25,7 +25,7 @@ class MasVideos_TV_Shows_Genres_Filter_Widget extends MasVideos_Widget {
 	        $this->widget_cssclass    = 'masvideos widget_layered_nav masvideos-tv-shows-filter-widget',
 	        $this->widget_description = esc_html__( 'Display a list of tv show genre to filter tv shows in your site.', 'masvideos' ),
 	        $this->widget_id          = 'masvideos_tv_shows_filter_widget',
-	        $this->widget_name        = esc_html__( 'MasVideos Filter TV Shows by Genre', 'masvideos' ),
+	        $this->widget_name        = esc_html__( 'MAS Videos Filter TV Shows by Genre', 'masvideos' ),
 	    );
         
         parent::__construct( 'masvideos_tv_shows_genre_filter_widget', esc_html__('MasVideos TV Shows Genre Filter Widget', 'masvideos'), $widget_ops );

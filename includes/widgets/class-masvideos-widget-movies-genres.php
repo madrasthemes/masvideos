@@ -34,7 +34,7 @@ class MasVideos_Widget_Movies_Genres extends MasVideos_Widget {
 		$this->widget_cssclass    = 'masvideos widget_movies_genres masvideos-widget-movies-genres';
 		$this->widget_description = __( 'A list or dropdown of movies genres.', 'masvideos' );
 		$this->widget_id          = 'masvideos_widget_movies_genres';
-		$this->widget_name        = __( 'MasVideos Movies by Genres', 'masvideos' );
+		$this->widget_name        = __( 'MAS Videos Movies by Genres', 'masvideos' );
 		$this->settings           = array(
 			'title'              => array(
 				'type'  => 'text',

@@ -25,7 +25,7 @@ class MasVideos_Movies_Genres_Filter_Widget extends MasVideos_Widget {
 	        $this->widget_cssclass    = 'masvideos widget_layered_nav masvideos-movies-filter-widget',
 	        $this->widget_description = esc_html__( 'Display a list of movie genre to filter movies in your site.', 'masvideos' ),
 	        $this->widget_id          = 'masvideos_movies_filter_widget',
-	        $this->widget_name        = esc_html__( 'MasVideos Filter Movies by Genre', 'masvideos' ),
+	        $this->widget_name        = esc_html__( 'MAS Videos Filter Movies by Genre', 'masvideos' ),
 	    );
         
         parent::__construct( 'masvideos_movies_genre_filter_widget', esc_html__('masvideos Movies Genre Filter Widget', 'masvideos'), $widget_ops );

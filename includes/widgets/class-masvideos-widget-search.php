@@ -20,7 +20,7 @@ class MasVideos_Widget_Search extends MasVideos_Widget {
         $this->widget_cssclass    = 'masvideos masvideos_widget_search';
         $this->widget_description = __( 'A search form for your site.', 'masvideos' );
         $this->widget_id          = 'masvideos_search';
-        $this->widget_name        = __( 'MasVideos Search', 'masvideos' );
+        $this->widget_name        = __( 'MAS Videos Search', 'masvideos' );
         $this->settings           = array(
             'title'     => array(
                 'type'      => 'text',
