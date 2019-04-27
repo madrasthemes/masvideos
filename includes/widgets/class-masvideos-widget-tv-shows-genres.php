@@ -34,7 +34,7 @@ class MasVideos_Widget_Tv_Shows_Genres extends MasVideos_Widget {
 		$this->widget_cssclass    = 'masvideos widget_tv_shows_genres masvideos-widget-tv-shows-genres';
 		$this->widget_description = __( 'A list or dropdown of Tv shows genres.', 'masvideos' );
 		$this->widget_id          = 'masvideos_widget_tv_shows_genres';
-		$this->widget_name        = __( 'MasVideos TV Shows by Genres', 'masvideos' );
+		$this->widget_name        = __( 'MAS Videos TV Shows by Genres', 'masvideos' );
 		$this->settings           = array(
 			'title'              => array(
 				'type'  => 'text',

@@ -11,7 +11,7 @@ class MasVideos_Tv_Shows_Widget extends MasVideos_Widget {
         $this->widget_cssclass    = 'masvideos masvideos_tv_shows_widget masvideos-tv-shows-widget';
         $this->widget_description = __( 'Your site&#8217;s tv shows.', 'masvideos' );
         $this->widget_id          = 'masvideos_tv_shows_widget';
-        $this->widget_name        = __( 'MasVideos TV Shows', 'masvideos' );
+        $this->widget_name        = __( 'MAS Videos TV Shows', 'masvideos' );
         $this->settings           = apply_filters( 'masvideos_tv_shows_widget_settings', array(
             'title'         => array(
                 'type'  => 'text',

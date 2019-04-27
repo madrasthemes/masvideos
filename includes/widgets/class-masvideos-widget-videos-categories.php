@@ -34,7 +34,7 @@ class MasVideos_Widget_Videos_Categories extends MasVideos_Widget {
 		$this->widget_cssclass    = 'masvideos widget_videos_categories masvideos-widget-videos-categories';
 		$this->widget_description = __( 'A list or dropdown of videos categories.', 'masvideos' );
 		$this->widget_id          = 'masvideos_widget_videos_categories';
-		$this->widget_name        = __( 'MasVideos Videos by Categories', 'masvideos' );
+		$this->widget_name        = __( 'MAS Videos Videos by Categories', 'masvideos' );
 		$this->settings           = array(
 			'title'              => array(
 				'type'  => 'text',
