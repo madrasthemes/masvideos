@@ -259,6 +259,36 @@ function masvideos_single_video_playlist_videos( $id ) {
 }
 
 /**
+ * Set current user's watched history to playlist.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_set_watched_video_history_to_playlist() {
+    if ( is_user_logged_in() && is_video() ) {
+        global $video;
+
+        $current_user_id = get_current_user_id();
+
+        $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_video_playlist_id', true );
+
+        if( empty( $playlist_id ) || is_null( get_post( $playlist_id ) ) ) {
+            $args = array(
+                'name'      => esc_html__( 'History', 'masvideos' ),
+                'status'    => 'private',
+            );
+            $video_playlist = masvideos_update_video_playlist( 0, $args );
+            $playlist_id = $video_playlist->get_id();
+            update_user_meta( $current_user_id, 'masvideos_history_video_playlist_id', $playlist_id );
+        }
+
+        $video_playlist = masvideos_add_video_to_playlist( $playlist_id, $video->get_id() );
+
+        return $video_playlist;
+    }
+}
+
+/**
  * Update single video's link for playlist.
  *
  * @since  1.0.0

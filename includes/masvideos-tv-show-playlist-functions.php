@@ -259,6 +259,36 @@ function masvideos_single_tv_show_playlist_tv_shows( $id ) {
 }
 
 /**
+ * Set current user's watched history to playlist.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_set_watched_tv_show_history_to_playlist() {
+    if ( is_user_logged_in() && is_tv_show() ) {
+        global $tv_show;
+
+        $current_user_id = get_current_user_id();
+
+        $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_tv_show_playlist_id', true );
+
+        if( empty( $playlist_id ) || is_null( get_post( $playlist_id ) ) ) {
+            $args = array(
+                'name'      => esc_html__( 'History', 'masvideos' ),
+                'status'    => 'private',
+            );
+            $tv_show_playlist = masvideos_update_tv_show_playlist( 0, $args );
+            $playlist_id = $tv_show_playlist->get_id();
+            update_user_meta( $current_user_id, 'masvideos_history_tv_show_playlist_id', $playlist_id );
+        }
+
+        $tv_show_playlist = masvideos_add_tv_show_to_playlist( $playlist_id, $tv_show->get_id() );
+
+        return $tv_show_playlist;
+    }
+}
+
+/**
  * Update single tv show's link for playlist.
  *
  * @since  1.0.0

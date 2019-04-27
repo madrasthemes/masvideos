@@ -199,6 +199,9 @@ add_action( 'masvideos_after_single_tv_show_summary', 'comments_template', 30 );
 add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_genres', 10 );
 add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_release_year', 20 );
 
+// Set current user's watched history to playlist.
+add_action( 'masvideos_after_single_tv_show', 'masvideos_set_watched_tv_show_history_to_playlist', 999 );
+
 /**
  * TV Show Reviews
  *
@@ -272,6 +275,9 @@ add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_d
 add_action( 'masvideos_after_single_video_summary', 'masvideos_related_videos', 50 );
 add_action( 'masvideos_after_single_video_summary', 'masvideos_template_single_video_related_playlist_videos', 55 );
 add_action( 'masvideos_after_single_video_summary', 'comments_template', 60 );
+
+// Set current user's watched history to playlist.
+add_action( 'masvideos_after_single_video', 'masvideos_set_watched_video_history_to_playlist', 999 );
 
 /**
  * Video Reviews
@@ -360,6 +366,9 @@ add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_genr
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_description', 130 );
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_display_movie_attributes', 180 );
 add_action( 'masvideos_single_movie_description_tab', 'masvideos_template_single_movie_tags', 190 );
+
+// Set current user's watched history to playlist.
+add_action( 'masvideos_after_single_movie', 'masvideos_set_watched_movie_history_to_playlist', 999 );
 
 /**
  * Movie Reviews
