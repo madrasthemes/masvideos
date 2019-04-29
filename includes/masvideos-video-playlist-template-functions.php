@@ -214,9 +214,8 @@ if ( ! function_exists( 'masvideos_template_single_video_playlist_videos' ) ) {
             $defaults = apply_filters( 'masvideos_template_single_video_playlist_videos_default_args', array(
                 'limit'          => -1,
                 'columns'        => 5,
-                'orderby'        => 'rand',
-                'order'          => 'desc',
-                'ids'            => implode( ",", $video_ids )
+                'orderby'        => 'post__in',
+                'ids'            => implode( ",", array_reverse( $video_ids ) )
             ) );
 
             $args = wp_parse_args( $args, $defaults );

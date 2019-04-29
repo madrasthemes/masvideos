@@ -29,6 +29,7 @@ class MasVideos_Shortcodes {
             'mas_register'                 => __CLASS__ . '::register',
             'mas_login'                    => __CLASS__ . '::login',
             'mas_manage_playlists'         => __CLASS__ . '::manage_playlists',
+            'mas_history'                  => __CLASS__ . '::history',
         );
 
         foreach ( $shortcodes as $shortcode => $function ) {
@@ -287,5 +288,16 @@ class MasVideos_Shortcodes {
     public static function manage_playlists( $atts ) {
         $atts = (array) $atts;
         return self::shortcode_wrapper( array( 'MasVideos_Shortcode_My_Account', 'manage_playlists' ), $atts, array( 'class' => 'masvideos masvideos-edit-manage-playlists' ) );
+    }
+
+    /**
+     * List history for Movies, Videos and TV Shows.
+     *
+     * @param array $atts Attributes.
+     * @return string
+     */
+    public static function history( $atts ) {
+        $atts = (array) $atts;
+        return self::shortcode_wrapper( array( 'MasVideos_Shortcode_My_Account', 'history' ), $atts, array( 'class' => 'masvideos masvideos-history' ) );
     }
 }
