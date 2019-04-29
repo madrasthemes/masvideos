@@ -270,7 +270,7 @@ function masvideos_set_watched_movie_history_to_playlist() {
 
         $current_user_id = get_current_user_id();
 
-        $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_movie_playlist_id', true );
+        $playlist_id = get_user_option( 'masvideos_history_movie_playlist_id', $current_user_id );
 
         if( empty( $playlist_id ) || is_null( get_post( $playlist_id ) ) ) {
             $args = array(
@@ -279,7 +279,7 @@ function masvideos_set_watched_movie_history_to_playlist() {
             );
             $movie_playlist = masvideos_update_movie_playlist( 0, $args );
             $playlist_id = $movie_playlist->get_id();
-            update_user_meta( $current_user_id, 'masvideos_history_movie_playlist_id', $playlist_id );
+            update_user_option( $current_user_id, 'masvideos_history_movie_playlist_id', $playlist_id );
         }
 
         $movie_playlist = masvideos_add_movie_to_playlist( $playlist_id, $movie->get_id() );

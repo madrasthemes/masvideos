@@ -95,21 +95,21 @@ class MasVideos_Shortcode_My_Account {
 
             switch ( $post_type ) {
                 case 'movie':
-                    $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_movie_playlist_id', true );
+                    $playlist_id = get_user_option( 'masvideos_history_movie_playlist_id', $current_user_id );
                     if( ! empty( $playlist_id ) ) {
                         masvideos_template_single_movie_playlist_movies( $playlist_id, $args );
                     }
                     break;
 
                 case 'video':
-                    $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_video_playlist_id', true );
+                    $playlist_id = get_user_option( 'masvideos_history_video_playlist_id', $current_user_id );
                     if( ! empty( $playlist_id ) ) {
                         masvideos_template_single_video_playlist_videos( $playlist_id, $args );
                     }
                     break;
 
                 case 'tv_show':
-                    $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_tv_show_playlist_id', true );
+                    $playlist_id = get_user_option( 'masvideos_history_tv_show_playlist_id', $current_user_id );
                     if( ! empty( $playlist_id ) ) {
                         masvideos_template_single_tv_show_playlist_tv_shows( $playlist_id, $args );
                     }

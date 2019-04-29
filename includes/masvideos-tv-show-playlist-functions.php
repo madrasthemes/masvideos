@@ -270,7 +270,7 @@ function masvideos_set_watched_tv_show_history_to_playlist() {
 
         $current_user_id = get_current_user_id();
 
-        $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_tv_show_playlist_id', true );
+        $playlist_id = get_user_option( 'masvideos_history_tv_show_playlist_id', $current_user_id );
 
         if( empty( $playlist_id ) || is_null( get_post( $playlist_id ) ) ) {
             $args = array(
@@ -279,7 +279,7 @@ function masvideos_set_watched_tv_show_history_to_playlist() {
             );
             $tv_show_playlist = masvideos_update_tv_show_playlist( 0, $args );
             $playlist_id = $tv_show_playlist->get_id();
-            update_user_meta( $current_user_id, 'masvideos_history_tv_show_playlist_id', $playlist_id );
+            update_user_option( $current_user_id, 'masvideos_history_tv_show_playlist_id', $playlist_id );
         }
 
         $tv_show_playlist = masvideos_add_tv_show_to_playlist( $playlist_id, $tv_show->get_id() );
