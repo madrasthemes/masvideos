@@ -24,7 +24,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
         $this->settings           = array(
             'title'         => array(
                 'type'          => 'text',
-                'std'           => __( 'MasVideos Filter Movies by Year', 'masvideos' ),
+                'std'           => __( 'MAS Videos Filter Movies by Year', 'masvideos' ),
                 'label'         => __( 'Title', 'masvideos' ),
             ),
             'start_year'    => array(

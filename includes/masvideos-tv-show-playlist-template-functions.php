@@ -214,9 +214,8 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_playlist_tv_shows' ) 
             $defaults = apply_filters( 'masvideos_template_single_tv_show_playlist_tv_shows_default_args', array(
                 'limit'          => -1,
                 'columns'        => 5,
-                'orderby'        => 'rand',
-                'order'          => 'desc',
-                'ids'            => implode( ",", $tv_show_ids )
+                'orderby'        => 'post__in',
+                'ids'            => implode( ",", array_reverse( $tv_show_ids ) )
             ) );
 
             $args = wp_parse_args( $args, $defaults );

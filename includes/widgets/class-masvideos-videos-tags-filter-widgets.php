@@ -23,7 +23,7 @@ class MasVideos_Videos_Tags_Filter_Widget extends MasVideos_Widget {
             $this->widget_cssclass    = 'masvideos widget_layered_nav masvideos-videos-tags-filter-widget',
             $this->widget_description = esc_html__( 'Display a list of TV Show tags to filter TV shows in your site.', 'masvideos' ),
             $this->widget_id          = 'masvideos_videos_tags_filter_widget',
-            $this->widget_name        = esc_html__( 'MasVideos Filter Videos by Tags', 'masvideos' ),
+            $this->widget_name        = esc_html__( 'MAS Videos Filter Videos by Tags', 'masvideos' ),
         );
         
         parent::__construct( 'masvideos_videos_tag_filter_widget', esc_html__('MasVideos Videos Tags Filter Widget', 'masvideos'), $widget_ops );

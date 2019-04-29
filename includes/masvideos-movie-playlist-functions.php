@@ -259,6 +259,36 @@ function masvideos_single_movie_playlist_movies( $id ) {
 }
 
 /**
+ * Set current user's watched history to playlist.
+ *
+ * @since  1.0.0
+ * @return array|boolean
+ */
+function masvideos_set_watched_movie_history_to_playlist() {
+    if ( is_user_logged_in() && is_movie() ) {
+        global $movie;
+
+        $current_user_id = get_current_user_id();
+
+        $playlist_id = get_user_meta( $current_user_id, 'masvideos_history_movie_playlist_id', true );
+
+        if( empty( $playlist_id ) || is_null( get_post( $playlist_id ) ) ) {
+            $args = array(
+                'name'      => esc_html__( 'History', 'masvideos' ),
+                'status'    => 'private',
+            );
+            $movie_playlist = masvideos_update_movie_playlist( 0, $args );
+            $playlist_id = $movie_playlist->get_id();
+            update_user_meta( $current_user_id, 'masvideos_history_movie_playlist_id', $playlist_id );
+        }
+
+        $movie_playlist = masvideos_add_movie_to_playlist( $playlist_id, $movie->get_id() );
+
+        return $movie_playlist;
+    }
+}
+
+/**
  * Update single movie's link for playlist.
  *
  * @since  1.0.0

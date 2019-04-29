@@ -25,7 +25,7 @@ class MasVideos_Videos_Categories_Filter_Widget extends MasVideos_Widget {
 	        $this->widget_cssclass    = 'masvideos widget_layered_nav masvideos-videos-filter-widget',
 	        $this->widget_description = esc_html__( 'Display a list of video category to filter videos in your site.', 'masvideos' ),
 	        $this->widget_id          = 'masvideos_videos_filter_widget',
-	        $this->widget_name        = esc_html__( 'MasVideos Filter Videos by Category', 'masvideos' ),
+	        $this->widget_name        = esc_html__( 'MAS Videos Filter Videos by Category', 'masvideos' ),
 	    );
         
         parent::__construct( 'masvideos_videos_category_filter_widget', esc_html__('MasVideos Videos Category Filter Widget', 'masvideos'), $widget_ops );

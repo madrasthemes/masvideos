@@ -32,18 +32,18 @@ class MasVideos_Twenty_Nineteen {
         add_theme_support( 'masvideos', array(
             'image_sizes'   => array(
                 'video_large'       => array(
-                    'width'     => 600,
-                    'height'    => 900,
+                    'width'     => 640,
+                    'height'    => 480,
                     'crop'      => 1,
                 ),
                 'video_medium'      => array(
-                    'width'     => 300,
-                    'height'    => 450,
+                    'width'     => 480,
+                    'height'    => 360,
                     'crop'      => 1,
                 ),
                 'video_thumbnail'   => array(
-                    'width'     => 150,
-                    'height'    => 225,
+                    'width'     => 120,
+                    'height'    => 90,
                     'crop'      => 1,
                 ),
                 'movie_large'       => array(
