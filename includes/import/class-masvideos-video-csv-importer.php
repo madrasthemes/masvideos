@@ -3,7 +3,7 @@
  * MasVideos Video CSV importer
  *
  * @package  MasVideos/Import
- * @version  3.1.0
+ * @version  1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

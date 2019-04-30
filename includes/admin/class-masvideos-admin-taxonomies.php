@@ -5,8 +5,6 @@
  * @class    MasVideos_Admin_Taxonomies
  * @version  1.0.0
  * @package  MasVideos/Admin
- * @genre Class
- * @author   WooThemes
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

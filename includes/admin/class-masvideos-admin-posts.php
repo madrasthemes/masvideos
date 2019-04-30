@@ -3,10 +3,8 @@
  * Handles posts in admin
  *
  * @class    MasVideos_Admin_Posts
- * @version  2.3.10
- * @package  WooCommerce/Admin
- * @genre Class
- * @author   WooThemes
+ * @version  1.0.0
+ * @package  MasVideos/Admin
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

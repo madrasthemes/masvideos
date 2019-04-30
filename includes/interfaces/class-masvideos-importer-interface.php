@@ -3,7 +3,7 @@
  * MasVideos Importer Interface
  *
  * @package  MasVideos/Interface
- * @version  3.1.0
+ * @version  1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

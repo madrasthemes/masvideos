@@ -17,7 +17,7 @@ if ( ! class_exists( 'WP_Importer' ) ) {
  * Movie importer controller - handles file upload and forms in admin.
  *
  * @package     MasVideos/Admin/Importers
- * @version     3.1.0
+ * @version     1.0.0
  */
 class MasVideos_Movie_CSV_Importer_Controller {
 
