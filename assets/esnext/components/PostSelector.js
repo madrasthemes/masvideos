@@ -130,7 +130,10 @@ export class PostSelector extends Component {
      * @returns Array of objects.
      */
     getSelectedPosts( postIds ) {
-        const postList = this.state.filtering && !this.state.filterLoading ? this.state.filterPosts : [];
+        const postList = uniqueById([
+            ...this.state.filterPosts,
+            ...this.state.posts
+        ]);
         const selectedPosts = postList
             .filter(({ id }) => postIds.indexOf(id) !== -1)
             .sort((a, b) => {
