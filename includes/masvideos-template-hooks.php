@@ -378,10 +378,10 @@ add_action( 'masvideos_after_single_movie', 'masvideos_set_watched_movie_history
  * @see masvideos_movie_review_display_meta()
  * @see masvideos_movie_review_display_comment_text()
  */
-// add_action( 'masvideos_movie_review_before', 'masvideos_movie_review_display_gravatar', 10 );
-// add_action( 'masvideos_movie_review_before_comment_meta', 'masvideos_movie_review_display_rating', 10 );
-// add_action( 'masvideos_movie_review_meta', 'masvideos_movie_review_display_meta', 10 );
-// add_action( 'masvideos_movie_review_comment_text', 'masvideos_movie_review_display_comment_text', 10 );
+add_action( 'masvideos_movie_review_before', 'masvideos_movie_review_display_gravatar', 10 );
+add_action( 'masvideos_movie_review_before_comment_meta', 'masvideos_movie_review_display_rating', 10 );
+add_action( 'masvideos_movie_review_meta', 'masvideos_movie_review_display_meta', 10 );
+add_action( 'masvideos_movie_review_comment_text', 'masvideos_movie_review_display_comment_text', 10 );
 
 /**
  * Movie Playlists Loop.
