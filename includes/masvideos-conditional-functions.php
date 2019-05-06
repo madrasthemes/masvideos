@@ -380,3 +380,29 @@ if ( ! function_exists( 'is_tv_show_playlist' ) ) {
         return is_singular( array( 'tv_show_playlist' ) );
     }
 }
+
+/**
+ * Checks whether the content passed contains a specific short code.
+ *
+ * @param  string $tag Shortcode tag to check.
+ * @return bool
+ */
+function masvideos_post_content_has_shortcode( $tag = '' ) {
+    global $post;
+
+    return is_singular() && is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, $tag );
+}
+
+if ( ! function_exists( 'is_account_page' ) ) {
+
+    /**
+     * Is_account_page - Returns true when viewing an account page.
+     *
+     * @return bool
+     */
+    function is_account_page() {
+        $page_id = masvideos_get_page_id( 'myaccount' );
+
+        return ( $page_id && is_page( $page_id ) ) || masvideos_post_content_has_shortcode( 'mas_register_login' ) || apply_filters( 'masvideos_is_account_page', false );
+    }
+}
