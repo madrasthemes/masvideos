@@ -344,7 +344,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
 
             unload_textdomain( 'masvideos' );
             load_textdomain( 'masvideos', WP_LANG_DIR . '/masvideos/masvideos-' . $locale . '.mo' );
-            load_plugin_textdomain( 'masvideos', false, plugin_basename( dirname( MASVIDEOS_PLUGIN_FILE ) ) . '/i18n/languages' );
+            load_plugin_textdomain( 'masvideos', false, plugin_basename( dirname( MASVIDEOS_PLUGIN_FILE ) ) . '/languages' );
         }
 
         /**
