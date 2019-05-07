@@ -3,7 +3,7 @@ Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndaw
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.1.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,8 +83,11 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Changelog ==
 
-= 1.0.0 - 2019-04-11 =
-* Initial Release
+= 1.0.2 - 2019-05-07 =
+* Fix – Movie reviews issue fixed
+* Fix – Translation issue fixed
+* Tweak – Login redirect added
+* Enhancement – Permalink settings added
 
 = 1.0.1 - 2019-04-30 =
 * Fix – Star ratings style issue fixed
@@ -94,3 +97,6 @@ All of our online documentation can be found on [our documentation site](https:/
 * Enhancement – Filter Videos by Tags widget added
 * Enhancement – History feature added
 * Enhancement – Sources feature added
+
+= 1.0.0 - 2019-04-11 =
+* Initial Release
