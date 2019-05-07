@@ -405,7 +405,7 @@ function masvideos_tv_show_post_type_link( $permalink, $post ) {
         }
     } else {
         // If no terms are assigned to this post, use a string instead (can't leave the placeholder there).
-        $tv_show_genre = _x( 'uncategorized', 'slug', 'woocommerce' );
+        $tv_show_genre = _x( 'uncategorized', 'slug', 'masvideos' );
     }
 
     $find = array(
