@@ -363,3 +363,77 @@ if ( ! function_exists( 'masvideos_get_tv_show_all_season_titles' ) ) {
         return $season_titles;
     }
 }
+
+/**
+ * Filter to allow tv_show_genre in the permalinks for tv_shows.
+ *
+ * @param  string  $permalink The existing permalink URL.
+ * @param  WP_Post $post WP_Post object.
+ * @return string
+ */
+function masvideos_tv_show_post_type_link( $permalink, $post ) {
+    // Abort if post is not a tv_show.
+    if ( 'tv_show' !== $post->post_type ) {
+        return $permalink;
+    }
+
+    // Abort early if the placeholder rewrite tag isn't in the generated URL.
+    if ( false === strpos( $permalink, '%' ) ) {
+        return $permalink;
+    }
+
+    // Get the custom taxonomy terms in use by this post.
+    $terms = get_the_terms( $post->ID, 'tv_show_genre' );
+
+    if ( ! empty( $terms ) ) {
+        $terms           = wp_list_sort(
+            $terms,
+            array(
+                'parent'  => 'DESC',
+                'term_id' => 'ASC',
+            )
+        );
+        $genre_object = apply_filters( 'masvideos_tv_show_post_type_link_tv_show_genre', $terms[0], $terms, $post );
+        $tv_show_genre     = $genre_object->slug;
+
+        if ( $genre_object->parent ) {
+            $ancestors = get_ancestors( $genre_object->term_id, 'tv_show_genre' );
+            foreach ( $ancestors as $ancestor ) {
+                $ancestor_object = get_term( $ancestor, 'tv_show_genre' );
+                $tv_show_genre     = $ancestor_object->slug . '/' . $tv_show_genre;
+            }
+        }
+    } else {
+        // If no terms are assigned to this post, use a string instead (can't leave the placeholder there).
+        $tv_show_genre = _x( 'uncategorized', 'slug', 'woocommerce' );
+    }
+
+    $find = array(
+        '%year%',
+        '%monthnum%',
+        '%day%',
+        '%hour%',
+        '%minute%',
+        '%second%',
+        '%post_id%',
+        '%category%',
+        '%tv_show_genre%',
+    );
+
+    $replace = array(
+        date_i18n( 'Y', strtotime( $post->post_date ) ),
+        date_i18n( 'm', strtotime( $post->post_date ) ),
+        date_i18n( 'd', strtotime( $post->post_date ) ),
+        date_i18n( 'H', strtotime( $post->post_date ) ),
+        date_i18n( 'i', strtotime( $post->post_date ) ),
+        date_i18n( 's', strtotime( $post->post_date ) ),
+        $post->ID,
+        $tv_show_genre,
+        $tv_show_genre,
+    );
+
+    $permalink = str_replace( $find, $replace, $permalink );
+
+    return $permalink;
+}
+add_filter( 'post_type_link', 'masvideos_tv_show_post_type_link', 10, 2 );

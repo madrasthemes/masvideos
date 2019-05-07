@@ -304,7 +304,6 @@ function masvideos_get_permalink_structure() {
             'episode_genre_base'           => _x( 'episode-genre', 'slug', 'masvideos' ),
             'episode_tag_base'             => _x( 'episode-tag', 'slug', 'masvideos' ),
             'episode_attribute_base'       => '',
-            'use_verbose_page_rules'       => false,
         )
     );
 
@@ -336,6 +335,40 @@ function masvideos_get_permalink_structure() {
     $permalinks['episode_attribute_rewrite_slug']   = untrailingslashit( $permalinks['episode_attribute_base'] );
 
     return $permalinks;
+}
+
+/**
+ * Switch MasVideos to site language.
+ *
+ * @since 1.0.2
+ */
+function masvideos_switch_to_site_locale() {
+    if ( function_exists( 'switch_to_locale' ) ) {
+        switch_to_locale( get_locale() );
+
+        // Filter on plugin_locale so load_plugin_textdomain loads the correct locale.
+        add_filter( 'plugin_locale', 'get_locale' );
+
+        // Init MasVideos locale.
+        MasVideos()->load_plugin_textdomain();
+    }
+}
+
+/**
+ * Switch MasVideos language to original.
+ *
+ * @since 1.0.2
+ */
+function masvideos_restore_locale() {
+    if ( function_exists( 'restore_previous_locale' ) ) {
+        restore_previous_locale();
+
+        // Remove filter.
+        remove_filter( 'plugin_locale', 'get_locale' );
+
+        // Init MasVideos locale.
+        MasVideos()->load_plugin_textdomain();
+    }
 }
 
 /**

@@ -354,7 +354,6 @@ if ( ! function_exists ( 'masvideos_get_the_movie' ) ) {
     }
 }
 
-
 if ( ! function_exists( 'masvideos_get_movie_thumbnail' ) ) {
     /**
      * Get the masvideos thumbnail, or the placeholder if not set.
@@ -367,3 +366,77 @@ if ( ! function_exists( 'masvideos_get_movie_thumbnail' ) ) {
         return $movie ? $movie->get_image( $image_size , array( 'class' => 'movie__poster--image' ) ) : '';
     }
 }
+
+/**
+ * Filter to allow movie_genre in the permalinks for movies.
+ *
+ * @param  string  $permalink The existing permalink URL.
+ * @param  WP_Post $post WP_Post object.
+ * @return string
+ */
+function masvideos_movie_post_type_link( $permalink, $post ) {
+    // Abort if post is not a movie.
+    if ( 'movie' !== $post->post_type ) {
+        return $permalink;
+    }
+
+    // Abort early if the placeholder rewrite tag isn't in the generated URL.
+    if ( false === strpos( $permalink, '%' ) ) {
+        return $permalink;
+    }
+
+    // Get the custom taxonomy terms in use by this post.
+    $terms = get_the_terms( $post->ID, 'movie_genre' );
+
+    if ( ! empty( $terms ) ) {
+        $terms           = wp_list_sort(
+            $terms,
+            array(
+                'parent'  => 'DESC',
+                'term_id' => 'ASC',
+            )
+        );
+        $genre_object = apply_filters( 'masvideos_movie_post_type_link_movie_genre', $terms[0], $terms, $post );
+        $movie_genre     = $genre_object->slug;
+
+        if ( $genre_object->parent ) {
+            $ancestors = get_ancestors( $genre_object->term_id, 'movie_genre' );
+            foreach ( $ancestors as $ancestor ) {
+                $ancestor_object = get_term( $ancestor, 'movie_genre' );
+                $movie_genre     = $ancestor_object->slug . '/' . $movie_genre;
+            }
+        }
+    } else {
+        // If no terms are assigned to this post, use a string instead (can't leave the placeholder there).
+        $movie_genre = _x( 'uncategorized', 'slug', 'woocommerce' );
+    }
+
+    $find = array(
+        '%year%',
+        '%monthnum%',
+        '%day%',
+        '%hour%',
+        '%minute%',
+        '%second%',
+        '%post_id%',
+        '%category%',
+        '%movie_genre%',
+    );
+
+    $replace = array(
+        date_i18n( 'Y', strtotime( $post->post_date ) ),
+        date_i18n( 'm', strtotime( $post->post_date ) ),
+        date_i18n( 'd', strtotime( $post->post_date ) ),
+        date_i18n( 'H', strtotime( $post->post_date ) ),
+        date_i18n( 'i', strtotime( $post->post_date ) ),
+        date_i18n( 's', strtotime( $post->post_date ) ),
+        $post->ID,
+        $movie_genre,
+        $movie_genre,
+    );
+
+    $permalink = str_replace( $find, $replace, $permalink );
+
+    return $permalink;
+}
+add_filter( 'post_type_link', 'masvideos_movie_post_type_link', 10, 2 );

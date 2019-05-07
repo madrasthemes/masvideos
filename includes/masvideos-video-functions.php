@@ -366,3 +366,77 @@ if ( ! function_exists( 'masvideos_get_video_thumbnail' ) ) {
         return $video ? $video->get_image( $image_size , array( 'class' => 'video__poster--image' ) ) : '';
     }
 }
+
+/**
+ * Filter to allow video_cat in the permalinks for videos.
+ *
+ * @param  string  $permalink The existing permalink URL.
+ * @param  WP_Post $post WP_Post object.
+ * @return string
+ */
+function masvideos_video_post_type_link( $permalink, $post ) {
+    // Abort if post is not a video.
+    if ( 'video' !== $post->post_type ) {
+        return $permalink;
+    }
+
+    // Abort early if the placeholder rewrite tag isn't in the generated URL.
+    if ( false === strpos( $permalink, '%' ) ) {
+        return $permalink;
+    }
+
+    // Get the custom taxonomy terms in use by this post.
+    $terms = get_the_terms( $post->ID, 'video_cat' );
+
+    if ( ! empty( $terms ) ) {
+        $terms           = wp_list_sort(
+            $terms,
+            array(
+                'parent'  => 'DESC',
+                'term_id' => 'ASC',
+            )
+        );
+        $genre_object = apply_filters( 'masvideos_video_post_type_link_video_cat', $terms[0], $terms, $post );
+        $video_cat     = $genre_object->slug;
+
+        if ( $genre_object->parent ) {
+            $ancestors = get_ancestors( $genre_object->term_id, 'video_cat' );
+            foreach ( $ancestors as $ancestor ) {
+                $ancestor_object = get_term( $ancestor, 'video_cat' );
+                $video_cat     = $ancestor_object->slug . '/' . $video_cat;
+            }
+        }
+    } else {
+        // If no terms are assigned to this post, use a string instead (can't leave the placeholder there).
+        $video_cat = _x( 'uncategorized', 'slug', 'woocommerce' );
+    }
+
+    $find = array(
+        '%year%',
+        '%monthnum%',
+        '%day%',
+        '%hour%',
+        '%minute%',
+        '%second%',
+        '%post_id%',
+        '%category%',
+        '%video_cat%',
+    );
+
+    $replace = array(
+        date_i18n( 'Y', strtotime( $post->post_date ) ),
+        date_i18n( 'm', strtotime( $post->post_date ) ),
+        date_i18n( 'd', strtotime( $post->post_date ) ),
+        date_i18n( 'H', strtotime( $post->post_date ) ),
+        date_i18n( 'i', strtotime( $post->post_date ) ),
+        date_i18n( 's', strtotime( $post->post_date ) ),
+        $post->ID,
+        $video_cat,
+        $video_cat,
+    );
+
+    $permalink = str_replace( $find, $replace, $permalink );
+
+    return $permalink;
+}
+add_filter( 'post_type_link', 'masvideos_video_post_type_link', 10, 2 );

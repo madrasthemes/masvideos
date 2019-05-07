@@ -404,3 +404,77 @@ if ( ! function_exists( 'masvideos_get_single_episode_prev_next_ids' ) ) {
         return array( 'prev' => $prev, 'next' => $next );
     }
 }
+
+/**
+ * Filter to allow episode_genre in the permalinks for episodes.
+ *
+ * @param  string  $permalink The existing permalink URL.
+ * @param  WP_Post $post WP_Post object.
+ * @return string
+ */
+function masvideos_episode_post_type_link( $permalink, $post ) {
+    // Abort if post is not a episode.
+    if ( 'episode' !== $post->post_type ) {
+        return $permalink;
+    }
+
+    // Abort early if the placeholder rewrite tag isn't in the generated URL.
+    if ( false === strpos( $permalink, '%' ) ) {
+        return $permalink;
+    }
+
+    // Get the custom taxonomy terms in use by this post.
+    $terms = get_the_terms( $post->ID, 'episode_genre' );
+
+    if ( ! empty( $terms ) ) {
+        $terms           = wp_list_sort(
+            $terms,
+            array(
+                'parent'  => 'DESC',
+                'term_id' => 'ASC',
+            )
+        );
+        $genre_object = apply_filters( 'masvideos_episode_post_type_link_episode_genre', $terms[0], $terms, $post );
+        $episode_genre     = $genre_object->slug;
+
+        if ( $genre_object->parent ) {
+            $ancestors = get_ancestors( $genre_object->term_id, 'episode_genre' );
+            foreach ( $ancestors as $ancestor ) {
+                $ancestor_object = get_term( $ancestor, 'episode_genre' );
+                $episode_genre     = $ancestor_object->slug . '/' . $episode_genre;
+            }
+        }
+    } else {
+        // If no terms are assigned to this post, use a string instead (can't leave the placeholder there).
+        $episode_genre = _x( 'uncategorized', 'slug', 'woocommerce' );
+    }
+
+    $find = array(
+        '%year%',
+        '%monthnum%',
+        '%day%',
+        '%hour%',
+        '%minute%',
+        '%second%',
+        '%post_id%',
+        '%category%',
+        '%episode_genre%',
+    );
+
+    $replace = array(
+        date_i18n( 'Y', strtotime( $post->post_date ) ),
+        date_i18n( 'm', strtotime( $post->post_date ) ),
+        date_i18n( 'd', strtotime( $post->post_date ) ),
+        date_i18n( 'H', strtotime( $post->post_date ) ),
+        date_i18n( 'i', strtotime( $post->post_date ) ),
+        date_i18n( 's', strtotime( $post->post_date ) ),
+        $post->ID,
+        $episode_genre,
+        $episode_genre,
+    );
+
+    $permalink = str_replace( $find, $replace, $permalink );
+
+    return $permalink;
+}
+add_filter( 'post_type_link', 'masvideos_episode_post_type_link', 10, 2 );

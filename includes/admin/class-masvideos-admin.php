@@ -23,6 +23,7 @@ class MasVideos_Admin {
      */
     public function __construct() {
         add_action( 'init', array( $this, 'includes' ) );
+        add_action( 'current_screen', array( $this, 'conditional_includes' ) );
         add_action( 'admin_init', array( $this, 'buffer' ), 1 );
         add_action( 'admin_init', array( $this, 'prevent_admin_access' ) );
         add_action( 'admin_footer', 'masvideos_print_js', 25 );
@@ -58,6 +59,23 @@ class MasVideos_Admin {
         // Importers
         if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
             include_once dirname( __FILE__ ) . '/class-masvideos-admin-importers.php';
+        }
+    }
+
+    /**
+     * Include admin files conditionally.
+     */
+    public function conditional_includes() {
+        $screen = get_current_screen();
+
+        if ( ! $screen ) {
+            return;
+        }
+
+        switch ( $screen->id ) {
+            case 'options-permalink':
+                include 'class-masvideos-admin-permalink-settings.php';
+                break;
         }
     }
 
