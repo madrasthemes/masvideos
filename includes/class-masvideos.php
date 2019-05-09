@@ -36,6 +36,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
         /**
          * Query instance.
          *
+         * @var MasVideos_Query
+         */
+        public $query = null;
+
+        /**
+         * Query instance.
+         *
          * @var MasVideos_Episodes_Query
          */
         public $episode_query = null;
@@ -248,6 +255,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
 
             $this->theme_support_includes();
 
+            $this->query = new MasVideos_Query();
             $this->episode_query = new MasVideos_Episodes_Query();
             $this->tv_show_query = new MasVideos_TV_Shows_Query();
             $this->video_query = new MasVideos_Videos_Query();

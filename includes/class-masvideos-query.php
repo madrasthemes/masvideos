@@ -9,6 +9,182 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * MasVideos_Query Class.
+ */
+class MasVideos_Query {
+
+    /**
+     * Query vars to add to wp.
+     *
+     * @var array
+     */
+    public $query_vars = array();
+
+    /**
+     * Constructor for the query class. Hooks in methods.
+     */
+    public function __construct() {
+        add_action( 'init', array( $this, 'add_endpoints' ) );
+        if ( ! is_admin() ) {
+            add_action( 'wp_loaded', array( $this, 'get_errors' ), 20 );
+            add_filter( 'query_vars', array( $this, 'add_query_vars' ), 0 );
+            add_action( 'parse_request', array( $this, 'parse_request' ), 0 );
+        }
+        $this->init_query_vars();
+    }
+
+    /**
+     * Get any errors from querystring.
+     */
+    public function get_errors() {
+        $error = ! empty( $_GET['masvideos_error'] ) ? sanitize_text_field( wp_unslash( $_GET['masvideos_error'] ) ) : ''; // WPCS: input var ok, CSRF ok.
+
+        if ( $error && ! masvideos_has_notice( $error, 'error' ) ) {
+            masvideos_add_notice( $error, 'error' );
+        }
+    }
+
+    /**
+     * Init query vars by loading options.
+     */
+    public function init_query_vars() {
+        // Query vars to add to WP.
+        $this->query_vars = array(
+            // My account actions.
+            'videos'                    => get_option( 'masvideos_myaccount_videos_endpoint', 'videos' ),
+            'movie-playlists'           => get_option( 'masvideos_myaccount_movie_playlists_endpoint', 'movie-playlists' ),
+            'video-playlists'           => get_option( 'masvideos_myaccount_video_playlists_endpoint', 'video-playlists' ),
+            'tv-show-playlists'         => get_option( 'masvideos_myaccount_tv_show_playlists_endpoint', 'tv-show-playlists' ),
+            'user-logout'               => get_option( 'masvideos_logout_endpoint', 'user-logout' ),
+        );
+    }
+
+    /**
+     * Get page title for an endpoint.
+     *
+     * @param  string $endpoint Endpoint key.
+     * @return string
+     */
+    public function get_endpoint_title( $endpoint ) {
+        global $wp;
+
+        switch ( $endpoint ) {
+            case 'videos':
+                if ( ! empty( $wp->query_vars['videos'] ) ) {
+                    /* translators: %s: page */
+                    $title = sprintf( esc_html__( 'Videos (page %d)', 'masvideos' ), intval( $wp->query_vars['videos'] ) );
+                } else {
+                    $title = esc_html__( 'Videos', 'masvideos' );
+                }
+                break;
+            case 'movie-playlists':
+                $title = esc_html__( 'Movie playlists', 'masvideos' );
+                break;
+            case 'video-playlists':
+                $title = esc_html__( 'Video playlists', 'masvideos' );
+                break;
+            case 'tv-show-playlists':
+                $title = esc_html__( 'TV Show playlists', 'masvideos' );
+                break;
+            case 'user-logout':
+                $title = esc_html__( 'Logout', 'masvideos' );
+                break;
+            default:
+                $title = '';
+                break;
+        }
+
+        return apply_filters( 'masvideos_endpoint_' . $endpoint . '_title', $title, $endpoint );
+    }
+
+    /**
+     * Endpoint mask describing the places the endpoint should be added.
+     *
+     * @since 2.6.2
+     * @return int
+     */
+    public function get_endpoints_mask() {
+        if ( 'page' === get_option( 'show_on_front' ) ) {
+            $page_on_front     = get_option( 'page_on_front' );
+            $myaccount_page_id = get_option( 'masvideos_myaccount_page_id' );
+
+            if ( in_array( $page_on_front, array( $myaccount_page_id ), true ) ) {
+                return EP_ROOT | EP_PAGES;
+            }
+        }
+
+        return EP_PAGES;
+    }
+
+    /**
+     * Add endpoints for query vars.
+     */
+    public function add_endpoints() {
+        $mask = $this->get_endpoints_mask();
+
+        foreach ( $this->get_query_vars() as $key => $var ) {
+            if ( ! empty( $var ) ) {
+                add_rewrite_endpoint( $var, $mask );
+            }
+        }
+    }
+
+    /**
+     * Add query vars.
+     *
+     * @param array $vars Query vars.
+     * @return array
+     */
+    public function add_query_vars( $vars ) {
+        foreach ( $this->get_query_vars() as $key => $var ) {
+            $vars[] = $key;
+        }
+        return $vars;
+    }
+
+    /**
+     * Get query vars.
+     *
+     * @return array
+     */
+    public function get_query_vars() {
+        return apply_filters( 'masvideos_get_query_vars', $this->query_vars );
+    }
+
+    /**
+     * Get query current active query var.
+     *
+     * @return string
+     */
+    public function get_current_endpoint() {
+        global $wp;
+
+        foreach ( $this->get_query_vars() as $key => $value ) {
+            if ( isset( $wp->query_vars[ $key ] ) ) {
+                return $key;
+            }
+        }
+        return '';
+    }
+
+    /**
+     * Parse the request and look for query vars - endpoints may not be supported.
+     */
+    public function parse_request() {
+        global $wp;
+
+        // Map query vars to their keys, or get them if endpoints are not supported.
+        foreach ( $this->get_query_vars() as $key => $var ) {
+            if ( isset( $_GET[ $var ] ) ) { // WPCS: input var ok, CSRF ok.
+                $wp->query_vars[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $var ] ) ); // WPCS: input var ok, CSRF ok.
+            } elseif ( isset( $wp->query_vars[ $var ] ) ) {
+                $wp->query_vars[ $key ] = $wp->query_vars[ $var ];
+            }
+        }
+    }
+}
+
+/**
  * MasVideos_Episodes_Query Class.
  */
 class MasVideos_Episodes_Query {
@@ -1314,7 +1490,6 @@ class MasVideos_Videos_Query {
         return self::$_chosen_attributes;
     }
 }
-
 
 /**
  * MasVideos_Movies_Query Class.
