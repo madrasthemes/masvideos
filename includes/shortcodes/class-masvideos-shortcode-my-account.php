@@ -23,6 +23,8 @@ class MasVideos_Shortcode_My_Account {
     public static function register_login( $atts ) {
         if ( ! is_user_logged_in() ) {
             masvideos_get_template( 'myaccount/form-register-login.php' );
+        } else {
+            masvideos_get_template( 'myaccount/my-account.php' );
         }
     }
 
@@ -34,6 +36,8 @@ class MasVideos_Shortcode_My_Account {
     public static function register( $atts ) {
         if ( ! is_user_logged_in() ) {
             masvideos_get_template( 'myaccount/form-register.php' );
+        } else {
+            masvideos_get_template( 'myaccount/my-account.php' );
         }
     }
 
@@ -45,6 +49,8 @@ class MasVideos_Shortcode_My_Account {
     public static function login( $atts ) {
         if ( ! is_user_logged_in() ) {
             masvideos_get_template( 'myaccount/form-login.php' );
+        } else {
+            masvideos_get_template( 'myaccount/my-account.php' );
         }
     }
 
