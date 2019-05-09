@@ -34,6 +34,12 @@ add_action( 'masvideos_before_main_content', 'masvideos_breadcrumb', 20, 0 );
 add_action( 'masvideos_before_user_register_login_form', 'masvideos_output_all_notices', 10 );
 
 /**
+ * My Account.
+ */
+add_action( 'masvideos_account_navigation', 'masvideos_account_navigation' );
+add_action( 'masvideos_account_content', 'masvideos_account_content' );
+
+/**
  * Regsiter/Login.
  */
 add_action( 'masvideos_login_form', 'masvideos_register_login_form_redirect', 10 );

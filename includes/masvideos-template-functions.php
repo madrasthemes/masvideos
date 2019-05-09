@@ -235,6 +235,21 @@ function masvideos_output_all_notices() {
     echo '</div>';
 }
 
+/**
+ * Get logout endpoint.
+ *
+ * @since  1.0.0
+ *
+ * @param string $redirect Redirect URL.
+ *
+ * @return string
+ */
+function masvideos_logout_url( $redirect = '' ) {
+    $redirect = $redirect ? $redirect : masvideos_get_page_permalink( 'myaccount' );
+
+    return wp_logout_url( $redirect );
+}
+
 if ( ! function_exists( 'masvideos_star_rating' ) ) {
     /**
      * Output a HTML element with a star rating for a given rating.
@@ -373,6 +388,48 @@ if ( ! function_exists( 'masvideos_template_single_sharing' ) ) {
      */
     function masvideos_template_single_sharing() {
         do_action( 'masvideos_share' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_account_navigation' ) ) {
+
+    /**
+     * My Account navigation template.
+     */
+    function masvideos_account_navigation() {
+        masvideos_get_template( 'myaccount/navigation.php' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_account_content' ) ) {
+
+    /**
+     * My Account content output.
+     */
+    function masvideos_account_content() {
+        global $wp;
+
+        if ( ! empty( $wp->query_vars ) ) {
+            foreach ( $wp->query_vars as $key => $value ) {
+                // Ignore pagename param.
+                if ( 'pagename' === $key ) {
+                    continue;
+                }
+
+                if ( has_action( 'masvideos_account_' . $key . '_endpoint' ) ) {
+                    do_action( 'masvideos_account_' . $key . '_endpoint', $value );
+                    return;
+                }
+            }
+        }
+
+        // No endpoint found? Default to dashboard.
+        masvideos_get_template(
+            'myaccount/dashboard.php',
+            array(
+                'current_user' => get_user_by( 'id', get_current_user_id() ),
+            )
+        );
     }
 }
 
