@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require MASVIDEOS_ABSPATH . 'includes/masvideos-conditional-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-user-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-formatting-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-account-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-page-functions.php';
