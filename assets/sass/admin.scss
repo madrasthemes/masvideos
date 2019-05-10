@@ -446,12 +446,16 @@
     padding: 0;
 
     .add_video_images,
-    .add_movie_images {
-        padding: 0 12px 12px;
+    .add_movie_images,
+    .add_tv_show_images,
+    .add_episode_images {
+        padding: 12px 9px;
     }
 
     #video_images_container,
-    #movie_images_container {
+    #movie_images_container,
+    #tv_show_images_container,
+    #episode_images_container {
         padding: 0 0 0 9px;
 
         ul {
