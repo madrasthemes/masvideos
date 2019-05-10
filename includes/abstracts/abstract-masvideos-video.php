@@ -585,10 +585,6 @@ class MasVideos_Video extends MasVideos_Data {
     public function set_gallery_image_ids( $image_ids ) {
         $image_ids = wp_parse_id_list( $image_ids );
 
-        if ( $this->get_object_read() ) {
-            $image_ids = array_filter( $image_ids, 'wp_attachment_is_image' );
-        }
-
         $this->set_prop( 'gallery_image_ids', $image_ids );
     }
 

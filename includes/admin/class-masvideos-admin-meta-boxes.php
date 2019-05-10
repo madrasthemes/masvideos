@@ -57,7 +57,7 @@ class MasVideos_Admin_Meta_Boxes {
 
         // Save Video Meta Boxes.
         add_action( 'masvideos_process_video_meta', 'MasVideos_Meta_Box_Video_Data::save', 10, 2 );
-        // add_action( 'masvideos_process_video_meta', 'MasVideos_Meta_Box_Video_Images::save', 20, 2 );
+        add_action( 'masvideos_process_video_meta', 'MasVideos_Meta_Box_Video_Images::save', 20, 2 );
 
         // Save Rating Meta Boxes.
         add_filter( 'wp_update_comment_data', 'MasVideos_Meta_Box_Video_Reviews::save', 1 );
@@ -141,7 +141,7 @@ class MasVideos_Admin_Meta_Boxes {
         // Videos.
         add_meta_box( 'postexcerpt', __( 'Video short description', 'masvideos' ), 'MasVideos_Meta_Box_Video_Short_Description::output', 'video', 'normal' );
         add_meta_box( 'masvideos-video-data', __( 'Video data', 'masvideos' ), 'MasVideos_Meta_Box_Video_Data::output', 'video', 'normal', 'high' );
-        // add_meta_box( 'masvideos-video-images', __( 'Video gallery', 'masvideos' ), 'MasVideos_Meta_Box_Video_Images::output', 'video', 'side', 'low' );
+        add_meta_box( 'masvideos-video-images', __( 'Video Gallery', 'masvideos' ), 'MasVideos_Meta_Box_Video_Images::output', 'video', 'side', 'low' );
 
         // Comment rating.
         if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', $_GET['c'], 'rating' ) ) {

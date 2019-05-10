@@ -1278,3 +1278,43 @@
         }
     }
 }
+
+.post-type-video,
+.post-type-movie,
+.post-type-tv_show,
+.post-type-episode {
+    .edit-post-sidebar .components-panel .edit-post-meta-boxes-area.is-side {
+        #poststuff .postbox .hndle {
+            font-size: 13px;
+            color: #191e23;
+            cursor: pointer;
+
+            &:hover {
+                background: #f8f9f9
+            }
+        }
+
+        #poststuff .postbox:last-child > .inside,
+        #poststuff .postbox:last-child .hndle,
+        #poststuff .postbox:not(.closed) .hndle {
+            border-bottom: 0;
+        }
+
+        .postbox {
+            .handlediv {
+                position: relative;
+                z-index: 1;
+            }
+
+            .toggle-indicator:before {
+                content: "\f343";
+                font-size: 18px;
+                color: #191e23;
+            }
+
+            &.closed .toggle-indicator:before {
+                content: "\f347";
+            }
+        }
+    }
+}
