@@ -99,8 +99,6 @@ class MasVideos_Query {
 
     /**
      * Endpoint mask describing the places the endpoint should be added.
-     *
-     * @since 2.6.2
      * @return int
      */
     public function get_endpoints_mask() {
