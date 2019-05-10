@@ -38,6 +38,10 @@ add_action( 'masvideos_before_user_register_login_form', 'masvideos_output_all_n
  */
 add_action( 'masvideos_account_navigation', 'masvideos_account_navigation' );
 add_action( 'masvideos_account_content', 'masvideos_account_content' );
+add_action( 'masvideos_account_videos_endpoint', 'masvideos_account_videos' );
+add_action( 'masvideos_account_movie-playlists_endpoint', 'masvideos_account_movie_playlists' );
+add_action( 'masvideos_account_video-playlists_endpoint', 'masvideos_account_video_playlists' );
+add_action( 'masvideos_account_tv-show-playlists_endpoint', 'masvideos_account_tv_show_playlists' );
 
 /**
  * Regsiter/Login.

@@ -433,6 +433,67 @@ if ( ! function_exists( 'masvideos_account_content' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_account_videos' ) ) {
+
+    /**
+     * My Account > Videos template.
+     *
+     * @param int $current_page Current page number.
+     */
+    function masvideos_account_videos( $current_page ) {
+        $current_page   = empty( $current_page ) ? 1 : absint( $current_page );
+        $user_videos    = masvideos_get_videos(
+            apply_filters(
+                'masvideos_account_my_videos_query',
+                array(
+                    'author'   => get_current_user_id(),
+                    'page'     => $current_page,
+                    'paginate' => true,
+                )
+            )
+        );
+
+        masvideos_get_template(
+            'myaccount/videos.php',
+            array(
+                'current_page'      => absint( $current_page ),
+                'user_videos'       => $user_videos,
+                'has_videos'        => 0 < $user_videos->total,
+            )
+        );
+    }
+}
+
+if ( ! function_exists( 'masvideos_account_movie_playlists' ) ) {
+
+    /**
+     * My Account > Movie playlists template.
+     */
+    function masvideos_account_movie_playlists() {
+        MasVideos_Shortcode_My_Account::manage_playlists( array( 'post_type' => 'movie_playlist' ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_account_video_playlists' ) ) {
+
+    /**
+     * My Account > Video playlists template.
+     */
+    function masvideos_account_video_playlists() {
+        MasVideos_Shortcode_My_Account::manage_playlists( array( 'post_type' => 'video_playlist' ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_account_tv_show_playlists' ) ) {
+
+    /**
+     * My Account > TV Show playlists template.
+     */
+    function masvideos_account_tv_show_playlists() {
+        MasVideos_Shortcode_My_Account::manage_playlists( array( 'post_type' => 'tv_show_playlist' ) );
+    }
+}
+
 if ( ! function_exists( 'masvideos_register_login_form_redirect' ) ) {
     /**
      * Regsiter/Login page redirect.
