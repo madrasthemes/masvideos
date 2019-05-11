@@ -210,8 +210,13 @@ class MasVideos_Frontend_Scripts {
                 'deps'    => array( 'jquery' ),
                 'version' => MASVIDEOS_VERSION,
             ),
-            'masvideos-playlist-movie'    => array(
+            'masvideos-playlist-movie'      => array(
                 'src'     => self::get_asset_url( 'assets/js/frontend/playlist-movie' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
+            'masvideos-gallery-flip'        => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/gallery-flip' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
                 'version' => MASVIDEOS_VERSION,
             ),
@@ -279,6 +284,12 @@ class MasVideos_Frontend_Scripts {
         self::enqueue_script( 'masvideos-playlist-tv-show' );
         self::enqueue_script( 'masvideos-playlist-video' );
         self::enqueue_script( 'masvideos-playlist-movie' );
+
+        // Enable Gallery Flip.
+        if ( apply_filters( 'masvideos_enqueue_gallery_flip_js', true ) ) {
+            self::enqueue_script( 'masvideos-gallery-flip' );
+        }
+
 
         // CSS Styles.
         $enqueue_styles = self::get_styles();

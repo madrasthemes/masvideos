@@ -363,7 +363,16 @@ if ( ! function_exists( 'masvideos_get_video_thumbnail' ) ) {
 
         $image_size = apply_filters( 'masvideos_video_archive_thumbnail_size', $size );
 
-        return $video ? $video->get_image( $image_size , array( 'class' => 'video__poster--image' ) ) : '';
+        $gallery_image_ids = $video ? $video->get_gallery_image_ids() : '';
+        $gallery_image_srcs = array();
+
+        if( ! empty( $gallery_image_ids ) ) {
+            foreach ( $gallery_image_ids as $gallery_image_id ) {
+                $gallery_image_srcs[] =  wp_get_attachment_image_url( $gallery_image_id, $image_size );
+            }
+        }
+
+        return $video ? $video->get_image( $image_size , array( 'class' => 'video__poster--image', 'data-gallery-images' => json_encode( $gallery_image_srcs ) ) ) : '';
     }
 }
 
