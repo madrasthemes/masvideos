@@ -75,6 +75,57 @@ function masvideos_get_account_menu_item_classes( $endpoint ) {
 }
 
 /**
+ * Get My Account > Videos columns.
+ *
+ * @since   1.0.0
+ * @return  array
+ */
+function masvideos_get_account_videos_columns() {
+    $columns = apply_filters(
+        'masvideos_account_videos_columns',
+        array(
+            'video-title'   => esc_html__( 'Title', 'masvideos' ),
+            'video-date'    => esc_html__( 'Date', 'masvideos' ),
+            'video-status'  => esc_html__( 'Status', 'masvideos' ),
+            'video-actions' => esc_html__( 'Actions', 'masvideos' ),
+        )
+    );
+
+    return $columns;
+}
+
+/**
+ * Get account videos actions.
+ *
+ * @since  1.0.0
+ * @param  int|WC_Order $video Order instance or ID.
+ * @return array
+ */
+function masvideos_get_account_videos_actions( $video ) {
+    if ( ! is_object( $video ) ) {
+        $video_id = absint( $video );
+        $video    = masvideos_get_video( $video_id );
+    }
+
+    $actions = array(
+        'edit'    => array(
+            'url'  => '#',
+            'name' => esc_html__( 'Edit', 'masvideos' ),
+        ),
+        'view'   => array(
+            'url'  => get_permalink( $video->get_id() ),
+            'name' => esc_html__( 'View', 'masvideos' ),
+        ),
+        'delete' => array(
+            'url'  => '#',
+            'name' => esc_html__( 'Delete', 'masvideos' ),
+        ),
+    );
+
+    return apply_filters( 'masvideos_my_account_my_videos_actions', $actions, $video );
+}
+
+/**
  * Get endpoint URL.
  *
  * Gets the URL for an endpoint, which varies depending on permalink settings.

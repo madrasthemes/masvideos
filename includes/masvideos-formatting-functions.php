@@ -491,3 +491,37 @@ function masvideos_implode_html_attributes( $raw_attributes ) {
     }
     return implode( ' ', $attributes );
 }
+
+/**
+ * Format a date for output.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_DateTime   $date   Instance of MasVideos_DateTime.
+ * @param  string               $format Data format.
+ *                                      Defaults to the masvideos_date_format function if not set.
+ * @return string
+ */
+function masvideos_format_datetime( $date, $format = '' ) {
+    if ( ! $format ) {
+        $format = masvideos_date_format();
+    }
+    if ( ! is_a( $date, 'MasVideos_DateTime' ) ) {
+        return '';
+    }
+    return $date->date_i18n( $format );
+}
+
+/**
+ * Process oEmbeds.
+ *
+ * @since  1.0.0
+ * @param  string $content Content.
+ * @return string
+ */
+function masvideos_do_oembeds( $content ) {
+    global $wp_embed;
+
+    $content = $wp_embed->autoembed( $content );
+
+    return $content;
+}

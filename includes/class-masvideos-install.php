@@ -85,6 +85,8 @@ class MasVideos_Install {
     private static function setup_environment() {
         MasVideos_Post_Types::register_post_types();
         MasVideos_Post_Types::register_taxonomies();
+        MasVideos()->query->init_query_vars();
+        MasVideos()->query->add_endpoints();
     }
 
     /**
