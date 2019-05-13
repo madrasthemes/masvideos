@@ -108,13 +108,13 @@ function masvideos_get_account_videos_actions( $video ) {
     }
 
     $actions = array(
-        'edit'    => array(
-            'url'  => '#',
-            'name' => esc_html__( 'Edit', 'masvideos' ),
-        ),
         'view'   => array(
             'url'  => get_permalink( $video->get_id() ),
             'name' => esc_html__( 'View', 'masvideos' ),
+        ),
+        'edit'    => array(
+            'url'  => '#',
+            'name' => esc_html__( 'Edit', 'masvideos' ),
         ),
         'delete' => array(
             'url'  => '#',
