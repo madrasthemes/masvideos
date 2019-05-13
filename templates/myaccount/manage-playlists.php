@@ -54,14 +54,14 @@ do_action( 'masvideos_before_manage_playlists' ); ?>
                         </td>
                         <td>
                             <?php
-                                $current_page_link = get_permalink();
-                                $view_link = get_permalink( $obj->ID );
-                                $edit_link = add_query_arg( array( 'post' => $obj->ID, 'action' => 'edit' ), $current_page_link );
-                                $delete_link = wp_nonce_url( add_query_arg( array( 'post' => $obj->ID, 'action' => 'delete' ), $current_page_link ), 'masvideos-delete-playlist', 'masvideos-delete-playlist-nonce' );
+                                $actions = masvideos_get_account_playlists_actions( $obj );
+
+                                if ( ! empty( $actions ) ) {
+                                    foreach ( $actions as $key => $action ) {
+                                        echo '<a href="' . esc_url( $action['url'] ) . '" class="masvideos-button button ' . sanitize_html_class( $key ) . '">' . esc_html( $action['name'] ) . '</a>';
+                                    }
+                                }
                             ?>
-                            <a class="view" href="<?php echo esc_url( $view_link ); ?>"><?php echo esc_html__( 'View', 'masvideos' ) ?></a>
-                            <a class="edit" href="<?php echo esc_url( $edit_link ); ?>"><?php echo esc_html__( 'Edit', 'masvideos' ) ?></a>
-                            <a class="delete" href="<?php echo esc_url( $delete_link ); ?>"><?php echo esc_html__( 'Delete', 'masvideos' ) ?></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

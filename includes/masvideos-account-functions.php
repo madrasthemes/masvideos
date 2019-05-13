@@ -98,7 +98,7 @@ function masvideos_get_account_videos_columns() {
  * Get account videos actions.
  *
  * @since  1.0.0
- * @param  int|WC_Order $video Order instance or ID.
+ * @param  int|MasVideos_Video $video Video instance or ID.
  * @return array
  */
 function masvideos_get_account_videos_actions( $video ) {
@@ -122,7 +122,45 @@ function masvideos_get_account_videos_actions( $video ) {
         ),
     );
 
-    return apply_filters( 'masvideos_my_account_my_videos_actions', $actions, $video );
+    return apply_filters( 'masvideos_my_account_videos_actions', $actions, $video );
+}
+
+/**
+ * Get account playlists actions.
+ *
+ * @since  1.0.0
+ * @param  Playlist instance.
+ * @return array
+ */
+function masvideos_get_account_playlists_actions( $obj ) {
+    global $wp;
+
+    $current_page_link = get_permalink();
+
+    if( isset( $wp->query_vars['movie-playlists'] ) ) {
+        $current_page_link = masvideos_get_endpoint_url( 'movie-playlists', '', masvideos_get_page_permalink( 'myaccount' ) );
+    } elseif( isset( $wp->query_vars['video-playlists'] ) ) {
+        $current_page_link = masvideos_get_endpoint_url( 'video-playlists', '', masvideos_get_page_permalink( 'myaccount' ) );
+    } elseif( isset( $wp->query_vars['tv-show-playlists'] ) ) {
+        $current_page_link = masvideos_get_endpoint_url( 'tv-show-playlists', '', masvideos_get_page_permalink( 'myaccount' ) );
+    }
+
+    $actions = array(
+        'view'   => array(
+            'url'  => get_permalink( $obj->ID ),
+            'name' => esc_html__( 'View', 'masvideos' ),
+        ),
+        'edit'    => array(
+            'url'  => add_query_arg( array( 'post' => $obj->ID, 'action' => 'edit' ), $current_page_link ),
+            'name' => esc_html__( 'Edit', 'masvideos' ),
+        ),
+        'delete' => array(
+            'url'  => wp_nonce_url( add_query_arg( array( 'post' => $obj->ID, 'action' => 'delete' ), $current_page_link ), 'masvideos-delete-playlist', 'masvideos-delete-playlist-nonce' ),
+            'name' => esc_html__( 'Delete', 'masvideos' ),
+        ),
+    );
+
+    return apply_filters( 'masvideos_my_account_playlists_actions', $actions, $video );
 }
 
 /**
