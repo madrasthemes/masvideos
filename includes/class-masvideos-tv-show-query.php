@@ -24,6 +24,7 @@ class MasVideos_TV_Show_Query extends MasVideos_Object_Query {
             parent::get_default_query_vars(),
             array(
                 'status'            => array( 'draft', 'pending', 'private', 'publish' ),
+                'type'              => array( 'tv_show' ),
                 'limit'             => get_option( 'posts_per_page' ),
                 'include'           => array(),
                 'date_created'      => '',
