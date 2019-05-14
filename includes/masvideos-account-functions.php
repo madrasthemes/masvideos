@@ -160,7 +160,7 @@ function masvideos_get_account_playlists_actions( $obj ) {
         ),
     );
 
-    return apply_filters( 'masvideos_my_account_playlists_actions', $actions, $video );
+    return apply_filters( 'masvideos_my_account_playlists_actions', $actions, $obj );
 }
 
 /**
