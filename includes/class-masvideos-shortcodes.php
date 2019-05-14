@@ -25,11 +25,10 @@ class MasVideos_Shortcodes {
             'mas_video_playlists'          => __CLASS__ . '::video_playlists',
             'mas_movies'                   => __CLASS__ . '::movies',
             'mas_movie_playlists'          => __CLASS__ . '::movie_playlists',
-            'mas_register_login'           => __CLASS__ . '::register_login',
-            'mas_register'                 => __CLASS__ . '::register',
-            'mas_login'                    => __CLASS__ . '::login',
-            'mas_manage_playlists'         => __CLASS__ . '::manage_playlists',
+            'mas_my_account'               => __CLASS__ . '::my_account',
             'mas_history'                  => __CLASS__ . '::history',
+            'mas_register_login'           => __CLASS__ . '::my_account',
+            'mas_manage_playlists'         => __CLASS__ . '::manage_playlists',
         );
 
         foreach ( $shortcodes as $shortcode => $function ) {
@@ -255,8 +254,8 @@ class MasVideos_Shortcodes {
      * @param array $atts Attributes.
      * @return string
      */
-    public static function register_login( $atts ) {
-        return self::shortcode_wrapper( array( 'MasVideos_Shortcode_My_Account', 'register_login' ), $atts );
+    public static function my_account( $atts ) {
+        return self::shortcode_wrapper( array( 'MasVideos_Shortcode_My_Account', 'my_account' ), $atts );
     }
 
     /**

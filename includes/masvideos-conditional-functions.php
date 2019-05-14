@@ -403,6 +403,6 @@ if ( ! function_exists( 'is_account_page' ) ) {
     function is_account_page() {
         $page_id = masvideos_get_page_id( 'myaccount' );
 
-        return ( $page_id && is_page( $page_id ) ) || masvideos_post_content_has_shortcode( 'mas_register_login' ) || apply_filters( 'masvideos_is_account_page', false );
+        return ( $page_id && is_page( $page_id ) ) || masvideos_post_content_has_shortcode( 'mas_my_account' ) || apply_filters( 'masvideos_is_account_page', false );
     }
 }
