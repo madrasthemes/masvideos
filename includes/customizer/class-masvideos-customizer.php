@@ -37,7 +37,6 @@ class MasVideos_Customizer {
         $this->add_movies_section( $wp_customize );
         $this->add_videos_section( $wp_customize );
         $this->add_tv_shows_section( $wp_customize );
-        $this->add_playlist_section( $wp_customize );
     }
 
     /**
@@ -546,83 +545,6 @@ class MasVideos_Customizer {
                 'section'  => 'masvideos_tv_shows',
                 'settings' => 'masvideos_episode_review_rating_required',
                 'type'     => 'checkbox',
-            )
-        );
-    }
-
-    /**
-     * Playlist section.
-     *
-     * @param WP_Customize_Manager $wp_customize Theme Customizer object.
-     */
-    private function add_playlist_section( $wp_customize ) {
-
-        $wp_customize->add_section(
-            'masvideos_playlists',
-            array(
-                'title'    => esc_html__( 'Playlist', 'masvideos' ),
-                'priority' => 50,
-                'panel'    => 'masvideos',
-            )
-        );
-
-        $wp_customize->add_setting(
-            'masvideos_movie_playlists_page_id',
-            array(
-                'default'       => '',
-                'type'          => 'option',
-                'capability'    => 'manage_masvideos',
-            )
-        );
-
-        $wp_customize->add_control(
-            'masvideos_movie_playlists_page_id',
-            array(
-                'label'       => esc_html__( 'Movie Playlist Page', 'masvideos' ),
-                'section'     => 'masvideos_playlists',
-                'settings'    => 'masvideos_movie_playlists_page_id',
-                'type'        => 'select',
-                'choices'     => $this->get_all_pages_array(),
-            )
-        );
-
-        $wp_customize->add_setting(
-            'masvideos_video_playlists_page_id',
-            array(
-                'default'       => '',
-                'type'          => 'option',
-                'capability'    => 'manage_masvideos',
-            )
-        );
-
-        $wp_customize->add_control(
-            'masvideos_video_playlists_page_id',
-            array(
-                'label'       => esc_html__( 'Video Playlist Page', 'masvideos' ),
-                'section'     => 'masvideos_playlists',
-                'settings'    => 'masvideos_video_playlists_page_id',
-                'type'        => 'select',
-                'choices'     => $this->get_all_pages_array(),
-            )
-        );
-
-        $wp_customize->add_setting(
-            'masvideos_tv_show_playlists_page_id',
-            array(
-                'default'       => '',
-                'type'          => 'option',
-                'capability'    => 'manage_masvideos',
-            )
-        );
-
-        $wp_customize->add_control(
-            'masvideos_tv_show_playlists_page_id',
-            array(
-                'label'       => esc_html__( 'TV Show Playlist Page', 'masvideos' ),
-                'section'     => 'masvideos_playlists',
-                'settings'    => 'masvideos_tv_show_playlists_page_id',
-                'type'        => 'select',
-                'choices'     => $this->get_all_pages_array(),
             )
         );
     }
