@@ -2,8 +2,8 @@
 Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 5.1.1
-Stable tag: 1.0.2
+Tested up to: 5.2
+Stable tag: 1.0.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,12 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.0.3 - 2019-05-16 =
+* Enhancement – My Account page added
+* Enhancement – Video gallery feature added
+* Performance – Movie year filter query updated
+* Tweak - Deprecate playlist settings and playlist pages in favor of My Account page added
 
 = 1.0.2 - 2019-05-07 =
 * Fix – Movie reviews issue fixed
