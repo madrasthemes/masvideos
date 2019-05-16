@@ -264,9 +264,9 @@ class MasVideos_Install {
         $pages = apply_filters(
             'masvideos_create_pages', array(
                 'myaccount'      => array(
-                    'name'    => _x( 'register-login', 'Page slug', 'masvideos' ),
-                    'title'   => _x( 'Register / Login', 'Page title', 'masvideos' ),
-                    'content' => '[' . apply_filters( 'mas_register_login_shortcode_tag', 'mas_register_login' ) . ']',
+                    'name'    => _x( 'my-account', 'Page slug', 'masvideos' ),
+                    'title'   => _x( 'My Account', 'Page title', 'masvideos' ),
+                    'content' => '[' . apply_filters( 'mas_my_account_shortcode_tag', 'mas_my_account' ) . ']',
                 ),
                 'movies'      => array(
                     'name'    => _x( 'movies', 'Page slug', 'masvideos' ),

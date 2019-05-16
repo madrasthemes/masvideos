@@ -24,6 +24,7 @@ class MasVideos_Episode_Query extends MasVideos_Object_Query {
             parent::get_default_query_vars(),
             array(
                 'status'            => array( 'draft', 'pending', 'private', 'publish' ),
+                'type'              => array( 'episode' ),
                 'limit'             => get_option( 'posts_per_page' ),
                 'include'           => array(),
                 'date_created'      => '',

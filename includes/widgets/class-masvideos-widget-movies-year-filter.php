@@ -62,6 +62,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
 
         $found       = false;
         $year_filter = isset( $_GET['year_filter'] ) ? array_filter( array_map( 'absint', explode( ',', wp_unslash( $_GET['year_filter'] ) ) ) ) : array(); // WPCS: input var ok, CSRF ok, sanitization ok.
+        $year_filter = isset( $year_filter[0] ) ? $year_filter[0] : 0;
 
         $this->widget_start( $args, $instance );
 
@@ -72,13 +73,13 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
             $found = true;
             $link  = $this->get_current_page_url();
 
-            if ( in_array( $i, $year_filter, true ) ) {
-                $link_filter = implode( ',', array_diff( $year_filter, array( $i ) ) );
+            if ( $i == $year_filter ) {
+                $link_filter = false;
             } else {
-                $link_filter = implode( ',', array_merge( $year_filter, array( $i ) ) );
+                $link_filter = $i;
             }
 
-            $class       = in_array( $i, $year_filter, true ) ? 'masvideos-layered-nav-movies-year chosen' : 'masvideos-layered-nav-movies-year';
+            $class       = ( $i == $year_filter ) ? 'masvideos-layered-nav-movies-year chosen' : 'masvideos-layered-nav-movies-year';
             $link        = apply_filters( 'masvideos_movies_year_filter_link', $link_filter ? add_query_arg( 'year_filter', $link_filter ) : remove_query_arg( 'year_filter' ) );
             $year_html   = $i;
             $count_html  = '';
