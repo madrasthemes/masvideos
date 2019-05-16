@@ -44,12 +44,6 @@ add_action( 'masvideos_account_video-playlists_endpoint', 'masvideos_account_vid
 add_action( 'masvideos_account_tv-show-playlists_endpoint', 'masvideos_account_tv_show_playlists' );
 
 /**
- * Regsiter/Login.
- */
-add_action( 'masvideos_login_form', 'masvideos_register_login_form_redirect', 10 );
-add_action( 'masvideos_register_form', 'masvideos_register_login_form_redirect', 10 );
-
-/**
  * Episodes Loop.
  */
 add_action( 'masvideos_no_episodes_found', 'masvideos_no_episodes_found', 10 );

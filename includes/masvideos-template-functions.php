@@ -493,23 +493,3 @@ if ( ! function_exists( 'masvideos_account_tv_show_playlists' ) ) {
         MasVideos_Shortcode_My_Account::manage_playlists( array( 'post_type' => 'tv_show_playlist' ) );
     }
 }
-
-if ( ! function_exists( 'masvideos_register_login_form_redirect' ) ) {
-    /**
-     * Regsiter/Login page redirect.
-     */
-    function masvideos_register_login_form_redirect() {
-        $redirect = '';
-
-        if( is_account_page() ) {
-            $redirect = admin_url();
-            if ( wp_get_raw_referer() ) {
-                $redirect = wp_get_raw_referer();
-            }
-        }
-
-        if( ! empty( $redirect ) ) {
-            echo '<input type="hidden" name="redirect" value=' . esc_url( $redirect ) . '>';
-        }
-    }
-}
