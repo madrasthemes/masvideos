@@ -178,6 +178,17 @@ function masvideos_body_class( $classes ) {
             $classes[] = 'masvideos-archive';
         }
 
+    } elseif ( is_account_page() ) {
+
+        $classes[] = 'masvideos-account';
+        $classes[] = 'masvideos-page';
+
+    }
+
+    foreach ( MasVideos()->query->get_query_vars() as $key => $value ) {
+        if ( is_masvideos_endpoint_url( $key ) ) {
+            $classes[] = 'masvideos-account-' . sanitize_html_class( $key );
+        }
     }
 
     $classes[] = 'masvideos-no-js';

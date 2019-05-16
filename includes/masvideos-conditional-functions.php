@@ -406,3 +406,36 @@ if ( ! function_exists( 'is_account_page' ) ) {
         return ( $page_id && is_page( $page_id ) ) || masvideos_post_content_has_shortcode( 'mas_my_account' ) || apply_filters( 'masvideos_is_account_page', false );
     }
 }
+
+if ( ! function_exists( 'is_masvideos_endpoint_url' ) ) {
+
+    /**
+     * Is_masvideos_endpoint_url - Check if an endpoint is showing.
+     *
+     * @param string|false $endpoint Whether endpoint.
+     * @return bool
+     */
+    function is_masvideos_endpoint_url( $endpoint = false ) {
+        global $wp;
+
+        $masvideos_endpoints = MasVideos()->query->get_query_vars();
+
+        if ( false !== $endpoint ) {
+            if ( ! isset( $masvideos_endpoints[ $endpoint ] ) ) {
+                return false;
+            } else {
+                $endpoint_var = $masvideos_endpoints[ $endpoint ];
+            }
+
+            return isset( $wp->query_vars[ $endpoint_var ] );
+        } else {
+            foreach ( $masvideos_endpoints as $key => $value ) {
+                if ( isset( $wp->query_vars[ $key ] ) ) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+}
