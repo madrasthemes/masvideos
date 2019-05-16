@@ -3,11 +3,11 @@
  * Plugin Name: MAS Videos
  * Plugin URI: https://github.com/madrasthemes/masvideos
  * Description: This is a free plugin that allows you to to create and list movies, videos and TV shows.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: MadrasThemes
  * Author URI: https://madrasthemes.com/
  * Requires at least: 5.0
- * Tested up to: 5.1.1
+ * Tested up to: 5.2
  *
  * Text Domain: masvideos
  * Domain Path: /languages/
