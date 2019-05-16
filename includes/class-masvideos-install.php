@@ -266,37 +266,22 @@ class MasVideos_Install {
                 'myaccount'      => array(
                     'name'    => _x( 'my-account', 'Page slug', 'masvideos' ),
                     'title'   => _x( 'My Account', 'Page title', 'masvideos' ),
-                    'content' => '[' . apply_filters( 'mas_my_account_shortcode_tag', 'mas_my_account' ) . ']',
+                    'content' => '<!-- wp:shortcode -->[' . apply_filters( 'masvideos_my_account_shortcode_tag', 'mas_my_account' ) . ']<!-- /wp:shortcode -->',
                 ),
                 'movies'      => array(
                     'name'    => _x( 'movies', 'Page slug', 'masvideos' ),
                     'title'   => _x( 'Movies', 'Page title', 'masvideos' ),
                     'content' => '',
                 ),
-                'movie_playlists'      => array(
-                    'name'    => _x( 'movie-playlist', 'Page slug', 'masvideos' ),
-                    'title'   => _x( 'Movie Playlist', 'Page title', 'masvideos' ),
-                    'content' => '[' . apply_filters( 'mas_manage_playlists_shortcode_tag', 'mas_manage_playlists' ) . ' post_type=movie_playlist]',
-                ),
                 'tv_shows'      => array(
                     'name'    => _x( 'tv-shows', 'Page slug', 'masvideos' ),
                     'title'   => _x( 'TV Shows', 'Page title', 'masvideos' ),
                     'content' => '',
                 ),
-                'tv_show_playlists'      => array(
-                    'name'    => _x( 'tv-show-playlist', 'Page slug', 'masvideos' ),
-                    'title'   => _x( 'TV Show Playlist', 'Page title', 'masvideos' ),
-                    'content' => '[' . apply_filters( 'mas_manage_playlists_shortcode_tag', 'mas_manage_playlists' ) . ' post_type=tv_show_playlist]',
-                ),
                 'videos'      => array(
                     'name'    => _x( 'videos', 'Page slug', 'masvideos' ),
                     'title'   => _x( 'Videos', 'Page title', 'masvideos' ),
                     'content' => '',
-                ),
-                'video_playlists'      => array(
-                    'name'    => _x( 'video-playlist', 'Page slug', 'masvideos' ),
-                    'title'   => _x( 'Video Playlist', 'Page title', 'masvideos' ),
-                    'content' => '[' . apply_filters( 'mas_manage_playlists_shortcode_tag', 'mas_manage_playlists' ) . ' post_type=video_playlist]',
                 ),
             )
         );
