@@ -423,55 +423,77 @@ function masvideos_episode_post_type_link( $permalink, $post ) {
         return $permalink;
     }
 
-    // Get the custom taxonomy terms in use by this post.
-    $terms = get_the_terms( $post->ID, 'episode_genre' );
+    if ( masvideos_is_episode_archive() ) {
+        // Get the custom taxonomy terms in use by this post.
+        $terms = get_the_terms( $post->ID, 'episode_genre' );
 
-    if ( ! empty( $terms ) ) {
-        $terms           = wp_list_sort(
-            $terms,
-            array(
-                'parent'  => 'DESC',
-                'term_id' => 'ASC',
-            )
-        );
-        $genre_object = apply_filters( 'masvideos_episode_post_type_link_episode_genre', $terms[0], $terms, $post );
-        $episode_genre     = $genre_object->slug;
+        if ( ! empty( $terms ) ) {
+            $terms           = wp_list_sort(
+                $terms,
+                array(
+                    'parent'  => 'DESC',
+                    'term_id' => 'ASC',
+                )
+            );
+            $genre_object = apply_filters( 'masvideos_episode_post_type_link_episode_genre', $terms[0], $terms, $post );
+            $episode_genre     = $genre_object->slug;
 
-        if ( $genre_object->parent ) {
-            $ancestors = get_ancestors( $genre_object->term_id, 'episode_genre' );
-            foreach ( $ancestors as $ancestor ) {
-                $ancestor_object = get_term( $ancestor, 'episode_genre' );
-                $episode_genre     = $ancestor_object->slug . '/' . $episode_genre;
+            if ( $genre_object->parent ) {
+                $ancestors = get_ancestors( $genre_object->term_id, 'episode_genre' );
+                foreach ( $ancestors as $ancestor ) {
+                    $ancestor_object = get_term( $ancestor, 'episode_genre' );
+                    $episode_genre     = $ancestor_object->slug . '/' . $episode_genre;
+                }
             }
+        } else {
+            // If no terms are assigned to this post, use a string instead (can't leave the placeholder there).
+            $episode_genre = _x( 'uncategorized', 'slug', 'masvideos' );
         }
+
+        $find = array(
+            '%year%',
+            '%monthnum%',
+            '%day%',
+            '%hour%',
+            '%minute%',
+            '%second%',
+            '%post_id%',
+            '%category%',
+            '%episode_genre%',
+        );
+
+        $replace = array(
+            date_i18n( 'Y', strtotime( $post->post_date ) ),
+            date_i18n( 'm', strtotime( $post->post_date ) ),
+            date_i18n( 'd', strtotime( $post->post_date ) ),
+            date_i18n( 'H', strtotime( $post->post_date ) ),
+            date_i18n( 'i', strtotime( $post->post_date ) ),
+            date_i18n( 's', strtotime( $post->post_date ) ),
+            $post->ID,
+            $episode_genre,
+            $episode_genre,
+        );
     } else {
-        // If no terms are assigned to this post, use a string instead (can't leave the placeholder there).
-        $episode_genre = _x( 'uncategorized', 'slug', 'masvideos' );
+        $find = array(
+            '%year%',
+            '%monthnum%',
+            '%day%',
+            '%hour%',
+            '%minute%',
+            '%second%',
+            '%post_id%',
+        );
+
+        $replace = array(
+            date_i18n( 'Y', strtotime( $post->post_date ) ),
+            date_i18n( 'm', strtotime( $post->post_date ) ),
+            date_i18n( 'd', strtotime( $post->post_date ) ),
+            date_i18n( 'H', strtotime( $post->post_date ) ),
+            date_i18n( 'i', strtotime( $post->post_date ) ),
+            date_i18n( 's', strtotime( $post->post_date ) ),
+            $post->ID,
+        );
     }
-
-    $find = array(
-        '%year%',
-        '%monthnum%',
-        '%day%',
-        '%hour%',
-        '%minute%',
-        '%second%',
-        '%post_id%',
-        '%category%',
-        '%episode_genre%',
-    );
-
-    $replace = array(
-        date_i18n( 'Y', strtotime( $post->post_date ) ),
-        date_i18n( 'm', strtotime( $post->post_date ) ),
-        date_i18n( 'd', strtotime( $post->post_date ) ),
-        date_i18n( 'H', strtotime( $post->post_date ) ),
-        date_i18n( 'i', strtotime( $post->post_date ) ),
-        date_i18n( 's', strtotime( $post->post_date ) ),
-        $post->ID,
-        $episode_genre,
-        $episode_genre,
-    );
 
     $permalink = str_replace( $find, $replace, $permalink );
 
