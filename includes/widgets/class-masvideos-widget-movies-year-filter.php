@@ -75,7 +75,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
             if ( in_array( $i, $year_filter, true ) ) {
                 $link_filter = implode( ',', array_diff( $year_filter, array( $i ) ) );
             } else {
-                $link_filter = implode( ',', array_merge( $year_filter, array( $i ) ) );
+                $link_filter = $i;
             }
 
             $class       = in_array( $i, $year_filter, true ) ? 'masvideos-layered-nav-movies-year chosen' : 'masvideos-layered-nav-movies-year';
