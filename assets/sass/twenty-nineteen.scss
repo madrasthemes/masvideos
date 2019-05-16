@@ -770,3 +770,123 @@ $font__line-height-heading: 1.2;
     	justify-content: center;
     }
 }
+
+/**
+ * My Account page
+ */
+
+ .masvideos-account {
+	.masvideos {
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 100% !important;
+	}
+
+	.masvideos-notices-wrapper {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+
+	.masvideos-MyAccount-navigation {
+		@include media-breakpoint-up(lg) {
+			@include make-col(2);
+		}
+
+		ul {
+			list-style: none;
+			padding: 0;
+		}
+	}
+
+	.masvideos-MyAccount-content {
+		@include media-breakpoint-up(lg) {
+			@include make-col(10);
+		}
+
+		.masvideos-playlists__header {
+			display: flex;
+		}
+
+
+		label {
+			display: block;
+		}
+
+		input[type="text"], 
+		select {
+			border-radius: 0;
+			width: 100%;
+		}
+
+		select {
+			height: 44px;
+		}
+
+		.masvideos-edit-playlist + .masvideos-manage-playlists {
+			margin-top: 40px;
+		}
+
+		table thead td {
+			font-weight: 700;
+		}
+
+		table tbody td:first-child a {
+			color: #121a21;
+		}
+
+		table {
+			.masvideos-button {
+				text-transform: none;
+				padding: 6px 12px;
+
+				& + .masvideos-button {
+					margin-left: 5px;
+				}
+			}
+		}
+
+		table.masvideos-videos-table + .masvideos-pagination--without-numbers {
+			@include media-breakpoint-up(xl) {
+				margin-top: 40px;
+			}
+		}
+
+		.masvideos-pagination--without-numbers {
+			display: flex;
+			justify-content: flex-end;
+
+			a {
+
+			    &.masvideos-button--previous {
+			    	margin-right: auto;
+			    }
+
+			    &:hover {
+			    	color: #fff;
+			    }
+			}
+		}
+
+		form.masvideos-edit-playlist__form {
+			@include make-row();
+
+			> p {
+				@include make-col-ready();
+			}
+
+			.form-row-wide {
+				@include media-breakpoint-up(md) {
+					flex: 0 0 50%;
+					max-width: 50%;
+				}
+			}
+		}
+	}
+
+	.masvideos-register,
+	.masvideos-login {
+	    @include media-breakpoint-up(md) {
+	        @include make-col(6);
+	    }
+	}
+}
