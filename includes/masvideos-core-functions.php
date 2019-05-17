@@ -373,6 +373,18 @@ function masvideos_restore_locale() {
 }
 
 /**
+ * Get an item of post data if set, otherwise return a default value.
+ *
+ * @since  1.0.3
+ * @param  string $key     Meta key.
+ * @param  string $default Default value.
+ * @return mixed Value sanitized by masvideos_clean.
+ */
+function masvideos_get_post_data_by_key( $key, $default = '' ) {
+    return masvideos_clean( wp_unslash( masvideos_get_var( $_POST[ $key ], $default ) ) ); // @codingStandardsIgnoreLine
+}
+
+/**
  * Get data if set, otherwise return a default value or null. Prevents notices when data is not set.
  *
  * @since  1.0.0

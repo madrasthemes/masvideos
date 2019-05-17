@@ -222,3 +222,29 @@ function masvideos_get_account_endpoint_url( $endpoint ) {
 
     return masvideos_get_endpoint_url( $endpoint, '', masvideos_get_page_permalink( 'myaccount' ) );
 }
+
+/**
+ * Get Upload Video fields.
+ *
+ * @since   1.0.0
+ * @return  array
+ */
+function masvideos_get_upload_video_fields() {
+    $fields = array(
+        'title'         => array(
+            'label'        => __( 'Title', 'masvideos' ),
+            'required'     => true,
+            'class'        => array( 'form-row-wide' ),
+            'priority'     => 10,
+        ),
+        'description'   => array(
+            'type'         => 'textarea',
+            'label'        => __( 'Description', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-wide' ),
+            'priority'     => 20,
+        ),
+    );
+
+    return apply_filters( 'masvideos_upload_video_fields', $fields );
+}
