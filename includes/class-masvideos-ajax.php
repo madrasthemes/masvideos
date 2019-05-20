@@ -166,9 +166,9 @@ class MasVideos_AJAX {
             parse_str( $_POST['data'], $data );
 
             $sources      = MasVideos_Meta_Box_Episode_Data::prepare_sources( $data );
-            $episode_id     = absint( $_POST['post_id'] );
+            $episode_id   = absint( $_POST['post_id'] );
             $classname    = MasVideos_Episode_Factory::get_episode_classname( $episode_id );
-            $episode        = new $classname( $episode_id );
+            $episode      = new $classname( $episode_id );
 
             $episode->set_sources( $sources );
             $episode->save();

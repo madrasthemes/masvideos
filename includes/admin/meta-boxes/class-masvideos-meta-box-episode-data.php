@@ -119,7 +119,7 @@ class MasVideos_Meta_Box_Episode_Data {
             $data = $_POST;
         }
 
-        if ( isset( $data['source_names'], $data['source_link'] ) ) {
+        if ( isset( $data['source_names'], $data['source_embed_content'] ) ) {
             $source_names         = $data['source_names'];
             $source_choice        = $data['source_choice'];
             $source_embed_content = $data['source_embed_content'];
