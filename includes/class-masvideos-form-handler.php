@@ -21,6 +21,8 @@ class MasVideos_Form_Handler {
         add_action( 'wp_loaded', array( __CLASS__, 'process_registration' ), 20 );
         add_action( 'wp_loaded', array( __CLASS__, 'edit_playlist' ), 20 );
         add_action( 'wp_loaded', array( __CLASS__, 'delete_playlist' ), 20 );
+        add_action( 'wp_loaded', array( __CLASS__, 'edit_video' ), 20 );
+        add_action( 'wp_loaded', array( __CLASS__, 'delete_video' ), 20 );
     }
 
     /**
@@ -130,6 +132,140 @@ class MasVideos_Form_Handler {
             } catch ( Exception $e ) {
                 masvideos_add_notice( '<strong>' . __( 'Error:', 'masvideos' ) . '</strong> ' . $e->getMessage(), 'error' );
                 do_action( 'masvideos_registration_failed' );
+            }
+        }
+    }
+
+    /**
+     * Process the edit video form.
+     */
+    public static function edit_video() {
+        $nonce_value = isset( $_POST['_wpnonce'] ) ? $_POST['_wpnonce'] : '';
+        $nonce_value = isset( $_POST['masvideos-edit-video-nonce'] ) ? $_POST['masvideos-edit-video-nonce'] : $nonce_value;
+
+        if ( ! empty( $_POST['edit-video'] ) && wp_verify_nonce( $nonce_value, 'masvideos-edit-video' ) ) {
+
+            $id = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : 0;
+            $video = masvideos_get_video( $id );
+
+            if ( ! $video ) {
+                $video = new MasVideos_Video( $id );
+            }
+
+            $fields = masvideos_get_edit_video_fields();
+
+            foreach ( $fields as $key => $field ) {
+                if ( ! isset( $field['type'] ) ) {
+                    $field['type'] = 'text';
+                }
+
+                // Get Value.
+                if ( 'checkbox' === $field['type'] ) {
+                    $value = (int) isset( $_POST[ $key ] );
+                } else {
+                    $value = isset( $_POST[ $key ] ) ? masvideos_clean( wp_unslash( $_POST[ $key ] ) ) : '';
+                }
+
+                // Hook to allow modification of value.
+                $value = apply_filters( 'masvideos_process_upload_video_field_' . $key, $value );
+
+                // Validation: Required fields.
+                if ( ! empty( $field['required'] ) && empty( $value ) ) {
+                    /* translators: %s: Field name. */
+                    masvideos_add_notice( sprintf( __( '%s is a required field.', 'masvideos' ), $field['label'] ), 'error' );
+                }
+
+                try {
+                    // Set prop in video object.
+                    if( $key == 'title' ) {
+                        $video->set_name( $value );
+                    } elseif ( is_callable( array( $video, "set_$key" ) ) ) {
+                        $video->{"set_$key"}( $value );
+                    } else {
+                        $video->update_meta_data( $key, $value );
+                    }
+                } catch ( Exception $e ) {
+                    // Set notices. Ignore invalid billing email, since is already validated.
+                    masvideos_add_notice( $e->getMessage(), 'error' );
+                }
+            }
+
+            /**
+             * Hook: masvideos_after_save_upload_video_validation.
+             *
+             * Allow developers to add custom validation logic and throw an error to prevent save.
+             *
+             * @param array             $fields The fields fields.
+             * @param MasVideos_Video   $video The video object being saved.
+             */
+            do_action( 'masvideos_after_save_upload_video_validation', $fields, $video );
+
+            if ( 0 < masvideos_notice_count( 'error' ) ) {
+                return;
+            }
+
+            $video->save();
+
+            masvideos_add_notice( __( 'Video uploaded successfully.', 'masvideos' ) );
+
+            do_action( 'masvideos_after_save_upload_video', $video );
+
+            if ( ! empty( $_POST['redirect'] ) ) {
+                $redirect = wp_sanitize_redirect( $_POST['redirect'] );
+            } elseif ( wp_get_raw_referer() ) {
+                $redirect = wp_get_raw_referer();
+            } else {
+                $redirect = admin_url();
+            }
+
+            wp_redirect( wp_validate_redirect( apply_filters( 'masvideos_upload_video_redirect', $redirect ), '#' ) );
+            exit;
+        }
+    }
+
+    /**
+     * Process the delete video form.
+     */
+    public static function delete_video() {
+        $nonce_value = isset( $_GET['_wpnonce'] ) ? $_GET['_wpnonce'] : '';
+        $nonce_value = isset( $_GET['masvideos-delete-video-nonce'] ) ? $_GET['masvideos-delete-video-nonce'] : $nonce_value;
+
+        if ( ! empty( $_GET['action'] ) && wp_verify_nonce( $nonce_value, 'masvideos-delete-video' ) ) {
+            $id         = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
+            $action     = masvideos_clean( $_GET['action'] );
+
+            try {
+                $validation_error = new WP_Error();
+                $validation_error = apply_filters( 'masvideos_process_delete_video_errors', $validation_error, $id, $action );
+
+                if ( $validation_error->get_error_code() ) {
+                    throw new Exception( $validation_error->get_error_message() );
+                }
+
+                if( $action == 'delete' ) {
+                    $video = wp_delete_post( $id, true );
+                } elseif( $action == 'trash' ) {
+                    $video = wp_delete_post( $id );
+                }
+
+                if ( is_wp_error( $video ) ) {
+                    throw new Exception( $video->get_error_message() );
+                }
+
+                if ( ! empty( $_GET['redirect'] ) ) {
+                    $redirect = wp_sanitize_redirect( $_GET['redirect'] );
+                } elseif ( wp_get_raw_referer() ) {
+                    $redirect = wp_get_raw_referer();
+                } else {
+                    $redirect = admin_url();
+                }
+
+                wp_redirect( wp_validate_redirect( apply_filters( 'masvideos_delete_video_redirect', $redirect ), '#' ) );
+                exit;
+
+            } catch ( Exception $e ) {
+                masvideos_add_notice( '<strong>' . __( 'Error:', 'masvideos' ) . '</strong> ' . $e->getMessage(), 'error' );
+                do_action( 'masvideos_delete_video_failed' );
             }
         }
     }
