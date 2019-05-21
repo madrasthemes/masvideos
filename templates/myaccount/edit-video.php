@@ -1,10 +1,10 @@
 <?php
 /**
- * Orders
+ * Video
  *
- * Shows upload video page.
+ * Shows edit video page.
  *
- * This template can be overridden by copying it to yourtheme/masvideos/myaccount/upload-video.php.
+ * This template can be overridden by copying it to yourtheme/masvideos/myaccount/edit-video.php.
  *
  * HOWEVER, on occasion MasVideos will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to
@@ -22,23 +22,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $id = ! empty( $video ) ? $video->get_id() : 0;
 
-do_action( 'masvideos_before_edit_upload_video_form' ); ?>
+do_action( 'masvideos_before_edit_video_form' ); ?>
 
 <form method="post">
 
     <h3><?php echo esc_html( $title ); ?></h3><?php // @codingStandardsIgnoreLine ?>
 
-    <div class="masvideos-upload-video-fields">
-        <?php do_action( "masvideos_before_edit_upload_video" ); ?>
+    <div class="masvideos-edit-video-fields">
 
-        <div class="masvideos-upload-video-fields__field-wrapper">
+        <?php do_action( "masvideos_before_edit_video_form_fields" ); ?>
+
+        <div class="masvideos-edit-video-fields__field-wrapper">
             <?php foreach ( $fields as $key => $field ) {
                 $value = isset( $field['value'] ) ? $field['value'] : null;
                 masvideos_form_field( $key, $field, masvideos_get_post_data_by_key( $key, $value ) );
             } ?>
         </div>
 
-        <?php do_action( "masvideos_after_edit_upload_video" ); ?>
+        <?php do_action( "masvideos_after_edit_video_form_fields" ); ?>
 
         <p>
             <button type="submit" class="button" name="edit-video" value="<?php echo esc_attr( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></button>
@@ -49,4 +50,4 @@ do_action( 'masvideos_before_edit_upload_video_form' ); ?>
 
 </form>
 
-<?php do_action( 'masvideos_after_edit_upload_video_form' ); ?>
+<?php do_action( 'masvideos_after_edit_video_form' ); ?>
