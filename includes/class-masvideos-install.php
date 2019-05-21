@@ -268,6 +268,11 @@ class MasVideos_Install {
                     'title'   => _x( 'My Account', 'Page title', 'masvideos' ),
                     'content' => '<!-- wp:shortcode -->[' . apply_filters( 'masvideos_my_account_shortcode_tag', 'mas_my_account' ) . ']<!-- /wp:shortcode -->',
                 ),
+                'upload_video'   => array(
+                    'name'    => _x( 'upload-video', 'Page slug', 'masvideos' ),
+                    'title'   => _x( 'Upload Video', 'Page title', 'masvideos' ),
+                    'content' => '<!-- wp:shortcode -->[' . apply_filters( 'masvideos_upload_video_shortcode_tag', 'mas_upload_video' ) . ']<!-- /wp:shortcode -->',
+                ),
                 'movies'      => array(
                     'name'    => _x( 'movies', 'Page slug', 'masvideos' ),
                     'title'   => _x( 'Movies', 'Page title', 'masvideos' ),
