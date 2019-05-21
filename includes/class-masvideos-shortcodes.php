@@ -266,7 +266,7 @@ class MasVideos_Shortcodes {
      * @return string
      */
     public static function upload_video( $atts ) {
-        return self::shortcode_wrapper( array( 'MasVideos_Shortcode_My_Account', 'upload_video' ), $atts );
+        return self::shortcode_wrapper( array( 'MasVideos_Shortcode_My_Account', 'edit_video' ), $atts );
     }
 
     /**

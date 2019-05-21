@@ -229,7 +229,7 @@ function masvideos_get_account_endpoint_url( $endpoint ) {
  * @since   1.0.0
  * @return  array
  */
-function masvideos_get_upload_video_fields() {
+function masvideos_get_edit_video_fields() {
     $fields = array(
         'title'         => array(
             'label'        => __( 'Title', 'masvideos' ),

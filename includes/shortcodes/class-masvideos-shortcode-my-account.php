@@ -33,12 +33,14 @@ class MasVideos_Shortcode_My_Account {
      *
      * @param array $atts Shortcode attributes.
      */
-    public static function upload_video( $atts ) {
+    public static function edit_video() {
         if ( ! is_user_logged_in() ) {
             masvideos_get_template( 'myaccount/form-register-login.php' );
         } else {
-            $is_edit = false;
-            $fields = masvideos_get_upload_video_fields();
+            $title = apply_filters( 'masvideos_my_account_upload_video_title', esc_html__( 'Upload video', 'masvideos' ) );
+            $button_text = apply_filters( 'masvideos_my_account_upload_video_button_text', esc_html__( 'Submit video', 'masvideos' ) );
+            $fields = masvideos_get_edit_video_fields();
+            $video = false;
 
             if( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) {
                 $id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : absint( get_query_var( 'post', 0 ) ); // WPCS: sanitization ok, input var ok, CSRF ok.
@@ -53,16 +55,18 @@ class MasVideos_Shortcode_My_Account {
                             $fields[ $key ]['value'] = $video->get_meta( $key, true, 'edit' );
                         }
                     }
-                    $is_edit = true;
+
+                    $title = apply_filters( 'masvideos_my_account_edit_video_title', esc_html__( 'Edit video', 'masvideos' ) );
+                    $button_text = apply_filters( 'masvideos_my_account_edit_video_button_text', esc_html__( 'Save video', 'masvideos' ) );
                 }
             }
 
-            masvideos_get_template( 'myaccount/edit-video.php', wp_parse_args( array(
-                'title'         => apply_filters( 'masvideos_my_account_upload_video_title', esc_html__( 'Upload video', 'masvideos' ) ),
-                'button_text'   => apply_filters( 'masvideos_my_account_upload_video_button_text', esc_html__( 'Submit video', 'masvideos' ) ),
+            masvideos_get_template( 'myaccount/edit-video.php', array(
+                'title'         => $title,
+                'button_text'   => $button_text,
                 'fields'        => $fields,
-                'video'         => isset( $video ) && $video ? $video : false,
-            ), $atts ) );
+                'video'         => $video,
+            ) );
         }
     }
 
