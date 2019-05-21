@@ -75,6 +75,26 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
+            'masvideos_upload_video_page_id',
+            array(
+                'default'       => '',
+                'type'          => 'option',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_upload_video_page_id',
+            array(
+                'label'       => esc_html__( 'Upload Video Page', 'masvideos' ),
+                'section'     => 'masvideos_myaccount',
+                'settings'    => 'masvideos_upload_video_page_id',
+                'type'        => 'select',
+                'choices'     => $this->get_all_pages_array(),
+            )
+        );
+
+        $wp_customize->add_setting(
             'masvideos_registration_generate_username',
             array(
                 'default'              => 'no',
