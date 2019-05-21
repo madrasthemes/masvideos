@@ -37,7 +37,31 @@ class MasVideos_Shortcode_My_Account {
         if ( ! is_user_logged_in() ) {
             masvideos_get_template( 'myaccount/form-register-login.php' );
         } else {
-            masvideos_get_template( 'myaccount/upload-video.php' );
+            $is_edit = false;
+            $fields = masvideos_get_upload_video_fields();
+
+            if( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) {
+                $id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : absint( get_query_var( 'post', 0 ) ); // WPCS: sanitization ok, input var ok, CSRF ok.
+                $video = masvideos_get_video( $id );
+
+                if( $video ) {
+                    foreach ( $fields as $key => $field ) {
+                        // Set prop in video object.
+                        if ( is_callable( array( $video, "get_$key" ) ) ) {
+                            $fields[ $key ]['value'] = $video->{"get_$key"}( 'edit' );
+                        } else {
+                            $fields[ $key ]['value'] = $video->get_meta( $key, true, 'edit' );
+                        }
+                    }
+                    $is_edit = true;
+                }
+            }
+
+            masvideos_get_template( 'myaccount/upload-video.php', wp_parse_args( array(
+                'title'         => apply_filters( 'masvideos_my_account_upload_video_title', esc_html__( 'Upload video', 'masvideos' ) ),
+                'button_text'   => apply_filters( 'masvideos_my_account_upload_video_button_text', esc_html__( 'Submit video', 'masvideos' ) ),
+                'fields'        => $fields
+            ), $atts ) );
         }
     }
 
