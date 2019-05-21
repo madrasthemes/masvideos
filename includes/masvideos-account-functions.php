@@ -113,11 +113,11 @@ function masvideos_get_account_videos_actions( $video ) {
             'name' => esc_html__( 'View', 'masvideos' ),
         ),
         'edit'    => array(
-            'url'  => '#',
+            'url'  => add_query_arg( array( 'post' => $video->get_id(), 'action' => 'edit' ), masvideos_get_page_permalink( 'upload_video' ) ),
             'name' => esc_html__( 'Edit', 'masvideos' ),
         ),
         'delete' => array(
-            'url'  => '#',
+            'url'  => wp_nonce_url( add_query_arg( array( 'post' => $video->get_id(), 'action' => 'delete' ), get_permalink( $video->get_id() ) ), 'masvideos-delete-video', 'masvideos-delete-video-nonce' ),
             'name' => esc_html__( 'Delete', 'masvideos' ),
         ),
     );
