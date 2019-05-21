@@ -60,7 +60,8 @@ class MasVideos_Shortcode_My_Account {
             masvideos_get_template( 'myaccount/upload-video.php', wp_parse_args( array(
                 'title'         => apply_filters( 'masvideos_my_account_upload_video_title', esc_html__( 'Upload video', 'masvideos' ) ),
                 'button_text'   => apply_filters( 'masvideos_my_account_upload_video_button_text', esc_html__( 'Submit video', 'masvideos' ) ),
-                'fields'        => $fields
+                'fields'        => $fields,
+                'video'         => isset( $video ) && $video ? $video : false,
             ), $atts ) );
         }
     }

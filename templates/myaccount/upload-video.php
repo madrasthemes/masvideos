@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+$id = ! empty( $video ) ? $video->get_id() : 0;
+
 do_action( 'masvideos_before_edit_upload_video_form' ); ?>
 
 <form method="post">
@@ -39,9 +41,9 @@ do_action( 'masvideos_before_edit_upload_video_form' ); ?>
         <?php do_action( "masvideos_after_edit_upload_video" ); ?>
 
         <p>
-            <button type="submit" class="button" name="save_video" value="<?php echo esc_attr( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></button>
-            <?php wp_nonce_field( 'masvideos-upload_video', 'masvideos-upload-video-nonce' ); ?>
-            <input type="hidden" name="action" value="upload_video" />
+            <button type="submit" class="button" name="edit-video" value="<?php echo esc_attr( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></button>
+            <?php wp_nonce_field( 'masvideos-edit-video', 'masvideos-edit-video-nonce' ); ?>
+            <input name="id" type="hidden" value="<?php echo esc_attr( $id ); ?>" />
         </p>
     </div>
 
