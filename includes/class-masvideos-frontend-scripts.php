@@ -220,6 +220,11 @@ class MasVideos_Frontend_Scripts {
                 'deps'    => array( 'jquery' ),
                 'version' => MASVIDEOS_VERSION,
             ),
+            'masvideos-edit-video'          => array(
+                'src'     => self::get_asset_url( 'assets/js/frontend/edit-video' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => MASVIDEOS_VERSION,
+            ),
         );
         foreach ( $register_scripts as $name => $props ) {
             self::register_script( $name, $props['src'], $props['deps'], $props['version'] );
@@ -290,6 +295,12 @@ class MasVideos_Frontend_Scripts {
             self::enqueue_script( 'masvideos-gallery-flip' );
         }
 
+        if( function_exists( 'is_video_upload_page' ) && is_video_upload_page() ) {
+            wp_enqueue_media();
+            self::enqueue_script( 'selectWoo' );
+            self::enqueue_style( 'select2' );
+            self::enqueue_script( 'masvideos-edit-video' );
+        }
 
         // CSS Styles.
         $enqueue_styles = self::get_styles();

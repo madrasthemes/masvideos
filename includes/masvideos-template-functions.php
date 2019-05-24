@@ -291,6 +291,7 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
             'default'           => '',
             'autofocus'         => '',
             'priority'          => '',
+            'taxonomy'          => 'video_cat',
         );
 
         $args = wp_parse_args( $args, $defaults );
@@ -404,6 +405,110 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                         $field .= '<label for="' . esc_attr( $args['id'] ) . '_' . esc_attr( $option_key ) . '" class="radio ' . implode( ' ', $args['label_class'] ) . '">' . $option_text . '</label>';
                     }
                 }
+
+                break;
+            case 'term-multiselect':
+                ob_start();
+                ?>
+                <select multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select terms', 'masvideos' ); ?>" class=" masvideos-select2" name="<?php echo esc_attr( $key ); ?>[]; ?>">
+                    <?php
+                    $all_terms = get_terms( $args['taxonomy'], apply_filters( 'masvideos_term_multiselect', array( 'orderby'    => 'name', 'hide_empty' => 0, ) ) );
+                    if ( $all_terms ) {
+                        foreach ( $all_terms as $term ) {
+                            $options = $value;
+                            $options = ! empty( $options ) ? $options : array();
+                            echo '<option value="' . esc_attr( $term->term_id ) . '"' . masvideos_selected( $term->term_id, $options ) . '>' . esc_attr( apply_filters( 'masvideos_term_name', $term->name, $term ) ) . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+                <?php
+                $field = ob_get_clean();
+
+                break;
+            case 'video':
+                $field_container = '<div class="form-row %1$s" id="%2$s" data-priority="' . esc_attr( $sort ) . '">%3$s</div>';
+                ob_start();
+                    if ( absint( $value ) ) {
+                        $video_src = wp_get_attachment_url( $value );
+                        echo do_shortcode('[video src="' . $video_src . '"]');
+                    }
+                    ?>
+                    <input type="hidden" name="<?php echo esc_attr( $key ); ?>" class="upload_video_id" value="<?php echo esc_attr( $value ); ?>" />
+                    <a href="#" class="button masvideos_upload_video_button tips"><?php echo esc_html__( 'Upload/Add video', 'masvideos' ); ?></a>
+                    <a href="#" class="button masvideos_remove_video_button tips"><?php echo esc_html__( 'Remove this video', 'masvideos' ); ?></a>
+                </div>
+                <?php
+                $field = ob_get_clean();
+
+                break;
+            case 'image':
+                ob_start();
+
+                if ( absint( $value ) ) {
+                    $image = wp_get_attachment_url( $value );
+                } elseif ( function_exists( 'masvideos_placeholder_img_src' ) ) {
+                    $image = masvideos_placeholder_img_src();
+                } else {
+                    $image = '';
+                }
+
+                if ( isset ( $image ) ) :
+                    ?>
+                    <img src="<?php echo esc_attr( $image ); ?>" class="upload_image_preview" data-placeholder-src="<?php echo esc_attr( masvideos_placeholder_img_src() ); ?>" alt="<?php echo esc_attr__( 'Image', 'masvideos' ); ?>" width="150px" height="auto" style="display:block; margin-bottom:1em; max-height:150px;" />
+                    <?php 
+                endif;
+                ?>
+                    <input type="hidden" name="<?php echo esc_attr( $key ); ?>" class="upload_image_id" value="<?php echo esc_attr( $value ); ?>" />
+                    <a href="#" class="button masvideos_upload_image_button tips"><?php echo esc_html__( 'Upload/Add image', 'masvideos' ); ?></a>
+                    <a href="#" class="button masvideos_remove_image_button tips"><?php echo esc_html__( 'Remove this image', 'masvideos' ); ?></a>
+                <?php
+                $field = ob_get_clean();
+
+                break;
+            case 'video-gallery-image':
+                $field_container = '<div id="video_images_container">' . $field_container . '</div';
+                ob_start();
+                ?>
+                <ul class="video_images">
+                    <?php
+                    global $thepostid, $video_object;
+                    $video_object = $thepostid ? masvideos_get_video( $thepostid ) : new MasVideos_Video();
+                    $video_image_gallery = $video_object->get_gallery_image_ids( 'edit' );
+
+                    $attachments         = array_filter( $video_image_gallery );
+                    $update_meta         = false;
+                    $updated_gallery_ids = array();
+
+                    if ( ! empty( $attachments ) ) :
+                        foreach ( $attachments as $attachment_id ) :
+                            $attachment = wp_get_attachment_image( $attachment_id, 'thumbnail' );
+
+                            // if attachment is empty skip.
+                            if ( empty( $attachment ) ) {
+                                $update_meta = true;
+                                continue;
+                            }
+
+                            echo '<li class="image" data-attachment_id="' . esc_attr( $attachment_id ) . '">
+                                    ' . $attachment . '
+                                    <ul class="actions">
+                                        <li><a href="#" class="delete tips" data-tip="' . esc_attr__( 'Delete image', 'masvideos' ) . '">' . __( 'Delete', 'masvideos' ) . '</a></li>
+                                    </ul>
+                                </li>';
+
+                            // rebuild ids to be saved.
+                            $updated_gallery_ids[] = $attachment_id;
+                        endforeach;
+                    endif;
+                    ?>
+                </ul>
+                <input type="hidden" id="video_image_gallery" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( implode( ',', $updated_gallery_ids ) ); ?>" />
+                <p class="add_video_images hide-if-no-js">
+                    <a href="#" data-choose="<?php esc_attr_e( 'Add images to video gallery', 'masvideos' ); ?>" data-update="<?php esc_attr_e( 'Add to gallery', 'masvideos' ); ?>" data-delete="<?php esc_attr_e( 'Delete image', 'masvideos' ); ?>" data-text="<?php esc_attr_e( 'Delete', 'masvideos' ); ?>"><?php _e( 'Add video gallery images', 'masvideos' ); ?></a>
+                </p>
+                <?php
+                $field = ob_get_clean();
 
                 break;
         }

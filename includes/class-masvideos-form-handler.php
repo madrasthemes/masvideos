@@ -179,6 +179,9 @@ class MasVideos_Form_Handler {
                     // Set prop in video object.
                     if( $key == 'title' ) {
                         $video->set_name( $value );
+                    } elseif( $key === 'video_attachment_id' && !empty( $value ) ) {
+                        $video->{"set_$key"}( $value );
+                        $video->{"set_video_choice"}( masvideos_clean( wp_unslash( 'video_file' ) ) );
                     } elseif ( is_callable( array( $video, "set_$key" ) ) ) {
                         $video->{"set_$key"}( $value );
                     } else {

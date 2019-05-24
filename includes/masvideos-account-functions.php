@@ -244,6 +244,47 @@ function masvideos_get_edit_video_fields() {
             'class'        => array( 'form-row-wide' ),
             'priority'     => 20,
         ),
+        'status'  => array(
+            'type'         => 'select',
+            'options'      => array(
+                'pending'   => __( 'Pending', 'masvideos' ),
+                'draft'     => __( 'Draft', 'masvideos' ),
+                'private'   => __( 'Private', 'masvideos' ),
+            ),
+            'label'        => __( 'Status', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-wide' ),
+            'priority'     => 30,
+        ),
+        'category_ids'  => array(
+            'type'         => 'term-multiselect',
+            'taxonomy'     => 'video_cat',
+            'label'        => __( 'Category', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-wide' ),
+            'priority'     => 40,
+        ),
+        'video_attachment_id'   => array(
+            'type'         => 'video',
+            'label'        => __( 'Video', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-wide', 'form-field' ),
+            'priority'     => 50,
+        ),
+        'image_id'         => array(
+            'type'         => 'image',
+            'label'        => __( 'Image', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-wide', 'form-field' ),
+            'priority'     => 50,
+        ),
+        'gallery_image_ids'=> array(
+            'type'         => 'video-gallery-image',
+            'label'        => __( 'Gallery Image', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-wide' ),
+            'priority'     => 60,
+        ),
     );
 
     return apply_filters( 'masvideos_upload_video_fields', $fields );

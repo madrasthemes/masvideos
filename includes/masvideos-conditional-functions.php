@@ -407,6 +407,20 @@ if ( ! function_exists( 'is_account_page' ) ) {
     }
 }
 
+if ( ! function_exists( 'is_video_upload_page' ) ) {
+
+    /**
+     * is_video_upload_page - Returns true when viewing an Video Upload page.
+     *
+     * @return bool
+     */
+    function is_video_upload_page() {
+        $page_id = masvideos_get_page_id( 'upload_video' );
+
+        return ( $page_id && is_page( $page_id ) ) || masvideos_post_content_has_shortcode( 'mas_upload_video' ) || apply_filters( 'masvideos_is_video_upload_page', false );
+    }
+}
+
 if ( ! function_exists( 'is_masvideos_endpoint_url' ) ) {
 
     /**

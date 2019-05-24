@@ -44,9 +44,8 @@ class MasVideos_Shortcode_My_Account {
 
             if( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) {
                 $id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : absint( get_query_var( 'post', 0 ) ); // WPCS: sanitization ok, input var ok, CSRF ok.
-                $video = masvideos_get_video( $id );
 
-                if( $video ) {
+                if( current_user_can( 'edit_post', $id ) && $video = masvideos_get_video( $id ) ) {
                     foreach ( $fields as $key => $field ) {
                         // Set prop in video object.
                         if ( is_callable( array( $video, "get_$key" ) ) ) {

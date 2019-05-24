@@ -262,6 +262,9 @@ jQuery( function( $ ) {
             button: {
                 text: $el.data( 'update' )
             },
+            library: {
+                type: [ 'image' ],
+            },
             states: [
                 new wp.media.controller.Library({
                     title: $el.data( 'choose' ),

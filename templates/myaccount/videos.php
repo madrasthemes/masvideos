@@ -88,7 +88,7 @@ do_action( 'masvideos_before_account_videos', $has_videos ); ?>
 
 <?php else : ?>
     <div class="masvideos-message masvideos-message--info masvideos-Message masvideos-Message--info masvideos-info">
-        <a class="masvideos-Button button" href="<?php echo esc_url( apply_filters( 'masvideos_account_videos_upload_redirect', masvideos_get_page_permalink( 'upload' ) ) ); ?>">
+        <a class="masvideos-Button button" href="<?php echo esc_url( apply_filters( 'masvideos_account_videos_upload_redirect', masvideos_get_page_permalink( 'upload_video' ) ) ); ?>">
             <?php _e( 'Upload videos', 'masvideos' ); ?>
         </a>
         <?php _e( 'No video has been made yet.', 'masvideos' ); ?>

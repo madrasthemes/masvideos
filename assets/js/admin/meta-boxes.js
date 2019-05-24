@@ -113,6 +113,9 @@ jQuery( function ( $ ) {
             button: {
                 text: 'Use image',
             },
+            library: {
+                type: [ 'image' ],
+            },
             multiple: false
         });
 
@@ -168,6 +171,9 @@ jQuery( function ( $ ) {
             title: 'Choose an video',
             button: {
                 text: 'Use video',
+            },
+            library: {
+                type: [ 'video' ],
             },
             multiple: false
         });
