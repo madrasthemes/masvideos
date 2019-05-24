@@ -56,7 +56,7 @@ $sources = $episode->get_sources();
             <tr>
                 <td>
                     <a href="#" class="episode-play-source" data-content="<?php echo esc_attr( htmlspecialchars( $source_content ) ); ?>">
-                        <span><?php echo esc_html__( 'Play Now', 'masvideos' ) ?></span>
+                        <span><?php echo apply_filters( 'masvideos_play_icon', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
                     </a>
                 </td>
                 <td>
