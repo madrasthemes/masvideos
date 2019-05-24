@@ -16,6 +16,7 @@ $font__heading: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen
 
 $body-color: #111;
 $color__background-body: #fff;
+$color__text-light: #767676;
 $highlights-color: #0073aa;
 $color__background-button: #0073aa;
 $color__background-button-hover: #111;
@@ -23,6 +24,7 @@ $font__size_base: 22px;
 $font__size-ratio: 1.125;
 $font__size-sm:    1em / (1 * $font__size-ratio);
 $font__line-height-heading: 1.2;
+$font__size-xs:    1em / (1.25 * $font__size-ratio);
 
 
 /**
@@ -888,5 +890,159 @@ $font__line-height-heading: 1.2;
 	    @include media-breakpoint-up(md) {
 	        @include make-col(6);
 	    }
+	}
+}
+
+/**
+ * Upload Page
+ */
+
+.image-filters-enabled {
+	.masvideos {
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 100% !important;
+
+		form {
+			width: 100%;
+		}
+
+		.masvideos-edit-video-fields {
+			label {
+				font-family: $font__heading;
+				font-size: $font__size-xs;
+				color: $color__text-light;
+				display: block;
+			}
+
+			.form-row {
+				input,
+				select,
+				.select2 {
+					width: 100%;
+				}
+			}
+
+			.form-row-status,
+			.form-row-tag_ids {
+				@media only screen and (min-width: 768px) {
+					width: calc(50% - 0.5rem);
+    				float: left;
+				}
+			}
+
+			.form-row-tag_ids {
+				@media only screen and (min-width: 768px) {
+					margin-left: 1rem;
+				}
+			}
+
+			.masvideos-input-wrapper {
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+				@media only screen and (min-width: 768px) {
+					flex-direction: row;
+				}
+
+				.upload_image_preview {
+					@media only screen and (min-width: 768px) {
+						margin-right: 20px;
+					}
+				}
+			}
+
+			#video_images_container {
+		        padding: 0 0 0 9px;
+
+		        ul {
+		            @include clearfix();
+		            margin: 0;
+		            padding: 0;
+		            list-style: none;
+
+		            li.image,
+		            li.add,
+		            li.masvideos-metabox-sortable-placeholder {
+		                width: 80px;
+		                float: left;
+		                cursor: move;
+		                border: 1px solid #d5d5d5;
+		                margin: 9px 9px 0 0;
+		                background: #f7f7f7;
+		                @include border-radius(2px);
+		                position: relative;
+		                box-sizing: border-box;
+
+		                img {
+		                    width: 100%;
+		                    height: auto;
+		                    display: block;
+		                }
+		            }
+
+		            li.masvideos-metabox-sortable-placeholder {
+		                border: 3px dashed #dddddd;
+		                position: relative;
+
+		                &::after {
+		                    font-size: 2.618em;
+		                    line-height: 72px;
+		                    color: #ddd;
+		                }
+		            }
+
+		            ul.actions {
+		                position: absolute;
+		                top: -8px;
+		                right: -8px;
+		                padding: 2px;
+		                display: none;
+
+		                li {
+		                    float: right;
+		                    margin: 0 0 0 2px;
+
+		                    a {
+		                        width: 1em;
+		                        height: 1em;
+		                        margin: 0;
+		                        height: 0;
+		                        display: block;
+		                        overflow: hidden;
+
+		                        &.tips {
+		                            cursor: pointer;
+		                        }
+		                    }
+
+		                    a.delete {
+		                        font-size: 1.4em;
+
+		                        &::before {
+		                            font-family: dashicons;
+									content: "\f153";
+		                            color: #999;
+		                            background: #fff;
+		                            border-radius: 50%;
+		                            height: 1em;
+		                            width: 1em;
+		                            line-height: 1em;
+		                        }
+
+		                        &:hover::before {
+		                            color: red;
+		                        }
+		                    }
+		                }
+		            }
+
+		            li:hover ul.actions {
+		                display: block;
+		            }
+		        }
+		    }
+
+		}
 	}
 }
