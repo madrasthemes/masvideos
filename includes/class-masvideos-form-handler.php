@@ -162,6 +162,8 @@ class MasVideos_Form_Handler {
                 // Get Value.
                 if ( 'checkbox' === $field['type'] ) {
                     $value = (int) isset( $_POST[ $key ] );
+                } elseif ( 'term-multiselect' === $field['type'] ) {
+                    $value = isset( $_POST[ $key ] ) ? masvideos_clean( wp_unslash( $_POST[ $key ] ) ) : array();
                 } else {
                     $value = isset( $_POST[ $key ] ) ? masvideos_clean( wp_unslash( $_POST[ $key ] ) ) : '';
                 }
