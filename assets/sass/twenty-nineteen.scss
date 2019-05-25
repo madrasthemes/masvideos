@@ -921,6 +921,10 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 				.select2 {
 					width: 100%;
 				}
+
+				input.input-checkbox  {
+					width: auto;
+				}
 			}
 
 			.form-row-status,
@@ -943,6 +947,10 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 				flex-direction: column;
 				@media only screen and (min-width: 768px) {
 					flex-direction: row;
+				}
+
+				.masvideos_remove_image_button {
+					margin-left: 20px;
 				}
 
 				.upload_image_preview {
