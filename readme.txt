@@ -2,8 +2,8 @@
 Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 5.2
-Stable tag: 1.0.3
+Tested up to: 5.2.1
+Stable tag: 1.0.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,10 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.0.4 - 2019-05-25 =
+* Enhancement – Upload page added
+* Fix – Sources issue fixed
 
 = 1.0.3 - 2019-05-16 =
 * Enhancement – My Account page added
