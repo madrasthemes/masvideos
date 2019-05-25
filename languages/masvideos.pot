@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MAS Videos 1.0.4\n"
 "Report-Msgid-Bugs-To: https://github.com/madrasthemes/masvideos/issues\n"
-"POT-Creation-Date: 2019-05-25 10:36:53+00:00\n"
+"POT-Creation-Date: 2019-05-25 11:23:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -764,7 +764,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:653
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:505
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:632
-#: includes/masvideos-account-functions.php:262
+#: includes/masvideos-account-functions.php:258
 msgid "Tags"
 msgstr ""
 
@@ -1019,7 +1019,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:504
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:631
 #: includes/class-masvideos-post-types.php:703
-#: includes/masvideos-account-functions.php:270
+#: includes/masvideos-account-functions.php:250
 msgid "Categories"
 msgstr ""
 
@@ -3033,22 +3033,22 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:250
+#: includes/masvideos-account-functions.php:266
 msgid "Pending"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:251
+#: includes/masvideos-account-functions.php:267
 msgid "Draft"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:252
+#: includes/masvideos-account-functions.php:268
 #: includes/masvideos-movie-playlist-functions.php:319
 #: includes/masvideos-tv-show-playlist-functions.php:319
 #: includes/masvideos-video-playlist-functions.php:319
 msgid "Private"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:254
+#: includes/masvideos-account-functions.php:270
 msgid "Privacy"
 msgstr ""
 
