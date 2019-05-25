@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MAS Videos package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MAS Videos 1.0.3\n"
+"Project-Id-Version: MAS Videos 1.0.4\n"
 "Report-Msgid-Bugs-To: https://github.com/madrasthemes/masvideos/issues\n"
-"POT-Creation-Date: 2019-05-16 11:25:00+00:00\n"
+"POT-Creation-Date: 2019-05-25 10:36:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -248,6 +248,8 @@ msgstr ""
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
 #: includes/masvideos-account-functions.php:121
 #: includes/masvideos-account-functions.php:159
+#: includes/masvideos-template-functions.php:494
+#: includes/masvideos-template-functions.php:506
 msgid "Delete"
 msgstr ""
 
@@ -361,9 +363,9 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-meta-boxes.php:138
 #: includes/admin/class-masvideos-admin-meta-boxes.php:148
 #: includes/admin/class-masvideos-admin-meta-boxes.php:158
-#: includes/customizer/class-masvideos-customizer.php:177
-#: includes/customizer/class-masvideos-customizer.php:321
-#: includes/customizer/class-masvideos-customizer.php:444
+#: includes/customizer/class-masvideos-customizer.php:197
+#: includes/customizer/class-masvideos-customizer.php:341
+#: includes/customizer/class-masvideos-customizer.php:464
 #: includes/masvideos-movie-template-functions.php:396
 #: includes/masvideos-tv-show-template-functions.php:397
 #: includes/masvideos-video-template-functions.php:395
@@ -554,6 +556,8 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-taxonomies.php:162
 #: includes/admin/class-masvideos-admin-taxonomies.php:267
 #: includes/admin/masvideos-meta-box-functions.php:433
+#: includes/masvideos-account-functions.php:291
+#: includes/masvideos-template-functions.php:457
 msgid "Image"
 msgstr ""
 
@@ -588,6 +592,7 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-taxonomies.php:205
 #: includes/admin/class-masvideos-admin-taxonomies.php:232
 #: includes/admin/masvideos-meta-box-functions.php:436
+#: includes/masvideos-template-functions.php:462
 msgid "Upload/Add image"
 msgstr ""
 
@@ -728,6 +733,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:502
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:630
 #: includes/admin/meta-boxes/views/html-tv-show-season.php:63
+#: includes/masvideos-account-functions.php:242
 #: includes/masvideos-episode-template-functions.php:733
 #: includes/masvideos-movie-template-functions.php:949
 msgid "Description"
@@ -758,6 +764,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:653
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:505
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:632
+#: includes/masvideos-account-functions.php:262
 msgid "Tags"
 msgstr ""
 
@@ -1012,6 +1019,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:504
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:631
 #: includes/class-masvideos-post-types.php:703
+#: includes/masvideos-account-functions.php:270
 msgid "Categories"
 msgstr ""
 
@@ -1037,6 +1045,7 @@ msgstr ""
 
 #: includes/admin/importers/mappings/generic.php:21
 #: includes/masvideos-account-functions.php:87
+#: includes/masvideos-account-functions.php:235
 #: includes/widgets/class-masvideos-movies-genres-filter-widgets.php:80
 #: includes/widgets/class-masvideos-movies-tags-filter-widgets.php:78
 #: includes/widgets/class-masvideos-movies-widget.php:19
@@ -1228,15 +1237,18 @@ msgid "Your posts are now being imported..."
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:294
+#: includes/masvideos-template-functions.php:438
 msgid "Upload/Add video"
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:295
+#: includes/masvideos-template-functions.php:439
 msgid "Remove this video"
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:437
 #: includes/admin/meta-boxes/views/html-tv-show-season.php:33
+#: includes/masvideos-template-functions.php:463
 msgid "Remove this image"
 msgstr ""
 
@@ -1264,18 +1276,23 @@ msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:55
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
+#: includes/masvideos-template-functions.php:494
+#: includes/masvideos-template-functions.php:506
 msgid "Delete image"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
+#: includes/masvideos-template-functions.php:506
 msgid "Add images to video gallery"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
+#: includes/masvideos-template-functions.php:506
 msgid "Add to gallery"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
+#: includes/masvideos-template-functions.php:506
 msgid "Add video gallery images"
 msgstr ""
 
@@ -1283,6 +1300,7 @@ msgstr ""
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:40
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:40
 #: includes/admin/meta-boxes/views/html-video-attribute.php:40
+#: includes/masvideos-template-functions.php:413
 msgid "Select terms"
 msgstr ""
 
@@ -1766,27 +1784,37 @@ msgstr ""
 msgid "Invalid data store."
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:46
-#: includes/class-masvideos-form-handler.php:50
-#: includes/class-masvideos-form-handler.php:131
-#: includes/class-masvideos-form-handler.php:177
-#: includes/class-masvideos-form-handler.php:197
-#: includes/class-masvideos-form-handler.php:244
+#: includes/class-masvideos-form-handler.php:48
+#: includes/class-masvideos-form-handler.php:52
+#: includes/class-masvideos-form-handler.php:133
+#: includes/class-masvideos-form-handler.php:272
+#: includes/class-masvideos-form-handler.php:318
+#: includes/class-masvideos-form-handler.php:338
+#: includes/class-masvideos-form-handler.php:385
 msgid "Error:"
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:50
+#: includes/class-masvideos-form-handler.php:52
 msgid "Username is required."
 msgstr ""
 
 #: includes/class-masvideos-form-handler.php:177
+#. translators: %s: Field name.
+msgid "%s is a required field."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:214
+msgid "Video uploaded successfully."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:318
 msgid "Posttype is not valid."
 msgstr ""
 
-#: includes/class-masvideos-frontend-scripts.php:349
-#: includes/class-masvideos-frontend-scripts.php:355
-#: includes/class-masvideos-frontend-scripts.php:361
-#: includes/class-masvideos-frontend-scripts.php:367
+#: includes/class-masvideos-frontend-scripts.php:360
+#: includes/class-masvideos-frontend-scripts.php:366
+#: includes/class-masvideos-frontend-scripts.php:372
+#: includes/class-masvideos-frontend-scripts.php:378
 msgid "Please select a rating"
 msgstr ""
 
@@ -1899,7 +1927,7 @@ msgid "This is where you can add new episodes to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:130
-#: includes/customizer/class-masvideos-customizer.php:396
+#: includes/customizer/class-masvideos-customizer.php:416
 msgid "TV Shows"
 msgstr ""
 
@@ -2075,7 +2103,7 @@ msgstr ""
 
 #: includes/class-masvideos-post-types.php:249
 #: includes/class-masvideos-query.php:77
-#: includes/customizer/class-masvideos-customizer.php:273
+#: includes/customizer/class-masvideos-customizer.php:293
 #: includes/masvideos-account-functions.php:30
 msgid "Videos"
 msgstr ""
@@ -2083,6 +2111,7 @@ msgstr ""
 #: includes/class-masvideos-post-types.php:250
 #: includes/data-stores/class-masvideos-video-data-store-cpt.php:82
 #: includes/data-stores/class-masvideos-video-playlist-data-store-cpt.php:71
+#: includes/masvideos-account-functions.php:284
 #: includes/widgets/class-masvideos-widget-search.php:37
 msgid "Video"
 msgstr ""
@@ -2256,7 +2285,7 @@ msgid "This is where you can add new video playlists to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:368
-#: includes/customizer/class-masvideos-customizer.php:129
+#: includes/customizer/class-masvideos-customizer.php:149
 msgid "Movies"
 msgstr ""
 
@@ -2747,141 +2776,145 @@ msgstr ""
 msgid "My Account Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:91
+#: includes/customizer/class-masvideos-customizer.php:89
+msgid "Upload Video Page"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:111
 msgid "Generate Username"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:112
+#: includes/customizer/class-masvideos-customizer.php:132
 msgid "Generate Password"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:147
+#: includes/customizer/class-masvideos-customizer.php:167
 msgid "Movies Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:167
+#: includes/customizer/class-masvideos-customizer.php:187
 msgid "Default movie sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:168
+#: includes/customizer/class-masvideos-customizer.php:188
 msgid "How should movies be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:173
-#: includes/customizer/class-masvideos-customizer.php:317
-#: includes/customizer/class-masvideos-customizer.php:440
+#: includes/customizer/class-masvideos-customizer.php:193
+#: includes/customizer/class-masvideos-customizer.php:337
+#: includes/customizer/class-masvideos-customizer.php:460
 #: includes/masvideos-movie-template-functions.php:392
 #: includes/masvideos-tv-show-template-functions.php:393
 #: includes/masvideos-video-template-functions.php:391
 msgid "Name: Ascending"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:174
-#: includes/customizer/class-masvideos-customizer.php:318
-#: includes/customizer/class-masvideos-customizer.php:441
+#: includes/customizer/class-masvideos-customizer.php:194
+#: includes/customizer/class-masvideos-customizer.php:338
+#: includes/customizer/class-masvideos-customizer.php:461
 #: includes/masvideos-movie-template-functions.php:393
 #: includes/masvideos-tv-show-template-functions.php:394
 #: includes/masvideos-video-template-functions.php:392
 msgid "Name: Descending"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:175
-#: includes/customizer/class-masvideos-customizer.php:319
-#: includes/customizer/class-masvideos-customizer.php:442
+#: includes/customizer/class-masvideos-customizer.php:195
+#: includes/customizer/class-masvideos-customizer.php:339
+#: includes/customizer/class-masvideos-customizer.php:462
 #: includes/masvideos-movie-template-functions.php:394
 #: includes/masvideos-tv-show-template-functions.php:395
 #: includes/masvideos-video-template-functions.php:393
 msgid "Latest"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:176
-#: includes/customizer/class-masvideos-customizer.php:320
-#: includes/customizer/class-masvideos-customizer.php:443
+#: includes/customizer/class-masvideos-customizer.php:196
+#: includes/customizer/class-masvideos-customizer.php:340
+#: includes/customizer/class-masvideos-customizer.php:463
 #: includes/masvideos-movie-template-functions.php:395
 #: includes/masvideos-tv-show-template-functions.php:396
 #: includes/masvideos-video-template-functions.php:394
 msgid "Menu Order"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:198
+#: includes/customizer/class-masvideos-customizer.php:218
 msgid "Movies per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:199
+#: includes/customizer/class-masvideos-customizer.php:219
 msgid "How many movies should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:228
-#: includes/customizer/class-masvideos-customizer.php:372
-#: includes/customizer/class-masvideos-customizer.php:495
+#: includes/customizer/class-masvideos-customizer.php:248
+#: includes/customizer/class-masvideos-customizer.php:392
+#: includes/customizer/class-masvideos-customizer.php:515
 msgid "Rows per page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:229
+#: includes/customizer/class-masvideos-customizer.php:249
 msgid "How many rows of movies should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:256
+#: includes/customizer/class-masvideos-customizer.php:276
 msgid "Enable Movies Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:291
+#: includes/customizer/class-masvideos-customizer.php:311
 msgid "Videos Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:311
+#: includes/customizer/class-masvideos-customizer.php:331
 msgid "Default video sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:312
+#: includes/customizer/class-masvideos-customizer.php:332
 msgid "How should videos be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:342
+#: includes/customizer/class-masvideos-customizer.php:362
 msgid "Videos per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:343
+#: includes/customizer/class-masvideos-customizer.php:363
 msgid "How many videos should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:373
+#: includes/customizer/class-masvideos-customizer.php:393
 msgid "How many rows of videos should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:414
+#: includes/customizer/class-masvideos-customizer.php:434
 msgid "TV Shows Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:434
+#: includes/customizer/class-masvideos-customizer.php:454
 msgid "Default tv show sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:435
+#: includes/customizer/class-masvideos-customizer.php:455
 msgid "How should tv shows be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:465
+#: includes/customizer/class-masvideos-customizer.php:485
 msgid "TV Shows per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:466
+#: includes/customizer/class-masvideos-customizer.php:486
 msgid "How many tv shows should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:496
+#: includes/customizer/class-masvideos-customizer.php:516
 msgid "How many rows of tv shows should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:523
+#: includes/customizer/class-masvideos-customizer.php:543
 msgid "Enable TV Shows Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:544
+#: includes/customizer/class-masvideos-customizer.php:564
 msgid "Enable Episodes Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:569
+#: includes/customizer/class-masvideos-customizer.php:589
 msgid "No page set"
 msgstr ""
 
@@ -2998,6 +3031,33 @@ msgstr ""
 #: includes/masvideos-account-functions.php:90
 #: templates/myaccount/manage-playlists.php:43
 msgid "Actions"
+msgstr ""
+
+#: includes/masvideos-account-functions.php:250
+msgid "Pending"
+msgstr ""
+
+#: includes/masvideos-account-functions.php:251
+msgid "Draft"
+msgstr ""
+
+#: includes/masvideos-account-functions.php:252
+#: includes/masvideos-movie-playlist-functions.php:319
+#: includes/masvideos-tv-show-playlist-functions.php:319
+#: includes/masvideos-video-playlist-functions.php:319
+msgid "Private"
+msgstr ""
+
+#: includes/masvideos-account-functions.php:254
+msgid "Privacy"
+msgstr ""
+
+#: includes/masvideos-account-functions.php:277
+msgid "Enable Video Comments"
+msgstr ""
+
+#: includes/masvideos-account-functions.php:298
+msgid "Gallery Image"
 msgstr ""
 
 #: includes/masvideos-attribute-functions.php:326
@@ -3146,12 +3206,6 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: includes/masvideos-movie-playlist-functions.php:319
-#: includes/masvideos-tv-show-playlist-functions.php:319
-#: includes/masvideos-video-playlist-functions.php:319
-msgid "Private"
-msgstr ""
-
 #: includes/masvideos-movie-playlist-template-functions.php:322
 #: includes/masvideos-tv-show-playlist-template-functions.php:323
 #: includes/masvideos-video-playlist-template-functions.php:323
@@ -3260,14 +3314,26 @@ msgstr ""
 msgid "Placeholder"
 msgstr ""
 
-#: includes/masvideos-template-functions.php:298
+#: includes/masvideos-template-functions.php:302
+msgid "required"
+msgstr ""
+
+#: includes/masvideos-template-functions.php:304
+msgid "optional"
+msgstr ""
+
+#: includes/masvideos-template-functions.php:386
+msgid "Choose an option"
+msgstr ""
+
+#: includes/masvideos-template-functions.php:588
 #. translators: 1: The rating, 2: The number of ratings
 msgid "%1$s rating based on %2$s rating"
 msgid_plural "%1$s rating based on %2$s ratings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/masvideos-template-functions.php:302
+#: includes/masvideos-template-functions.php:592
 #. translators: 1: The rating
 msgid "%s rating"
 msgstr ""
@@ -3366,6 +3432,22 @@ msgstr ""
 
 #: includes/masvideos-video-template-functions.php:947
 msgid "Sign in to add this video to a playlist."
+msgstr ""
+
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:40
+msgid "Upload video"
+msgstr ""
+
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:41
+msgid "Submit video"
+msgstr ""
+
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:58
+msgid "Edit video"
+msgstr ""
+
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:59
+msgid "Save video"
 msgstr ""
 
 #: includes/widgets/class-masvideos-movies-genres-filter-widgets.php:26
@@ -4226,15 +4308,20 @@ msgstr ""
 
 #: includes/class-masvideos-install.php:272
 msgctxt "Page slug"
-msgid "movies"
+msgid "upload-video"
 msgstr ""
 
 #: includes/class-masvideos-install.php:277
 msgctxt "Page slug"
-msgid "tv-shows"
+msgid "movies"
 msgstr ""
 
 #: includes/class-masvideos-install.php:282
+msgctxt "Page slug"
+msgid "tv-shows"
+msgstr ""
+
+#: includes/class-masvideos-install.php:287
 msgctxt "Page slug"
 msgid "videos"
 msgstr ""
@@ -4246,15 +4333,20 @@ msgstr ""
 
 #: includes/class-masvideos-install.php:273
 msgctxt "Page title"
-msgid "Movies"
+msgid "Upload Video"
 msgstr ""
 
 #: includes/class-masvideos-install.php:278
 msgctxt "Page title"
-msgid "TV Shows"
+msgid "Movies"
 msgstr ""
 
 #: includes/class-masvideos-install.php:283
+msgctxt "Page title"
+msgid "TV Shows"
+msgstr ""
+
+#: includes/class-masvideos-install.php:288
 msgctxt "Page title"
 msgid "Videos"
 msgstr ""
@@ -4336,7 +4428,7 @@ msgid_plural "Showing %1$d&ndash;%2$d of %3$d results"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/masvideos-template-functions.php:355
+#: includes/masvideos-template-functions.php:645
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
