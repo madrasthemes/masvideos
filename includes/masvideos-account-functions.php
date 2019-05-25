@@ -252,7 +252,7 @@ function masvideos_get_edit_video_fields() {
                 'private'   => __( 'Private', 'masvideos' ),
             ),
             'label'        => __( 'Privacy', 'masvideos' ),
-            'required'     => false,
+            'required'     => true,
             'class'        => array( 'form-row-status' ),
             'priority'     => 30,
         ),
