@@ -24,7 +24,7 @@ $id = ! empty( $video ) ? $video->get_id() : 0;
 
 do_action( 'masvideos_before_edit_video_form' ); ?>
 
-<form method="post">
+<form method="post" class="edit-video-form">
 
     <h3><?php echo esc_html( $title ); ?></h3><?php // @codingStandardsIgnoreLine ?>
 

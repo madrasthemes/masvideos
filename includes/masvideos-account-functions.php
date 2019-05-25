@@ -244,16 +244,12 @@ function masvideos_get_edit_video_fields() {
             'class'        => array( 'form-row-description' ),
             'priority'     => 20,
         ),
-        'status'  => array(
-            'type'         => 'select',
-            'options'      => array(
-                'pending'   => __( 'Pending', 'masvideos' ),
-                'draft'     => __( 'Draft', 'masvideos' ),
-                'private'   => __( 'Private', 'masvideos' ),
-            ),
-            'label'        => __( 'Privacy', 'masvideos' ),
-            'required'     => true,
-            'class'        => array( 'form-row-status' ),
+        'category_ids'  => array(
+            'type'         => 'term-multiselect',
+            'taxonomy'     => 'video_cat',
+            'label'        => __( 'Categories', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-category_ids' ),
             'priority'     => 30,
         ),
         'tag_ids'  => array(
@@ -264,12 +260,16 @@ function masvideos_get_edit_video_fields() {
             'class'        => array( 'form-row-tag_ids' ),
             'priority'     => 40,
         ),
-        'category_ids'  => array(
-            'type'         => 'term-multiselect',
-            'taxonomy'     => 'video_cat',
-            'label'        => __( 'Categories', 'masvideos' ),
-            'required'     => false,
-            'class'        => array( 'form-row-category_ids' ),
+        'status'  => array(
+            'type'         => 'select',
+            'options'      => array(
+                'pending'   => __( 'Pending', 'masvideos' ),
+                'draft'     => __( 'Draft', 'masvideos' ),
+                'private'   => __( 'Private', 'masvideos' ),
+            ),
+            'label'        => __( 'Privacy', 'masvideos' ),
+            'required'     => true,
+            'class'        => array( 'form-row-status' ),
             'priority'     => 50,
         ),
         'reviews_allowed'  => array(

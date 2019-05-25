@@ -925,13 +925,44 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 				input.input-checkbox  {
 					width: auto;
 				}
+
+				.select2 {
+					width: 100% !important;
+
+				}
+
+				.select2-container--default .select2-selection--multiple,
+				.select2-container--default .select2-selection--single {
+					border-color: #ccc;
+					border-radius: 0;
+					padding: 3px 20px;
+        			height: 44px;
+				}
+
+				.select2-container--default .select2-selection--multiple .select2-selection__rendered,
+				.select2-container--default .select2-selection--single .select2-selection__rendered {
+					padding: 0;
+
+					li {
+						margin: 0;
+					}
+				}
+
+				.select2-container--default .select2-selection--single .select2-selection__rendered {
+					line-height: 34px;
+				}
+
+				.select2-container--default .select2-selection--single .select2-selection__arrow {
+					height: 44px;
+				}
 			}
 
-			.form-row-status,
+			.form-row-category_ids,
 			.form-row-tag_ids {
 				@media only screen and (min-width: 768px) {
 					width: calc(50% - 0.5rem);
     				float: left;
+    				margin-top:0;
 				}
 			}
 
@@ -950,7 +981,11 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 				}
 
 				.masvideos_remove_image_button {
-					margin-left: 20px;
+					margin-top: 20px;
+					@media only screen and (min-width: 768px) {
+						margin-left: 20px;
+						margin-top:0;
+					}
 				}
 
 				.upload_image_preview {
