@@ -226,7 +226,7 @@ function masvideos_get_account_endpoint_url( $endpoint ) {
 /**
  * Get Upload Video fields.
  *
- * @since   1.0.0
+ * @since   1.0.4
  * @return  array
  */
 function masvideos_get_edit_video_fields() {
@@ -304,3 +304,20 @@ function masvideos_get_edit_video_fields() {
 
     return apply_filters( 'masvideos_upload_video_fields', $fields );
 }
+
+/**
+ * User media attachments restriction.
+ *
+ * @since   1.0.4
+ * @return  array
+ */
+function masvideos_show_current_user_attachments( $query = array() ) {
+    $current_user = wp_get_current_user();
+    if( in_array( 'contributor', $current_user->roles ) && $current_user->ID ) {
+        $query['author'] = $current_user->ID;
+    }
+
+    return $query;
+}
+
+add_filter( 'ajax_query_attachments_args', 'masvideos_show_current_user_attachments', 10 );
