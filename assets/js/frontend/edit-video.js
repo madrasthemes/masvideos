@@ -55,6 +55,7 @@
         file_frame.open();
     });
 
+    //Remove Image
     $(document).on( 'click', '.masvideos_remove_image_button', function( event ){
         var $this = $(this);
         var current_block = $(this).parents('.form-field').attr('id');
@@ -67,10 +68,10 @@
         return false;
     });
 
-    // Video gallery file uploads.
+    // Video Gallery file uploads.
     var video_gallery_frame;
     var $image_gallery_ids = $( '#video_image_gallery' );
-    var $video_images    = $( '#video_images_container' ).find( 'ul.video_images' );
+    var $video_images    = $( '.video_images_container' ).find( 'ul.video_images' );
 
     $( '.add_video_images' ).on( 'click', 'a', function( event ) {
         var $el = $( this );
@@ -119,6 +120,54 @@
         video_gallery_frame.open();
     });
 
+    // Video Gallery Image ordering.
+    $video_images.sortable({
+        items: 'li.image',
+        cursor: 'move',
+        scrollSensitivity: 40,
+        forcePlaceholderSize: true,
+        forceHelperSize: false,
+        helper: 'clone',
+        opacity: 0.65,
+        placeholder: 'masvideos-metabox-sortable-placeholder',
+        start: function( event, ui ) {
+            ui.item.css( 'background-color', '#f6f6f6' );
+        },
+        stop: function( event, ui ) {
+            ui.item.removeAttr( 'style' );
+        },
+        update: function() {
+            var attachment_ids = '';
+
+            $( '.video_images_container' ).find( 'ul li.image' ).css( 'cursor', 'default' ).each( function() {
+                var attachment_id = $( this ).attr( 'data-attachment_id' );
+                attachment_ids = attachment_ids + attachment_id + ',';
+            });
+
+            $image_gallery_ids.val( attachment_ids );
+        }
+    });
+
+    // Remove Video Gallery Images.
+    $( '.video_images_container' ).on( 'click', 'a.delete', function() {
+        $( this ).closest( 'li.image' ).remove();
+
+        var attachment_ids = '';
+
+        $( '.video_images_container' ).find( 'ul li.image' ).css( 'cursor', 'default' ).each( function() {
+            var attachment_id = $( this ).attr( 'data-attachment_id' );
+            attachment_ids = attachment_ids + attachment_id + ',';
+        });
+
+        $image_gallery_ids.val( attachment_ids );
+
+        // Remove any lingering tooltips.
+        $( '#tiptip_holder' ).removeAttr( 'style' );
+        $( '#tiptip_arrow' ).removeAttr( 'style' );
+
+        return false;
+    });
+
     // Uploading Video
     if ( ! $('.upload_video_id').val() ) {
         $('.masvideos_remove_video_button').hide();
@@ -163,5 +212,18 @@
 
         // Finally, open the modal.
         file_frame.open();
+    });
+
+    // Remove Video
+    $(document).on( 'click', '.masvideos_remove_video_button', function( event ){
+        var $this = $(this);
+        var current_block = $(this).parents('.form-field').attr('id');
+
+        $('#'+current_block+' div.wp-video').remove();
+        $('#'+current_block+' .upload_video_id').val('');
+        $('#'+current_block+' .masvideos_remove_video_button').hide();
+        $this.closest( '.widget-inside' ).find( '.widget-control-save' ).prop( 'disabled', false );
+
+        return false;
     });
 } ) ( jQuery, window ) ;

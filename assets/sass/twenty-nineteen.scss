@@ -921,6 +921,10 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 				.select2 {
 					width: 100%;
 				}
+
+				input.input-checkbox  {
+					width: auto;
+				}
 			}
 
 			.form-row-status,
@@ -945,6 +949,10 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 					flex-direction: row;
 				}
 
+				.masvideos_remove_image_button {
+					margin-left: 20px;
+				}
+
 				.upload_image_preview {
 					@media only screen and (min-width: 768px) {
 						margin-right: 20px;
@@ -952,7 +960,7 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 				}
 			}
 
-			#video_images_container {
+			.video_images_container {
 		        padding: 0 0 0 9px;
 
 		        ul {
@@ -1002,14 +1010,11 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 		                li {
 		                    float: right;
 		                    margin: 0 0 0 2px;
+		                    line-height: 1;
 
 		                    a {
-		                        width: 1em;
-		                        height: 1em;
-		                        margin: 0;
-		                        height: 0;
+		                        text-decoration: none;
 		                        display: block;
-		                        overflow: hidden;
 
 		                        &.tips {
 		                            cursor: pointer;
@@ -1017,7 +1022,7 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 		                    }
 
 		                    a.delete {
-		                        font-size: 1.4em;
+		                        font-size: 0;
 
 		                        &::before {
 		                            font-family: dashicons;
@@ -1028,6 +1033,7 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 		                            height: 1em;
 		                            width: 1em;
 		                            line-height: 1em;
+		                            font-size: 13px;
 		                        }
 
 		                        &:hover::before {

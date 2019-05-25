@@ -271,7 +271,7 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
      * @param string $value (default: null).
      * @return string
      */
-    function masvideos_form_field( $key, $args, $value = null ) {
+    function masvideos_form_field( $key, $args, $value = null, $post_id = null ) {
         $defaults = array(
             'type'              => 'text',
             'label'             => '',
@@ -410,7 +410,7 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
             case 'term-multiselect':
                 ob_start();
                 ?>
-                <select multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select terms', 'masvideos' ); ?>" class=" masvideos-select2" name="<?php echo esc_attr( $key ); ?>[]; ?>">
+                <select multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select terms', 'masvideos' ); ?>" class=" masvideos-select2" name="<?php echo esc_attr( $key ); ?>[]">
                     <?php
                     $all_terms = get_terms( $args['taxonomy'], apply_filters( 'masvideos_term_multiselect', array( 'orderby'    => 'name', 'hide_empty' => 0, ) ) );
                     if ( $all_terms ) {
@@ -437,7 +437,6 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                     <input type="hidden" name="<?php echo esc_attr( $key ); ?>" class="upload_video_id" value="<?php echo esc_attr( $value ); ?>" />
                     <a href="#" class="button masvideos_upload_video_button tips"><?php echo esc_html__( 'Upload/Add video', 'masvideos' ); ?></a>
                     <a href="#" class="button masvideos_remove_video_button tips"><?php echo esc_html__( 'Remove this video', 'masvideos' ); ?></a>
-                </div>
                 <?php
                 $field = ob_get_clean();
 
@@ -467,13 +466,12 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
 
                 break;
             case 'video-gallery-image':
-                $field_container = '<div id="video_images_container">' . $field_container . '</div';
+                $field_container = '<div class="form-row %1$s video_images_container" id="%2$s" data-priority="' . esc_attr( $sort ) . '">%3$s</div>';
                 ob_start();
                 ?>
                 <ul class="video_images">
                     <?php
-                    global $thepostid, $video_object;
-                    $video_object = $thepostid ? masvideos_get_video( $thepostid ) : new MasVideos_Video();
+                    $video_object = $post_id ? masvideos_get_video( $post_id ) : new MasVideos_Video();
                     $video_image_gallery = $video_object->get_gallery_image_ids( 'edit' );
 
                     $attachments         = array_filter( $video_image_gallery );
