@@ -107,7 +107,7 @@ class MasVideos_Shortcode_My_Account {
             if( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) {
                 $id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : absint( get_query_var( 'post', 0 ) ); // WPCS: sanitization ok, input var ok, CSRF ok.
                 $playlist_func_name = 'masvideos_get_' . $post_type;
-                $playlist = function_exists( $playlist_func_name ) ? $playlist_func_name( $id ) : false;
+                $playlist = current_user_can( 'edit_post', $id ) && function_exists( $playlist_func_name ) ? $playlist_func_name( $id ) : false;
             }
 
             masvideos_get_template( 'myaccount/edit-playlist.php', wp_parse_args( array(

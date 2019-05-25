@@ -35,7 +35,7 @@ do_action( 'masvideos_before_edit_video_form' ); ?>
         <div class="masvideos-edit-video-fields__field-wrapper">
             <?php foreach ( $fields as $key => $field ) {
                 $value = isset( $field['value'] ) ? $field['value'] : null;
-                masvideos_form_field( $key, $field, masvideos_get_post_data_by_key( $key, $value ) );
+                masvideos_form_field( $key, $field, masvideos_get_post_data_by_key( $key, $value ), $id );
             } ?>
         </div>
 
