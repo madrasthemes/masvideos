@@ -83,6 +83,10 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Changelog ==
 
+= 1.0.5 - 2019-05-27 =
+* Tweak - jQuery BlockUI added
+* Fix – Source url issue fixed
+
 = 1.0.4 - 2019-05-25 =
 * Enhancement – Upload page added
 * Fix – Sources issue fixed
