@@ -11,6 +11,13 @@
 @import 'select2';
 
 /**
+  * Styling begins
+  */
+.blockUI.blockOverlay {
+    @include loader();
+}
+
+/**
  * MasVideos meta boxes
  */
 .masvideos-metaboxes-wrapper {
