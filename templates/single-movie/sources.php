@@ -44,7 +44,7 @@ $sources = $movie->get_sources();
                 $source_choice = ! empty( $source['choice'] ) ? $source['choice'] : '';
 
                 if ( $source_choice == 'movie_embed' && ! empty( $source['embed_content'] ) ) {
-                    $source_content = '<div class="wp-video">' . $source['embed_content'] . '</div>';
+                    $source_content = '<div class="wp-video">' . apply_filters( 'the_content', $source['embed_content'] ) . '</div>';
                 } elseif ( $source_choice == 'movie_url' && ! empty( $source['link'] ) ) {
                     $source_content = do_shortcode('[video src="' . $source['link'] . '"]');
                 }
