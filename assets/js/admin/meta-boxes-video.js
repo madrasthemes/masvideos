@@ -90,20 +90,20 @@ jQuery( function( $ ) {
             security: masvideos_admin_meta_boxes.add_attribute_video_nonce
         };
 
-        // $wrapper.block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $wrapper.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
             $attributes.append( response );
 
             $( document.body ).trigger( 'masvideos-enhanced-select-init' );
             video_attribute_row_indexes();
-            // $wrapper.unblock();
+            $wrapper.unblock();
 
             $( document.body ).trigger( 'masvideos_added_attribute_video' );
         });
@@ -172,13 +172,13 @@ jQuery( function( $ ) {
     // Add a new attribute (via ajax).
     $( '.video_attributes' ).on( 'click', 'button.add_new_attribute', function() {
 
-        // $( '.video_attributes' ).block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $( '.video_attributes' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         var $wrapper           = $( this ).closest( '.masvideos_attribute' );
         var attribute          = $wrapper.data( 'taxonomy' );
@@ -204,11 +204,11 @@ jQuery( function( $ ) {
                     $wrapper.find( 'select.attribute_values' ).change();
                 }
 
-                // $( '.video_attributes' ).unblock();
+                $( '.video_attributes' ).unblock();
             });
 
         } else {
-            // $( '.video_attributes' ).unblock();
+            $( '.video_attributes' ).unblock();
         }
 
         return false;
@@ -217,13 +217,13 @@ jQuery( function( $ ) {
     // Save attributes and update variations.
     $( '.save_attributes_video' ).on( 'click', function() {
 
-        // $( '#masvideos-video-data' ).block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $( '#masvideos-video-data' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         var data = {
             post_id     : masvideos_admin_meta_boxes.post_id,
@@ -236,6 +236,7 @@ jQuery( function( $ ) {
             // Reload variations panel.
             var this_page = window.location.toString();
             this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+            $( '#masvideos-video-data' ).unblock();
         });
     });
 

@@ -150,6 +150,11 @@ class MasVideos_Frontend_Scripts {
     private static function register_scripts() {
         $suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $register_scripts = array(
+            'jquery-blockui'                => array(
+                'src'     => self::get_asset_url( 'assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js' ),
+                'deps'    => array( 'jquery' ),
+                'version' => '2.70',
+            ),
             'select2'                       => array(
                 'src'     => self::get_asset_url( 'assets/js/select2/select2.full' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
