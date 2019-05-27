@@ -3,7 +3,7 @@ Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndaw
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.2.1
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
