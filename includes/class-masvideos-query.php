@@ -432,9 +432,11 @@ class MasVideos_Episodes_Query {
                 $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
                 break;
             case 'release_date':
-                $args['meta_key'] = '_movie_release_date'; // @codingStandardsIgnoreLine
-                $args['orderby'] = 'meta_value';
-                $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
+                $args['meta_key'] = '_episode_release_date'; // @codingStandardsIgnoreLine
+                $args['orderby']  = array(
+                    'meta_value_num' => 'DESC',
+                    'ID'             => 'ASC',
+                );
                 break;
             case 'rating':
                 $args['meta_key'] = '_masvideos_average_rating'; // @codingStandardsIgnoreLine
@@ -1740,8 +1742,10 @@ class MasVideos_Movies_Query {
                 break;
             case 'release_date':
                 $args['meta_key'] = '_movie_release_date'; // @codingStandardsIgnoreLine
-                $args['orderby'] = 'meta_value';
-                $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
+                $args['orderby']  = array(
+                    'meta_value_num' => 'DESC',
+                    'ID'             => 'ASC',
+                );
                 break;
             case 'rating':
                 $args['meta_key'] = '_masvideos_average_rating'; // @codingStandardsIgnoreLine
