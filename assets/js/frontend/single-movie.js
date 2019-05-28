@@ -38,7 +38,12 @@ jQuery( function( $ ) {
 
     $( '.single-movie .movie-play-source' ).on( 'click', function(e) {
         e.preventDefault();
+
         var $content = $(this).data( 'content' );
         $( '.movie__player' ).html( $content );
+
+        $('html, body').animate({
+            scrollTop: $( '.movie__player' )
+        }, 600);
     });
 } );
