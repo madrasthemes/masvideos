@@ -27,7 +27,7 @@ if ( ! $movie || ! ( $movie->has_sources() ) ) {
 $sources = $movie->get_sources();
 
 ?>
-<table>
+<table class="movie-sources">
     <thead>
         <tr>
             <th><?php echo esc_html__( 'Links', 'masvideos' ) ?></th>
@@ -40,24 +40,13 @@ $sources = $movie->get_sources();
     <tbody>
         <?php foreach ( $sources as $key => $source ) : ?>
             <?php
-                $source_content = '';
-                $source_choice = ! empty( $source['choice'] ) ? $source['choice'] : '';
-
-                if ( $source_choice == 'movie_embed' && ! empty( $source['embed_content'] ) ) {
-                    $source_content = '<div class="wp-video">' . apply_filters( 'the_content', $source['embed_content'] ) . '</div>';
-                } elseif ( $source_choice == 'movie_url' && ! empty( $source['link'] ) ) {
-                    $source_content = do_shortcode('[video src="' . $source['link'] . '"]');
-                }
-
-                if( empty( $source_content ) ) {
+                if( empty( $source['embed_content'] ) ) {
                     continue;
                 }
             ?>
             <tr>
                 <td>
-                    <a href="#" class="movie-play-source" data-content="<?php echo esc_attr( htmlspecialchars( $source_content ) ); ?>">
-                        <span><?php echo apply_filters( 'masvideos_play_icon', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
-                    </a>
+                    <?php masvideos_template_single_movie_play_source_link( $source ); ?>
                 </td>
                 <td>
                     <?php if( ! empty( $source['quality'] ) ) {
