@@ -5,20 +5,20 @@
         /*===================================================================================*/
         /*  Videos Gallery Flipper
         /*===================================================================================*/
-        $( '.videos .video__poster--image' ).each( function() {
-            var $this = $( this );
+        $( '.videos .video__poster' ).each( function() {
+            var $this = $( this ).find( '.video__poster--image' );
             var imagesjson = $this.attr( 'data-gallery-images' );
             var images = JSON.parse( imagesjson );
             var original_src = $this.attr( 'src' );
             var original_srcset = $this.attr( 'srcset' );
             var shouldRotateThumbnails = false;
 
-            $this.on( 'mouseenter', function() {
+            $( this ).on( 'mouseenter', function() {
                 shouldRotateThumbnails = true;
                 rotateThumbnails();
             });
 
-            $this.on( 'mouseleave', function() {
+            $( this ).on( 'mouseleave', function() {
                 shouldRotateThumbnails = false;
                 $this.attr( 'src', original_src );
                 $this.attr( 'srcset', original_srcset );
