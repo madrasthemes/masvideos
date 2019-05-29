@@ -9,6 +9,14 @@
 
 @import 'mixins';
 @import 'select2';
+@import "animation";
+
+/**
+  * Styling begins
+  */
+.blockUI.blockOverlay {
+    @include loader();
+}
 
 /**
  * MasVideos meta boxes

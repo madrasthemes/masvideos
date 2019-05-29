@@ -1140,6 +1140,22 @@ if ( ! function_exists( 'masvideos_template_single_movie_player_wrap_close' ) ) 
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_movie_play_source_link' ) ) {
+    /**
+     * Single movie play source link
+     */
+    function masvideos_template_single_movie_play_source_link( $source ) {
+        if( ! empty( $source['embed_content'] ) ) {
+            $source_content = '<div class="wp-video">' . apply_filters( 'the_content', $source['embed_content'] ) . '</div>';
+            ?>
+            <a href="#" class="play-source movie-play-source" data-content="<?php echo esc_attr( htmlspecialchars( $source_content ) ); ?>">
+                <span><?php echo apply_filters( 'masvideos_movie_play_source_text', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
+            </a>
+            <?php
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_movie_comments' ) ) {
 
     /**

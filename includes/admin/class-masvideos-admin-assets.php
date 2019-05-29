@@ -64,6 +64,7 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
             $suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
             // Register scripts.
+            wp_register_script( 'jquery-blockui', MasVideos()->plugin_url() . '/assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.70', true );
             wp_register_script( 'jquery-tiptip', MasVideos()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION, true );
             wp_register_script( 'round', MasVideos()->plugin_url() . '/assets/js/round/round' . $suffix . '.js', array( 'jquery' ), MASVIDEOS_VERSION );
             wp_register_script( 'masvideos-admin-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'round', 'masvideos-enhanced-select', 'plupload-all', 'stupidtable', 'jquery-tiptip' ), MASVIDEOS_VERSION );
@@ -96,22 +97,22 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
             // Meta boxes.
             if ( in_array( $screen_id, array( 'episode', 'edit-episode' ) ) ) {
                 wp_enqueue_media();
-                wp_register_script( 'masvideos-admin-episode-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-episode' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models' ), MASVIDEOS_VERSION );
+                wp_register_script( 'masvideos-admin-episode-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-episode' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models', 'jquery-blockui' ), MASVIDEOS_VERSION );
                 wp_enqueue_script( 'masvideos-admin-episode-meta-boxes' );
             }
             if ( in_array( $screen_id, array( 'tv_show', 'edit-tv_show' ) ) ) {
                 wp_enqueue_media();
-                wp_register_script( 'masvideos-admin-tv-show-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-tv-show' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models' ), MASVIDEOS_VERSION );
+                wp_register_script( 'masvideos-admin-tv-show-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-tv-show' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models', 'jquery-blockui' ), MASVIDEOS_VERSION );
                 wp_enqueue_script( 'masvideos-admin-tv-show-meta-boxes' );
             }
             if ( in_array( $screen_id, array( 'video', 'edit-video' ) ) ) {
                 wp_enqueue_media();
-                wp_register_script( 'masvideos-admin-video-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-video' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models' ), MASVIDEOS_VERSION );
+                wp_register_script( 'masvideos-admin-video-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-video' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models', 'jquery-blockui' ), MASVIDEOS_VERSION );
                 wp_enqueue_script( 'masvideos-admin-video-meta-boxes' );
             }
             if ( in_array( $screen_id, array( 'movie', 'edit-movie' ) ) ) {
                 wp_enqueue_media();
-                wp_register_script( 'masvideos-admin-movie-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-movie' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models' ), MASVIDEOS_VERSION );
+                wp_register_script( 'masvideos-admin-movie-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-movie' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models', 'jquery-blockui' ), MASVIDEOS_VERSION );
                 wp_enqueue_script( 'masvideos-admin-movie-meta-boxes' );
             }
 

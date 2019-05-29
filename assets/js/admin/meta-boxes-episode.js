@@ -82,20 +82,20 @@ jQuery( function( $ ) {
             security: masvideos_admin_meta_boxes.add_source_episode_nonce
         };
 
-        // $wrapper.block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $wrapper.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
             $sources.append( response );
 
             $( document.body ).trigger( 'masvideos-enhanced-select-init' );
             episode_source_row_indexes();
-            // $wrapper.unblock();
+            $wrapper.unblock();
 
             $( document.body ).trigger( 'masvideos_added_source_episode' );
         });
@@ -141,13 +141,13 @@ jQuery( function( $ ) {
     // Save sources and update variations.
     $( '.save_sources_episode' ).on( 'click', function() {
 
-        // $( '#masvideos-episode-data' ).block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $( '#masvideos-episode-data' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         var data = {
             post_id     : masvideos_admin_meta_boxes.post_id,
@@ -160,6 +160,7 @@ jQuery( function( $ ) {
             // Reload variations panel.
             var this_page = window.location.toString();
             this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+            $( '#masvideos-episode-data' ).unblock();
         });
     });
 
@@ -202,20 +203,20 @@ jQuery( function( $ ) {
             security: masvideos_admin_meta_boxes.add_attribute_episode_nonce
         };
 
-        // $wrapper.block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $wrapper.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
             $attributes.append( response );
 
             $( document.body ).trigger( 'masvideos-enhanced-select-init' );
             episode_attribute_row_indexes();
-            // $wrapper.unblock();
+            $wrapper.unblock();
 
             $( document.body ).trigger( 'masvideos_added_attribute_episode' );
         });
@@ -284,13 +285,13 @@ jQuery( function( $ ) {
     // Add a new attribute (via ajax).
     $( '.episode_attributes' ).on( 'click', 'button.add_new_attribute', function() {
 
-        // $( '.episode_attributes' ).block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $( '.episode_attributes' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         var $wrapper           = $( this ).closest( '.masvideos_attribute' );
         var attribute          = $wrapper.data( 'taxonomy' );
@@ -316,11 +317,11 @@ jQuery( function( $ ) {
                     $wrapper.find( 'select.attribute_values' ).change();
                 }
 
-                // $( '.episode_attributes' ).unblock();
+                $( '.episode_attributes' ).unblock();
             });
 
         } else {
-            // $( '.episode_attributes' ).unblock();
+            $( '.episode_attributes' ).unblock();
         }
 
         return false;
@@ -329,13 +330,13 @@ jQuery( function( $ ) {
     // Save attributes and update variations.
     $( '.save_attributes_episode' ).on( 'click', function() {
 
-        // $( '#masvideos-episode-data' ).block({
-        //     message: null,
-        //     overlayCSS: {
-        //         background: '#fff',
-        //         opacity: 0.6
-        //     }
-        // });
+        $( '#masvideos-episode-data' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         var data = {
             post_id     : masvideos_admin_meta_boxes.post_id,
@@ -348,6 +349,7 @@ jQuery( function( $ ) {
             // Reload variations panel.
             var this_page = window.location.toString();
             this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+            $( '#masvideos-episode-data' ).unblock();
         });
     });
 

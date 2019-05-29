@@ -116,7 +116,7 @@ export class ShortcodeAtts extends Component {
                     value={ orderby }
                     options={ [
                         { label: __('Title', 'vodi'), value: 'title' },
-                        { label: __('Date', 'vodi'), value: 'date' },
+                        { label: __('Date', 'vodi'), value: ( postType === 'movie' ? 'release_date' : 'date' ) },
                         { label: __('ID', 'vodi'), value: 'id' },
                         { label: __('Random', 'vodi'), value: 'rand' },
                     ] }
