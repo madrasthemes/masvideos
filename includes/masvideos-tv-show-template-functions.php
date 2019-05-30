@@ -1030,6 +1030,42 @@ if ( ! function_exists( 'masvideos_related_tv_shows' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_tv_show_tabs' ) ) {
+
+    /**
+     * TV Show tabs in the tv show single.
+     */
+    function masvideos_template_single_tv_show_tabs() {
+        global $tv_show, $post;
+
+        $tabs = array();
+        
+        // Description tab - shows tv show content.
+        if ( $post->post_content ) {
+            $tabs['description'] = array(
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_tv_show_description',
+                'priority'  => 10
+            );
+        }
+
+        // Reviews tab - shows comments.
+        if ( comments_open() ) {
+            $tabs['reviews'] = array(
+                'title'     => esc_html__( 'Review', 'masvideos' ),
+                'callback'  => 'comments_template',
+                'priority'  => 20
+            );
+        }
+
+        $tabs = apply_filters( 'masvideos_template_single_tv_show_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'tv-show-tabs' ) );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_button_tv_show_playlist' ) ) {
     /**
      * Button dropdown for Add/Remove tv show to playlist.
