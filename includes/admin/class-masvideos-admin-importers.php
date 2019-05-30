@@ -56,6 +56,13 @@ class MasVideos_Admin_Importers {
 			'capability' => 'import',
 			'callback'   => array( $this, 'movie_importer' ),
 		);
+
+		$this->importers['tmdb_importer'] = array(
+			'menu'       => 'import.php',
+			'name'       => __( 'TMDB Import', 'masvideos' ),
+			'capability' => 'import',
+			'callback'   => array( $this, 'tmdb_importer' ),
+		);
 	}
 
 	/**
@@ -109,9 +116,10 @@ class MasVideos_Admin_Importers {
 	public function register_importers() {
 		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
 			add_action( 'import_start', array( $this, 'post_importer_compatibility' ) );
-			register_importer( 'masvideos_tv_show_csv', __( 'MasVideos TV Shows (CSV)', 'masvideos' ), __( 'Import <strong>tv shows</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'tv_show_importer' ) );
-			register_importer( 'masvideos_video_csv', __( 'MasVideos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'video_importer' ) );
-			register_importer( 'masvideos_movie_csv', __( 'MasVideos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
+			register_importer( 'masvideos_tv_show_csv', __( 'MAS Videos TV Shows (CSV)', 'masvideos' ), __( 'Import <strong>tv shows</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'tv_show_importer' ) );
+			register_importer( 'masvideos_video_csv', __( 'MAS Videos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'video_importer' ) );
+			register_importer( 'masvideos_movie_csv', __( 'MAS Videos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
+			register_importer( 'masvideos_tmdb_import', __( 'MAS Videos TMDB Import', 'masvideos' ), __( 'Import <strong>movies, videos, tv shows</strong> to your website via TMDB API.', 'masvideos' ), array( $this, 'tmdb_importer' ) );
 		}
 	}
 
@@ -230,6 +238,19 @@ class MasVideos_Admin_Importers {
 
 		$importer = new MasVideos_Movie_CSV_Importer_Controller();
 		$importer->dispatch();
+	}
+
+	/**
+	 * The tmdb importer.
+	 *
+	 * This has a custom screen - the Tools > Import item is a placeholder.
+	 * If we're on that screen, redirect to the custom one.
+	 */
+	public function tmdb_importer() {
+		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
+			wp_safe_redirect( admin_url( 'admin.php?page=tmdb_importer' ) );
+			exit;
+		}
 	}
 
 	/**
