@@ -200,12 +200,12 @@ add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_shari
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_meta_right_close', 70 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_info_head_close', 80 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_info_body_open', 90 );
-add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_description', 100 );
+add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_short_desc', 100 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_tags', 110 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_info_body_close', 120 );
 add_action( 'masvideos_after_single_tv_show_summary', 'masvideos_template_single_tv_show_seasons_tabs', 10 );
 add_action( 'masvideos_after_single_tv_show_summary', 'masvideos_related_tv_shows', 20 );
-add_action( 'masvideos_after_single_tv_show_summary', 'comments_template', 30 );
+add_action( 'masvideos_after_single_tv_show_summary', 'masvideos_template_single_tv_show_tabs', 30 );
 
 add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_genres', 10 );
 add_action( 'masvideos_single_tv_show_meta', 'masvideos_template_single_tv_show_release_year', 20 );

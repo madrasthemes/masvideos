@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  * When the_post is called, put tv show data into a global.
  *
  * @param mixed $post Post Object.
- * @return MasVideos_Movie
+ * @return MasVideos_TV_Show
  */
 function masvideos_setup_tv_show_data( $post ) {
     unset( $GLOBALS['tv_show'] );
@@ -357,7 +357,7 @@ if ( ! function_exists( 'masvideos_tv_show_page_title' ) ) {
 
 if ( ! function_exists( 'masvideos_display_tv_show_page_title' ) ) {
     /**
-     * Outputs Mas Movies Title
+     * Outputs TV Shows Title
      */
     function masvideos_display_tv_show_page_title() {
 
@@ -1027,6 +1027,67 @@ if ( ! function_exists( 'masvideos_related_tv_shows' ) ) {
                 echo MasVideos_Shortcodes::tv_shows( $args );
             echo '</section>';
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_tv_show_tabs' ) ) {
+
+    /**
+     * TV Show tabs in the tv show single.
+     */
+    function masvideos_template_single_tv_show_tabs() {
+        global $tv_show, $post;
+
+        $tabs = array();
+        
+        // Description tab - shows tv show content.
+        if ( $post->post_content ) {
+            $tabs['description'] = array(
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_tv_show_description',
+                'priority'  => 10
+            );
+        }
+
+        // Reviews tab - shows attributes.
+        if ( $tv_show->has_attributes() ) {
+            $tabs['additional_information'] = array(
+                'title'     => esc_html__( 'Additional information', 'masvideos' ),
+                'callback'  => 'masvideos_display_tv_show_attributes',
+                'priority'  => 20
+            );
+        }
+
+        // Reviews tab - shows comments.
+        if ( comments_open() ) {
+            $tabs['reviews'] = array(
+                'title'     => esc_html__( 'Review', 'masvideos' ),
+                'callback'  => 'comments_template',
+                'priority'  => 30
+            );
+        }
+
+        $tabs = apply_filters( 'masvideos_template_single_tv_show_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'tv-show-tabs' ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_display_tv_show_attributes' ) ) {
+    /**
+     * Outputs a list of tv show attributes for a tv show.
+     *
+     * @since  1.0.0
+     * @param  Mas_Videos $tv_show TV Show Object.
+     */
+    function masvideos_display_tv_show_attributes() {
+        global $tv_show;
+        masvideos_get_template( 'single-tv-show/tv-show-attributes.php', array(
+            'tv_show'       => $tv_show,
+            'attributes'    => array_filter( $tv_show->get_attributes(), 'masvideos_attributes_tv_show_array_filter_visible' ),
+        ) );
     }
 }
 
