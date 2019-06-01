@@ -251,6 +251,11 @@ class MasVideos_Admin_Importers {
 			wp_safe_redirect( admin_url( 'admin.php?page=tmdb_importer' ) );
 			exit;
 		}
+
+		include_once MASVIDEOS_ABSPATH . 'includes/admin/importers/class-masvideos-tmdb-importer-controller.php';
+
+		$importer = new MasVideos_TMDB_Importer_Controller();
+		$importer->dispatch();
 	}
 
 	/**
