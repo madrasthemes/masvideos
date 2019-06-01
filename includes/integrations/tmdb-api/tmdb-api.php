@@ -1,6 +1,6 @@
 <?php
 
-namespace buibr\tmdbapi;
+// namespace buibr\tmdbapi;
 
 /**
  * TMDB API v3 PHP class - wrapper to API version 3 of 'themoviedb.org
