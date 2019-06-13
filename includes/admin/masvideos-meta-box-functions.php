@@ -326,11 +326,7 @@ function masvideos_wp_embed_video( $field ) {
     echo '<div class="form-field media-embed-video ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '">
         <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
 
-        echo '<textarea class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '"  name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" rows="' . esc_attr( $field['rows'] ) . '" cols="' . esc_attr( $field['cols'] ) . '" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
-
-        if ( ! empty( $field['value'] ) ) {
-            echo '<div class="wp-video">' . $field['value'] . '</div>';
-        }
+        wp_editor( htmlspecialchars_decode( $field['value'] ), $field['id'], apply_filters( 'masvideos_wp_embed_video_editor_settings', array( 'textarea_name' => $field['name'], 'quicktags' => array( 'buttons' => 'em,strong,link' ), 'editor_css' => '<style>.media-embed-video .wp-editor-area{height:175px; width:100%;}</style>' ) ) );
 
     echo '</div>';
 }
