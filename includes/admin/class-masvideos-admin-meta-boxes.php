@@ -36,8 +36,6 @@ class MasVideos_Admin_Meta_Boxes {
      * Constructor.
      */
     public function __construct() {
-        add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 10 );
-        add_action( 'add_meta_boxes', array( $this, 'rename_meta_boxes' ), 20 );
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 30 );
         add_action( 'save_post', array( $this, 'save_meta_boxes' ), 1, 2 );
 
@@ -156,66 +154,6 @@ class MasVideos_Admin_Meta_Boxes {
         // Comment rating.
         if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', $_GET['c'], 'rating' ) ) {
             add_meta_box( 'masvideos-rating', __( 'Rating', 'masvideos' ), 'MasVideos_Meta_Box_Movie_Reviews::output', 'comment', 'normal', 'high' );
-        }
-    }
-
-    /**
-     * Remove bloat.
-     */
-    public function remove_meta_boxes() {
-        // Episode
-        remove_meta_box( 'postexcerpt', 'episode', 'normal' );
-        remove_meta_box( 'commentsdiv', 'episode', 'normal' );
-        remove_meta_box( 'commentstatusdiv', 'episode', 'side' );
-        remove_meta_box( 'commentstatusdiv', 'episode', 'normal' );
-
-        // TV Show
-        remove_meta_box( 'postexcerpt', 'tv_show', 'normal' );
-        remove_meta_box( 'commentsdiv', 'tv_show', 'normal' );
-        remove_meta_box( 'commentstatusdiv', 'tv_show', 'side' );
-        remove_meta_box( 'commentstatusdiv', 'tv_show', 'normal' );
-
-        // Video
-        remove_meta_box( 'postexcerpt', 'video', 'normal' );
-        remove_meta_box( 'commentsdiv', 'video', 'normal' );
-        remove_meta_box( 'commentstatusdiv', 'video', 'side' );
-        remove_meta_box( 'commentstatusdiv', 'video', 'normal' );
-
-        // Movie
-        remove_meta_box( 'postexcerpt', 'movie', 'normal' );
-        remove_meta_box( 'commentsdiv', 'movie', 'normal' );
-        remove_meta_box( 'commentstatusdiv', 'movie', 'side' );
-        remove_meta_box( 'commentstatusdiv', 'movie', 'normal' );
-    }
-
-    /**
-     * Rename core meta boxes.
-     */
-    public function rename_meta_boxes() {
-        global $post;
-
-        // Comments/Reviews Episode
-        if ( isset( $post ) && ( 'publish' == $post->post_status || 'private' == $post->post_status ) && post_type_supports( 'episode', 'comments' ) ) {
-            remove_meta_box( 'commentsdiv', 'episode', 'normal' );
-            add_meta_box( 'commentsdiv', esc_html__( 'Reviews', 'masvideos' ), 'post_comment_meta_box', 'episode', 'normal' );
-        }
-
-        // Comments/Reviews TV Show
-        if ( isset( $post ) && ( 'publish' == $post->post_status || 'private' == $post->post_status ) && post_type_supports( 'tv_show', 'comments' ) ) {
-            remove_meta_box( 'commentsdiv', 'tv_show', 'normal' );
-            add_meta_box( 'commentsdiv', esc_html__( 'Reviews', 'masvideos' ), 'post_comment_meta_box', 'tv_show', 'normal' );
-        }
-
-        // Comments/Reviews Video
-        if ( isset( $post ) && ( 'publish' == $post->post_status || 'private' == $post->post_status ) && post_type_supports( 'video', 'comments' ) ) {
-            remove_meta_box( 'commentsdiv', 'video', 'normal' );
-            add_meta_box( 'commentsdiv', esc_html__( 'Reviews', 'masvideos' ), 'post_comment_meta_box', 'video', 'normal' );
-        }
-
-        // Comments/Reviews Movie
-        if ( isset( $post ) && ( 'publish' == $post->post_status || 'private' == $post->post_status ) && post_type_supports( 'movie', 'comments' ) ) {
-            remove_meta_box( 'commentsdiv', 'movie', 'normal' );
-            add_meta_box( 'commentsdiv', esc_html__( 'Reviews', 'masvideos' ), 'post_comment_meta_box', 'movie', 'normal' );
         }
     }
 
