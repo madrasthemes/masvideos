@@ -3,7 +3,7 @@ Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndaw
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.2.1
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,9 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.0.7 - 2019-06-14 =
+* Fix – Embed video escape issue fixed
 
 = 1.0.6 - 2019-05-31 =
 * Tweak - Sources "Play now" button scroll to player added
