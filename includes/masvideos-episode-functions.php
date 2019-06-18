@@ -325,7 +325,7 @@ if ( ! function_exists ( 'masvideos_the_episode' ) ) {
 if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
     function masvideos_get_the_episode( $episode = null ) {
         if ( is_null( $episode ) && ! empty( $GLOBALS['episode'] ) ) {
-            // Product was null so pull from global.
+            // Episode was null so pull from global.
             $episode = $GLOBALS['episode'];
         }
 
