@@ -323,8 +323,16 @@ if ( ! function_exists ( 'masvideos_the_video' ) ) {
 }
 
 if ( ! function_exists ( 'masvideos_get_the_video' ) ) {
-    function masvideos_get_the_video( $post = null ) {
-        global $video;
+    function masvideos_get_the_video( $video = null ) {
+        if ( is_null( $video ) && ! empty( $GLOBALS['video'] ) ) {
+            // Product was null so pull from global.
+            $video = $GLOBALS['video'];
+        }
+
+        if ( $video && ! is_a( $video, 'MasVideos_Movie' ) ) {
+            // Make sure we have a valid video, or set to false.
+            $video = masvideos_get_video( $video );
+        }
 
         $video_src = '';
         $video_choice = $video->get_video_choice();

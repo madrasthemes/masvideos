@@ -323,8 +323,16 @@ if ( ! function_exists ( 'masvideos_the_episode' ) ) {
 }
 
 if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
-    function masvideos_get_the_episode( $post = null ) {
-        global $episode;
+    function masvideos_get_the_episode( $episode = null ) {
+        if ( is_null( $episode ) && ! empty( $GLOBALS['episode'] ) ) {
+            // Product was null so pull from global.
+            $episode = $GLOBALS['episode'];
+        }
+
+        if ( $episode && ! is_a( $episode, 'MasVideos_Movie' ) ) {
+            // Make sure we have a valid episode, or set to false.
+            $episode = masvideos_get_episode( $episode );
+        }
 
         $episode_src = '';
         $episode_choice = $episode->get_episode_choice();
