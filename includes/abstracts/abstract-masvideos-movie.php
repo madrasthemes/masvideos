@@ -76,6 +76,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'movie_run_time'        => '',
         'movie_censor_rating'   => '',
         'recommended_movie_ids' => array(),
+        'related_video_ids'     => array(),
     );
 
     /**
@@ -443,6 +444,17 @@ class MasVideos_Movie extends MasVideos_Data {
         return $this->get_prop( 'recommended_movie_ids', $context );
     }
 
+    /**
+     * Get Related Video IDs.
+     *
+     * @since 3.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_related_video_ids( $context = 'view' ) {
+        return $this->get_prop( 'related_video_ids', $context );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Setters
@@ -776,6 +788,16 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_recommended_movie_ids( $recommended_movie_ids ) {
         $this->set_prop( 'recommended_movie_ids', array_filter( (array) $recommended_movie_ids ) );
+    }
+
+    /**
+     * Set Related Video IDs.
+     *
+     * @since 3.0.0
+     * @param array $related_video_ids from the recommended movies.
+     */
+    public function set_related_video_ids( $related_video_ids ) {
+        $this->set_prop( 'related_video_ids', array_filter( (array) $related_video_ids ) );
     }
 
     /*

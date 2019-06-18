@@ -486,6 +486,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			'movie_censor_rating'    => array( $this, 'parse_skip_field' ),
 			'menu_order'             => 'intval',
 			'recommended_movie_ids'  => array( $this, 'parse_relative_comma_field' ),
+			'related_video_ids'      => array( $this, 'parse_relative_comma_field' ),
 		);
 
 		/**

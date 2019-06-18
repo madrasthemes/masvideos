@@ -46,6 +46,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         '_movie_run_time',
         '_movie_censor_rating',
         '_recommended_movie_ids',
+        '_related_video_ids',
     );
 
     /**
@@ -313,6 +314,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'movie_run_time'        => get_post_meta( $id, '_movie_run_time', true ),
                 'movie_censor_rating'   => get_post_meta( $id, '_movie_censor_rating', true ),
                 'recommended_movie_ids' => get_post_meta( $id, '_recommended_movie_ids', true ),
+                'related_video_ids'     => get_post_meta( $id, '_related_video_ids', true ),
             )
         );
     }
@@ -433,6 +435,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             '_movie_run_time'               => 'movie_run_time',
             '_movie_censor_rating'          => 'movie_censor_rating',
             '_recommended_movie_ids'        => 'recommended_movie_ids',
+            '_related_video_ids'            => 'related_video_ids',
         );
 
         // Make sure to take extra data (like movie url or text for external movies) into account.

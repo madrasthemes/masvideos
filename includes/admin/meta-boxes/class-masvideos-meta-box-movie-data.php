@@ -42,6 +42,7 @@ class MasVideos_Meta_Box_Movie_Data {
 
         include 'views/html-movie-data-general.php';
         include 'views/html-movie-data-linked-movies.php';
+        include 'views/html-movie-data-linked-videos.php';
         include 'views/html-movie-data-attributes.php';
         include 'views/html-movie-data-sources.php';
     }
@@ -65,6 +66,12 @@ class MasVideos_Meta_Box_Movie_Data {
                     'target'   => 'linked_movie_data',
                     'class'    => array(),
                     'priority' => 20,
+                ),
+                'linked_video'  => array(
+                    'label'    => __( 'Linked Videos', 'masvideos' ),
+                    'target'   => 'linked_video_data',
+                    'class'    => array(),
+                    'priority' => 30,
                 ),
                 'attribute'     => array(
                     'label'    => __( 'Attributes', 'masvideos' ),
@@ -280,6 +287,7 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_run_time'            => isset( $_POST['_movie_run_time'] ) ? masvideos_clean( $_POST['_movie_run_time'] ) : null,
                 'movie_censor_rating'       => isset( $_POST['_movie_censor_rating'] ) ? masvideos_clean( $_POST['_movie_censor_rating'] ) : null,
                 'recommended_movie_ids'     => isset( $_POST['recommended_movie_ids'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['recommended_movie_ids'] ) ) : array(),
+                'related_video_ids'         => isset( $_POST['related_video_ids'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['related_video_ids'] ) ) : array(),
                 // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );
