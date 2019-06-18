@@ -329,7 +329,7 @@ if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
             $episode = $GLOBALS['episode'];
         }
 
-        if ( $episode && ! is_a( $episode, 'MasVideos_Movie' ) ) {
+        if ( $episode && ! is_a( $episode, 'MasVideos_Episode' ) ) {
             // Make sure we have a valid episode, or set to false.
             $episode = masvideos_get_episode( $episode );
         }

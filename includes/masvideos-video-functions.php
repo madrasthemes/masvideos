@@ -329,7 +329,7 @@ if ( ! function_exists ( 'masvideos_get_the_video' ) ) {
             $video = $GLOBALS['video'];
         }
 
-        if ( $video && ! is_a( $video, 'MasVideos_Movie' ) ) {
+        if ( $video && ! is_a( $video, 'MasVideos_Video' ) ) {
             // Make sure we have a valid video, or set to false.
             $video = masvideos_get_video( $video );
         }
