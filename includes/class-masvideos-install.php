@@ -154,6 +154,11 @@ class MasVideos_Install {
                 'rated-9',
                 'rated-10',
             ),
+            'person_visibility' => array(
+                'exclude-from-search',
+                'exclude-from-catalog',
+                'featured',
+            ),
         );
 
         foreach ( $taxonomies as $taxonomy => $terms ) {
@@ -283,9 +288,14 @@ class MasVideos_Install {
                     'title'   => _x( 'TV Shows', 'Page title', 'masvideos' ),
                     'content' => '',
                 ),
-                'videos'      => array(
+                'videos'        => array(
                     'name'    => _x( 'videos', 'Page slug', 'masvideos' ),
                     'title'   => _x( 'Videos', 'Page title', 'masvideos' ),
+                    'content' => '',
+                ),
+                'persons'       => array(
+                    'name'    => _x( 'persons', 'Page slug', 'masvideos' ),
+                    'title'   => _x( 'Persons', 'Page title', 'masvideos' ),
                     'content' => '',
                 ),
             )
@@ -452,7 +462,7 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
             'manage_masvideos',
         );
 
-        $capability_types = array( 'episode', 'tv_show', 'tv_show_playlist', 'video', 'video_playlist', 'movie', 'movie_playlist' );
+        $capability_types = array( 'episode', 'tv_show', 'tv_show_playlist', 'video', 'video_playlist', 'movie', 'movie_playlist', 'person' );
 
         foreach ( $capability_types as $capability_type ) {
 

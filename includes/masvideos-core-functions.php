@@ -305,6 +305,10 @@ function masvideos_get_permalink_structure() {
             'episode_genre_base'           => _x( 'episode-genre', 'slug', 'masvideos' ),
             'episode_tag_base'             => _x( 'episode-tag', 'slug', 'masvideos' ),
             'episode_attribute_base'       => '',
+            'person_base'                  => _x( 'person', 'slug', 'masvideos' ),
+            'person_category_base'         => _x( 'person-category', 'slug', 'masvideos' ),
+            'person_tag_base'              => _x( 'person-tag', 'slug', 'masvideos' ),
+            'person_attribute_base'        => '',
         )
     );
 
@@ -334,6 +338,11 @@ function masvideos_get_permalink_structure() {
     $permalinks['episode_genre_rewrite_slug']       = untrailingslashit( $permalinks['episode_genre_base'] );
     $permalinks['episode_tag_rewrite_slug']         = untrailingslashit( $permalinks['episode_tag_base'] );
     $permalinks['episode_attribute_rewrite_slug']   = untrailingslashit( $permalinks['episode_attribute_base'] );
+
+    $permalinks['person_rewrite_slug']              = untrailingslashit( $permalinks['person_base'] );
+    $permalinks['person_category_rewrite_slug']     = untrailingslashit( $permalinks['person_category_base'] );
+    $permalinks['person_tag_rewrite_slug']          = untrailingslashit( $permalinks['person_tag_base'] );
+    $permalinks['person_attribute_rewrite_slug']    = untrailingslashit( $permalinks['person_attribute_base'] );
 
     return $permalinks;
 }
