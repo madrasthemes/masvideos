@@ -20,6 +20,7 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-account-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-term-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-attribute-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-page-functions.php';
+require MASVIDEOS_ABSPATH . 'includes/masvideos-person-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-episode-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-playlist-functions.php';

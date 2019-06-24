@@ -150,6 +150,38 @@ function masvideos_attribute_taxonomy_id_by_name( $post_type, $name ) {
 }
 
 /**
+ * Get a person attributes label.
+ *
+ * @param string $name Attribute name.
+ * @param MasVideos_Person $person Person data.
+ * @return string
+ */
+function masvideos_person_attribute_label( $name, $person = '' ) {
+    if ( taxonomy_is_person_attribute( $name ) ) {
+        $name       = masvideos_sanitize_taxonomy_name( str_replace( 'person_', '', $name ) );
+        $all_labels = wp_list_pluck( masvideos_get_attribute_taxonomies( 'person' ), 'attribute_label', 'attribute_name' );
+        $label      = isset( $all_labels[ $name ] ) ? $all_labels[ $name ] : $name;
+    } elseif ( $person ) {
+        $attributes = array();
+
+        if ( false !== $person ) {
+            $attributes = $person->get_attributes();
+        }
+
+        // Attempt to get label from person, as entered by the user.
+        if ( $attributes && isset( $attributes[ sanitize_title( $name ) ] ) ) {
+            $label = $attributes[ sanitize_title( $name ) ]->get_name();
+        } else {
+            $label = $name;
+        }
+    } else {
+        $label = $name;
+    }
+
+    return apply_filters( 'masvideos_person_attribute_label', $label, $name, $person );
+}
+
+/**
  * Get a episode attributes label.
  *
  * @param string $name Attribute name.
@@ -441,6 +473,19 @@ function masvideos_check_if_attribute_name_is_reserved( $attribute_name ) {
     );
 
     return in_array( $attribute_name, $reserved_terms, true );
+}
+
+/**
+ * Callback for person array filter to get visible only.
+ *
+ * @since  1.0.0
+ * @param  MasVideos_Person_Attribute $attribute Attribute data.
+ * @return bool
+ */
+function masvideos_attributes_person_array_filter_visible( $attribute ) {
+    $class_name = 'MasVideos_Person_Attribute';
+
+    return $class_name && $attribute && is_a( $attribute, $class_name ) && $attribute->get_visible() && ( ! $attribute->is_taxonomy() || taxonomy_exists( $attribute->get_name() ) );
 }
 
 /**
