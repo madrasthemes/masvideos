@@ -122,9 +122,8 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                 wp_enqueue_script( 'masvideos-admin-movie-meta-boxes' );
             }
 
-            if ( in_array( str_replace( 'edit-', '', $screen_id ), array( 'episode', 'tv_show', 'video', 'movie' ) ) ) {
+            if ( in_array( str_replace( 'edit-', '', $screen_id ), array( 'person', 'episode', 'tv_show', 'video', 'movie' ) ) ) {
                 $post_id            = isset( $post->ID ) ? $post->ID : '';
-                $currency           = '';
                 $remove_item_notice = __( 'Are you sure you want to remove the selected items?', 'masvideos' );
 
                 $params = array(
