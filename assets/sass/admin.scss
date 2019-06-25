@@ -566,7 +566,7 @@
 #masvideos-tv-show-data,
 #masvideos-video-data,
 #masvideos-movie-data {
-    .hndle {
+    .handle {
         padding: 10px;
 
         span {
@@ -1315,7 +1315,7 @@
 .post-type-tv_show,
 .post-type-episode {
     .edit-post-sidebar .components-panel .edit-post-meta-boxes-area.is-side {
-        #poststuff .postbox .hndle {
+        #poststuff .postbox .handle {
             font-size: 13px;
             color: #191e23;
             cursor: pointer;
@@ -1326,8 +1326,8 @@
         }
 
         #poststuff .postbox:last-child > .inside,
-        #poststuff .postbox:last-child .hndle,
-        #poststuff .postbox:not(.closed) .hndle {
+        #poststuff .postbox:last-child .handle,
+        #poststuff .postbox:not(.closed) .handle {
             border-bottom: 0;
         }
 

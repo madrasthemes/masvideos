@@ -26,7 +26,7 @@ jQuery( function( $ ) {
     });
 
     // Type box.
-    $( '.type_box' ).appendTo( '#masvideos-video-data .hndle span' );
+    $( '.type_box' ).appendTo( '#masvideos-video-data .handle span' );
 
     // Date picker fields.
     function date_picker_select( datepicker ) {
