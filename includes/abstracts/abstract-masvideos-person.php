@@ -587,7 +587,7 @@ class MasVideos_Person extends MasVideos_Data {
      * @param int|string $place_of_birth Person place of birth.
      */
     public function set_place_of_birth( $place_of_birth = '' ) {
-        $this->set_date_prop( 'place_of_birth', $place_of_birth );
+        $this->set_prop( 'place_of_birth', $place_of_birth );
     }
 
     /**
@@ -617,7 +617,7 @@ class MasVideos_Person extends MasVideos_Data {
      * @param int|string $imdb_id Person imdb id.
      */
     public function set_imdb_id( $imdb_id = '' ) {
-        $this->set_date_prop( 'imdb_id', $imdb_id );
+        $this->set_prop( 'imdb_id', $imdb_id );
     }
 
     /**
@@ -627,7 +627,7 @@ class MasVideos_Person extends MasVideos_Data {
      * @param int|string $tmdb_id Person tmdb id.
      */
     public function set_tmdb_id( $tmdb_id = '' ) {
-        $this->set_date_prop( 'tmdb_id', $tmdb_id );
+        $this->set_prop( 'tmdb_id', $tmdb_id );
     }
 
     /*
