@@ -205,7 +205,7 @@ class MasVideos_Admin_Meta_Boxes {
         self::$saved_meta_boxes = true;
 
         // Check the post type
-        if ( in_array( $post->post_type, array( 'episode', 'tv_show', 'video', 'movie' ) ) ) {
+        if ( in_array( $post->post_type, array( 'person', 'episode', 'tv_show', 'video', 'movie' ) ) ) {
             do_action( 'masvideos_process_' . $post->post_type . '_meta', $post_id, $post );
         }
     }
