@@ -249,7 +249,6 @@ class MasVideos_Meta_Box_TV_Show_Data {
      */
     public static function save( $post_id, $post ) {
         // Process tv show type first so we have the correct class to run setters.
-        // $tv_show_type = empty( $_POST['tv_show-type'] ) ? MasVideos_TV_Show_Factory::get_tv_show_type( $post_id ) : sanitize_title( stripslashes( $_POST['tv_show-type'] ) );
         $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $post_id );
         $tv_show      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();

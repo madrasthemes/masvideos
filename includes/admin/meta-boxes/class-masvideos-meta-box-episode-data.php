@@ -259,7 +259,6 @@ class MasVideos_Meta_Box_Episode_Data {
      */
     public static function save( $post_id, $post ) {
         // Process episode type first so we have the correct class to run setters.
-        // $episode_type = empty( $_POST['episode-type'] ) ? MasVideos_Episode_Factory::get_episode_type( $post_id ) : sanitize_title( stripslashes( $_POST['episode-type'] ) );
         $classname    = MasVideos_Episode_Factory::get_episode_classname( $post_id );
         $episode      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();

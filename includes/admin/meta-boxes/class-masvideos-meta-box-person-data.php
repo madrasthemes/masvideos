@@ -200,7 +200,6 @@ class MasVideos_Meta_Box_Person_Data {
      */
     public static function save( $post_id, $post ) {
         // Process person type first so we have the correct class to run setters.
-        // $person_type = empty( $_POST['person-type'] ) ? MasVideos_Person_Factory::get_person_type( $post_id ) : sanitize_title( stripslashes( $_POST['person-type'] ) );
         $classname    = MasVideos_Person_Factory::get_person_classname( $post_id );
         $person       = new $classname( $post_id );
         $attributes   = self::prepare_attributes();

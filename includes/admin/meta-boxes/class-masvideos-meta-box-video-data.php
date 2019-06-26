@@ -200,7 +200,6 @@ class MasVideos_Meta_Box_Video_Data {
      */
     public static function save( $post_id, $post ) {
         // Process video type first so we have the correct class to run setters.
-        // $video_type = empty( $_POST['video-type'] ) ? MasVideos_Video_Factory::get_video_type( $post_id ) : sanitize_title( stripslashes( $_POST['video-type'] ) );
         $classname    = MasVideos_Video_Factory::get_video_classname( $post_id );
         $video      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();
