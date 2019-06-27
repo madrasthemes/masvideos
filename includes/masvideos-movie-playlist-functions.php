@@ -303,7 +303,7 @@ function masvideos_loop_movie_link_for_movie_playlist( $link, $movie ) {
         return add_query_arg( 'movie_playlist_id', $movie_playlist_id, $link );
     }
 
-    return $link;  
+    return $link;
 }
 
 /**

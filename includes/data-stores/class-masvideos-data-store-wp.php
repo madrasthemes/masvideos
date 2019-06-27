@@ -392,6 +392,7 @@ class MasVideos_Data_Store_WP {
                         'key'     => $key,
                         'value'   => $end_timestamp,
                         'compare' => $operator,
+                        'type'    => 'numeric',
                     );
                     break;
                 case '<':
@@ -400,6 +401,7 @@ class MasVideos_Data_Store_WP {
                         'key'     => $key,
                         'value'   => $start_timestamp,
                         'compare' => $operator,
+                        'type'    => 'numeric',
                     );
                     break;
                 default:
@@ -407,11 +409,13 @@ class MasVideos_Data_Store_WP {
                         'key'     => $key,
                         'value'   => $start_timestamp,
                         'compare' => '>=',
+                        'type'    => 'numeric',
                     );
                     $wp_query_args['meta_query'][] = array(
                         'key'     => $key,
                         'value'   => $end_timestamp,
                         'compare' => '<=',
+                        'type'    => 'numeric',
                     );
             }
         } else {

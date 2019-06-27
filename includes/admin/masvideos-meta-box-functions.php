@@ -328,10 +328,6 @@ function masvideos_wp_embed_video( $field ) {
 
         echo '<textarea class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '"  name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" rows="' . esc_attr( $field['rows'] ) . '" cols="' . esc_attr( $field['cols'] ) . '" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
 
-        if ( ! empty( $field['value'] ) ) {
-            echo '<div class="wp-video">' . $field['value'] . '</div>';
-        }
-
     echo '</div>';
 }
 

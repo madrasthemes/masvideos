@@ -139,7 +139,7 @@ class MasVideos_Meta_Box_Episode_Data {
                 $source = array(
                     'name'          => isset( $source_names[ $i ] ) ? masvideos_clean( $source_names[ $i ] ) : '',
                     'choice'        => isset( $source_choice[ $i ] ) ? masvideos_clean( $source_choice[ $i ] ) : '',
-                    'embed_content' => isset( $source_embed_content[ $i ] ) ? masvideos_sanitize_textarea_iframe( $source_embed_content[ $i ] ) : '',
+                    'embed_content' => isset( $source_embed_content[ $i ] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $source_embed_content[ $i ] ) ) : '',
                     'link'          => isset( $source_link[ $i ] ) ? masvideos_clean( $source_link[ $i ] ) : '',
                     'quality'       => isset( $source_quality[ $i ] ) ? masvideos_clean( $source_quality[ $i ] ) : '',
                     'language'      => isset( $source_language[ $i ] ) ? masvideos_clean( $source_language[ $i ] ) : '',
@@ -273,7 +273,7 @@ class MasVideos_Meta_Box_Episode_Data {
                 'episode_number'              => isset( $_POST['_episode_number'] ) ? masvideos_clean( $_POST['_episode_number'] ) : null,
                 'episode_choice'              => isset( $_POST['_episode_choice'] ) ? masvideos_clean( $_POST['_episode_choice'] ) : null,
                 'episode_attachment_id'       => isset( $_POST['_episode_attachment_id'] ) ? masvideos_clean( $_POST['_episode_attachment_id'] ) : null,
-                'episode_embed_content'       => isset( $_POST['_episode_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_episode_embed_content'] ) : null,
+                'episode_embed_content'       => isset( $_POST['_episode_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_episode_embed_content'] ) ) : null,
                 'episode_url_link'            => isset( $_POST['_episode_url_link'] ) ? masvideos_clean( $_POST['_episode_url_link'] ) : null,
                 'episode_release_date'        => isset( $_POST['_episode_release_date'] ) ? masvideos_clean( $_POST['_episode_release_date'] ) : null,
                 'episode_run_time'            => isset( $_POST['_episode_run_time'] ) ? masvideos_clean( $_POST['_episode_run_time'] ) : null,

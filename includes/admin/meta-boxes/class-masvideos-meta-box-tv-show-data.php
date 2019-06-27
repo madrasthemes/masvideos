@@ -258,14 +258,7 @@ class MasVideos_Meta_Box_TV_Show_Data {
             array(
                 'featured'                  => isset( $_POST['_featured'] ),
                 'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
-                // 'tv_show_choice'              => isset( $_POST['_tv_show_choice'] ) ? masvideos_clean( $_POST['_tv_show_choice'] ) : null,
-                // 'tv_show_attachment_id'       => isset( $_POST['_tv_show_attachment_id'] ) ? masvideos_clean( $_POST['_tv_show_attachment_id'] ) : null,
-                // 'tv_show_embed_content'       => isset( $_POST['_tv_show_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_tv_show_embed_content'] ) : null,
-                // 'tv_show_url_link'            => isset( $_POST['_tv_show_url_link'] ) ? masvideos_clean( $_POST['_tv_show_url_link'] ) : null,
                 'attributes'                => $attributes,
-                // 'tv_show_release_date'        => isset( $_POST['_tv_show_release_date'] ) ? masvideos_clean( $_POST['_tv_show_release_date'] ) : null,
-                // 'tv_show_run_time'            => isset( $_POST['_tv_show_run_time'] ) ? masvideos_clean( $_POST['_tv_show_run_time'] ) : null,
-                // 'tv_show_censor_rating'       => isset( $_POST['_tv_show_censor_rating'] ) ? masvideos_clean( $_POST['_tv_show_censor_rating'] ) : null,
                 // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );

@@ -318,26 +318,21 @@ function masvideos_get_related_episodes( $episode_id, $limit = 5, $exclude_ids =
 
 if ( ! function_exists ( 'masvideos_the_episode' ) ) {
     function masvideos_the_episode( $post = null ) {
-        global $episode;
-
-        $episode_src = masvideos_get_the_episode( $episode );
-        $episode_choice = $episode->get_episode_choice();
-
-        if ( ! empty ( $episode_src ) ) {
-            if ( $episode_choice == 'episode_file' ) {
-                echo do_shortcode('[video src="' . $episode_src . '"]');
-            } elseif ( $episode_choice == 'episode_embed' ) {
-                echo '<div class="wp-video">' . $episode_src . '</div>';
-            } elseif ( $episode_choice == 'episode_url' ) {
-                echo do_shortcode('[video src="' . $episode_src . '"]');
-            }
-        }
+        echo masvideos_get_the_episode( $post );
     }
 }
 
 if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
-    function masvideos_get_the_episode( $post = null ) {
-        global $episode;
+    function masvideos_get_the_episode( $episode = null ) {
+        if ( is_null( $episode ) && ! empty( $GLOBALS['episode'] ) ) {
+            // Episode was null so pull from global.
+            $episode = $GLOBALS['episode'];
+        }
+
+        if ( $episode && ! is_a( $episode, 'MasVideos_Episode' ) ) {
+            // Make sure we have a valid episode, or set to false.
+            $episode = masvideos_get_episode( $episode );
+        }
 
         $episode_src = '';
         $episode_choice = $episode->get_episode_choice();
@@ -350,10 +345,9 @@ if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
             $episode_src = $episode->get_episode_url_link();
         }
 
-        return $episode_src;
+        return apply_filters( 'the_content', $episode_src );
     }
 }
-
 
 if ( ! function_exists( 'masvideos_get_episode_thumbnail' ) ) {
     /**

@@ -317,27 +317,22 @@ function masvideos_get_related_videos( $video_id, $limit = 5, $exclude_ids = arr
 }
 
 if ( ! function_exists ( 'masvideos_the_video' ) ) {
-    function masvideos_the_video( $video = null ) {
-        global $video;
-
-        $video_src = masvideos_get_the_video( $video );
-        $video_choice = $video->get_video_choice();
-
-        if ( ! empty ( $video_src ) ) {
-            if ( $video_choice == 'video_file' ) {
-                echo do_shortcode('[video src="' . $video_src . '"]');
-            } elseif ( $video_choice == 'video_embed' ) {
-                echo '<div class="wp-video">' . $video_src . '</div>';
-            } elseif ( $video_choice == 'video_url' ) {
-                echo do_shortcode('[video src="' . $video_src . '"]');
-            }
-        }
+    function masvideos_the_video( $post = null ) {
+        echo masvideos_get_the_video( $post );
     }
 }
 
 if ( ! function_exists ( 'masvideos_get_the_video' ) ) {
-    function masvideos_get_the_video( $vieo = null ) {
-        global $video;
+    function masvideos_get_the_video( $video = null ) {
+        if ( is_null( $video ) && ! empty( $GLOBALS['video'] ) ) {
+            // Video was null so pull from global.
+            $video = $GLOBALS['video'];
+        }
+
+        if ( $video && ! is_a( $video, 'MasVideos_Video' ) ) {
+            // Make sure we have a valid video, or set to false.
+            $video = masvideos_get_video( $video );
+        }
 
         $video_src = '';
         $video_choice = $video->get_video_choice();
@@ -350,7 +345,7 @@ if ( ! function_exists ( 'masvideos_get_the_video' ) ) {
             $video_src = $video->get_video_url_link();
         }
 
-        return $video_src;
+        return apply_filters( 'the_content', $video_src );
     }
 }
 

@@ -211,7 +211,7 @@ class MasVideos_Meta_Box_Video_Data {
                 'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
                 'video_choice'              => isset( $_POST['_video_choice'] ) ? masvideos_clean( $_POST['_video_choice'] ) : null,
                 'video_attachment_id'       => isset( $_POST['_video_attachment_id'] ) ? masvideos_clean( $_POST['_video_attachment_id'] ) : null,
-                'video_embed_content'       => isset( $_POST['_video_embed_content'] ) ? masvideos_sanitize_textarea_iframe( $_POST['_video_embed_content'] ) : null,
+                'video_embed_content'       => isset( $_POST['_video_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_video_embed_content'] ) ) : null,
                 'video_url_link'            => isset( $_POST['_video_url_link'] ) ? masvideos_clean( $_POST['_video_url_link'] ) : null,
                 'attributes'                => $attributes,
                 // 'default_attributes'     => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
