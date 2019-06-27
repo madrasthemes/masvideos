@@ -370,6 +370,7 @@ add_action( 'masvideos_after_single_movie_summary', 'masvideos_related_movies', 
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_movie_tabs', 30 );
 
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_recommended_movies', 30 );
+add_action( 'masvideos_after_single_movie_summary', 'masvideos_movie_related_videos', 30 );
 
 add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_release_year', 10 );
 add_action( 'masvideos_single_movie_meta', 'masvideos_template_single_movie_genres', 20 );
