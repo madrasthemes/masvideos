@@ -238,3 +238,75 @@ if ( ! function_exists( 'masvideos_get_person_search_form' ) ) {
         echo $form; // WPCS: XSS ok.
     }
 }
+
+/**
+ * Loop
+ */
+
+if ( ! function_exists( 'masvideos_person_loop_start' ) ) {
+
+    /**
+     * Output the start of a person loop. By default this is a UL.
+     *
+     * @param bool $echo Should echo?.
+     * @return string
+     */
+    function masvideos_person_loop_start( $echo = true ) {
+        ob_start();
+
+        masvideos_set_persons_loop_prop( 'loop', 0 );
+
+        ?><div class="persons columns-<?php echo esc_attr( masvideos_get_persons_loop_prop( 'columns' ) ); ?>"><div class="persons__inner"><?php
+
+        $loop_start = apply_filters( 'masvideos_person_loop_start', ob_get_clean() );
+
+        if ( $echo ) {
+            echo $loop_start; // WPCS: XSS ok.
+        } else {
+            return $loop_start;
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_persons_loop_content' ) ) {
+
+    /*
+     * Output the person loop. By default this is a UL.
+     */
+    function masvideos_persons_loop_content() {
+        masvideos_get_template_part( 'content', 'person' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_no_persons_found' ) ) {
+
+    /**
+     * Handles the loop when no persons were found/no person exist.
+     */
+    function masvideos_no_persons_found() {
+        ?><p class="masvideos-info"><?php _e( 'No persons were found matching your selection.', 'masvideos' ); ?></p><?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_person_loop_end' ) ) {
+
+    /**
+     * Output the end of a person loop. By default this is a UL.
+     *
+     * @param bool $echo Should echo?.
+     * @return string
+     */
+    function masvideos_person_loop_end( $echo = true ) {
+        ob_start();
+
+        ?></div></div><?php
+
+        $loop_end = apply_filters( 'masvideos_person_loop_end', ob_get_clean() );
+
+        if ( $echo ) {
+            echo $loop_end; // WPCS: XSS ok.
+        } else {
+            return $loop_end;
+        }
+    }
+}
