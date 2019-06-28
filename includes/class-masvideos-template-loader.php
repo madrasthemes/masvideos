@@ -13,6 +13,13 @@ defined( 'ABSPATH' ) || exit;
 class MasVideos_Template_Loader {
 
     /**
+     * The persons page ID.
+     *
+     * @var integer
+     */
+    private static $persons_page_id = 0;
+
+    /**
      * The episodes page ID.
      *
      * @var integer
@@ -52,6 +59,7 @@ class MasVideos_Template_Loader {
      */
     public static function init() {
         self::$theme_support = current_theme_supports( 'masvideos' );
+        self::$persons_page_id  = masvideos_get_page_id( 'persons' );
         self::$episodes_page_id  = masvideos_get_page_id( 'episodes' );
         self::$tv_shows_page_id  = masvideos_get_page_id( 'tv_shows' );
         self::$videos_page_id  = masvideos_get_page_id( 'videos' );
@@ -90,7 +98,7 @@ class MasVideos_Template_Loader {
             /**
              * Filter hook to choose which files to find before MasVideos does it's own logic.
              *
-             * @since 3.0.0
+             * @since 1.0.0
              * @var array
              */
             $search_files = self::get_template_loader_files( $default_file );
@@ -107,11 +115,15 @@ class MasVideos_Template_Loader {
     /**
      * Get the default filename for a template.
      *
-     * @since  3.0.0
+     * @since  1.0.0
      * @return string
      */
     private static function get_template_loader_default_file() {
-        if ( is_singular( 'episode' ) ) {
+        if ( is_singular( 'person' ) ) {
+            $default_file = 'single-person.php';
+        } elseif ( is_person_taxonomy() || is_persons() ) {
+            $default_file = self::$theme_support ? 'archive-person.php' : '';
+        } elseif ( is_singular( 'episode' ) ) {
             $default_file = 'single-episode.php';
         } elseif ( is_episode_taxonomy() || is_episodes() ) {
             $default_file = self::$theme_support ? 'archive-episode.php' : '';
@@ -142,7 +154,7 @@ class MasVideos_Template_Loader {
     /**
      * Get an array of filenames to search for a given template.
      *
-     * @since  3.0.0
+     * @since  1.0.0
      * @param  string $default_file The default file name.
      * @return string[]
      */
@@ -152,6 +164,23 @@ class MasVideos_Template_Loader {
 
         if ( is_page_template() ) {
             $templates[] = get_page_template_slug();
+        }
+
+        if ( is_singular( 'person' ) ) {
+            $object       = get_queried_object();
+            $name_decoded = urldecode( $object->post_name );
+            if ( $name_decoded !== $object->post_name ) {
+                $templates[] = "single-person-{$name_decoded}.php";
+            }
+            $templates[] = "single-person-{$object->post_name}.php";
+        }
+
+        if ( is_person_taxonomy() ) {
+            $object      = get_queried_object();
+            $templates[] = 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '-' . $object->slug . '.php';
+            $templates[] = 'taxonomy-' . $object->taxonomy . '.php';
+            $templates[] = MasVideos()->template_path() . 'taxonomy-' . $object->taxonomy . '.php';
         }
 
         if ( is_singular( 'episode' ) ) {
