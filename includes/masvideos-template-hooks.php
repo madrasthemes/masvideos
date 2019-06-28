@@ -45,6 +45,16 @@ add_action( 'masvideos_account_video-playlists_endpoint', 'masvideos_account_vid
 add_action( 'masvideos_account_tv-show-playlists_endpoint', 'masvideos_account_tv_show_playlists' );
 
 /**
+ * Persons Loop.
+ */
+add_action( 'masvideos_no_persons_found', 'masvideos_no_persons_found', 10 );
+add_action( 'masvideos_persons_loop', 'masvideos_persons_loop_content', 20 );
+
+/**
+ * Person Single.
+ */
+
+/**
  * Episodes Loop.
  */
 add_action( 'masvideos_no_episodes_found', 'masvideos_no_episodes_found', 10 );
