@@ -42,10 +42,14 @@ class MasVideos_Admin_Posts {
         // Add columns for episode
         add_filter( 'manage_episode_posts_columns', array( $this, 'add_feature_image_columns' ) );
         add_action( 'manage_episode_posts_custom_column', array( $this, 'add_feature_image_column' ), 10, 2 );
+
+        // Add columns for person
+        add_filter( 'manage_person_posts_columns', array( $this, 'add_feature_image_columns' ) );
+        add_action( 'manage_person_posts_custom_column', array( $this, 'add_feature_image_column' ), 10, 2 );
     }
 
     /**
-     * Thumbnail column added to movie, video, tv show  admin.
+     * Thumbnail column added to movie, video, tv show, episode and person  admin.
      *
      * @param mixed $columns
      * @return array
@@ -66,7 +70,7 @@ class MasVideos_Admin_Posts {
     }
 
     /**
-     * Thumbnail column value added to movie, video, tv show admin.
+     * Thumbnail column value added to movie, video, tv show, episode and person admin.
      *
      * @param string $columns
      * @param string $column
