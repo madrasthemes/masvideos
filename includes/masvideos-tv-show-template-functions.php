@@ -753,7 +753,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_new_episodes_count' ) )
         $count = count( $all_episodes );
 
         if( $count ) {
-            echo wp_kses_post( sprintf( _n( '<div class="tv-show__episode">%s</div> Episode', '<span>%s</span> Episodes', $count, 'masvideos' ), $count ) ) ;
+            echo wp_kses_post( sprintf( _n( '<span>%s</span> Episode', '<span>%s</span> Episodes', $count, 'masvideos' ), $count ) ) ;
         }
     }
 }
