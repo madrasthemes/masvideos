@@ -72,7 +72,7 @@ class MasVideos_Admin_Importers {
 	 * @return bool Whether current user can perform imports.
 	 */
 	protected function import_allowed() {
-		return ( current_user_can( 'edit_tv_shows' ) || current_user_can( 'edit_videos' ) || current_user_can( 'edit_movies' ) ) && current_user_can( 'import' );
+		return ( current_user_can( 'edit_tv_shows' ) || current_user_can( 'edit_videos' ) || current_user_can( 'edit_movies' ) || current_user_can( 'edit_persons' ) ) && current_user_can( 'import' );
 	}
 
 	/**
