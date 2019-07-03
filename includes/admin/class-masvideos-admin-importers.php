@@ -118,10 +118,10 @@ class MasVideos_Admin_Importers {
 	public function register_importers() {
 		if ( defined( 'WP_LOAD_IMPORTERS' ) ) {
 			add_action( 'import_start', array( $this, 'post_importer_compatibility' ) );
-			register_importer( 'masvideos_person_csv', __( 'MasVideos Persons (CSV)', 'masvideos' ), __( 'Import <strong>persons</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'person_importer' ) );
-			register_importer( 'masvideos_tv_show_csv', __( 'MasVideos TV Shows (CSV)', 'masvideos' ), __( 'Import <strong>tv shows</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'tv_show_importer' ) );
-			register_importer( 'masvideos_video_csv', __( 'MasVideos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'video_importer' ) );
-			register_importer( 'masvideos_movie_csv', __( 'MasVideos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
+			register_importer( 'masvideos_person_csv', __( 'MAS Videos Persons (CSV)', 'masvideos' ), __( 'Import <strong>persons</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'person_importer' ) );
+			register_importer( 'masvideos_tv_show_csv', __( 'MAS Videos TV Shows (CSV)', 'masvideos' ), __( 'Import <strong>tv shows</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'tv_show_importer' ) );
+			register_importer( 'masvideos_video_csv', __( 'MAS Videos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'video_importer' ) );
+			register_importer( 'masvideos_movie_csv', __( 'MAS Videos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
 		}
 	}
 
