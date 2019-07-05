@@ -105,6 +105,8 @@ class MasVideos_AJAX {
             'add_new_attribute_tv_show'                        => false,
             'save_attributes_tv_show'                          => false,
             'json_search_tv_shows'                             => false,
+            'add_person_movie'                                 => false,
+            'save_persons_movie'                               => false,
             'add_source_movie'                                 => false,
             'save_sources_movie'                               => false,
             'add_attribute_movie'                              => false,
@@ -765,6 +767,76 @@ class MasVideos_AJAX {
         }
 
         wp_send_json( apply_filters( 'masvideos_json_search_found_tv_shows', $tv_shows ) );
+    }
+
+    /**
+     * Add an person row.
+     */
+    public static function add_person_movie() {
+        ob_start();
+
+        check_ajax_referer( 'add-person-movie', 'security' );
+
+        if ( ! current_user_can( 'edit_movies' ) ) {
+            wp_die( -1 );
+        }
+
+        $i             = absint( $_POST['i'] );
+        $metabox_class = array();
+        $person        = array(
+            'id'            => sanitize_text_field( $_POST['person_id'] ),
+            'categoires'    => array()
+        );
+
+        include 'admin/meta-boxes/views/html-movie-person.php';
+        wp_die();
+    }
+
+    /**
+     * Save persons via ajax.
+     */
+    public static function save_persons_movie() {
+        check_ajax_referer( 'save-persons-movie', 'security' );
+
+        if ( ! current_user_can( 'edit_movies' ) ) {
+            wp_die( -1 );
+        }
+
+        try {
+            parse_str( $_POST['data'], $data );
+
+            $persons      = MasVideos_Meta_Box_Movie_Data::prepare_persons( $data );
+            $movie_id     = absint( $_POST['post_id'] );
+            $classname    = MasVideos_Movie_Factory::get_movie_classname( $movie_id );
+            $movie        = new $classname( $movie_id );
+
+            $movie->set_persons( $persons );
+            $movie->save();
+
+            $response = array();
+
+            ob_start();
+            $persons    = $movie->get_persons( 'edit' );
+            $i          = -1;
+
+            foreach ( $data['person_ids'] as $person_id ) {
+                $person = isset( $persons[ sanitize_title( $person_id ) ] ) ? $persons[ sanitize_title( $person_id ) ] : false;
+                if ( ! $person ) {
+                    continue;
+                }
+                $i++;
+                $metabox_class = array();
+
+                include( 'admin/meta-boxes/views/html-movie-person.php' );
+            }
+
+            $response['html'] = ob_get_clean();
+
+            wp_send_json_success( $response );
+        } catch ( Exception $e ) {
+            wp_send_json_error( array( 'error' => $e->getMessage() ) );
+        }
+        wp_die();
     }
 
     /**

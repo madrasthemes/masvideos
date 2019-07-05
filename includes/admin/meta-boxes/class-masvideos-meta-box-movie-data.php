@@ -43,6 +43,7 @@ class MasVideos_Meta_Box_Movie_Data {
         include 'views/html-movie-data-general.php';
         include 'views/html-movie-data-linked-movies.php';
         include 'views/html-movie-data-linked-videos.php';
+        include 'views/html-movie-data-persons.php';
         include 'views/html-movie-data-attributes.php';
         include 'views/html-movie-data-sources.php';
     }
@@ -72,6 +73,12 @@ class MasVideos_Meta_Box_Movie_Data {
                     'target'   => 'linked_video_data',
                     'class'    => array(),
                     'priority' => 30,
+                ),
+                'person'        => array(
+                    'label'    => __( 'Persons', 'masvideos' ),
+                    'target'   => 'movie_persons',
+                    'class'    => array(),
+                    'priority' => 40,
                 ),
                 'attribute'     => array(
                     'label'    => __( 'Attributes', 'masvideos' ),
@@ -113,6 +120,53 @@ class MasVideos_Meta_Box_Movie_Data {
         }
 
         return $a['priority'] < $b['priority'] ? -1 : 1;
+    }
+
+    /**
+     * Prepare persons for save.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public static function prepare_persons( $data = false ) {
+        $persons = array();
+
+        if ( ! $data ) {
+            $data = $_POST;
+        }
+
+        if ( isset( $data['person_ids'], $data['person_categoires'] ) ) {
+            $person_ids         = $data['person_ids'];
+            $person_categoires  = $data['person_categoires'];
+            $person_titles      = isset( $data['person_titles'] ) ? $data['person_titles'] : array();
+            $person_ids_max_key = max( array_keys( $person_ids ) );
+
+            for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
+                if ( empty( $person_ids[ $i ] ) ) {
+                    continue;
+                }
+
+                $categoires = array();
+
+                if( isset( $person_categoires[ $i ] ) ) {
+                    foreach ( $person_categoires[ $i ] as $key => $category ) {
+                        $categoires[$key] = array(
+                            'id'        => $category,
+                            'title'     => isset( $person_titles[ $i ][ $category ] ) ? $person_titles[ $i ][ $category ] : ''
+                        );
+                    }
+                }
+
+                $person = array(
+                    'id'            => $person_ids[ $i ],
+                    'categoires'    => $categoires
+                );
+
+                $persons[] = $person;
+            }
+        }
+        return $persons;
     }
 
     /**
@@ -232,9 +286,10 @@ class MasVideos_Meta_Box_Movie_Data {
      */
     public static function save( $post_id, $post ) {
         // Process movie type first so we have the correct class to run setters.
-        $classname    = MasVideos_Movie_Factory::get_movie_classname( $post_id );
-        $movie      = new $classname( $post_id );
-        $attributes   = self::prepare_attributes();
+        $classname      = MasVideos_Movie_Factory::get_movie_classname( $post_id );
+        $movie          = new $classname( $post_id );
+        $persons        = self::prepare_persons();
+        $attributes     = self::prepare_attributes();
 
         $errors = $movie->set_props(
             array(
@@ -244,6 +299,7 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_attachment_id'       => isset( $_POST['_movie_attachment_id'] ) ? masvideos_clean( $_POST['_movie_attachment_id'] ) : null,
                 'movie_embed_content'       => isset( $_POST['_movie_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_movie_embed_content'] ) ) : null,
                 'movie_url_link'            => isset( $_POST['_movie_url_link'] ) ? masvideos_clean( $_POST['_movie_url_link'] ) : null,
+                'persons'                   => $persons,
                 'attributes'                => $attributes,
                 'movie_release_date'        => isset( $_POST['_movie_release_date'] ) ? masvideos_clean( $_POST['_movie_release_date'] ) : null,
                 'movie_run_time'            => isset( $_POST['_movie_run_time'] ) ? masvideos_clean( $_POST['_movie_run_time'] ) : null,
