@@ -156,43 +156,6 @@ class MasVideos_Meta_Box_Video_Data {
     }
 
     /**
-     * Prepare attributes for a specific variation or defaults.
-     *
-     * @param  array  $all_attributes
-     * @param  string $key_prefix
-     * @param  int    $index
-     * @return array
-     */
-    private static function prepare_set_attributes( $all_attributes, $key_prefix = 'attribute_', $index = null ) {
-        $attributes = array();
-
-        if ( $all_attributes ) {
-            foreach ( $all_attributes as $attribute ) {
-                if ( $attribute->get_variation() ) {
-                    $attribute_key = sanitize_title( $attribute->get_name() );
-
-                    if ( ! is_null( $index ) ) {
-                        $value = isset( $_POST[ $key_prefix . $attribute_key ][ $index ] ) ? wp_unslash( $_POST[ $key_prefix . $attribute_key ][ $index ] ) : '';
-                    } else {
-                        $value = isset( $_POST[ $key_prefix . $attribute_key ] ) ? wp_unslash( $_POST[ $key_prefix . $attribute_key ] ) : '';
-                    }
-
-                    if ( $attribute->is_taxonomy() ) {
-                        // Don't use masvideos_clean as it destroys sanitized characters.
-                        $value = sanitize_title( $value );
-                    } else {
-                        $value = html_entity_decode( masvideos_clean( $value ), ENT_QUOTES, get_bloginfo( 'charset' ) ); // WPCS: sanitization ok.
-                    }
-
-                    $attributes[ $attribute_key ] = $value;
-                }
-            }
-        }
-
-        return $attributes;
-    }
-
-    /**
      * Save meta box data.
      *
      * @param int  $post_id
@@ -200,7 +163,6 @@ class MasVideos_Meta_Box_Video_Data {
      */
     public static function save( $post_id, $post ) {
         // Process video type first so we have the correct class to run setters.
-        // $video_type = empty( $_POST['video-type'] ) ? MasVideos_Video_Factory::get_video_type( $post_id ) : sanitize_title( stripslashes( $_POST['video-type'] ) );
         $classname    = MasVideos_Video_Factory::get_video_classname( $post_id );
         $video      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();
@@ -214,7 +176,6 @@ class MasVideos_Meta_Box_Video_Data {
                 'video_embed_content'       => isset( $_POST['_video_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_video_embed_content'] ) ) : null,
                 'video_url_link'            => isset( $_POST['_video_url_link'] ) ? masvideos_clean( $_POST['_video_url_link'] ) : null,
                 'attributes'                => $attributes,
-                // 'default_attributes'     => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );
 

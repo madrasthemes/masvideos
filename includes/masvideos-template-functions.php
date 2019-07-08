@@ -10,6 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require MASVIDEOS_ABSPATH . 'includes/masvideos-person-template-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-episode-template-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-template-functions.php';
 require MASVIDEOS_ABSPATH . 'includes/masvideos-tv-show-playlist-template-functions.php';
@@ -24,7 +25,23 @@ require MASVIDEOS_ABSPATH . 'includes/masvideos-movie-playlist-template-function
 function masvideos_template_redirect() {
     global $wp_query, $wp;
 
-    if ( ! empty( $_GET['page_id'] ) && '' === get_option( 'permalink_structure' ) && masvideos_get_page_id( 'episodes' ) === absint( $_GET['page_id'] ) && get_post_type_archive_link( 'episode' ) ) { // WPCS: input var ok, CSRF ok.
+    if ( ! empty( $_GET['page_id'] ) && '' === get_option( 'permalink_structure' ) && masvideos_get_page_id( 'persons' ) === absint( $_GET['page_id'] ) && get_post_type_archive_link( 'person' ) ) { // WPCS: input var ok, CSRF ok.
+
+        // When default permalinks are enabled, redirect persons page to post type archive url.
+        wp_safe_redirect( get_post_type_archive_link( 'person' ) );
+        exit;
+
+    } elseif ( is_search() && is_post_type_archive( 'person' ) && apply_filters( 'masvideos_redirect_single_search_result', true ) && 1 === absint( $wp_query->found_posts ) ) {
+
+        // Redirect to the person page if we have a single person.
+        $person = masvideos_get_person( $wp_query->post );
+
+        if ( $person && $person->is_visible() ) {
+            wp_safe_redirect( get_permalink( $person->get_id() ), 302 );
+            exit;
+        }
+
+    } elseif ( ! empty( $_GET['page_id'] ) && '' === get_option( 'permalink_structure' ) && masvideos_get_page_id( 'episodes' ) === absint( $_GET['page_id'] ) && get_post_type_archive_link( 'episode' ) ) { // WPCS: input var ok, CSRF ok.
 
         // When default permalinks are enabled, redirect episodes page to post type archive url.
         wp_safe_redirect( get_post_type_archive_link( 'episode' ) );

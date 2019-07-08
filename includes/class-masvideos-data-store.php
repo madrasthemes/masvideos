@@ -40,6 +40,7 @@ class MasVideos_Data_Store {
         'video_playlist'      => 'MasVideos_Video_Playlist_Data_Store_CPT',
         'movie'               => 'MasVideos_Movie_Data_Store_CPT',
         'movie_playlist'      => 'MasVideos_Movie_Playlist_Data_Store_CPT',
+        'person'              => 'MasVideos_Person_Data_Store_CPT',
     );
 
     /**

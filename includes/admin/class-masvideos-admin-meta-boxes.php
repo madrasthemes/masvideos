@@ -39,6 +39,10 @@ class MasVideos_Admin_Meta_Boxes {
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 30 );
         add_action( 'save_post', array( $this, 'save_meta_boxes' ), 1, 2 );
 
+        // Save Person Meta Boxes.
+        add_action( 'masvideos_process_person_meta', 'MasVideos_Meta_Box_Person_Data::save', 10, 2 );
+        // add_action( 'masvideos_process_person_meta', 'MasVideos_Meta_Box_Person_Images::save', 20, 2 );
+
         // Save Episode Meta Boxes.
         add_action( 'masvideos_process_episode_meta', 'MasVideos_Meta_Box_Episode_Data::save', 10, 2 );
         // add_action( 'masvideos_process_episode_meta', 'MasVideos_Meta_Box_Episode_Images::save', 20, 2 );
@@ -115,6 +119,11 @@ class MasVideos_Admin_Meta_Boxes {
     public function add_meta_boxes() {
         $screen    = get_current_screen();
         $screen_id = $screen ? $screen->id : '';
+
+        // Persons.
+        add_meta_box( 'postexcerpt', __( 'Person short description', 'masvideos' ), 'MasVideos_Meta_Box_Person_Short_Description::output', 'person', 'normal' );
+        add_meta_box( 'masvideos-person-data', __( 'Person data', 'masvideos' ), 'MasVideos_Meta_Box_Person_Data::output', 'person', 'normal', 'high' );
+        // add_meta_box( 'masvideos-person-images', __( 'Person gallery', 'masvideos' ), 'MasVideos_Meta_Box_Person_Images::output', 'person', 'side', 'low' );
 
         // Episodes.
         add_meta_box( 'postexcerpt', __( 'Episode short description', 'masvideos' ), 'MasVideos_Meta_Box_Episode_Short_Description::output', 'episode', 'normal' );
@@ -196,7 +205,7 @@ class MasVideos_Admin_Meta_Boxes {
         self::$saved_meta_boxes = true;
 
         // Check the post type
-        if ( in_array( $post->post_type, array( 'episode', 'tv_show', 'video', 'movie' ) ) ) {
+        if ( in_array( $post->post_type, array( 'person', 'episode', 'tv_show', 'video', 'movie' ) ) ) {
             do_action( 'masvideos_process_' . $post->post_type . '_meta', $post_id, $post );
         }
     }

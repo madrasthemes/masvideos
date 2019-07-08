@@ -468,6 +468,70 @@ class MasVideos_Post_Types {
             )
         );
 
+        // For Persons
+        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $persons_page_id = masvideos_get_page_id( 'persons' );
+
+        if ( current_theme_supports( 'masvideos' ) ) {
+            $has_archive = $persons_page_id && get_post( $persons_page_id ) ? urldecode( get_page_uri( $persons_page_id ) ) : 'persons';
+        } else {
+            $has_archive = false;
+        }
+
+        register_post_type(
+            'person',
+            apply_filters(
+                'masvideos_register_post_type_person',
+                array(
+                    'labels'              => array(
+                        'name'                  => __( 'Persons', 'masvideos' ),
+                        'singular_name'         => __( 'Person', 'masvideos' ),
+                        'all_items'             => __( 'All Persons', 'masvideos' ),
+                        'menu_name'             => _x( 'Persons', 'Admin menu name', 'masvideos' ),
+                        'add_new'               => __( 'Add New', 'masvideos' ),
+                        'add_new_item'          => __( 'Add New Person', 'masvideos' ),
+                        'edit'                  => __( 'Edit', 'masvideos' ),
+                        'edit_item'             => __( 'Edit Person', 'masvideos' ),
+                        'new_item'              => __( 'New Person', 'masvideos' ),
+                        'view_item'             => __( 'View Person', 'masvideos' ),
+                        'view_items'            => __( 'View Persons', 'masvideos' ),
+                        'search_items'          => __( 'Search Persons', 'masvideos' ),
+                        'not_found'             => __( 'No persons found', 'masvideos' ),
+                        'not_found_in_trash'    => __( 'No persons found in trash', 'masvideos' ),
+                        'parent'                => __( 'Parent Person', 'masvideos' ),
+                        'featured_image'        => __( 'Person Image', 'masvideos' ),
+                        'set_featured_image'    => __( 'Set Person Image', 'masvideos' ),
+                        'remove_featured_image' => __( 'Remove Person Image', 'masvideos' ),
+                        'use_featured_image'    => __( 'Use as Person Image', 'masvideos' ),
+                        'insert_into_item'      => __( 'Insert into Person', 'masvideos' ),
+                        'uploaded_to_this_item' => __( 'Uploaded to this Person', 'masvideos' ),
+                        'filter_items_list'     => __( 'Filter Persons', 'masvideos' ),
+                        'items_list_navigation' => __( 'Persons navigation', 'masvideos' ),
+                        'items_list'            => __( 'Persons list', 'masvideos' ),
+                    ),
+                    'description'         => __( 'This is where you can add new persons to your site.', 'masvideos' ),
+                    'public'              => true,
+                    'show_ui'             => true,
+                    'capability_type'     => 'person',
+                    'map_meta_cap'        => true,
+                    'publicly_queryable'  => true,
+                    'exclude_from_search' => false,
+                    'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+                    'rewrite'             => $permalinks['person_rewrite_slug'] ? array(
+                        'slug'       => $permalinks['person_rewrite_slug'],
+                        'with_front' => false,
+                        'feeds'      => true,
+                    ) : false,
+                    'query_var'           => true,
+                    'supports'            => $supports,
+                    'has_archive'         => $has_archive,
+                    'show_in_nav_menus'   => true,
+                    'show_in_rest'        => true,
+                    'menu_icon'           => 'dashicons-businessperson'
+                )
+            )
+        );
+
         do_action( 'masvideos_after_register_post_type' );
     }
 
@@ -506,7 +570,6 @@ class MasVideos_Post_Types {
                 apply_filters(
                     'masvideos_taxonomy_args_episode_genre', array(
                         'hierarchical'          => true,
-                        // 'update_count_callback' => '_wc_term_recount',
                         'label'                 => __( 'Genres', 'masvideos' ),
                         'labels'                => array(
                             'name'              => __( 'Episode genres', 'masvideos' ),
@@ -546,7 +609,6 @@ class MasVideos_Post_Types {
                 apply_filters(
                     'masvideos_taxonomy_args_episode_tag', array(
                         'hierarchical'          => false,
-                        // 'update_count_callback' => '_wc_term_recount',
                         'label'                 => __( 'Episode tags', 'masvideos' ),
                         'labels'                => array(
                             'name'                       => __( 'Episode tags', 'masvideos' ),
@@ -603,7 +665,6 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_tv_show_genre', array(
                     'hierarchical'          => true,
-                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Genres', 'masvideos' ),
                     'labels'                => array(
                         'name'              => __( 'TV Show genres', 'masvideos' ),
@@ -643,7 +704,6 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_tv_show_tag', array(
                     'hierarchical'          => false,
-                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'TV Show tags', 'masvideos' ),
                     'labels'                => array(
                         'name'                       => __( 'TV Show tags', 'masvideos' ),
@@ -699,7 +759,6 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_video_cat', array(
                     'hierarchical'          => true,
-                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Categories', 'masvideos' ),
                     'labels'                => array(
                         'name'              => __( 'Video categories', 'masvideos' ),
@@ -739,7 +798,6 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_video_tag', array(
                     'hierarchical'          => false,
-                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Video tags', 'masvideos' ),
                     'labels'                => array(
                         'name'                       => __( 'Video tags', 'masvideos' ),
@@ -795,7 +853,6 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_movie_genre', array(
                     'hierarchical'          => true,
-                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Genres', 'masvideos' ),
                     'labels'                => array(
                         'name'              => __( 'Movie genres', 'masvideos' ),
@@ -835,7 +892,6 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_movie_tag', array(
                     'hierarchical'          => false,
-                    // 'update_count_callback' => '_wc_term_recount',
                     'label'                 => __( 'Movie tags', 'masvideos' ),
                     'labels'                => array(
                         'name'                       => __( 'Movie tags', 'masvideos' ),
@@ -863,6 +919,100 @@ class MasVideos_Post_Types {
                     ),
                     'rewrite'               => array(
                         'slug'       => $permalinks['movie_tag_rewrite_slug'],
+                        'with_front' => false,
+                    ),
+                    'show_in_rest'          => true,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'person_visibility',
+            apply_filters( 'masvideos_taxonomy_objects_person_visibility', array( 'person' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_person_visibility', array(
+                    'hierarchical'      => false,
+                    'show_ui'           => false,
+                    'show_in_nav_menus' => false,
+                    'query_var'         => is_admin(),
+                    'rewrite'           => false,
+                    'public'            => false,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'person_cat',
+            apply_filters( 'masvideos_taxonomy_objects_person_cat', array( 'person' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_person_cat', array(
+                    'hierarchical'          => true,
+                    'label'                 => __( 'Categories', 'masvideos' ),
+                    'labels'                => array(
+                        'name'              => __( 'Video categories', 'masvideos' ),
+                        'singular_name'     => __( 'Category', 'masvideos' ),
+                        'menu_name'         => _x( 'Categories', 'Admin menu name', 'masvideos' ),
+                        'search_items'      => __( 'Search categories', 'masvideos' ),
+                        'all_items'         => __( 'All categories', 'masvideos' ),
+                        'parent_item'       => __( 'Parent category', 'masvideos' ),
+                        'parent_item_colon' => __( 'Parent category:', 'masvideos' ),
+                        'edit_item'         => __( 'Edit category', 'masvideos' ),
+                        'update_item'       => __( 'Update category', 'masvideos' ),
+                        'add_new_item'      => __( 'Add new category', 'masvideos' ),
+                        'new_item_name'     => __( 'New category name', 'masvideos' ),
+                        'not_found'         => __( 'No categories found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_person_terms',
+                        'edit_terms'   => 'edit_person_terms',
+                        'delete_terms' => 'delete_person_terms',
+                        'assign_terms' => 'assign_person_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'         => $permalinks['person_category_rewrite_slug'],
+                        'with_front'   => false,
+                        'hierarchical' => true,
+                    ),
+                    'show_in_rest'          => true,
+                )
+            )
+        );
+
+        register_taxonomy(
+            'person_tag',
+            apply_filters( 'masvideos_taxonomy_objects_person_tag', array( 'person' ) ),
+            apply_filters(
+                'masvideos_taxonomy_args_person_tag', array(
+                    'hierarchical'          => false,
+                    'label'                 => __( 'Video tags', 'masvideos' ),
+                    'labels'                => array(
+                        'name'                       => __( 'Video tags', 'masvideos' ),
+                        'singular_name'              => __( 'Tag', 'masvideos' ),
+                        'menu_name'                  => _x( 'Tags', 'Admin menu name', 'masvideos' ),
+                        'search_items'               => __( 'Search tags', 'masvideos' ),
+                        'all_items'                  => __( 'All tags', 'masvideos' ),
+                        'edit_item'                  => __( 'Edit tag', 'masvideos' ),
+                        'update_item'                => __( 'Update tag', 'masvideos' ),
+                        'add_new_item'               => __( 'Add new tag', 'masvideos' ),
+                        'new_item_name'              => __( 'New tag name', 'masvideos' ),
+                        'popular_items'              => __( 'Popular tags', 'masvideos' ),
+                        'separate_items_with_commas' => __( 'Separate tags with commas', 'masvideos' ),
+                        'add_or_remove_items'        => __( 'Add or remove tags', 'masvideos' ),
+                        'choose_from_most_used'      => __( 'Choose from the most used tags', 'masvideos' ),
+                        'not_found'                  => __( 'No tags found', 'masvideos' ),
+                    ),
+                    'show_ui'               => true,
+                    'query_var'             => true,
+                    'capabilities'          => array(
+                        'manage_terms' => 'manage_person_terms',
+                        'edit_terms'   => 'edit_person_terms',
+                        'delete_terms' => 'delete_person_terms',
+                        'assign_terms' => 'assign_person_terms',
+                    ),
+                    'rewrite'               => array(
+                        'slug'       => $permalinks['person_tag_rewrite_slug'],
                         'with_front' => false,
                     ),
                     'show_in_rest'          => true,
@@ -988,6 +1138,7 @@ class MasVideos_Post_Types {
             new Jetpack_Omnisearch_Posts( 'tv_show' );
             new Jetpack_Omnisearch_Posts( 'tv_show_playlist' );
             new Jetpack_Omnisearch_Posts( 'episode' );
+            new Jetpack_Omnisearch_Posts( 'person' );
         }
     }
 
@@ -1005,6 +1156,7 @@ class MasVideos_Post_Types {
         $post_types[] = 'tv_show';
         $post_types[] = 'tv_show_playlist';
         $post_types[] = 'episode';
+        $post_types[] = 'person';
 
         return $post_types;
     }

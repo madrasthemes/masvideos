@@ -933,6 +933,45 @@ if ( ! function_exists( 'masvideos_recommended_movies' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_movie_related_videos' ) ) {
+
+    /**
+     * Output the related videos of a movie.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_movie_related_videos( $movie_id = false, $args = array() ) {
+        global $movie;
+
+        $movie_id = $movie_id ? $movie_id : $movie->get_id();
+
+        if ( ! $movie_id ) {
+            return;
+        }
+
+        $defaults = apply_filters( 'masvideos_movie_related_videos_default_args', array(
+            'limit'          => 4,
+            'columns'        => 4,
+            'orderby'        => 'post__in',
+            'order'          => 'asc',
+        ) );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_movie_related_videos_title', esc_html__( 'Trailers & Clips', 'masvideos' ), $movie_id );
+
+        $related_video_ids = $movie->get_related_video_ids();
+        $args['ids'] = implode( ',', $related_video_ids );
+
+        if( ! empty( $related_video_ids ) ) {
+            echo '<section class="movie__related-video">';
+                echo sprintf( '<h2 class="movie__related-video--title">%s</h2>', $title );
+                echo MasVideos_Shortcodes::videos( $args );
+            echo '</section>';
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_single_movie_tabs' ) ) {
 
     /**

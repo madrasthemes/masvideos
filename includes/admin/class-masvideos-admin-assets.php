@@ -87,6 +87,7 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'i18n_load_more'            => _x( 'Loading more results&hellip;', 'enhanced select', 'masvideos' ),
                     'i18n_searching'            => _x( 'Searching&hellip;', 'enhanced select', 'masvideos' ),
                     'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+                    'search_persons_nonce'      => wp_create_nonce( 'search-persons' ),
                     'search_episodes_nonce'     => wp_create_nonce( 'search-episodes' ),
                     'search_tv_shows_nonce'     => wp_create_nonce( 'search-tv_shows' ),
                     'search_videos_nonce'       => wp_create_nonce( 'search-videos' ),
@@ -95,6 +96,11 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
             );
 
             // Meta boxes.
+            if ( in_array( $screen_id, array( 'person', 'edit-person' ) ) ) {
+                wp_enqueue_media();
+                wp_register_script( 'masvideos-admin-person-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-person' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models', 'jquery-blockui' ), MASVIDEOS_VERSION );
+                wp_enqueue_script( 'masvideos-admin-person-meta-boxes' );
+            }
             if ( in_array( $screen_id, array( 'episode', 'edit-episode' ) ) ) {
                 wp_enqueue_media();
                 wp_register_script( 'masvideos-admin-episode-meta-boxes', MasVideos()->plugin_url() . '/assets/js/admin/meta-boxes-episode' . $suffix . '.js', array( 'masvideos-admin-meta-boxes', 'media-models', 'jquery-blockui' ), MASVIDEOS_VERSION );
@@ -116,9 +122,8 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                 wp_enqueue_script( 'masvideos-admin-movie-meta-boxes' );
             }
 
-            if ( in_array( str_replace( 'edit-', '', $screen_id ), array( 'episode', 'tv_show', 'video', 'movie' ) ) ) {
+            if ( in_array( str_replace( 'edit-', '', $screen_id ), array( 'person', 'episode', 'tv_show', 'video', 'movie' ) ) ) {
                 $post_id            = isset( $post->ID ) ? $post->ID : '';
-                $currency           = '';
                 $remove_item_notice = __( 'Are you sure you want to remove the selected items?', 'masvideos' );
 
                 $params = array(
@@ -136,6 +141,8 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'featured_label'                => __( 'Featured', 'masvideos' ),
                     'plugin_url'                    => MasVideos()->plugin_url(),
                     'ajax_url'                      => admin_url( 'admin-ajax.php' ),
+                    'add_attribute_person_nonce'    => wp_create_nonce( 'add-attribute-person' ),
+                    'save_attributes_person_nonce'  => wp_create_nonce( 'save-attributes-person' ),
                     'add_source_episode_nonce'      => wp_create_nonce( 'add-source-episode' ),
                     'save_sources_episode_nonce'    => wp_create_nonce( 'save-sources-episode' ),
                     'add_attribute_episode_nonce'   => wp_create_nonce( 'add-attribute-episode' ),
@@ -149,6 +156,8 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'add_attribute_video_nonce'     => wp_create_nonce( 'add-attribute-video' ),
                     'save_attributes_video_nonce'   => wp_create_nonce( 'save-attributes-video' ),
                     'search_videos_nonce'           => wp_create_nonce( 'search-videos' ),
+                    'add_person_movie_nonce'        => wp_create_nonce( 'add-person-movie' ),
+                    'save_persons_movie_nonce'      => wp_create_nonce( 'save-persons-movie' ),
                     'add_source_movie_nonce'        => wp_create_nonce( 'add-source-movie' ),
                     'save_sources_movie_nonce'      => wp_create_nonce( 'save-sources-movie' ),
                     'add_attribute_movie_nonce'     => wp_create_nonce( 'add-attribute-movie' ),

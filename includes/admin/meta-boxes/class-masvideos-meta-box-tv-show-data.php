@@ -205,43 +205,6 @@ class MasVideos_Meta_Box_TV_Show_Data {
     }
 
     /**
-     * Prepare attributes for a specific variation or defaults.
-     *
-     * @param  array  $all_attributes
-     * @param  string $key_prefix
-     * @param  int    $index
-     * @return array
-     */
-    private static function prepare_set_attributes( $all_attributes, $key_prefix = 'attribute_', $index = null ) {
-        $attributes = array();
-
-        if ( $all_attributes ) {
-            foreach ( $all_attributes as $attribute ) {
-                if ( $attribute->get_variation() ) {
-                    $attribute_key = sanitize_title( $attribute->get_name() );
-
-                    if ( ! is_null( $index ) ) {
-                        $value = isset( $_POST[ $key_prefix . $attribute_key ][ $index ] ) ? wp_unslash( $_POST[ $key_prefix . $attribute_key ][ $index ] ) : '';
-                    } else {
-                        $value = isset( $_POST[ $key_prefix . $attribute_key ] ) ? wp_unslash( $_POST[ $key_prefix . $attribute_key ] ) : '';
-                    }
-
-                    if ( $attribute->is_taxonomy() ) {
-                        // Don't use masvideos_clean as it destroys sanitized characters.
-                        $value = sanitize_title( $value );
-                    } else {
-                        $value = html_entity_decode( masvideos_clean( $value ), ENT_QUOTES, get_bloginfo( 'charset' ) ); // WPCS: sanitization ok.
-                    }
-
-                    $attributes[ $attribute_key ] = $value;
-                }
-            }
-        }
-
-        return $attributes;
-    }
-
-    /**
      * Save meta box data.
      *
      * @param int  $post_id
@@ -249,7 +212,6 @@ class MasVideos_Meta_Box_TV_Show_Data {
      */
     public static function save( $post_id, $post ) {
         // Process tv show type first so we have the correct class to run setters.
-        // $tv_show_type = empty( $_POST['tv_show-type'] ) ? MasVideos_TV_Show_Factory::get_tv_show_type( $post_id ) : sanitize_title( stripslashes( $_POST['tv_show-type'] ) );
         $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $post_id );
         $tv_show      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();
@@ -259,7 +221,6 @@ class MasVideos_Meta_Box_TV_Show_Data {
                 'featured'                  => isset( $_POST['_featured'] ),
                 'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
                 'attributes'                => $attributes,
-                // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );
 

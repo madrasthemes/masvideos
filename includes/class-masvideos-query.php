@@ -183,6 +183,414 @@ class MasVideos_Query {
 }
 
 /**
+ * MasVideos_Persons_Query Class.
+ */
+class MasVideos_Persons_Query {
+
+    /**
+     * Reference to the main person query on the page.
+     *
+     * @var array
+     */
+    private static $person_query;
+
+    /**
+     * Chosen attributes.
+     *
+     * @var array
+     */
+    private static $_chosen_attributes;
+
+    public function __construct() {
+        if ( ! is_admin() ) {
+            add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+        }
+    }
+
+    /**
+     * Are we currently on the front page?
+     *
+     * @param WP_Query $q Query instance.
+     * @return bool
+     */
+    private function is_showing_page_on_front( $q ) {
+        return $q->is_home() && 'page' === get_option( 'show_on_front' );
+    }
+
+    /**
+     * Is the front page a page we define?
+     *
+     * @param int $page_id Page ID.
+     * @return bool
+     */
+    private function page_on_front_is( $page_id ) {
+        return absint( get_option( 'page_on_front' ) ) === absint( $page_id );
+    }
+
+    /**
+     * Hook into pre_get_posts to do the main person query.
+     *
+     * @param WP_Query $q Query instance.
+     */
+    public function pre_get_posts( $q ) {
+        // We only want to affect the main query.
+        if ( ! $q->is_main_query() ) {
+            return;
+        }
+
+        // When orderby is set, WordPress shows posts on the front-page. Get around that here.
+        if ( $this->is_showing_page_on_front( $q ) && $this->page_on_front_is( masvideos_get_page_id( 'persons' ) ) ) {
+            $_query = wp_parse_args( $q->query );
+            if ( empty( $_query ) || ! array_diff( array_keys( $_query ), array( 'preview', 'page', 'paged', 'cpage', 'orderby' ) ) ) {
+                $q->set( 'page_id', (int) get_option( 'page_on_front' ) );
+                $q->is_page = true;
+                $q->is_home = false;
+
+                // WP supporting themes show post type archive.
+                if ( current_theme_supports( 'masvideos' ) ) {
+                    $q->set( 'post_type', 'person' );
+                } else {
+                    $q->is_singular = true;
+                }
+            }
+        }
+
+        // Fix person feeds.
+        if ( $q->is_feed() && $q->is_post_type_archive( 'person' ) ) {
+            $q->is_comment_feed = false;
+        }
+
+        // Special check for persons with the PRODUCT POST TYPE ARCHIVE on front.
+        if ( current_theme_supports( 'masvideos' ) && $q->is_page() && 'page' === get_option( 'show_on_front' ) && absint( $q->get( 'page_id' ) ) === masvideos_get_page_id( 'persons' ) ) {
+            // This is a front-page persons.
+            $q->set( 'post_type', 'person' );
+            $q->set( 'page_id', '' );
+
+            if ( isset( $q->query['paged'] ) ) {
+                $q->set( 'paged', $q->query['paged'] );
+            }
+
+            // Define a variable so we know this is the front page persons later on.
+            masvideos_maybe_define_constant( 'PERSONS_ON_FRONT', true );
+
+            // Get the actual WP page to avoid errors and let us use is_front_page().
+            // This is hacky but works. Awaiting https://core.trac.wordpress.org/ticket/21096.
+            global $wp_post_types;
+
+            $persons_page = get_post( masvideos_get_page_id( 'persons' ) );
+
+            $wp_post_types['person']->ID         = $persons_page->ID;
+            $wp_post_types['person']->post_title = $persons_page->post_title;
+            $wp_post_types['person']->post_name  = $persons_page->post_name;
+            $wp_post_types['person']->post_type  = $persons_page->post_type;
+            $wp_post_types['person']->ancestors  = get_ancestors( $persons_page->ID, $persons_page->post_type );
+
+            // Fix conditional Functions like is_front_page.
+            $q->is_singular          = false;
+            $q->is_post_type_archive = true;
+            $q->is_archive           = true;
+            $q->is_page              = true;
+
+            // Remove post type archive name from front page title tag.
+            add_filter( 'post_type_archive_title', '__return_empty_string', 5 );
+
+            // Fix WP SEO.
+            if ( class_exists( 'WPSEO_Meta' ) ) {
+                add_filter( 'wpseo_metadesc', array( $this, 'wpseo_metadesc' ) );
+                add_filter( 'wpseo_metakey', array( $this, 'wpseo_metakey' ) );
+            }
+        } elseif ( ! $q->is_post_type_archive( 'person' ) && ! $q->is_tax( get_object_taxonomies( 'person' ) ) ) {
+            // Only apply to person categories, the person post archive, the persons page, person tags, and person attribute taxonomies.
+            return;
+        }
+
+        $this->person_query( $q );
+    }
+
+    /**
+     * WP SEO meta description.
+     *
+     * Hooked into wpseo_ hook already, so no need for function_exist.
+     *
+     * @return string
+     */
+    public function wpseo_metadesc() {
+        return WPSEO_Meta::get_value( 'metadesc', masvideos_get_page_id( 'persons' ) );
+    }
+
+    /**
+     * WP SEO meta key.
+     *
+     * Hooked into wpseo_ hook already, so no need for function_exist.
+     *
+     * @return string
+     */
+    public function wpseo_metakey() {
+        return WPSEO_Meta::get_value( 'metakey', masvideos_get_page_id( 'persons' ) );
+    }
+
+    /**
+     * Query the persons, applying sorting/ordering etc.
+     * This applies to the main WordPress loop.
+     *
+     * @param WP_Query $q Query instance.
+     */
+    public function person_query( $q ) {
+        if ( ! is_feed() ) {
+            $ordering = $this->get_catalog_ordering_args();
+            $q->set( 'orderby', $ordering['orderby'] );
+            $q->set( 'order', $ordering['order'] );
+
+            if ( isset( $ordering['meta_key'] ) ) {
+                $q->set( 'meta_key', $ordering['meta_key'] );
+            }
+        }
+
+        // Query vars that affect posts shown.
+        $q->set( 'meta_query', $this->get_meta_query( $q->get( 'meta_query' ), true ) );
+        $q->set( 'tax_query', $this->get_tax_query( $q->get( 'tax_query' ), true ) );
+        $q->set( 'masvideos_person_query', 'person_query' );
+        $q->set( 'post__in', array_unique( (array) apply_filters( 'loop_persons_post_in', array() ) ) );
+
+        // Work out how many persons to query.
+        $q->set( 'posts_per_page', $q->get( 'posts_per_page' ) ? $q->get( 'posts_per_page' ) : apply_filters( 'masvideos_person_query_posts_per_page', masvideos_get_default_persons_per_row() * masvideos_get_default_person_rows_per_page() ) );
+
+        // Store reference to this query.
+        self::$person_query = $q;
+
+        do_action( 'masvideos_person_query', $q, $this );
+    }
+
+    /**
+     * Remove the query.
+     */
+    public function remove_person_query() {
+        remove_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+    }
+
+    /**
+     * Remove ordering queries.
+     */
+    public function remove_ordering_args() {
+        // remove_filter( 'posts_clauses', array( $this, 'order_by_rating_post_clauses' ) );
+    }
+
+    /**
+     * Returns an array of arguments for ordering persons based on the selected values.
+     *
+     * @param string $orderby Order by param.
+     * @param string $order Order param.
+     * @return array
+     */
+    public function get_catalog_ordering_args( $orderby = '', $order = '' ) {
+        // Get ordering from query string unless defined.
+        if ( ! $orderby ) {
+            $orderby_value = isset( $_GET['orderby'] ) ? masvideos_clean( (string) wp_unslash( $_GET['orderby'] ) ) : masvideos_clean( get_query_var( 'orderby' ) ); // WPCS: sanitization ok, input var ok, CSRF ok.
+
+            if ( ! $orderby_value ) {
+                if ( is_search() ) {
+                    $orderby_value = 'relevance';
+                } else {
+                    $orderby_value = apply_filters( 'masvideos_default_persons_catalog_orderby', get_option( 'masvideos_default_persons_catalog_orderby', 'release_date' ) );
+                }
+            }
+
+            // Get order + orderby args from string.
+            $orderby_value = explode( '-', $orderby_value );
+            $orderby       = esc_attr( $orderby_value[0] );
+            $order         = ! empty( $orderby_value[1] ) ? $orderby_value[1] : $order;
+        }
+
+        $orderby = strtolower( $orderby );
+        $order   = strtoupper( $order );
+        $args    = array(
+            'orderby'  => $orderby,
+            'order'    => ( 'DESC' === $order ) ? 'DESC' : 'ASC',
+            'meta_key' => '', // @codingStandardsIgnoreLine
+        );
+
+        switch ( $orderby ) {
+            case 'id':
+                $args['orderby'] = 'ID';
+                break;
+            case 'menu_order':
+                $args['orderby'] = 'menu_order title';
+                break;
+            case 'title':
+                $args['orderby'] = 'title';
+                $args['order']   = ( 'DESC' === $order ) ? 'DESC' : 'ASC';
+                break;
+            case 'relevance':
+                $args['orderby'] = 'relevance';
+                $args['order']   = 'DESC';
+                break;
+            case 'rand':
+                $args['orderby'] = 'rand'; // @codingStandardsIgnoreLine
+                break;
+            case 'date':
+                $args['orderby'] = 'date ID';
+                $args['order']   = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
+                break;
+        }
+
+        return apply_filters( 'masvideos_get_persons_catalog_ordering_args', $args, $orderby, $order );
+    }
+
+    /**
+     * Appends meta queries to an array.
+     *
+     * @param  array $meta_query Meta query.
+     * @param  bool  $main_query If is main query.
+     * @return array
+     */
+    public function get_meta_query( $meta_query = array(), $main_query = false ) {
+        if ( ! is_array( $meta_query ) ) {
+            $meta_query = array();
+        }
+
+        return array_filter( apply_filters( 'masvideos_person_query_meta_query', $meta_query, $this ) );
+    }
+
+    /**
+     * Appends tax queries to an array.
+     *
+     * @param  array $tax_query  Tax query.
+     * @param  bool  $main_query If is main query.
+     * @return array
+     */
+    public function get_tax_query( $tax_query = array(), $main_query = false ) {
+        if ( ! is_array( $tax_query ) ) {
+            $tax_query = array(
+                'relation' => 'AND',
+            );
+        }
+
+        // Layered nav filters on terms.
+        if ( $main_query ) {
+            foreach ( $this->get_layered_nav_chosen_attributes() as $taxonomy => $data ) {
+                $tax_query[] = array(
+                    'taxonomy'         => $taxonomy,
+                    'field'            => 'slug',
+                    'terms'            => $data['terms'],
+                    'operator'         => 'and' === $data['query_type'] ? 'AND' : 'IN',
+                    'include_children' => false,
+                );
+            }
+        }
+
+        $person_visibility_terms  = masvideos_get_person_visibility_term_ids();
+        $person_visibility_not_in = array( is_search() && $main_query ? $person_visibility_terms['exclude-from-search'] : $person_visibility_terms['exclude-from-catalog'] );
+
+        if ( ! empty( $person_visibility_not_in ) ) {
+            $tax_query[] = array(
+                'taxonomy' => 'person_visibility',
+                'field'    => 'term_taxonomy_id',
+                'terms'    => $person_visibility_not_in,
+                'operator' => 'NOT IN',
+            );
+        }
+
+        return array_filter( apply_filters( 'masvideos_person_query_tax_query', $tax_query, $this ) );
+    }
+
+    /**
+     * Get the main query which person queries ran against.
+     *
+     * @return array
+     */
+    public static function get_main_query() {
+        return self::$person_query;
+    }
+
+    /**
+     * Get the tax query which was used by the main query.
+     *
+     * @return array
+     */
+    public static function get_main_tax_query() {
+        $tax_query = isset( self::$person_query->tax_query, self::$person_query->tax_query->queries ) ? self::$person_query->tax_query->queries : array();
+
+        return $tax_query;
+    }
+
+    /**
+     * Get the meta query which was used by the main query.
+     *
+     * @return array
+     */
+    public static function get_main_meta_query() {
+        $args       = isset( self::$person_query->query_vars ) ? self::$person_query->query_vars : array();
+        $meta_query = isset( $args['meta_query'] ) ? $args['meta_query'] : array();
+
+        return $meta_query;
+    }
+
+    /**
+     * Based on WP_Query::parse_search
+     */
+    public static function get_main_search_query_sql() {
+        global $wpdb;
+
+        $args         = isset( self::$person_query->query_vars ) ? self::$person_query->query_vars : array();
+        $search_terms = isset( $args['search_terms'] ) ? $args['search_terms'] : array();
+        $sql          = array();
+
+        foreach ( $search_terms as $term ) {
+            // Terms prefixed with '-' should be excluded.
+            $include = '-' !== substr( $term, 0, 1 );
+
+            if ( $include ) {
+                $like_op  = 'LIKE';
+                $andor_op = 'OR';
+            } else {
+                $like_op  = 'NOT LIKE';
+                $andor_op = 'AND';
+                $term     = substr( $term, 1 );
+            }
+
+            $like  = '%' . $wpdb->esc_like( $term ) . '%';
+            $sql[] = $wpdb->prepare( "(($wpdb->posts.post_title $like_op %s) $andor_op ($wpdb->posts.post_excerpt $like_op %s) $andor_op ($wpdb->posts.post_content $like_op %s))", $like, $like, $like ); // unprepared SQL ok.
+        }
+
+        if ( ! empty( $sql ) && ! is_user_logged_in() ) {
+            $sql[] = "($wpdb->posts.post_password = '')";
+        }
+
+        return implode( ' AND ', $sql );
+    }
+
+    /**
+     * Get an array of attributes and terms selected with the layered nav widget.
+     *
+     * @return array
+     */
+    public static function get_layered_nav_chosen_attributes() {
+        if ( ! is_array( self::$_chosen_attributes ) ) {
+            self::$_chosen_attributes = array();
+
+            if ( ! empty( $_GET ) ) { // WPCS: input var ok, CSRF ok.
+                foreach ( $_GET as $key => $value ) { // WPCS: input var ok, CSRF ok.
+                    if ( 0 === strpos( $key, 'filter_' ) ) {
+                        $attribute    = masvideos_sanitize_taxonomy_name( str_replace( 'filter_', '', $key ) );
+                        $taxonomy     = in_array( $attribute, array( 'genre', 'tag' ) ) ? 'person_' . $attribute : masvideos_attribute_taxonomy_name( 'person', $attribute );
+                        $filter_terms = ! empty( $value ) ? explode( ',', masvideos_clean( wp_unslash( $value ) ) ) : array();
+
+                        if ( empty( $filter_terms ) || ! taxonomy_exists( $taxonomy ) || ! ( in_array( $attribute, array( 'genre', 'tag' ) ) || masvideos_attribute_taxonomy_id_by_name( 'person', $attribute ) ) ) {
+                            continue;
+                        }
+
+                        $query_type                                     = ! empty( $_GET[ 'query_type_' . $attribute ] ) && in_array( $_GET[ 'query_type_' . $attribute ], array( 'and', 'or' ), true ) ? masvideos_clean( wp_unslash( $_GET[ 'query_type_' . $attribute ] ) ) : ''; // WPCS: sanitization ok, input var ok, CSRF ok.
+                        self::$_chosen_attributes[ $taxonomy ]['terms'] = array_map( 'sanitize_title', $filter_terms ); // Ensures correct encoding.
+                        self::$_chosen_attributes[ $taxonomy ]['query_type'] = $query_type ? $query_type : apply_filters( 'masvideos_layered_nav_default_query_type', 'and' );
+                    }
+                }
+            }
+        }
+        return self::$_chosen_attributes;
+    }
+}
+
+/**
  * MasVideos_Episodes_Query Class.
  */
 class MasVideos_Episodes_Query {

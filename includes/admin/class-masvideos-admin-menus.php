@@ -47,6 +47,7 @@ class MasVideos_Admin_Menus {
         }
 
         add_submenu_page( 'edit.php?post_type=tv_show', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_tv_show_terms', 'tv_show_attributes', array( $this, 'attributes_page' ) );
+        add_submenu_page( 'edit.php?post_type=person', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_person_terms', 'person_attributes', array( $this, 'attributes_page' ) );
         add_submenu_page( 'edit.php?post_type=video', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_video_terms', 'video_attributes', array( $this, 'attributes_page' ) );
         add_submenu_page( 'edit.php?post_type=movie', __( 'Attributes', 'masvideos' ), __( 'Attributes', 'masvideos' ), 'manage_movie_terms', 'movie_attributes', array( $this, 'attributes_page' ) );
     }
@@ -73,6 +74,13 @@ class MasVideos_Admin_Menus {
                 if ( $screen && taxonomy_is_tv_show_attribute( $screen->taxonomy ) ) {
                     $submenu_file = 'tv_show_attributes'; // WPCS: override ok.
                     $parent_file  = 'edit.php?post_type=tv_show'; // WPCS: override ok.
+                }
+                break;
+            case 'person':
+                $screen = get_current_screen();
+                if ( $screen && taxonomy_is_person_attribute( $screen->taxonomy ) ) {
+                    $submenu_file = 'person_attributes'; // WPCS: override ok.
+                    $parent_file  = 'edit.php?post_type=person'; // WPCS: override ok.
                 }
                 break;
             case 'video':

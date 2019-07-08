@@ -17,13 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class MasVideos_Admin_Taxonomies {
 
     /**
-     * Default genre ID.
-     *
-     * @var int
-     */
-    private $default_genre_id = 0;
-
-    /**
      * Constructor.
      */
     public function __construct() {

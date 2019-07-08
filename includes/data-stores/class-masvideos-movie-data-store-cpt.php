@@ -25,6 +25,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     protected $internal_meta_keys = array(
         '_visibility',
         '_default_attributes',
+        '_persons',
         '_sources',
         '_movie_attributes',
         '_featured',
@@ -46,6 +47,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         '_movie_run_time',
         '_movie_censor_rating',
         '_recommended_movie_ids',
+        '_related_video_ids',
     );
 
     /**
@@ -299,6 +301,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $movie->set_props(
             array(
+                'persons'               => get_post_meta( $id, '_persons', true ),
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
                 'sources'               => get_post_meta( $id, '_sources', true ),
                 'genre_ids'             => $this->get_term_ids( $movie, 'movie_genre' ),
@@ -313,6 +316,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'movie_run_time'        => get_post_meta( $id, '_movie_run_time', true ),
                 'movie_censor_rating'   => get_post_meta( $id, '_movie_censor_rating', true ),
                 'recommended_movie_ids' => get_post_meta( $id, '_recommended_movie_ids', true ),
+                'related_video_ids'     => get_post_meta( $id, '_related_video_ids', true ),
             )
         );
     }
@@ -418,6 +422,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      */
     protected function update_post_meta( &$movie, $force = false ) {
         $meta_key_to_props = array(
+            '_persons'                      => 'persons',
             '_default_attributes'           => 'default_attributes',
             '_sources'                      => 'sources',
             '_movie_image_gallery'          => 'gallery_image_ids',
@@ -433,6 +438,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             '_movie_run_time'               => 'movie_run_time',
             '_movie_censor_rating'          => 'movie_censor_rating',
             '_recommended_movie_ids'        => 'recommended_movie_ids',
+            '_related_video_ids'            => 'related_video_ids',
         );
 
         // Make sure to take extra data (like movie url or text for external movies) into account.

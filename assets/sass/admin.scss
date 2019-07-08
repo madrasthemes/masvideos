@@ -55,6 +55,7 @@
         }
     }
 
+    &#person_attributes .expand-close,
     &#episode_attributes .expand-close,
     &#tv_show_attributes .expand-close,
     &#tv_show_seasons .expand-close,
@@ -448,6 +449,7 @@
     max-width: 100%;
 }
 
+#masvideos-person-images .inside,
 #masvideos-episode-images .inside,
 #masvideos-tv-show-images .inside,
 #masvideos-video-images .inside,
@@ -455,6 +457,7 @@
     margin: 0;
     padding: 0;
 
+    .add_person_images,
     .add_video_images,
     .add_movie_images,
     .add_tv_show_images,
@@ -462,6 +465,7 @@
         padding: 12px 9px;
     }
 
+    #person_images_container,
     #video_images_container,
     #movie_images_container,
     #tv_show_images_container,
@@ -557,11 +561,12 @@
     }
 }
 
+#masvideos-person-data,
 #masvideos-episode-data,
 #masvideos-tv-show-data,
 #masvideos-video-data,
 #masvideos-movie-data {
-    .hndle {
+    .handle {
         padding: 10px;
 
         span {
@@ -610,6 +615,7 @@
     }
 }
 
+#masvideos-person-data,
 #masvideos-episode-data,
 #masvideos-tv-show-data,
 #masvideos-video-data,
@@ -640,6 +646,7 @@
     }
 }
 
+#masvideos-person-data,
 #masvideos-episode-data,
 #masvideos-tv-show-data,
 #masvideos-video-data,
@@ -723,6 +730,8 @@
     }
 }
 
+#masvideos-person-data,
+#masvideos-person-type-options,
 #masvideos-episode-data,
 #masvideos-episode-type-options,
 #masvideos-tv-show-data,
@@ -1063,6 +1072,8 @@
 * Optimisation for screens 900px and smaller
 */
 @media only screen and (max-width: 900px) {
+    #masvideos-person-data ul.person_data_tabs,
+    #masvideos-person-data .masvideos-tabs-back,
     #masvideos-episode-data ul.episode_data_tabs,
     #masvideos-episode-data .masvideos-tabs-back,
     #masvideos-tv-show-data ul.tv_show_data_tabs,
@@ -1074,6 +1085,8 @@
         width: 10%;
     }
 
+    #masvideos-person-data .masvideos-metaboxes-wrapper,
+    #masvideos-person-data .masvideos_options_panel,
     #masvideos-episode-data .masvideos-metaboxes-wrapper,
     #masvideos-episode-data .masvideos_options_panel,
     #masvideos-tv-show-data .masvideos-metaboxes-wrapper,
@@ -1085,6 +1098,7 @@
         width: 90%;
     }
 
+    #masvideos-person-data ul.person_data_tabs li a,
     #masvideos-episode-data ul.episode_data_tabs li a,
     #masvideos-tv-show-data ul.tv_show_data_tabs li a,
     #masvideos-video-data ul.video_data_tabs li a,
@@ -1130,6 +1144,7 @@
         margin-bottom: -1px;
     }
 
+    #masvideos-person-data .checkbox,
     #masvideos-episode-data .checkbox,
     #masvideos-tv-show-data .checkbox,
     #masvideos-video-data .checkbox,
@@ -1190,6 +1205,7 @@
         }
     }
 
+    #masvideos-person-data,
     #masvideos-episode-data,
     #masvideos-tv-show-data,
     #masvideos-video-data,
@@ -1293,12 +1309,13 @@
     }
 }
 
+.post-type-person,
 .post-type-video,
 .post-type-movie,
 .post-type-tv_show,
 .post-type-episode {
     .edit-post-sidebar .components-panel .edit-post-meta-boxes-area.is-side {
-        #poststuff .postbox .hndle {
+        #poststuff .postbox .handle {
             font-size: 13px;
             color: #191e23;
             cursor: pointer;
@@ -1309,8 +1326,8 @@
         }
 
         #poststuff .postbox:last-child > .inside,
-        #poststuff .postbox:last-child .hndle,
-        #poststuff .postbox:not(.closed) .hndle {
+        #poststuff .postbox:last-child .handle,
+        #poststuff .postbox:not(.closed) .handle {
             border-bottom: 0;
         }
 
