@@ -29,6 +29,21 @@ class MasVideos_TMDB_Importer_Controller {
     protected $results = array();
 
     /**
+     * API results.
+     *
+     * @var array
+     */
+    protected $file = '';
+
+
+    /**
+     * Importer type.
+     *
+     * @var array
+     */
+    protected $type = '';
+
+    /**
      * The current import step.
      *
      * @var string
@@ -60,9 +75,9 @@ class MasVideos_TMDB_Importer_Controller {
                 'handler' => array( $this, 'fetch_form_handler' ),
             ),
             'results'  => array(
-                'name'    => __( 'Results', 'masvideos' ),
-                'view'    => array( $this, 'results_form' ),
-                'handler' => array( $this, 'results_form_handler' ),
+                'name'    => __( 'Import', 'masvideos' ),
+                'view'    => array( $this, 'import_form' ),
+                'handler' => ''
             ),
         );
 
@@ -70,6 +85,42 @@ class MasVideos_TMDB_Importer_Controller {
 
         // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification
         $this->step            = isset( $_REQUEST['step'] ) ? sanitize_key( $_REQUEST['step'] ) : current( array_keys( $this->steps ) );
+        $this->file            = isset( $_REQUEST['file'] ) ? masvideos_clean( wp_unslash( $_REQUEST['file'] ) ) : '';
+        $this->type            = ! empty( $_REQUEST['type'] ) ? masvideos_clean( wp_unslash( $_REQUEST['type'] ) ) : '';
+    }
+
+    /**
+     * Get the URL for the next step's screen.
+     *
+     * @param string $step  slug (default: current step).
+     * @return string       URL for next step if a next step exists.
+     *                      Admin URL if it's the last step.
+     *                      Empty string on failure.
+     */
+    public function get_next_step_link( $step = '' ) {
+        if ( ! $step ) {
+            $step = $this->step;
+        }
+
+        $keys = array_keys( $this->steps );
+
+        if ( end( $keys ) === $step ) {
+            return admin_url();
+        }
+
+        $step_index = array_search( $step, $keys, true );
+
+        if ( false === $step_index ) {
+            return '';
+        }
+
+        $params = array(
+            'step'            => $keys[ $step_index + 1 ],
+            'file'            => str_replace( DIRECTORY_SEPARATOR, '/', $this->file ),
+            '_wpnonce'        => wp_create_nonce( 'masvideos-tmdb-fetch-data' ), // wp_nonce_url() escapes & to &amp; breaking redirects.
+        );
+
+        return add_query_arg( $params );
     }
 
     /**
@@ -91,7 +142,7 @@ class MasVideos_TMDB_Importer_Controller {
      * Output information about the uploading process.
      */
     protected function fetch_form() {
-        include dirname( __FILE__ ) . '/views/html-tmdb-import-form.php';
+        include dirname( __FILE__ ) . '/views/html-tmdb-import-fetch-form.php';
     }
 
     /**
@@ -136,28 +187,114 @@ class MasVideos_TMDB_Importer_Controller {
         switch ( $type ) {
             case 'now-playing-movies':
                 $this->results = $tmdb->getNowPlayingMovies( $page );
+                $this->type = 'movie';
                 break;
 
             case 'popular-movies':
                 $this->results = $tmdb->getPopularMovies( $page );
+                $this->type = 'movie';
                 break;
 
             case 'top-rated-movies':
                 $this->results = $tmdb->getTopRatedMovies( $page );
+                $this->type = 'movie';
                 break;
 
             case 'upcoming-movies':
                 $this->results = $tmdb->getUpcomingMovies( $page );
+                $this->type = 'movie';
                 break;
 
             default:
                 $this->results = $tmdb->getNowPlayingMovies( $page );
+                $this->type = 'movie';
                 break;
         }
 
         // echo '<pre>' . print_r( $this->results, 1 ) . '</pre>';
 
-        // wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
-        // exit;
+        $file = $this->handle_upload();
+
+        if ( is_wp_error( $file ) ) {
+            // $this->add_error( $file->get_error_message() );
+            return;
+        } else {
+            $this->file = $file;
+        }
+
+        wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
+        exit;
+    }
+
+    /**
+     * Store results in CSV file.
+     */
+    protected function handle_upload() {
+        $upload_dir = wp_upload_dir( null, false );
+
+        $json = $this->results;
+        $file_name = 'masvideos-tmdb-csv-output' . date('U') . '.csv';
+        $file = $upload_dir['path'] . '/' . $file_name;
+
+        // See if the string contains something
+        if ( empty( $json ) ) { 
+            die( "The JSON string is empty!" );
+        }
+
+        // If passed a string, turn it into an array
+        if ( is_array( $json ) === false ) {
+            $json = json_decode( $json, true );
+        }
+
+        $f = fopen( $file, 'w+' );
+        if ( $f === false ) {
+            die( "Couldn't create the file to store the CSV, or the path is invalid." );
+        }
+
+        $firstLineKeys = array();
+        foreach ( $json as $line ) {
+            if( ! is_array( $line ) ) {
+                $line = json_decode( $line->getJSON(), true );
+            }
+            if ( empty( $firstLineKeys ) ) {
+                $firstLineKeys = array_keys( $line );
+                fputcsv( $f, $firstLineKeys );
+                $firstLineKeys = array_flip( $firstLineKeys );
+            }
+
+            // Using array_merge is important to maintain the order of keys acording to the first element
+            fputcsv( $f, array_merge( $firstLineKeys, $line ) );
+        }
+        fclose( $f );
+
+        // Construct the object array.
+        $object = array(
+            'post_title'     => basename( $file ),
+            'post_content'   => $upload_dir['url'] . '/' . $file_name,
+            'post_mime_type' => 'text/csv',
+            'guid'           => $upload_dir['url'] . '/' . $file_name,
+            'context'        => 'import',
+            'post_status'    => 'private',
+        );
+
+        // Save the data.
+        $id = wp_insert_attachment( $object, $file );
+
+        /*
+         * Schedule a cleanup for one day from now in case of failed
+         * import or missing wp_import_cleanup() call.
+         */
+        wp_schedule_single_event( time() + DAY_IN_SECONDS, 'importer_scheduled_cleanup', array( $id ) );
+
+        return $file;
+    }
+
+    /**
+     * Import the results.
+     */
+    protected function import_form() {
+        $action = admin_url( 'edit.php?post_type=' . $this->type . '&page=' . $this->type . '_importer' );
+        $file_url = str_replace( ABSPATH, '', $this->file );
+        include dirname( __FILE__ ) . '/views/html-tmdb-import-form.php';
     }
 }
