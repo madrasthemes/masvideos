@@ -15,14 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
         <p><?php esc_html_e( 'This tool allows you to fetch data from TMDB.', 'masvideos' ); ?></p>
     </header>
     <section>
-        <label for="masvideos-tmdb-api-key"><?php esc_html_e( 'Enter your API Key:', 'masvideos' ); ?></label>
-        <input type="text" id="masvideos-tmdb-api-key" name="api_key" />
-        <select name="type">
+        <label for="masvideos-tmdb-type"><?php esc_html_e( 'Type:', 'masvideos' ); ?></label>
+        <select id="masvideos-tmdb-type" name="type">
             <option value="now-playing-movies"><?php esc_html_e( 'Now Playing Movies', 'masvideos' ); ?></option>
             <option value="popular-movies"><?php esc_html_e( 'Popular Movies', 'masvideos' ); ?></option>
             <option value="top-rated-movies"><?php esc_html_e( 'Top Rated Movies', 'masvideos' ); ?></option>
             <option value="upcoming-movies"><?php esc_html_e( 'Upcoming Movies', 'masvideos' ); ?></option>
         </select>
+        <label for="masvideos-tmdb-page-number"><?php esc_html_e( 'Page:', 'masvideos' ); ?></label>
+        <input type="number" id="masvideos-tmdb-page-number" name="page" min="1" value="1" />
     </section>
     <div class="masvideos-actions">
         <button type="submit" class="button button-primary button-next" value="<?php esc_attr_e( 'Continue', 'masvideos' ); ?>" name="save_step"><?php esc_html_e( 'Continue', 'masvideos' ); ?></button>

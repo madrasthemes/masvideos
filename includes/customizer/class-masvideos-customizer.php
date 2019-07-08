@@ -33,10 +33,48 @@ class MasVideos_Customizer {
             'title'          => esc_html__( 'MAS Videos', 'masvideos' ),
         ) );
 
+        $this->add_general_section( $wp_customize );
         $this->add_myaccount_section( $wp_customize );
         $this->add_movies_section( $wp_customize );
         $this->add_videos_section( $wp_customize );
         $this->add_tv_shows_section( $wp_customize );
+    }
+
+    /**
+     * General section.
+     *
+     * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+     */
+    private function add_general_section( $wp_customize ) {
+        $wp_customize->add_section(
+            'masvideos_general',
+            array(
+                'title'    => esc_html__( 'General', 'masvideos' ),
+                'priority' => 10,
+                'panel'    => 'masvideos',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_tmdb_api',
+            array(
+                'default'              => '',
+                'type'                 => 'option',
+                'capability'           => 'manage_masvideos',
+                'sanitize_callback'    => 'wp_kses_post',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_tmdb_api',
+            array(
+                'label'       => esc_html__( 'TMDB API Key', 'masvideos' ),
+                'description' => esc_html__( 'Add TMDB API Key to integrate with TMDB.', 'masvideos' ),
+                'section'     => 'masvideos_general',
+                'settings'    => 'masvideos_tmdb_api',
+                'type'        => 'text',
+            )
+        );
     }
 
     /**
@@ -49,7 +87,7 @@ class MasVideos_Customizer {
             'masvideos_myaccount',
             array(
                 'title'    => esc_html__( 'My Account', 'masvideos' ),
-                'priority' => 10,
+                'priority' => 20,
                 'panel'    => 'masvideos',
             )
         );
@@ -147,7 +185,7 @@ class MasVideos_Customizer {
             'masvideos_movies',
             array(
                 'title'    => esc_html__( 'Movies', 'masvideos' ),
-                'priority' => 20,
+                'priority' => 30,
                 'panel'    => 'masvideos',
             )
         );
@@ -291,7 +329,7 @@ class MasVideos_Customizer {
             'masvideos_videos',
             array(
                 'title'    => esc_html__( 'Videos', 'masvideos' ),
-                'priority' => 30,
+                'priority' => 40,
                 'panel'    => 'masvideos',
             )
         );
@@ -414,7 +452,7 @@ class MasVideos_Customizer {
             'masvideos_tv_shows',
             array(
                 'title'    => esc_html__( 'TV Shows', 'masvideos' ),
-                'priority' => 40,
+                'priority' => 50,
                 'panel'    => 'masvideos',
             )
         );

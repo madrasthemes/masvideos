@@ -101,8 +101,9 @@ class MasVideos_TMDB_Importer_Controller {
         check_admin_referer( 'masvideos-tmdb-fetch-data' );
 
         // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification -- Nonce already verified in MasVideos_Movie_CSV_Importer_Controller::upload_form_handler()
-        $api_key = isset( $_POST['api_key'] ) ? masvideos_clean( wp_unslash( $_POST['api_key'] ) ) : '';
+        $api_key = get_option( 'masvideos_tmdb_api', '' );
         $type = isset( $_POST['type'] ) ? masvideos_clean( wp_unslash( $_POST['type'] ) ) : '';
+        $page = isset( $_POST['page'] ) ? masvideos_clean( wp_unslash( $_POST['page'] ) ) : 1;
 
         if ( empty( $api_key ) || empty( $type ) ) {
             return;
@@ -134,23 +135,23 @@ class MasVideos_TMDB_Importer_Controller {
 
         switch ( $type ) {
             case 'now-playing-movies':
-                $this->results = $tmdb->getNowPlayingMovies();
+                $this->results = $tmdb->getNowPlayingMovies( $page );
                 break;
 
             case 'popular-movies':
-                $this->results = $tmdb->getPopularMovies();
+                $this->results = $tmdb->getPopularMovies( $page );
                 break;
 
             case 'top-rated-movies':
-                $this->results = $tmdb->getPopularMovies();
+                $this->results = $tmdb->getTopRatedMovies( $page );
                 break;
 
             case 'upcoming-movies':
-                $this->results = $tmdb->getUpcomingMovies();
+                $this->results = $tmdb->getUpcomingMovies( $page );
                 break;
 
             default:
-                $this->results = $tmdb->getNowPlayingMovies();
+                $this->results = $tmdb->getNowPlayingMovies( $page );
                 break;
         }
 
