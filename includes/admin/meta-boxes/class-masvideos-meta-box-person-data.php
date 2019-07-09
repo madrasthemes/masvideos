@@ -176,8 +176,8 @@ class MasVideos_Meta_Box_Person_Data {
                 'place_of_birth'            => isset( $_POST['_place_of_birth'] ) ? masvideos_clean( $_POST['_place_of_birth'] ) : null,
                 'birthday'                  => isset( $_POST['_birthday'] ) ? masvideos_clean( $_POST['_birthday'] ) : null,
                 'deathday'                  => isset( $_POST['_deathday'] ) ? masvideos_clean( $_POST['_deathday'] ) : null,
-                'imdb_id'                   => isset( $_POST['_imdb_id'] ) ? masvideos_clean( $_POST['_imdb_id'] ) : null,
-                'tmdb_id'                   => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( $_POST['_tmdb_id'] ) : null,
+                'imdb_id'                   => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
+                'tmdb_id'                   => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
             )
         );
 

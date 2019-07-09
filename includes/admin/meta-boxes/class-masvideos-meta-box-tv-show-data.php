@@ -220,6 +220,8 @@ class MasVideos_Meta_Box_TV_Show_Data {
             array(
                 'featured'                  => isset( $_POST['_featured'] ),
                 'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
+                'imdb_id'                   => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
+                'tmdb_id'                   => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
                 'attributes'                => $attributes,
             )
         );

@@ -632,6 +632,132 @@ class MasVideos_Person_Data_Store_CPT extends MasVideos_Data_Store_WP implements
     }
 
     /**
+     * Check if person imdb_id is found for any other person IDs.
+     *
+     * @since 3.0.0
+     * @param int    $person_id Person ID.
+     * @param string $imdb_id Will be slashed to work around https://core.trac.wordpress.org/ticket/27421.
+     * @return bool
+     */
+    public function is_existing_imdb_id( $person_id, $imdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'person' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_imdb_id'
+                AND pmeta.meta_value = %s
+                AND pmeta.post_id <> %d
+                LIMIT 1
+                ",
+                wp_slash( $imdb_id ),
+                $person_id
+            )
+        );
+    }
+
+    /**
+     * Return person ID based on IMDB Id.
+     *
+     * @since 3.0.0
+     * @param string $imdb_id Person IMDB Id.
+     * @return int
+     */
+    public function get_person_id_by_imdb_id( $imdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        $id = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'person' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_imdb_id'
+                AND pmeta.meta_value = %s
+                LIMIT 1
+                ",
+                $imdb_id
+            )
+        );
+
+        return (int) apply_filters( 'masvideos_get_person_id_by_imdb_id', $id, $imdb_id );
+    }
+
+    /**
+     * Check if person tmdb_id is found for any other person IDs.
+     *
+     * @since 3.0.0
+     * @param int    $person_id Person ID.
+     * @param string $tmdb_id Will be slashed to work around https://core.trac.wordpress.org/ticket/27421.
+     * @return bool
+     */
+    public function is_existing_tmdb_id( $person_id, $tmdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'person' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_tmdb_id'
+                AND pmeta.meta_value = %s
+                AND pmeta.post_id <> %d
+                LIMIT 1
+                ",
+                wp_slash( $tmdb_id ),
+                $person_id
+            )
+        );
+    }
+
+    /**
+     * Return person ID based on TMDB Id.
+     *
+     * @since 3.0.0
+     * @param string $tmdb_id Person TMDB Id.
+     * @return int
+     */
+    public function get_person_id_by_tmdb_id( $tmdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        $id = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'person' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_tmdb_id'
+                AND pmeta.meta_value = %s
+                LIMIT 1
+                ",
+                $tmdb_id
+            )
+        );
+
+        return (int) apply_filters( 'masvideos_get_person_id_by_tmdb_id', $id, $tmdb_id );
+    }
+
+    /**
      * Return a list of related persons (using data like categories and IDs).
      *
      * @since 1.0.0

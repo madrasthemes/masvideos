@@ -38,6 +38,8 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
         '_wp_old_slug',
         '_edit_last',
         '_edit_lock',
+        '_imdb_id',
+        '_tmdb_id',
     );
 
     /**
@@ -297,6 +299,8 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
                 'tag_ids'               => $this->get_term_ids( $tv_show, 'tv_show_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_tv_show_image_gallery', true ) ) ),
                 'image_id'              => get_post_thumbnail_id( $id ),
+                'imdb_id'               => get_post_meta( $id, '_imdb_id', true ),
+                'tmdb_id'               => get_post_meta( $id, '_tmdb_id', true ),
             )
         );
     }
@@ -409,6 +413,8 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
             '_masvideos_average_rating'     => 'average_rating',
             '_masvideos_rating_count'       => 'rating_counts',
             '_masvideos_review_count'       => 'review_count',
+            '_imdb_id'                      => 'imdb_id',
+            '_tmdb_id'                      => 'tmdb_id',
         );
 
         // Make sure to take extra data (like tv show url or text for external tv shows) into account.
@@ -644,6 +650,132 @@ class MasVideos_TV_Show_Data_Store_CPT extends MasVideos_Data_Store_WP implement
                 'fields'         => 'id=>parent',
             )
         );
+    }
+
+    /**
+     * Check if tv show imdb_id is found for any other tv show IDs.
+     *
+     * @since 3.0.0
+     * @param int    $tv_show_id TV Show ID.
+     * @param string $imdb_id Will be slashed to work around https://core.trac.wordpress.org/ticket/27421.
+     * @return bool
+     */
+    public function is_existing_imdb_id( $tv_show_id, $imdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'tv_show' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_imdb_id'
+                AND pmeta.meta_value = %s
+                AND pmeta.post_id <> %d
+                LIMIT 1
+                ",
+                wp_slash( $imdb_id ),
+                $tv_show_id
+            )
+        );
+    }
+
+    /**
+     * Return tv show ID based on IMDB Id.
+     *
+     * @since 3.0.0
+     * @param string $imdb_id TV Show IMDB Id.
+     * @return int
+     */
+    public function get_tv_show_id_by_imdb_id( $imdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        $id = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'tv_show' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_imdb_id'
+                AND pmeta.meta_value = %s
+                LIMIT 1
+                ",
+                $imdb_id
+            )
+        );
+
+        return (int) apply_filters( 'masvideos_get_tv_show_id_by_imdb_id', $id, $imdb_id );
+    }
+
+    /**
+     * Check if tv show tmdb_id is found for any other tv show IDs.
+     *
+     * @since 3.0.0
+     * @param int    $tv_show_id TV Show ID.
+     * @param string $tmdb_id Will be slashed to work around https://core.trac.wordpress.org/ticket/27421.
+     * @return bool
+     */
+    public function is_existing_tmdb_id( $tv_show_id, $tmdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'tv_show' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_tmdb_id'
+                AND pmeta.meta_value = %s
+                AND pmeta.post_id <> %d
+                LIMIT 1
+                ",
+                wp_slash( $tmdb_id ),
+                $tv_show_id
+            )
+        );
+    }
+
+    /**
+     * Return tv show ID based on TMDB Id.
+     *
+     * @since 3.0.0
+     * @param string $tmdb_id TV Show TMDB Id.
+     * @return int
+     */
+    public function get_tv_show_id_by_tmdb_id( $tmdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        $id = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'tv_show' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_tmdb_id'
+                AND pmeta.meta_value = %s
+                LIMIT 1
+                ",
+                $tmdb_id
+            )
+        );
+
+        return (int) apply_filters( 'masvideos_get_tv_show_id_by_tmdb_id', $id, $tmdb_id );
     }
 
     /**
