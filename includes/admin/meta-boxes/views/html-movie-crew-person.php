@@ -24,7 +24,7 @@ $person_object = masvideos_get_person( $person['id'] );
                         <input type="hidden" name="person_position[<?php echo esc_attr( $i ); ?>]" class="person_position" value="<?php echo esc_attr( $person['position'] ); ?>" />
                     </td>
                     <td>
-                        <label><?php esc_html_e( 'Categoires', 'masvideos' ); ?>:</label>
+                        <label><?php esc_html_e( 'Department', 'masvideos' ); ?>:</label>
                         <select data-placeholder="<?php esc_attr_e( 'Select term', 'masvideos' ); ?>" class="person_categories masvideos-enhanced-select" name="person_categories[<?php echo esc_attr( $i ); ?>]">
                             <?php
 
