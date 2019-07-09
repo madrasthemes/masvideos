@@ -79,6 +79,8 @@ class MasVideos_Movie extends MasVideos_Data {
         'movie_censor_rating'   => '',
         'recommended_movie_ids' => array(),
         'related_video_ids'     => array(),
+        'imdb_id'               => '',
+        'tmdb_id'               => '',
     );
 
     /**
@@ -477,6 +479,28 @@ class MasVideos_Movie extends MasVideos_Data {
         return $this->get_prop( 'related_video_ids', $context );
     }
 
+    /**
+     * Get main movie imdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_imdb_id( $context = 'view' ) {
+        return $this->get_prop( 'imdb_id', $context );
+    }
+
+    /**
+     * Get main movie tmdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_tmdb_id( $context = 'view' ) {
+        return $this->get_prop( 'tmdb_id', $context );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Setters
@@ -840,6 +864,38 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_related_video_ids( $related_video_ids ) {
         $this->set_prop( 'related_video_ids', array_filter( (array) $related_video_ids ) );
+    }
+
+    /**
+     * Set main movie imdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $imdb_id Movie imdb id.
+     */
+    public function set_imdb_id( $imdb_id = '' ) {
+        $imdb_id = (string) $imdb_id;
+        if ( $this->get_object_read() && ! empty( $imdb_id ) && ! masvideos_movie_has_unique_imdb_id( $this->get_id(), $imdb_id ) ) {
+            $imdb_id_found = masvideos_get_movie_id_by_imdb_id( $imdb_id );
+
+            $this->error( 'movie_invalid_imdb_id', __( 'Invalid or duplicated IMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $imdb_id_found ) );
+        }
+        $this->set_prop( 'imdb_id', $imdb_id );
+    }
+
+    /**
+     * Set main movie tmdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $tmdb_id Movie tmdb id.
+     */
+    public function set_tmdb_id( $tmdb_id = '' ) {
+        $tmdb_id = (string) $tmdb_id;
+        if ( $this->get_object_read() && ! empty( $tmdb_id ) && ! masvideos_movie_has_unique_tmdb_id( $this->get_id(), $tmdb_id ) ) {
+            $tmdb_id_found = masvideos_get_movie_id_by_tmdb_id( $tmdb_id );
+
+            $this->error( 'movie_invalid_tmdb_id', __( 'Invalid or duplicated TMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $tmdb_id_found ) );
+        }
+        $this->set_prop( 'tmdb_id', $tmdb_id );
     }
 
     /*

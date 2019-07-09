@@ -515,6 +515,8 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                     __( 'Episode Link', 'masvideos' )              => 'episode_url_link',
                     __( 'Episode Release Date', 'masvideos' )      => 'episode_release_date',
                     __( 'Episode Run Time', 'masvideos' )          => 'episode_run_time',
+                    __( 'IMDB ID', 'masvideos' )                   => 'imdb_id',
+                    __( 'TMDB ID', 'masvideos' )                   => 'tmdb_id',
                 )
             )
         );
@@ -659,6 +661,8 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
             'episode_url_link'       => __( 'Episode Link', 'masvideos' ),
             'episode_release_date'   => __( 'Episode Release Date', 'masvideos' ),
             'episode_run_time'       => __( 'Episode Run Time', 'masvideos' ),
+            'imdb_id'                => __( 'IMDB ID', 'masvideos' ),
+            'tmdb_id'                => __( 'TMDB ID', 'masvideos' ),
             'seasons'                => array(
                 'name'    => __( 'Seasons', 'masvideos' ),
                 'options' => array(

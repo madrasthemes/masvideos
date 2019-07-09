@@ -617,6 +617,12 @@ class MasVideos_Person extends MasVideos_Data {
      * @param int|string $imdb_id Person imdb id.
      */
     public function set_imdb_id( $imdb_id = '' ) {
+        $imdb_id = (string) $imdb_id;
+        if ( $this->get_object_read() && ! empty( $imdb_id ) && ! masvideos_person_has_unique_imdb_id( $this->get_id(), $imdb_id ) ) {
+            $imdb_id_found = masvideos_get_person_id_by_imdb_id( $imdb_id );
+
+            $this->error( 'person_invalid_imdb_id', __( 'Invalid or duplicated IMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $imdb_id_found ) );
+        }
         $this->set_prop( 'imdb_id', $imdb_id );
     }
 
@@ -627,6 +633,12 @@ class MasVideos_Person extends MasVideos_Data {
      * @param int|string $tmdb_id Person tmdb id.
      */
     public function set_tmdb_id( $tmdb_id = '' ) {
+        $tmdb_id = (string) $tmdb_id;
+        if ( $this->get_object_read() && ! empty( $tmdb_id ) && ! masvideos_person_has_unique_tmdb_id( $this->get_id(), $tmdb_id ) ) {
+            $tmdb_id_found = masvideos_get_person_id_by_tmdb_id( $tmdb_id );
+
+            $this->error( 'person_invalid_tmdb_id', __( 'Invalid or duplicated TMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $tmdb_id_found ) );
+        }
         $this->set_prop( 'tmdb_id', $tmdb_id );
     }
 

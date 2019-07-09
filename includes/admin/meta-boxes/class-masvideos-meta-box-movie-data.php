@@ -344,6 +344,8 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_censor_rating'       => isset( $_POST['_movie_censor_rating'] ) ? masvideos_clean( $_POST['_movie_censor_rating'] ) : null,
                 'recommended_movie_ids'     => isset( $_POST['recommended_movie_ids'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['recommended_movie_ids'] ) ) : array(),
                 'related_video_ids'         => isset( $_POST['related_video_ids'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['related_video_ids'] ) ) : array(),
+                'imdb_id'                   => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
+                'tmdb_id'                   => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
             )
         );
 

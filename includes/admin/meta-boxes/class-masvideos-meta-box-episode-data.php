@@ -239,6 +239,8 @@ class MasVideos_Meta_Box_Episode_Data {
                 'episode_url_link'            => isset( $_POST['_episode_url_link'] ) ? masvideos_clean( $_POST['_episode_url_link'] ) : null,
                 'episode_release_date'        => isset( $_POST['_episode_release_date'] ) ? masvideos_clean( $_POST['_episode_release_date'] ) : null,
                 'episode_run_time'            => isset( $_POST['_episode_run_time'] ) ? masvideos_clean( $_POST['_episode_run_time'] ) : null,
+                'imdb_id'                     => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
+                'tmdb_id'                     => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
                 'attributes'                  => $attributes,
             )
         );
