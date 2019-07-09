@@ -33,7 +33,7 @@ $person_object = masvideos_get_person( $person['id'] );
                             if ( $all_terms ) {
                                 foreach ( $all_terms as $term ) {
                                     $option = isset( $person['category'] ) ? $person['category'] : '';
-                                    echo '<option value="' . esc_attr( $term->term_id ) . '"' . masvideos_selected( $term->term_id, $option ) . '>' . esc_attr( apply_filters( 'masvideos_movie_crew_person_cat_term_name', $term->name, $term ) ) . '</option>';
+                                    echo '<option value="' . esc_attr( $term->term_id ) . '"' . masvideos_selected( $term->term_id, $option ) . '>' . esc_attr( apply_filters( 'masvideos_tv_show_crew_person_cat_term_name', $term->name, $term ) ) . '</option>';
                                 }
                             }
                             ?>
@@ -52,7 +52,7 @@ $person_object = masvideos_get_person( $person['id'] );
                         ?>
                     </td>
                 </tr>
-                <?php do_action( 'masvideos_after_movie_person_settings', $person, $i ); ?>
+                <?php do_action( 'masvideos_after_tv_show_person_settings', $person, $i ); ?>
             </tbody>
         </table>
     </div>
