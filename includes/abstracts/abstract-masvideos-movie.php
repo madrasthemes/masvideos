@@ -57,7 +57,8 @@ class MasVideos_Movie extends MasVideos_Data {
         'short_description'     => '',
         'parent_id'             => 0,
         'reviews_allowed'       => true,
-        'persons'               => array(),
+        'cast'               => array(),
+        'crew'               => array(),
         'attributes'            => array(),
         'default_attributes'    => array(),
         'sources'               => array(),
@@ -242,13 +243,23 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
-     * Returns movie persons.
+     * Returns movie cast.
      *
      * @param  string $context What the value is for. Valid values are view and edit.
      * @return array
      */
-    public function get_persons( $context = 'view' ) {
-        return $this->get_prop( 'persons', $context );
+    public function get_cast( $context = 'view' ) {
+        return $this->get_prop( 'cast', $context );
+    }
+
+    /**
+     * Returns movie crew.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_crew( $context = 'view' ) {
+        return $this->get_prop( 'crew', $context );
     }
 
     /**
@@ -592,13 +603,23 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
-     * Set persons. These will be saved as strings and should map to source values.
+     * Set cast. These will be saved as strings and should map to source values.
      *
      * @since 1.0.0
-     * @param array $persons List of persons.
+     * @param array $cast List of cast.
      */
-    public function set_persons( $persons ) {
-        $this->set_prop( 'persons', $persons );
+    public function set_cast( $cast ) {
+        $this->set_prop( 'cast', $cast );
+    }
+
+    /**
+     * Set crew. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $crew List of crew.
+     */
+    public function set_crew( $crew ) {
+        $this->set_prop( 'crew', $crew );
     }
 
     /**

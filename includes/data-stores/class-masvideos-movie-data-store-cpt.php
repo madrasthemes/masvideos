@@ -25,7 +25,8 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     protected $internal_meta_keys = array(
         '_visibility',
         '_default_attributes',
-        '_persons',
+        '_cast',
+        '_crew',
         '_sources',
         '_movie_attributes',
         '_featured',
@@ -301,7 +302,8 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $movie->set_props(
             array(
-                'persons'               => get_post_meta( $id, '_persons', true ),
+                'cast'                  => get_post_meta( $id, '_cast', true ),
+                'crew'                  => get_post_meta( $id, '_crew', true ),
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
                 'sources'               => get_post_meta( $id, '_sources', true ),
                 'genre_ids'             => $this->get_term_ids( $movie, 'movie_genre' ),
@@ -422,7 +424,8 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      */
     protected function update_post_meta( &$movie, $force = false ) {
         $meta_key_to_props = array(
-            '_persons'                      => 'persons',
+            '_cast'                         => 'cast',
+            '_crew'                         => 'crew',
             '_default_attributes'           => 'default_attributes',
             '_sources'                      => 'sources',
             '_movie_image_gallery'          => 'gallery_image_ids',
