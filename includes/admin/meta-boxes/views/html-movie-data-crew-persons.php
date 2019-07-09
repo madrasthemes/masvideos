@@ -18,11 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
         $crew = $movie_object->get_crew( 'edit' );
         $i          = -1;
 
-        foreach ( $crew as $person ) {
-            $i++;
-            $metabox_class = array();
+        if( is_array( $crew ) ) {
+            foreach ( $crew as $person ) {
+                $i++;
+                $metabox_class = array();
 
-            include 'html-movie-crew-person.php';
+                include 'html-movie-crew-person.php';
+            }
         }
         ?>
     </div>

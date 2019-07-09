@@ -18,11 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
         $cast = $movie_object->get_cast( 'edit' );
         $i          = -1;
 
-        foreach ( $cast as $person ) {
-            $i++;
-            $metabox_class = array();
+        if( is_array( $cast ) ) {
+            foreach ( $cast as $person ) {
+                $i++;
+                $metabox_class = array();
 
-            include 'html-movie-cast-person.php';
+                include 'html-movie-cast-person.php';
+            }
         }
         ?>
     </div>
