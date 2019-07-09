@@ -57,6 +57,8 @@ class MasVideos_TV_Show extends MasVideos_Data {
         'short_description'     => '',
         'parent_id'             => 0,
         'reviews_allowed'       => true,
+        'cast'                  => array(),
+        'crew'                  => array(),
         'attributes'            => array(),
         'default_attributes'    => array(),
         'seasons'               => array(),
@@ -231,6 +233,26 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function get_reviews_allowed( $context = 'view' ) {
         return $this->get_prop( 'reviews_allowed', $context );
+    }
+
+    /**
+     * Returns tv show cast.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_cast( $context = 'view' ) {
+        return $this->get_prop( 'cast', $context );
+    }
+
+    /**
+     * Returns tv show crew.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_crew( $context = 'view' ) {
+        return $this->get_prop( 'crew', $context );
     }
 
     /**
@@ -527,6 +549,26 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function set_reviews_allowed( $reviews_allowed ) {
         $this->set_prop( 'reviews_allowed', masvideos_string_to_bool( $reviews_allowed ) );
+    }
+
+    /**
+     * Set cast. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $cast List of cast.
+     */
+    public function set_cast( $cast ) {
+        $this->set_prop( 'cast', $cast );
+    }
+
+    /**
+     * Set crew. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $crew List of crew.
+     */
+    public function set_crew( $crew ) {
+        $this->set_prop( 'crew', $crew );
     }
 
     /**
