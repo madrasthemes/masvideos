@@ -402,3 +402,146 @@ function masvideos_person_post_type_link( $permalink, $post ) {
     return $permalink;
 }
 add_filter( 'post_type_link', 'masvideos_person_post_type_link', 10, 2 );
+
+/**
+ * Check if person imdb_id is unique.
+ *
+ * @since  1.1
+ * @param  int    $person_id Person ID.
+ * @param  string $imdb_id Person IMDB ID.
+ * @return bool
+ */
+function masvideos_person_has_unique_imdb_id( $person_id, $imdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'person' );
+    $imdb_id_found  = $data_store->is_existing_imdb_id( $person_id, $imdb_id );
+    if ( apply_filters( 'masvideos_person_has_unique_imdb_id', $imdb_id_found, $person_id, $imdb_id ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Force a unique IMDB Id.
+ *
+ * @since 1.1
+ * @param integer $person_id Person ID.
+ */
+function masvideos_person_force_unique_imdb_id( $person_id ) {
+    $person     = masvideos_get_person( $person_id );
+    $current_imdb_id = $person ? $person->get_imdb_id( 'edit' ) : '';
+
+    if ( $current_imdb_id ) {
+        try {
+            $new_imdb_id = masvideos_person_generate_unique_imdb_id( $person_id, $current_imdb_id );
+
+            if ( $current_imdb_id !== $new_imdb_id ) {
+                $person->set_imdb_id( $new_imdb_id );
+                $person->save();
+            }
+        } catch ( Exception $e ) {} // @codingStandardsIgnoreLine.
+    }
+}
+
+/**
+ * Recursively appends a suffix until a unique IMDB Id is found.
+ *
+ * @since  1.1
+ * @param  integer $person_id Person ID.
+ * @param  string  $imdb_id Person IMDB Id.
+ * @param  integer $index An optional index that can be added to the person IMDB Id.
+ * @return string
+ */
+function masvideos_person_generate_unique_imdb_id( $person_id, $imdb_id, $index = 0 ) {
+    $generated_imdb_id = 0 < $index ? $imdb_id . '-' . $index : $imdb_id;
+
+    if ( ! masvideos_person_has_unique_imdb_id( $person_id, $generated_imdb_id ) ) {
+        $generated_imdb_id = masvideos_person_generate_unique_imdb_id( $person_id, $imdb_id, ( $index + 1 ) );
+    }
+
+    return $generated_imdb_id;
+}
+
+/**
+ * Get person ID by IMDB Id.
+ *
+ * @since  1.1
+ * @param  string $imdb_id Person IMDB Id.
+ * @return int
+ */
+function masvideos_get_person_id_by_imdb_id( $imdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'person' );
+    return $data_store->get_person_id_by_imdb_id( $imdb_id );
+}
+
+/**
+ * Check if person tmdb_id is unique.
+ *
+ * @since  1.1
+ * @param  int    $person_id Person ID.
+ * @param  string $tmdb_id Person TMDB ID.
+ * @return bool
+ */
+function masvideos_person_has_unique_tmdb_id( $person_id, $tmdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'person' );
+    $tmdb_id_found  = $data_store->is_existing_tmdb_id( $person_id, $tmdb_id );
+
+    if ( apply_filters( 'masvideos_person_has_unique_tmdb_id', $tmdb_id_found, $person_id, $tmdb_id ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Force a unique TMDB Id.
+ *
+ * @since 1.1
+ * @param integer $person_id Person ID.
+ */
+function masvideos_person_force_unique_tmdb_id( $person_id ) {
+    $person     = masvideos_get_person( $person_id );
+    $current_tmdb_id = $person ? $person->get_tmdb_id( 'edit' ) : '';
+
+    if ( $current_tmdb_id ) {
+        try {
+            $new_tmdb_id = masvideos_person_generate_unique_tmdb_id( $person_id, $current_tmdb_id );
+
+            if ( $current_tmdb_id !== $new_tmdb_id ) {
+                $person->set_tmdb_id( $new_tmdb_id );
+                $person->save();
+            }
+        } catch ( Exception $e ) {} // @codingStandardsIgnoreLine.
+    }
+}
+
+/**
+ * Recursively appends a suffix until a unique TMDB Id is found.
+ *
+ * @since  1.1
+ * @param  integer $person_id Person ID.
+ * @param  string  $tmdb_id Person TMDB Id.
+ * @param  integer $index An optional index that can be added to the person TMDB Id.
+ * @return string
+ */
+function masvideos_person_generate_unique_tmdb_id( $person_id, $tmdb_id, $index = 0 ) {
+    $generated_tmdb_id = 0 < $index ? $tmdb_id . '-' . $index : $tmdb_id;
+
+    if ( ! masvideos_person_has_unique_tmdb_id( $person_id, $generated_tmdb_id ) ) {
+        $generated_tmdb_id = masvideos_person_generate_unique_tmdb_id( $person_id, $tmdb_id, ( $index + 1 ) );
+    }
+
+    return $generated_tmdb_id;
+}
+
+/**
+ * Get person ID by TMDB Id.
+ *
+ * @since  1.1
+ * @param  string $tmdb_id Person TMDB Id.
+ * @return int
+ */
+function masvideos_get_person_id_by_tmdb_id( $tmdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'person' );
+    return $data_store->get_person_id_by_tmdb_id( $tmdb_id );
+}

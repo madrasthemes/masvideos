@@ -81,6 +81,24 @@ if ( ! defined( 'ABSPATH' ) ) {
             )
         );
 
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_imdb_id',
+                'value'         => is_callable( array( $movie_object, 'get_imdb_id' ) ) ? $movie_object->get_imdb_id( 'edit' ) : '',
+                'label'         => __( 'IMDB ID', 'masvideos' ),
+                'description'   => __( 'Enter IMDB ID of the movie.', 'masvideos' ),
+            )
+        );
+
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_tmdb_id',
+                'value'         => is_callable( array( $movie_object, 'get_tmdb_id' ) ) ? $movie_object->get_tmdb_id( 'edit' ) : '',
+                'label'         => __( 'TMDB ID', 'masvideos' ),
+                'description'   => __( 'Enter TMDB ID of the movie.', 'masvideos' ),
+            )
+        );
+
         ?>
     </div>
 

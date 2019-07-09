@@ -43,7 +43,8 @@ class MasVideos_Meta_Box_Movie_Data {
         include 'views/html-movie-data-general.php';
         include 'views/html-movie-data-linked-movies.php';
         include 'views/html-movie-data-linked-videos.php';
-        include 'views/html-movie-data-persons.php';
+        include 'views/html-movie-data-cast-persons.php';
+        include 'views/html-movie-data-crew-persons.php';
         include 'views/html-movie-data-attributes.php';
         include 'views/html-movie-data-sources.php';
     }
@@ -74,23 +75,29 @@ class MasVideos_Meta_Box_Movie_Data {
                     'class'    => array(),
                     'priority' => 30,
                 ),
-                'person'        => array(
-                    'label'    => __( 'Persons', 'masvideos' ),
-                    'target'   => 'movie_persons',
+                'cast'        => array(
+                    'label'    => __( 'Cast', 'masvideos' ),
+                    'target'   => 'movie_cast_persons',
                     'class'    => array(),
                     'priority' => 40,
+                ),
+                'crew'        => array(
+                    'label'    => __( 'Crew', 'masvideos' ),
+                    'target'   => 'movie_crew_persons',
+                    'class'    => array(),
+                    'priority' => 50,
                 ),
                 'attribute'     => array(
                     'label'    => __( 'Attributes', 'masvideos' ),
                     'target'   => 'movie_attributes',
                     'class'    => array(),
-                    'priority' => 50,
+                    'priority' => 60,
                 ),
                 'source'        => array(
                     'label'    => __( 'Sources', 'masvideos' ),
                     'target'   => 'movie_sources',
                     'class'    => array(),
-                    'priority' => 60,
+                    'priority' => 70,
                 ),
             )
         );
@@ -123,23 +130,23 @@ class MasVideos_Meta_Box_Movie_Data {
     }
 
     /**
-     * Prepare persons for save.
+     * Prepare cast for save.
      *
      * @param array $data
      *
      * @return array
      */
-    public static function prepare_persons( $data = false ) {
-        $persons = array();
+    public static function prepare_cast( $data = false ) {
+        $cast = array();
 
         if ( ! $data ) {
             $data = $_POST;
         }
 
-        if ( isset( $data['person_ids'], $data['person_categoires'] ) ) {
+        if ( isset( $data['person_ids'], $data['person_characters'] ) ) {
             $person_ids         = $data['person_ids'];
-            $person_categoires  = $data['person_categoires'];
-            $person_titles      = isset( $data['person_titles'] ) ? $data['person_titles'] : array();
+            $person_characters  = isset( $data['person_characters'] ) ? $data['person_characters'] : array();
+            $person_position    = $data['person_position'];
             $person_ids_max_key = max( array_keys( $person_ids ) );
 
             for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
@@ -147,26 +154,55 @@ class MasVideos_Meta_Box_Movie_Data {
                     continue;
                 }
 
-                $categoires = array();
+                $person = array(
+                    'id'            => $person_ids[ $i ],
+                    'character'     => isset( $person_characters[ $i ] ) ? $person_characters[ $i ] : '',
+                    'position'      => isset( $person_position[ $i ] ) ? absint( $person_position[ $i ] ) : 0
+                );
 
-                if( isset( $person_categoires[ $i ] ) ) {
-                    foreach ( $person_categoires[ $i ] as $key => $category ) {
-                        $categoires[$key] = array(
-                            'id'        => $category,
-                            'title'     => isset( $person_titles[ $i ][ $category ] ) ? $person_titles[ $i ][ $category ] : ''
-                        );
-                    }
+                $cast[] = $person;
+            }
+        }
+        return $cast;
+    }
+
+    /**
+     * Prepare crew for save.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public static function prepare_crew( $data = false ) {
+        $crew = array();
+
+        if ( ! $data ) {
+            $data = $_POST;
+        }
+
+        if ( isset( $data['person_ids'], $data['person_categories'] ) ) {
+            $person_ids         = $data['person_ids'];
+            $person_categories  = isset( $data['person_categories'] ) ? $data['person_categories'] : array();
+            $person_jobs        = isset( $data['person_jobs'] ) ? $data['person_jobs'] : array();
+            $person_position    = $data['person_position'];
+            $person_ids_max_key = max( array_keys( $person_ids ) );
+
+            for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
+                if ( empty( $person_ids[ $i ] ) ) {
+                    continue;
                 }
 
                 $person = array(
                     'id'            => $person_ids[ $i ],
-                    'categoires'    => $categoires
+                    'category'      => isset( $person_categories[ $i ] ) ? $person_categories[ $i ] : '',
+                    'job'           => isset( $person_jobs[ $i ] ) ? $person_jobs[ $i ] : '',
+                    'position'      => isset( $person_position[ $i ] ) ? absint( $person_position[ $i ] ) : 0
                 );
 
-                $persons[] = $person;
+                $crew[] = $person;
             }
         }
-        return $persons;
+        return $crew;
     }
 
     /**
@@ -288,7 +324,8 @@ class MasVideos_Meta_Box_Movie_Data {
         // Process movie type first so we have the correct class to run setters.
         $classname      = MasVideos_Movie_Factory::get_movie_classname( $post_id );
         $movie          = new $classname( $post_id );
-        $persons        = self::prepare_persons();
+        $cast           = self::prepare_cast();
+        $crew           = self::prepare_crew();
         $attributes     = self::prepare_attributes();
 
         $errors = $movie->set_props(
@@ -299,13 +336,16 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_attachment_id'       => isset( $_POST['_movie_attachment_id'] ) ? masvideos_clean( $_POST['_movie_attachment_id'] ) : null,
                 'movie_embed_content'       => isset( $_POST['_movie_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_movie_embed_content'] ) ) : null,
                 'movie_url_link'            => isset( $_POST['_movie_url_link'] ) ? masvideos_clean( $_POST['_movie_url_link'] ) : null,
-                'persons'                   => $persons,
+                'cast'                      => $cast,
+                'crew'                      => $crew,
                 'attributes'                => $attributes,
                 'movie_release_date'        => isset( $_POST['_movie_release_date'] ) ? masvideos_clean( $_POST['_movie_release_date'] ) : null,
                 'movie_run_time'            => isset( $_POST['_movie_run_time'] ) ? masvideos_clean( $_POST['_movie_run_time'] ) : null,
                 'movie_censor_rating'       => isset( $_POST['_movie_censor_rating'] ) ? masvideos_clean( $_POST['_movie_censor_rating'] ) : null,
                 'recommended_movie_ids'     => isset( $_POST['recommended_movie_ids'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['recommended_movie_ids'] ) ) : array(),
                 'related_video_ids'         => isset( $_POST['related_video_ids'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['related_video_ids'] ) ) : array(),
+                'imdb_id'                   => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
+                'tmdb_id'                   => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
             )
         );
 

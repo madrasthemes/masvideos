@@ -57,17 +57,21 @@ class MasVideos_TV_Show extends MasVideos_Data {
         'short_description'     => '',
         'parent_id'             => 0,
         'reviews_allowed'       => true,
+        'cast'                  => array(),
+        'crew'                  => array(),
         'attributes'            => array(),
         'default_attributes'    => array(),
         'seasons'               => array(),
         'menu_order'            => 0,
-        'genre_ids'          => array(),
+        'genre_ids'             => array(),
         'tag_ids'               => array(),
         'image_id'              => '',
         'gallery_image_ids'     => array(),
         'rating_counts'         => array(),
         'average_rating'        => 0,
         'review_count'          => 0,
+        'imdb_id'               => '',
+        'tmdb_id'               => '',
     );
 
     /**
@@ -232,6 +236,26 @@ class MasVideos_TV_Show extends MasVideos_Data {
     }
 
     /**
+     * Returns tv show cast.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_cast( $context = 'view' ) {
+        return $this->get_prop( 'cast', $context );
+    }
+
+    /**
+     * Returns tv show crew.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_crew( $context = 'view' ) {
+        return $this->get_prop( 'crew', $context );
+    }
+
+    /**
      * Returns tv show attributes.
      *
      * @param  string $context What the value is for. Valid values are view and edit.
@@ -380,6 +404,28 @@ class MasVideos_TV_Show extends MasVideos_Data {
         return $this->get_prop( 'tv_show_censor_rating', $context );
     }
 
+    /**
+     * Get main tv show imdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_imdb_id( $context = 'view' ) {
+        return $this->get_prop( 'imdb_id', $context );
+    }
+
+    /**
+     * Get main tv show tmdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_tmdb_id( $context = 'view' ) {
+        return $this->get_prop( 'tmdb_id', $context );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Setters
@@ -503,6 +549,26 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function set_reviews_allowed( $reviews_allowed ) {
         $this->set_prop( 'reviews_allowed', masvideos_string_to_bool( $reviews_allowed ) );
+    }
+
+    /**
+     * Set cast. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $cast List of cast.
+     */
+    public function set_cast( $cast ) {
+        $this->set_prop( 'cast', $cast );
+    }
+
+    /**
+     * Set crew. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $crew List of crew.
+     */
+    public function set_crew( $crew ) {
+        $this->set_prop( 'crew', $crew );
     }
 
     /**
@@ -633,6 +699,38 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function set_review_count( $count ) {
         $this->set_prop( 'review_count', absint( $count ) );
+    }
+
+    /**
+     * Set main tv show imdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $imdb_id TV Show imdb id.
+     */
+    public function set_imdb_id( $imdb_id = '' ) {
+        $imdb_id = (string) $imdb_id;
+        if ( $this->get_object_read() && ! empty( $imdb_id ) && ! masvideos_tv_show_has_unique_imdb_id( $this->get_id(), $imdb_id ) ) {
+            $imdb_id_found = masvideos_get_tv_show_id_by_imdb_id( $imdb_id );
+
+            $this->error( 'tv_show_invalid_imdb_id', __( 'Invalid or duplicated IMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $imdb_id_found ) );
+        }
+        $this->set_prop( 'imdb_id', $imdb_id );
+    }
+
+    /**
+     * Set main tv show tmdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $tmdb_id TV Show tmdb id.
+     */
+    public function set_tmdb_id( $tmdb_id = '' ) {
+        $tmdb_id = (string) $tmdb_id;
+        if ( $this->get_object_read() && ! empty( $tmdb_id ) && ! masvideos_tv_show_has_unique_tmdb_id( $this->get_id(), $tmdb_id ) ) {
+            $tmdb_id_found = masvideos_get_tv_show_id_by_tmdb_id( $tmdb_id );
+
+            $this->error( 'tv_show_invalid_tmdb_id', __( 'Invalid or duplicated TMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $tmdb_id_found ) );
+        }
+        $this->set_prop( 'tmdb_id', $tmdb_id );
     }
 
     /*

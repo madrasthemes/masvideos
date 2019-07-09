@@ -77,6 +77,8 @@ class MasVideos_Episode extends MasVideos_Data {
         'rating_counts'         => array(),
         'average_rating'        => 0,
         'review_count'          => 0,
+        'imdb_id'               => '',
+        'tmdb_id'               => '',
     );
 
     /**
@@ -455,6 +457,28 @@ class MasVideos_Episode extends MasVideos_Data {
         return $this->get_prop( 'review_count', $context );
     }
 
+    /**
+     * Get main episode imdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_imdb_id( $context = 'view' ) {
+        return $this->get_prop( 'imdb_id', $context );
+    }
+
+    /**
+     * Get main episode tmdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_tmdb_id( $context = 'view' ) {
+        return $this->get_prop( 'tmdb_id', $context );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Setters
@@ -798,6 +822,38 @@ class MasVideos_Episode extends MasVideos_Data {
      */
     public function set_review_count( $count ) {
         $this->set_prop( 'review_count', absint( $count ) );
+    }
+
+    /**
+     * Set main episode imdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $imdb_id Episode imdb id.
+     */
+    public function set_imdb_id( $imdb_id = '' ) {
+        $imdb_id = (string) $imdb_id;
+        if ( $this->get_object_read() && ! empty( $imdb_id ) && ! masvideos_episode_has_unique_imdb_id( $this->get_id(), $imdb_id ) ) {
+            $imdb_id_found = masvideos_get_episode_id_by_imdb_id( $imdb_id );
+
+            $this->error( 'episode_invalid_imdb_id', __( 'Invalid or duplicated IMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $imdb_id_found ) );
+        }
+        $this->set_prop( 'imdb_id', $imdb_id );
+    }
+
+    /**
+     * Set main episode tmdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $tmdb_id Episode tmdb id.
+     */
+    public function set_tmdb_id( $tmdb_id = '' ) {
+        $tmdb_id = (string) $tmdb_id;
+        if ( $this->get_object_read() && ! empty( $tmdb_id ) && ! masvideos_episode_has_unique_tmdb_id( $this->get_id(), $tmdb_id ) ) {
+            $tmdb_id_found = masvideos_get_episode_id_by_tmdb_id( $tmdb_id );
+
+            $this->error( 'episode_invalid_tmdb_id', __( 'Invalid or duplicated TMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $tmdb_id_found ) );
+        }
+        $this->set_prop( 'tmdb_id', $tmdb_id );
     }
 
     /*

@@ -435,3 +435,146 @@ function masvideos_movie_post_type_link( $permalink, $post ) {
     return $permalink;
 }
 add_filter( 'post_type_link', 'masvideos_movie_post_type_link', 10, 2 );
+
+/**
+ * Check if movie imdb_id is unique.
+ *
+ * @since  1.1
+ * @param  int    $movie_id Movie ID.
+ * @param  string $imdb_id Movie IMDB ID.
+ * @return bool
+ */
+function masvideos_movie_has_unique_imdb_id( $movie_id, $imdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'movie' );
+    $imdb_id_found  = $data_store->is_existing_imdb_id( $movie_id, $imdb_id );
+    if ( apply_filters( 'masvideos_movie_has_unique_imdb_id', $imdb_id_found, $movie_id, $imdb_id ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Force a unique IMDB Id.
+ *
+ * @since 1.1
+ * @param integer $movie_id Movie ID.
+ */
+function masvideos_movie_force_unique_imdb_id( $movie_id ) {
+    $movie     = masvideos_get_movie( $movie_id );
+    $current_imdb_id = $movie ? $movie->get_imdb_id( 'edit' ) : '';
+
+    if ( $current_imdb_id ) {
+        try {
+            $new_imdb_id = masvideos_movie_generate_unique_imdb_id( $movie_id, $current_imdb_id );
+
+            if ( $current_imdb_id !== $new_imdb_id ) {
+                $movie->set_imdb_id( $new_imdb_id );
+                $movie->save();
+            }
+        } catch ( Exception $e ) {} // @codingStandardsIgnoreLine.
+    }
+}
+
+/**
+ * Recursively appends a suffix until a unique IMDB Id is found.
+ *
+ * @since  1.1
+ * @param  integer $movie_id Movie ID.
+ * @param  string  $imdb_id Movie IMDB Id.
+ * @param  integer $index An optional index that can be added to the movie IMDB Id.
+ * @return string
+ */
+function masvideos_movie_generate_unique_imdb_id( $movie_id, $imdb_id, $index = 0 ) {
+    $generated_imdb_id = 0 < $index ? $imdb_id . '-' . $index : $imdb_id;
+
+    if ( ! masvideos_movie_has_unique_imdb_id( $movie_id, $generated_imdb_id ) ) {
+        $generated_imdb_id = masvideos_movie_generate_unique_imdb_id( $movie_id, $imdb_id, ( $index + 1 ) );
+    }
+
+    return $generated_imdb_id;
+}
+
+/**
+ * Get movie ID by IMDB Id.
+ *
+ * @since  1.1
+ * @param  string $imdb_id Movie IMDB Id.
+ * @return int
+ */
+function masvideos_get_movie_id_by_imdb_id( $imdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'movie' );
+    return $data_store->get_movie_id_by_imdb_id( $imdb_id );
+}
+
+/**
+ * Check if movie tmdb_id is unique.
+ *
+ * @since  1.1
+ * @param  int    $movie_id Movie ID.
+ * @param  string $tmdb_id Movie TMDB ID.
+ * @return bool
+ */
+function masvideos_movie_has_unique_tmdb_id( $movie_id, $tmdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'movie' );
+    $tmdb_id_found  = $data_store->is_existing_tmdb_id( $movie_id, $tmdb_id );
+
+    if ( apply_filters( 'masvideos_movie_has_unique_tmdb_id', $tmdb_id_found, $movie_id, $tmdb_id ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Force a unique TMDB Id.
+ *
+ * @since 1.1
+ * @param integer $movie_id Movie ID.
+ */
+function masvideos_movie_force_unique_tmdb_id( $movie_id ) {
+    $movie     = masvideos_get_movie( $movie_id );
+    $current_tmdb_id = $movie ? $movie->get_tmdb_id( 'edit' ) : '';
+
+    if ( $current_tmdb_id ) {
+        try {
+            $new_tmdb_id = masvideos_movie_generate_unique_tmdb_id( $movie_id, $current_tmdb_id );
+
+            if ( $current_tmdb_id !== $new_tmdb_id ) {
+                $movie->set_tmdb_id( $new_tmdb_id );
+                $movie->save();
+            }
+        } catch ( Exception $e ) {} // @codingStandardsIgnoreLine.
+    }
+}
+
+/**
+ * Recursively appends a suffix until a unique TMDB Id is found.
+ *
+ * @since  1.1
+ * @param  integer $movie_id Movie ID.
+ * @param  string  $tmdb_id Movie TMDB Id.
+ * @param  integer $index An optional index that can be added to the movie TMDB Id.
+ * @return string
+ */
+function masvideos_movie_generate_unique_tmdb_id( $movie_id, $tmdb_id, $index = 0 ) {
+    $generated_tmdb_id = 0 < $index ? $tmdb_id . '-' . $index : $tmdb_id;
+
+    if ( ! masvideos_movie_has_unique_tmdb_id( $movie_id, $generated_tmdb_id ) ) {
+        $generated_tmdb_id = masvideos_movie_generate_unique_tmdb_id( $movie_id, $tmdb_id, ( $index + 1 ) );
+    }
+
+    return $generated_tmdb_id;
+}
+
+/**
+ * Get movie ID by TMDB Id.
+ *
+ * @since  1.1
+ * @param  string $tmdb_id Movie TMDB Id.
+ * @return int
+ */
+function masvideos_get_movie_id_by_tmdb_id( $tmdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'movie' );
+    return $data_store->get_movie_id_by_tmdb_id( $tmdb_id );
+}

@@ -437,3 +437,146 @@ function masvideos_tv_show_post_type_link( $permalink, $post ) {
     return $permalink;
 }
 add_filter( 'post_type_link', 'masvideos_tv_show_post_type_link', 10, 2 );
+
+/**
+ * Check if tv show imdb_id is unique.
+ *
+ * @since  1.1
+ * @param  int    $tv_show_id TV Show ID.
+ * @param  string $imdb_id TV Show IMDB ID.
+ * @return bool
+ */
+function masvideos_tv_show_has_unique_imdb_id( $tv_show_id, $imdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'tv_show' );
+    $imdb_id_found  = $data_store->is_existing_imdb_id( $tv_show_id, $imdb_id );
+    if ( apply_filters( 'masvideos_tv_show_has_unique_imdb_id', $imdb_id_found, $tv_show_id, $imdb_id ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Force a unique IMDB Id.
+ *
+ * @since 1.1
+ * @param integer $tv_show_id TV Show ID.
+ */
+function masvideos_tv_show_force_unique_imdb_id( $tv_show_id ) {
+    $tv_show     = masvideos_get_tv_show( $tv_show_id );
+    $current_imdb_id = $tv_show ? $tv_show->get_imdb_id( 'edit' ) : '';
+
+    if ( $current_imdb_id ) {
+        try {
+            $new_imdb_id = masvideos_tv_show_generate_unique_imdb_id( $tv_show_id, $current_imdb_id );
+
+            if ( $current_imdb_id !== $new_imdb_id ) {
+                $tv_show->set_imdb_id( $new_imdb_id );
+                $tv_show->save();
+            }
+        } catch ( Exception $e ) {} // @codingStandardsIgnoreLine.
+    }
+}
+
+/**
+ * Recursively appends a suffix until a unique IMDB Id is found.
+ *
+ * @since  1.1
+ * @param  integer $tv_show_id TV Show ID.
+ * @param  string  $imdb_id TV Show IMDB Id.
+ * @param  integer $index An optional index that can be added to the tv show IMDB Id.
+ * @return string
+ */
+function masvideos_tv_show_generate_unique_imdb_id( $tv_show_id, $imdb_id, $index = 0 ) {
+    $generated_imdb_id = 0 < $index ? $imdb_id . '-' . $index : $imdb_id;
+
+    if ( ! masvideos_tv_show_has_unique_imdb_id( $tv_show_id, $generated_imdb_id ) ) {
+        $generated_imdb_id = masvideos_tv_show_generate_unique_imdb_id( $tv_show_id, $imdb_id, ( $index + 1 ) );
+    }
+
+    return $generated_imdb_id;
+}
+
+/**
+ * Get tv show ID by IMDB Id.
+ *
+ * @since  1.1
+ * @param  string $imdb_id TV Show IMDB Id.
+ * @return int
+ */
+function masvideos_get_tv_show_id_by_imdb_id( $imdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'tv_show' );
+    return $data_store->get_tv_show_id_by_imdb_id( $imdb_id );
+}
+
+/**
+ * Check if tv show tmdb_id is unique.
+ *
+ * @since  1.1
+ * @param  int    $tv_show_id TV Show ID.
+ * @param  string $tmdb_id TV Show TMDB ID.
+ * @return bool
+ */
+function masvideos_tv_show_has_unique_tmdb_id( $tv_show_id, $tmdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'tv_show' );
+    $tmdb_id_found  = $data_store->is_existing_tmdb_id( $tv_show_id, $tmdb_id );
+
+    if ( apply_filters( 'masvideos_tv_show_has_unique_tmdb_id', $tmdb_id_found, $tv_show_id, $tmdb_id ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Force a unique TMDB Id.
+ *
+ * @since 1.1
+ * @param integer $tv_show_id TV Show ID.
+ */
+function masvideos_tv_show_force_unique_tmdb_id( $tv_show_id ) {
+    $tv_show     = masvideos_get_tv_show( $tv_show_id );
+    $current_tmdb_id = $tv_show ? $tv_show->get_tmdb_id( 'edit' ) : '';
+
+    if ( $current_tmdb_id ) {
+        try {
+            $new_tmdb_id = masvideos_tv_show_generate_unique_tmdb_id( $tv_show_id, $current_tmdb_id );
+
+            if ( $current_tmdb_id !== $new_tmdb_id ) {
+                $tv_show->set_tmdb_id( $new_tmdb_id );
+                $tv_show->save();
+            }
+        } catch ( Exception $e ) {} // @codingStandardsIgnoreLine.
+    }
+}
+
+/**
+ * Recursively appends a suffix until a unique TMDB Id is found.
+ *
+ * @since  1.1
+ * @param  integer $tv_show_id TV Show ID.
+ * @param  string  $tmdb_id TV Show TMDB Id.
+ * @param  integer $index An optional index that can be added to the tv show TMDB Id.
+ * @return string
+ */
+function masvideos_tv_show_generate_unique_tmdb_id( $tv_show_id, $tmdb_id, $index = 0 ) {
+    $generated_tmdb_id = 0 < $index ? $tmdb_id . '-' . $index : $tmdb_id;
+
+    if ( ! masvideos_tv_show_has_unique_tmdb_id( $tv_show_id, $generated_tmdb_id ) ) {
+        $generated_tmdb_id = masvideos_tv_show_generate_unique_tmdb_id( $tv_show_id, $tmdb_id, ( $index + 1 ) );
+    }
+
+    return $generated_tmdb_id;
+}
+
+/**
+ * Get tv show ID by TMDB Id.
+ *
+ * @since  1.1
+ * @param  string $tmdb_id TV Show TMDB Id.
+ * @return int
+ */
+function masvideos_get_tv_show_id_by_tmdb_id( $tmdb_id ) {
+    $data_store = MasVideos_Data_Store::load( 'tv_show' );
+    return $data_store->get_tv_show_id_by_tmdb_id( $tmdb_id );
+}

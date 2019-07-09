@@ -41,6 +41,8 @@ class MasVideos_Meta_Box_TV_Show_Data {
         global $post, $thepostid, $tv_show_object;
 
         include 'views/html-tv-show-data-general.php';
+        include 'views/html-tv-show-data-cast-persons.php';
+        include 'views/html-tv-show-data-crew-persons.php';
         include 'views/html-tv-show-data-seasons.php';
         include 'views/html-tv-show-data-attributes.php';
     }
@@ -59,11 +61,23 @@ class MasVideos_Meta_Box_TV_Show_Data {
                     'class'    => array(),
                     'priority' => 10,
                 ),
+                'cast'        => array(
+                    'label'    => __( 'Cast', 'masvideos' ),
+                    'target'   => 'tv_show_cast_persons',
+                    'class'    => array(),
+                    'priority' => 20,
+                ),
+                'crew'        => array(
+                    'label'    => __( 'Crew', 'masvideos' ),
+                    'target'   => 'tv_show_crew_persons',
+                    'class'    => array(),
+                    'priority' => 30,
+                ),
                 'seasons'      => array(
                     'label'    => __( 'Seasons & Episodes', 'masvideos' ),
                     'target'   => 'tv_show_seasons',
                     'class'    => array(),
-                    'priority' => 50,
+                    'priority' => 40,
                 ),
                 'attribute'      => array(
                     'label'    => __( 'Attributes', 'masvideos' ),
@@ -99,6 +113,82 @@ class MasVideos_Meta_Box_TV_Show_Data {
         }
 
         return $a['priority'] < $b['priority'] ? -1 : 1;
+    }
+
+    /**
+     * Prepare cast for save.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public static function prepare_cast( $data = false ) {
+        $cast = array();
+
+        if ( ! $data ) {
+            $data = $_POST;
+        }
+
+        if ( isset( $data['person_ids'], $data['person_characters'] ) ) {
+            $person_ids         = $data['person_ids'];
+            $person_characters  = isset( $data['person_characters'] ) ? $data['person_characters'] : array();
+            $person_position    = $data['person_position'];
+            $person_ids_max_key = max( array_keys( $person_ids ) );
+
+            for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
+                if ( empty( $person_ids[ $i ] ) ) {
+                    continue;
+                }
+
+                $person = array(
+                    'id'            => $person_ids[ $i ],
+                    'character'     => isset( $person_characters[ $i ] ) ? $person_characters[ $i ] : '',
+                    'position'      => isset( $person_position[ $i ] ) ? absint( $person_position[ $i ] ) : 0
+                );
+
+                $cast[] = $person;
+            }
+        }
+        return $cast;
+    }
+
+    /**
+     * Prepare crew for save.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public static function prepare_crew( $data = false ) {
+        $crew = array();
+
+        if ( ! $data ) {
+            $data = $_POST;
+        }
+
+        if ( isset( $data['person_ids'], $data['person_categories'] ) ) {
+            $person_ids         = $data['person_ids'];
+            $person_categories  = isset( $data['person_categories'] ) ? $data['person_categories'] : array();
+            $person_jobs        = isset( $data['person_jobs'] ) ? $data['person_jobs'] : array();
+            $person_position    = $data['person_position'];
+            $person_ids_max_key = max( array_keys( $person_ids ) );
+
+            for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
+                if ( empty( $person_ids[ $i ] ) ) {
+                    continue;
+                }
+
+                $person = array(
+                    'id'            => $person_ids[ $i ],
+                    'category'      => isset( $person_categories[ $i ] ) ? $person_categories[ $i ] : '',
+                    'job'           => isset( $person_jobs[ $i ] ) ? $person_jobs[ $i ] : '',
+                    'position'      => isset( $person_position[ $i ] ) ? absint( $person_position[ $i ] ) : 0
+                );
+
+                $crew[] = $person;
+            }
+        }
+        return $crew;
     }
 
     /**
@@ -214,13 +304,19 @@ class MasVideos_Meta_Box_TV_Show_Data {
         // Process tv show type first so we have the correct class to run setters.
         $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $post_id );
         $tv_show      = new $classname( $post_id );
+        $cast         = self::prepare_cast();
+        $crew         = self::prepare_crew();
         $attributes   = self::prepare_attributes();
 
         $errors = $tv_show->set_props(
             array(
                 'featured'                  => isset( $_POST['_featured'] ),
                 'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
+                'cast'                      => $cast,
+                'crew'                      => $crew,
                 'attributes'                => $attributes,
+                'imdb_id'                   => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
+                'tmdb_id'                   => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
             )
         );
 

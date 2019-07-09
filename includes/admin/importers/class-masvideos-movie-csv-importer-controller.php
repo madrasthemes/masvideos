@@ -514,6 +514,8 @@ class MasVideos_Movie_CSV_Importer_Controller {
 					__( 'Movie Censor Rating', 'masvideos' )       => 'movie_censor_rating',
 					__( 'Recommended Movie', 'masvideos' )         => 'recommended_movie_ids',
 					__( 'Related Video', 'masvideos' )             => 'related_video_ids',
+					__( 'IMDB ID', 'masvideos' )                   => 'imdb_id',
+					__( 'TMDB ID', 'masvideos' )                   => 'tmdb_id',
 				)
 			)
 		);
@@ -645,6 +647,8 @@ class MasVideos_Movie_CSV_Importer_Controller {
 			'movie_censor_rating'    => __( 'Movie Censor Rating', 'masvideos' ),
 			'recommended_movie_ids'  => __( 'Recommended Movies', 'masvideos' ),
 			'related_video_ids'      => __( 'Related Video', 'masvideos' ),
+			'imdb_id'                => __( 'IMDB ID', 'masvideos' ),
+			'tmdb_id'                => __( 'TMDB ID', 'masvideos' ),
 			'attributes'             => array(
 				'name'    => __( 'Attributes', 'masvideos' ),
 				'options' => array(

@@ -487,6 +487,8 @@ class MasVideos_TV_Show_CSV_Importer extends MasVideos_TV_Show_Importer {
             'episode_release_date'      => array( $this, 'parse_date_field' ),
             'episode_run_time'          => array( $this, 'parse_skip_field' ),
             'menu_order'                => 'intval',
+            'imdb_id'                   => array( $this, 'parse_skip_field' ),
+            'tmdb_id'                   => array( $this, 'parse_skip_field' ),
         );
 
         /**

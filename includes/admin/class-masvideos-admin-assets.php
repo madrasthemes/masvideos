@@ -148,6 +148,8 @@ if ( ! class_exists( 'MasVideos_Admin_Assets', false ) ) :
                     'add_attribute_episode_nonce'   => wp_create_nonce( 'add-attribute-episode' ),
                     'save_attributes_episode_nonce' => wp_create_nonce( 'save-attributes-episode' ),
                     'search_episodes_nonce'         => wp_create_nonce( 'search-episodes' ),
+                    'add_person_tv_show_nonce'      => wp_create_nonce( 'add-person-tv_show' ),
+                    'save_persons_tv_show_nonce'    => wp_create_nonce( 'save-persons-tv_show' ),
                     'add_season_tv_show_nonce'      => wp_create_nonce( 'add-season-tv_show' ),
                     'save_seasons_tv_show_nonce'    => wp_create_nonce( 'save-seasons-tv_show' ),
                     'add_attribute_tv_show_nonce'   => wp_create_nonce( 'add-attribute-tv_show' ),
