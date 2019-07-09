@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 ?>
-<div id="movie_sources" class="panel masvideos-metaboxes-wrapper hidden">
+<div id="movie_sources" class="panel masvideos-metaboxes-wrapper masvideos_options_panel hidden">
     <div class="toolbar toolbar-top">
         <span class="expand-close">
             <a href="#" class="expand_all"><?php esc_html_e( 'Expand', 'masvideos' ); ?></a> / <a href="#" class="close_all"><?php esc_html_e( 'Close', 'masvideos' ); ?></a>
