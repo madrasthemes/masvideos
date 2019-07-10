@@ -214,6 +214,7 @@ add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_sh
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_tags', 110 );
 add_action( 'masvideos_single_tv_show_summary', 'masvideos_template_single_tv_show_info_body_close', 120 );
 add_action( 'masvideos_after_single_tv_show_summary', 'masvideos_template_single_tv_show_seasons_tabs', 10 );
+add_action( 'masvideos_after_single_tv_show_summary', 'masvideos_template_single_tv_show_cast_crew_tabs', 10 );
 add_action( 'masvideos_after_single_tv_show_summary', 'masvideos_related_tv_shows', 20 );
 add_action( 'masvideos_after_single_tv_show_summary', 'masvideos_template_single_tv_show_tabs', 30 );
 
