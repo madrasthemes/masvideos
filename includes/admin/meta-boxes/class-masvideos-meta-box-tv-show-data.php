@@ -129,10 +129,10 @@ class MasVideos_Meta_Box_TV_Show_Data {
             $data = $_POST;
         }
 
-        if ( isset( $data['person_ids'], $data['person_characters'] ) ) {
-            $person_ids         = $data['person_ids'];
-            $person_characters  = isset( $data['person_characters'] ) ? $data['person_characters'] : array();
-            $person_position    = $data['person_position'];
+        if ( isset( $data['cast_person_ids'], $data['cast_person_characters'] ) ) {
+            $person_ids         = $data['cast_person_ids'];
+            $person_characters  = isset( $data['cast_person_characters'] ) ? $data['cast_person_characters'] : array();
+            $person_position    = $data['cast_person_position'];
             $person_ids_max_key = max( array_keys( $person_ids ) );
 
             for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
@@ -166,11 +166,11 @@ class MasVideos_Meta_Box_TV_Show_Data {
             $data = $_POST;
         }
 
-        if ( isset( $data['person_ids'], $data['person_categories'] ) ) {
-            $person_ids         = $data['person_ids'];
-            $person_categories  = isset( $data['person_categories'] ) ? $data['person_categories'] : array();
-            $person_jobs        = isset( $data['person_jobs'] ) ? $data['person_jobs'] : array();
-            $person_position    = $data['person_position'];
+        if ( isset( $data['crew_person_ids'], $data['crew_person_categories'] ) ) {
+            $person_ids         = $data['crew_person_ids'];
+            $person_categories  = isset( $data['crew_person_categories'] ) ? $data['crew_person_categories'] : array();
+            $person_jobs        = isset( $data['crew_person_jobs'] ) ? $data['crew_person_jobs'] : array();
+            $person_position    = $data['crew_person_position'];
             $person_ids_max_key = max( array_keys( $person_ids ) );
 
             for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
