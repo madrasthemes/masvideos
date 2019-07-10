@@ -94,6 +94,22 @@ class MasVideos_Meta_Box_Person_Data {
         return $a['priority'] < $b['priority'] ? -1 : 1;
     }
 
+    public static function update_credit( $credit_id, $person_id, $meta_key ) {
+        $person_object = masvideos_get_person( $person_id );
+
+        $credits = $person_object->{"get_{$meta_key}"}( 'edit' );
+
+        if( ! is_array( $credits ) ) {
+            $credits = array();
+        }
+
+        if( ! in_array( $credit_id, $credits ) ) {
+            $credits[] = $credit_id;
+            $person_object->{"set_{$meta_key}"}( $credits );
+            $person_object->save();
+        }
+    }
+
     /**
      * Prepare attributes for save.
      *
