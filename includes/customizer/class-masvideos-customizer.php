@@ -95,6 +95,27 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
+            'masvideos_enable_myaccount_registration',
+            array(
+                'default'              => 'no',
+                'type'                 => 'option',
+                'capability'           => 'manage_masvideos',
+                'sanitize_callback'    => 'masvideos_bool_to_string',
+                'sanitize_js_callback' => 'masvideos_string_to_bool',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_enable_myaccount_registration',
+            array(
+                'label'    => esc_html__( 'Account creation', 'masvideos' ),
+                'section'  => 'masvideos_myaccount',
+                'settings' => 'masvideos_enable_myaccount_registration',
+                'type'     => 'checkbox',
+            )
+        );
+
+        $wp_customize->add_setting(
             'masvideos_registration_generate_username',
             array(
                 'default'              => 'no',
