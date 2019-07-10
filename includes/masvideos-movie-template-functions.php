@@ -1365,12 +1365,12 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
                         ?>
                         <div class="movie-cast">
                             <div class="cast-image">
-                                <a href="<?php echo get_the_permalink( $person->get_ID() ); ?>">
+                                <a href="<?php the_permalink( $person->get_ID() ); ?>">
                                     <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
                                 </a>
                             </div>
                             <div class="cast-name">
-                                <a href="<?php echo get_the_permalink( $person->get_ID() ); ?>">
+                                <a href="<?php the_permalink( $person->get_ID() ); ?>">
                                     <?php echo esc_html( $person->get_name() ); ?>
                                 </a>
                             </div>
