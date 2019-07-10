@@ -379,6 +379,8 @@ add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_m
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_related_movies', 20 );
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_movie_tabs', 30 );
 
+add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_movie_cast_crew_tabs', 30 );
+
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_recommended_movies', 30 );
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_movie_related_videos', 30 );
 
