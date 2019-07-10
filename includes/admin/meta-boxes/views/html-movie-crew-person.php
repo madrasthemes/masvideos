@@ -20,12 +20,12 @@ $person_object = masvideos_get_person( $person['id'] );
                         <label><?php esc_html_e( 'Name', 'masvideos' ); ?>:</label>
 
                         <strong><?php echo $person_object->get_name(); ?></strong>
-                        <input type="hidden" name="person_ids[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $person['id'] ); ?>" />
-                        <input type="hidden" name="person_position[<?php echo esc_attr( $i ); ?>]" class="person_position" value="<?php echo esc_attr( $person['position'] ); ?>" />
+                        <input type="hidden" name="crew_person_ids[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $person['id'] ); ?>" />
+                        <input type="hidden" name="crew_person_position[<?php echo esc_attr( $i ); ?>]" class="person_position" value="<?php echo esc_attr( $person['position'] ); ?>" />
                     </td>
                     <td>
-                        <label><?php esc_html_e( 'Categoires', 'masvideos' ); ?>:</label>
-                        <select data-placeholder="<?php esc_attr_e( 'Select term', 'masvideos' ); ?>" class="person_categories masvideos-enhanced-select" name="person_categories[<?php echo esc_attr( $i ); ?>]">
+                        <label><?php esc_html_e( 'Department', 'masvideos' ); ?>:</label>
+                        <select data-placeholder="<?php esc_attr_e( 'Select term', 'masvideos' ); ?>" class="person_categories masvideos-enhanced-select" name="crew_person_categories[<?php echo esc_attr( $i ); ?>]">
                             <?php
 
                             $all_terms = get_the_terms( $person['id'], 'person_cat' );
@@ -43,7 +43,7 @@ $person_object = masvideos_get_person( $person['id'] );
                         <?php
                             masvideos_wp_text_input(
                                 array(
-                                    'id'            => 'person_jobs[' . $i . ']',
+                                    'id'            => 'crew_person_jobs[' . $i . ']',
                                     'value'         => isset( $person['job'] ) ? $person['job'] : '',
                                     'label'         => __( 'Job', 'masvideos' ),
                                     'description'   => __( 'Enter the job name.', 'masvideos' ),

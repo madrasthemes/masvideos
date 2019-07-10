@@ -14,11 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
             <tbody>
                 <tr>
                     <td class="source_name">
-                        <label><?php esc_html_e( 'Name', 'masvideos' ); ?>:</label>
+                        <p class="form-field">
+                            <label><?php esc_html_e( 'Name', 'masvideos' ); ?>:</label>
 
-                        <input type="text" class="source_name" name="source_names[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $source['name'] ); ?>" />
+                            <input type="text" class="source_name short" name="source_names[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $source['name'] ); ?>" />
 
-                        <input type="hidden" name="source_position[<?php echo esc_attr( $i ); ?>]" class="source_position" value="<?php echo esc_attr( $source['position'] ); ?>" />
+                            <input type="hidden" name="source_position[<?php echo esc_attr( $i ); ?>]" class="source_position" value="<?php echo esc_attr( $source['position'] ); ?>" />
+                        </p>
                     </td>
                 </tr>
                 <tr>

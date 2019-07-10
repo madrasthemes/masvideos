@@ -320,8 +320,16 @@ if ( ! function_exists( 'masvideos_get_person_thumbnail' ) ) {
     /**
      * Get the masvideos thumbnail, or the placeholder if not set.
      */
-    function masvideos_get_person_thumbnail( $size = 'masvideos_person_medium' ) {
-        global $person;
+    function masvideos_get_person_thumbnail( $size = 'masvideos_person_medium', $person = null ) {
+        if ( is_null( $person ) && ! empty( $GLOBALS['person'] ) ) {
+            // Person was null so pull from global.
+            $person = $GLOBALS['person'];
+        }
+
+        if ( $person && ! is_a( $person, 'MasVideos_Person' ) ) {
+            // Make sure we have a valid person, or set to false.
+            $person = masvideos_get_person( $person );
+        }
 
         $image_size = apply_filters( 'masvideos_person_archive_thumbnail_size', $size );
 

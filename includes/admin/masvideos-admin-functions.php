@@ -48,6 +48,14 @@ function masvideos_get_screen_ids() {
         'edit-movie_tag',
         'profile',
         'user-edit',
+        'movie_page_movie_exporter',
+        'movie_page_movie_importer',
+        'video_page_video_exporter',
+        'video_page_video_importer',
+        'tv_show_page_tv_show_exporter',
+        'tv_show_page_tv_show_importer',
+        'person_page_person_exporter',
+        'person_page_person_importer',
     );
 
     if ( $attributes = masvideos_get_attribute_taxonomies() ) {

@@ -1309,3 +1309,126 @@ if ( ! function_exists( 'masvideos_template_single_movie_info_right_wrap_close' 
         <?php
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_movie_cast_crew_tabs' ) ) {
+
+    /**
+     * Movie cast and crew tabs in the movie single.
+     */
+    function masvideos_template_single_movie_cast_crew_tabs() {
+        global $movie;
+
+        $tabs = array();
+
+        // Cast tab - shows movie content.
+        if ( $movie && ! empty( $movie->get_cast() ) ) {
+            $tabs['cast'] = array(
+                'title'     => esc_html__( 'Cast', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_movie_cast_tab',
+                'priority'  => 10
+            );
+        }
+
+        // Crew tab - shows movie content.
+        if ( $movie && ! empty( $movie->get_crew() ) ) {
+            $tabs['crew'] = array(
+                'title'     => esc_html__( 'Crew', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_movie_crew_tab',
+                'priority'  => 20
+            );
+        }
+
+        $tabs = apply_filters( 'masvideos_template_single_movie_cast_crew_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            ?><h2 class="crew-casts-title"><?php echo apply_filters( 'masvideos_template_single_movie_cast_crew_section_title', esc_html__( 'Crew & Casts', 'masvideos' ) ); ?></h2><?php
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-cast-crew-tabs' ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
+    function masvideos_template_single_movie_cast_tab() {
+        global $movie;
+        $casts = $movie->get_cast();
+
+        if( ! empty( $casts ) ) {
+            $cast_positions = array_column( $casts, 'position' );
+            array_multisort( $cast_positions, SORT_ASC, $casts );
+
+            ?>
+            <div class="movie-casts">
+                <?php
+                foreach( $casts as $cast ) {
+                    $person = masvideos_get_person( $cast['id'] );
+                    if( $person && is_a( $person, 'MasVideos_Person' ) ) {
+                        ?>
+                        <div class="movie-cast">
+                            <div class="persion-image">
+                                <a href="<?php the_permalink( $person->get_ID() ); ?>">
+                                    <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
+                                </a>
+                            </div>
+                            <a href="<?php the_permalink( $person->get_ID() ); ?>">
+                                <h3 class="persion-name"><?php echo esc_html( $person->get_name() ); ?></h3>
+                            </a>
+                            <div class="persion-role">
+                                <?php echo esc_html( $cast['character'] ); ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+                ?>
+            </div>
+            <?php
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
+    function masvideos_template_single_movie_crew_tab() {
+        global $movie;
+        $crews = $movie->get_crew();
+        $category_based_crews = array();
+
+        if( ! empty( $crews ) ) {
+            $crew_positions = array_column( $crews, 'position' );
+            array_multisort( $crew_positions, SORT_ASC, $crews );
+
+            foreach( $crews as $crew ) {
+                $person = masvideos_get_person( $crew['id'] );
+                if( $person && is_a( $person, 'MasVideos_Person' ) ) {
+                    $crew['person_name'] = $person->get_name();
+                    $crew['person_url'] = get_the_permalink( $person->get_ID() );
+                    $crew['person_image'] = masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person );
+                    $category_based_crews[$crew['category']][] = $crew;
+                }
+            }
+
+            foreach( $category_based_crews as $term_id => $crews ) {
+                $term = get_term( $term_id );
+                ?>
+                <div class="movie-crews">
+                    <h2 class="movie-crews-category-title"><?php echo esc_html( ! is_wp_error( $term ) ? $term->name : __( 'Unknown', 'masvideos' ) ); ?></h2>
+                    <?php foreach( $crews as $crew ): ?>
+                        <div class="movie-crew">
+                            <div class="persion-image">
+                                <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                                    <?php echo wp_kses_post( $crew['person_image'] ); ?>
+                                </a>
+                            </div>
+                            <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                                <h3 class="persion-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
+                            </a>
+                            <div class="persion-role">
+                                <?php echo esc_html( $crew['job'] ); ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php
+            }
+        }
+    }
+}
