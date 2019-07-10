@@ -310,3 +310,141 @@ if ( ! function_exists( 'masvideos_person_loop_end' ) ) {
         }
     }
 }
+
+if ( ! function_exists( 'masvideos_person_page_title' ) ) {
+
+    /**
+     * Page Title function.
+     *
+     * @param  bool $echo Should echo title.
+     * @return string
+     */
+    function masvideos_person_page_title( $echo = true ) {
+
+        if ( is_search() ) {
+            /* translators: %s: search query */
+            $page_title = sprintf( __( 'Search results: &ldquo;%s&rdquo;', 'masvideos' ), get_search_query() );
+
+            if ( get_query_var( 'paged' ) ) {
+                /* translators: %s: page number */
+                $page_title .= sprintf( __( '&nbsp;&ndash; Page %s', 'masvideos' ), get_query_var( 'paged' ) );
+            }
+        } elseif ( is_tax() ) {
+
+            $page_title = single_term_title( '', false );
+
+        } else {
+
+            $persons_page_id = masvideos_get_page_id( 'persons' );
+            $page_title   = get_the_title( $persons_page_id );
+
+            if ( empty( $page_title ) ) {
+                $page_title = post_type_archive_title( '', false );
+            }
+
+        }
+
+        $page_title = apply_filters( 'masvideos_person_page_title', $page_title );
+
+        if ( $echo ) {
+            echo $page_title; // WPCS: XSS ok.
+        } else {
+            return $page_title;
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_display_person_page_title' ) ) {
+    /**
+     * Outputs Persons Page Title
+     */
+    function masvideos_display_person_page_title() {
+
+        if ( apply_filters( 'masvideos_display_person_page_title', true ) ) {
+            ?>
+            <header class="page-header">
+                <h1 class="page-title"><?php masvideos_person_page_title(); ?></h1>
+            </header>
+            <?php
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_link_open' ) ) {
+    /**
+     * Insert the opening anchor tag for person in the loop.
+     */
+    function masvideos_template_loop_person_link_open() {
+        global $person;
+
+        $link = apply_filters( 'masvideos_loop_person_link', get_the_permalink(), $person );
+
+        echo '<a href="' . esc_url( $link ) . '" class="masvideos-LoopPerson-link masvideos-loop-person__link person__link">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_link_close' ) ) {
+    /**
+     * Insert the opening anchor tag for person in the loop.
+     */
+    function masvideos_template_loop_person_link_close() {
+        echo '</a>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_poster_open' ) ) {
+    /**
+     * person poster open in the loop.
+     */
+    function masvideos_template_loop_person_poster_open() {
+        echo '<div class="person__poster">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_poster' ) ) {
+    /**
+     * person poster in the loop.
+     */
+    function masvideos_template_loop_person_poster() {
+        echo masvideos_get_person_thumbnail( 'masvideos_person_medium' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_poster_close' ) ) {
+    /**
+     * person poster close in the loop.
+     */
+    function masvideos_template_loop_person_poster_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_body_open' ) ) {
+
+    /**
+     * person body open in the person loop.
+     */
+    function masvideos_template_loop_person_body_open() {
+        echo '<div class="person__body">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_body_close' ) ) {
+
+    /**
+     * person body close in the person loop.
+     */
+    function masvideos_template_loop_person_body_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_loop_person_title' ) ) {
+
+    /**
+     * Show the person title in the person loop. By default this is an H3.
+     */
+    function masvideos_template_loop_person_title() {
+        the_title( '<h3 class="masvideos-loop-person__title  person__title">', '</h3>' );
+    }
+}
