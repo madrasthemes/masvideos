@@ -58,6 +58,10 @@ class MasVideos_Person extends MasVideos_Data {
         'parent_id'             => 0,
         'attributes'            => array(),
         'default_attributes'    => array(),
+        'movie_cast'            => array(),
+        'movie_crew'            => array(),
+        'tv_show_cast'          => array(),
+        'tv_show_crew'          => array(),
         'menu_order'            => 0,
         'category_ids'          => array(),
         'tag_ids'               => array(),
@@ -240,6 +244,46 @@ class MasVideos_Person extends MasVideos_Data {
      */
     public function get_default_attributes( $context = 'view' ) {
         return $this->get_prop( 'default_attributes', $context );
+    }
+
+    /**
+     * Returns movie cast.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_movie_cast( $context = 'view' ) {
+        return $this->get_prop( 'movie_cast', $context );
+    }
+
+    /**
+     * Returns movie crew.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_movie_crew( $context = 'view' ) {
+        return $this->get_prop( 'movie_crew', $context );
+    }
+
+    /**
+     * Returns tv show cast.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_tv_show_cast( $context = 'view' ) {
+        return $this->get_prop( 'tv_show_cast', $context );
+    }
+
+    /**
+     * Returns tv show crew.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_tv_show_crew( $context = 'view' ) {
+        return $this->get_prop( 'tv_show_crew', $context );
     }
 
     /**
@@ -512,6 +556,46 @@ class MasVideos_Person extends MasVideos_Data {
      */
     public function set_default_attributes( $default_attributes ) {
         $this->set_prop( 'default_attributes', array_map( 'strval', array_filter( (array) $default_attributes, 'masvideos_array_filter_default_attributes' ) ) );
+    }
+
+    /**
+     * Set cast. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $cast List of cast.
+     */
+    public function set_movie_cast( $cast ) {
+        $this->set_prop( 'movie_cast', $cast );
+    }
+
+    /**
+     * Set crew. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $crew List of crew.
+     */
+    public function set_movie_crew( $crew ) {
+        $this->set_prop( 'movie_crew', $crew );
+    }
+
+    /**
+     * Set cast. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $cast List of cast.
+     */
+    public function set_tv_show_cast( $cast ) {
+        $this->set_prop( 'tv_show_cast', $cast );
+    }
+
+    /**
+     * Set crew. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $crew List of crew.
+     */
+    public function set_tv_show_crew( $crew ) {
+        $this->set_prop( 'tv_show_crew', $crew );
     }
 
     /**
