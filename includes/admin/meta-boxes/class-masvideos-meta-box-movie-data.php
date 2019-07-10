@@ -324,8 +324,6 @@ class MasVideos_Meta_Box_Movie_Data {
         // Process movie type first so we have the correct class to run setters.
         $classname      = MasVideos_Movie_Factory::get_movie_classname( $post_id );
         $movie          = new $classname( $post_id );
-        $cast           = self::prepare_cast();
-        $crew           = self::prepare_crew();
         $attributes     = self::prepare_attributes();
 
         $errors = $movie->set_props(
@@ -336,8 +334,6 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_attachment_id'       => isset( $_POST['_movie_attachment_id'] ) ? masvideos_clean( $_POST['_movie_attachment_id'] ) : null,
                 'movie_embed_content'       => isset( $_POST['_movie_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_movie_embed_content'] ) ) : null,
                 'movie_url_link'            => isset( $_POST['_movie_url_link'] ) ? masvideos_clean( $_POST['_movie_url_link'] ) : null,
-                'cast'                      => $cast,
-                'crew'                      => $crew,
                 'attributes'                => $attributes,
                 'movie_release_date'        => isset( $_POST['_movie_release_date'] ) ? masvideos_clean( $_POST['_movie_release_date'] ) : null,
                 'movie_run_time'            => isset( $_POST['_movie_run_time'] ) ? masvideos_clean( $_POST['_movie_run_time'] ) : null,
