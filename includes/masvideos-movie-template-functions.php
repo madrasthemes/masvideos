@@ -1338,10 +1338,10 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_crew_tabs' ) ) {
             );
         }
 
-        $tabs = apply_filters( 'masvideos_template_single_movie_tabs', $tabs );
+        $tabs = apply_filters( 'masvideos_template_single_movie_cast_crew_tabs', $tabs );
 
         if( ! empty( $tabs ) ) {
-            ?><h3 class="crew-casts-title"><?php esc_html_e( 'Crew & Casts' ) ?></h3><?php
+            ?><h2 class="crew-casts-title"><?php echo apply_filters( 'masvideos_template_single_movie_cast_crew_section_title', esc_html__( 'Crew & Casts', 'masvideos' ) ); ?></h2><?php
             masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-cast-crew-tabs' ) );
         }
     }
@@ -1361,20 +1361,18 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
                 <?php
                 foreach( $casts as $cast ) {
                     $person = masvideos_get_person( $cast['id'] );
-                    if( is_object( $person ) ) {
+                    if( $person && is_a( $person, 'MasVideos_Person' ) ) {
                         ?>
                         <div class="movie-cast">
-                            <div class="cast-image">
+                            <div class="persion-image">
                                 <a href="<?php the_permalink( $person->get_ID() ); ?>">
                                     <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
                                 </a>
                             </div>
-                            <div class="cast-name">
-                                <a href="<?php the_permalink( $person->get_ID() ); ?>">
-                                    <?php echo esc_html( $person->get_name() ); ?>
-                                </a>
-                            </div>
-                            <div class="cast-role">
+                            <a href="<?php the_permalink( $person->get_ID() ); ?>">
+                                <h3 class="persion-name"><?php echo esc_html( $person->get_name() ); ?></h3>
+                            </a>
+                            <div class="persion-role">
                                 <?php echo esc_html( $cast['character'] ); ?>
                             </div>
                         </div>
@@ -1400,7 +1398,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
 
             foreach( $crews as $crew ) {
                 $person = masvideos_get_person( $crew['id'] );
-                if( is_object( $person ) ) {
+                if( $person && is_a( $person, 'MasVideos_Person' ) ) {
                     $crew['person_name'] = $person->get_name();
                     $crew['person_url'] = get_the_permalink( $person->get_ID() );
                     $crew['person_image'] = masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person );
@@ -1412,20 +1410,18 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                 $term = get_term( $term_id );
                 ?>
                 <div class="movie-crews">
-                    <h4 class="movie-crews-category-title"><?php echo esc_html( ! is_wp_error( $term ) ? $term->name : __( 'Unknown', 'masvideos' ) ); ?></h4>
-                        <?php foreach( $crews as $crew ): ?>
+                    <h2 class="movie-crews-category-title"><?php echo esc_html( ! is_wp_error( $term ) ? $term->name : __( 'Unknown', 'masvideos' ) ); ?></h2>
+                    <?php foreach( $crews as $crew ): ?>
                         <div class="movie-crew">
-                            <div class="crew-image">
+                            <div class="persion-image">
                                 <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
                                     <?php echo wp_kses_post( $crew['person_image'] ); ?>
                                 </a>
                             </div>
-                            <div class="crew-name">
-                                <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
-                                    <?php echo esc_html( $crew['person_name'] ); ?>
-                                </a>
-                            </div>
-                            <div class="crew-role">
+                            <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                                <h3 class="persion-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
+                            </a>
+                            <div class="persion-role">
                                 <?php echo esc_html( $crew['job'] ); ?>
                             </div>
                         </div>

@@ -143,10 +143,10 @@ class MasVideos_Meta_Box_Movie_Data {
             $data = $_POST;
         }
 
-        if ( isset( $data['person_ids'], $data['person_characters'] ) ) {
-            $person_ids         = $data['person_ids'];
-            $person_characters  = isset( $data['person_characters'] ) ? $data['person_characters'] : array();
-            $person_position    = $data['person_position'];
+        if ( isset( $data['cast_person_ids'], $data['cast_person_characters'] ) ) {
+            $person_ids         = $data['cast_person_ids'];
+            $person_characters  = isset( $data['cast_person_characters'] ) ? $data['cast_person_characters'] : array();
+            $person_position    = $data['cast_person_position'];
             $person_ids_max_key = max( array_keys( $person_ids ) );
 
             for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
@@ -180,11 +180,11 @@ class MasVideos_Meta_Box_Movie_Data {
             $data = $_POST;
         }
 
-        if ( isset( $data['person_ids'], $data['person_categories'] ) ) {
-            $person_ids         = $data['person_ids'];
-            $person_categories  = isset( $data['person_categories'] ) ? $data['person_categories'] : array();
-            $person_jobs        = isset( $data['person_jobs'] ) ? $data['person_jobs'] : array();
-            $person_position    = $data['person_position'];
+        if ( isset( $data['crew_person_ids'], $data['crew_person_categories'] ) ) {
+            $person_ids         = $data['crew_person_ids'];
+            $person_categories  = isset( $data['crew_person_categories'] ) ? $data['crew_person_categories'] : array();
+            $person_jobs        = isset( $data['crew_person_jobs'] ) ? $data['crew_person_jobs'] : array();
+            $person_position    = $data['crew_person_position'];
             $person_ids_max_key = max( array_keys( $person_ids ) );
 
             for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
@@ -324,8 +324,6 @@ class MasVideos_Meta_Box_Movie_Data {
         // Process movie type first so we have the correct class to run setters.
         $classname      = MasVideos_Movie_Factory::get_movie_classname( $post_id );
         $movie          = new $classname( $post_id );
-        $cast           = self::prepare_cast();
-        $crew           = self::prepare_crew();
         $attributes     = self::prepare_attributes();
 
         $errors = $movie->set_props(
@@ -336,8 +334,6 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_attachment_id'       => isset( $_POST['_movie_attachment_id'] ) ? masvideos_clean( $_POST['_movie_attachment_id'] ) : null,
                 'movie_embed_content'       => isset( $_POST['_movie_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_movie_embed_content'] ) ) : null,
                 'movie_url_link'            => isset( $_POST['_movie_url_link'] ) ? masvideos_clean( $_POST['_movie_url_link'] ) : null,
-                'cast'                      => $cast,
-                'crew'                      => $crew,
                 'attributes'                => $attributes,
                 'movie_release_date'        => isset( $_POST['_movie_release_date'] ) ? masvideos_clean( $_POST['_movie_release_date'] ) : null,
                 'movie_run_time'            => isset( $_POST['_movie_run_time'] ) ? masvideos_clean( $_POST['_movie_run_time'] ) : null,

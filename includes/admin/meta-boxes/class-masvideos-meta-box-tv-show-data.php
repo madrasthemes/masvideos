@@ -129,10 +129,10 @@ class MasVideos_Meta_Box_TV_Show_Data {
             $data = $_POST;
         }
 
-        if ( isset( $data['person_ids'], $data['person_characters'] ) ) {
-            $person_ids         = $data['person_ids'];
-            $person_characters  = isset( $data['person_characters'] ) ? $data['person_characters'] : array();
-            $person_position    = $data['person_position'];
+        if ( isset( $data['cast_person_ids'], $data['cast_person_characters'] ) ) {
+            $person_ids         = $data['cast_person_ids'];
+            $person_characters  = isset( $data['cast_person_characters'] ) ? $data['cast_person_characters'] : array();
+            $person_position    = $data['cast_person_position'];
             $person_ids_max_key = max( array_keys( $person_ids ) );
 
             for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
@@ -166,11 +166,11 @@ class MasVideos_Meta_Box_TV_Show_Data {
             $data = $_POST;
         }
 
-        if ( isset( $data['person_ids'], $data['person_categories'] ) ) {
-            $person_ids         = $data['person_ids'];
-            $person_categories  = isset( $data['person_categories'] ) ? $data['person_categories'] : array();
-            $person_jobs        = isset( $data['person_jobs'] ) ? $data['person_jobs'] : array();
-            $person_position    = $data['person_position'];
+        if ( isset( $data['crew_person_ids'], $data['crew_person_categories'] ) ) {
+            $person_ids         = $data['crew_person_ids'];
+            $person_categories  = isset( $data['crew_person_categories'] ) ? $data['crew_person_categories'] : array();
+            $person_jobs        = isset( $data['crew_person_jobs'] ) ? $data['crew_person_jobs'] : array();
+            $person_position    = $data['crew_person_position'];
             $person_ids_max_key = max( array_keys( $person_ids ) );
 
             for ( $i = 0; $i <= $person_ids_max_key; $i++ ) {
@@ -304,16 +304,12 @@ class MasVideos_Meta_Box_TV_Show_Data {
         // Process tv show type first so we have the correct class to run setters.
         $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $post_id );
         $tv_show      = new $classname( $post_id );
-        $cast         = self::prepare_cast();
-        $crew         = self::prepare_crew();
         $attributes   = self::prepare_attributes();
 
         $errors = $tv_show->set_props(
             array(
                 'featured'                  => isset( $_POST['_featured'] ),
                 'catalog_visibility'        => masvideos_clean( wp_unslash( $_POST['_catalog_visibility'] ) ),
-                'cast'                      => $cast,
-                'crew'                      => $crew,
                 'attributes'                => $attributes,
                 'imdb_id'                   => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
                 'tmdb_id'                   => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
