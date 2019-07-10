@@ -26,6 +26,10 @@ class MasVideos_Person_Data_Store_CPT extends MasVideos_Data_Store_WP implements
         '_visibility',
         '_default_attributes',
         '_person_attributes',
+        '_movie_cast',
+        '_movie_crew',
+        '_tv_show_cast',
+        '_tv_show_crew',
         '_featured',
         '_thumbnail_id',
         '_file_paths',
@@ -272,6 +276,10 @@ class MasVideos_Person_Data_Store_CPT extends MasVideos_Data_Store_WP implements
         $person->set_props(
             array(
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
+                'movie_cast'            => get_post_meta( $id, '_movie_cast', true ),
+                'movie_crew'            => get_post_meta( $id, '_movie_crew', true ),
+                'tv_show_cast'          => get_post_meta( $id, '_tv_show_cast', true ),
+                'tv_show_crew'          => get_post_meta( $id, '_tv_show_crew', true ),
                 'category_ids'          => $this->get_term_ids( $person, 'person_cat' ),
                 'tag_ids'               => $this->get_term_ids( $person, 'person_tag' ),
                 'gallery_image_ids'     => array_filter( explode( ',', get_post_meta( $id, '_person_image_gallery', true ) ) ),
@@ -388,6 +396,10 @@ class MasVideos_Person_Data_Store_CPT extends MasVideos_Data_Store_WP implements
     protected function update_post_meta( &$person, $force = false ) {
         $meta_key_to_props = array(
             '_default_attributes'           => 'default_attributes',
+            '_movie_cast'                   => 'movie_cast',
+            '_movie_crew'                   => 'movie_crew',
+            '_tv_show_cast'                 => 'tv_show_cast',
+            '_tv_show_crew'                 => 'tv_show_crew',
             '_person_image_gallery'         => 'gallery_image_ids',
             '_thumbnail_id'                 => 'image_id',
             '_also_known_as'                => 'also_known_as',
