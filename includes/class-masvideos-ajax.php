@@ -566,13 +566,21 @@ class MasVideos_AJAX {
         try {
             parse_str( $_POST['data'], $data );
 
-            $cast         = MasVideos_Meta_Box_TV_Show_Data::prepare_cast( $data );
+            $cast           = MasVideos_Meta_Box_TV_Show_Data::prepare_cast( $data );
             $tv_show_id     = absint( $_POST['post_id'] );
-            $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
+            $classname      = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
             $tv_show        = new $classname( $tv_show_id );
 
             $tv_show->set_cast( $cast );
             $tv_show->save();
+
+            if( ! empty( $cast ) ) {
+                foreach ( $cast as $key => $person ) {
+                    if( ! empty( $person['id'] ) ) {
+                        MasVideos_Meta_Box_Person_Data::update_credit( $tv_show_id, $person['id'], 'tv_show_cast' );
+                    }
+                }
+            }
 
             $response = array();
 
@@ -638,13 +646,21 @@ class MasVideos_AJAX {
         try {
             parse_str( $_POST['data'], $data );
 
-            $crew         = MasVideos_Meta_Box_TV_Show_Data::prepare_crew( $data );
+            $crew           = MasVideos_Meta_Box_TV_Show_Data::prepare_crew( $data );
             $tv_show_id     = absint( $_POST['post_id'] );
-            $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
+            $classname      = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
             $tv_show        = new $classname( $tv_show_id );
 
             $tv_show->set_crew( $crew );
             $tv_show->save();
+
+            if( ! empty( $crew ) ) {
+                foreach ( $crew as $key => $person ) {
+                    if( ! empty( $person['id'] ) ) {
+                        MasVideos_Meta_Box_Person_Data::update_credit( $tv_show_id, $person['id'], 'tv_show_crew' );
+                    }
+                }
+            }
 
             $response = array();
 
@@ -963,6 +979,14 @@ class MasVideos_AJAX {
             $movie->set_cast( $cast );
             $movie->save();
 
+            if( ! empty( $cast ) ) {
+                foreach ( $cast as $key => $person ) {
+                    if( ! empty( $person['id'] ) ) {
+                        MasVideos_Meta_Box_Person_Data::update_credit( $movie_id, $person['id'], 'movie_cast' );
+                    }
+                }
+            }
+
             $response = array();
 
             ob_start();
@@ -1034,6 +1058,14 @@ class MasVideos_AJAX {
 
             $movie->set_crew( $crew );
             $movie->save();
+
+            if( ! empty( $crew ) ) {
+                foreach ( $crew as $key => $person ) {
+                    if( ! empty( $person['id'] ) ) {
+                        MasVideos_Meta_Box_Person_Data::update_credit( $movie_id, $person['id'], 'movie_crew' );
+                    }
+                }
+            }
 
             $response = array();
 
