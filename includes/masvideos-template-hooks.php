@@ -65,6 +65,22 @@ add_action( 'masvideos_after_persons_loop_item_title', 'masvideos_template_loop_
  * Person Single.
  */
 
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_sidebar_open', 10 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_sidebar', 20 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_sidebar_close', 30 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_body_open', 40 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_title', 50 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_short_desc', 60 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_credits_tabs', 70 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_description', 80 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_body_close', 200 );
+
+add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_poster', 10 );
+add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_categories', 20 );
+add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_credits', 30 );
+add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_birthday', 40 );
+add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_birth_place', 50 );
+add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_also_know_as', 60 );
 /**
  * Episodes Loop.
  */
