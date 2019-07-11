@@ -965,8 +965,10 @@ if ( ! function_exists( 'masvideos_movie_related_videos' ) ) {
 
         if( ! empty( $related_video_ids ) ) {
             echo '<section class="movie__related-video">';
+            echo '<div class="movie__related-video--inner">';
                 echo sprintf( '<h2 class="movie__related-video--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::videos( $args );
+            echo '</div>';
             echo '</section>';
         }
     }
@@ -1369,7 +1371,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
                                     <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
                                 </a>
                             </div>
-                            <a href="<?php the_permalink( $person->get_ID() ); ?>">
+                            <a class="persion-name-link" href="<?php the_permalink( $person->get_ID() ); ?>">
                                 <h3 class="persion-name"><?php echo esc_html( $person->get_name() ); ?></h3>
                             </a>
                             <div class="persion-role">
@@ -1418,7 +1420,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                                     <?php echo wp_kses_post( $crew['person_image'] ); ?>
                                 </a>
                             </div>
-                            <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                            <a class="persion-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
                                 <h3 class="persion-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
                             </a>
                             <div class="persion-role">
