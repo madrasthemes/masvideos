@@ -196,6 +196,24 @@ abstract class MasVideos_Person_Importer implements MasVideos_Importer_Interface
         try {
             do_action( 'masvideos_person_import_before_process_item', $data );
 
+            // Get person ID from TMDB ID if created during the importation.
+            if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+                $person_id = masvideos_get_person_id_by_tmdb_id( $data['tmdb_id'] );
+
+                if ( $person_id ) {
+                    $data['id'] = $person_id;
+                }
+            }
+
+            // Get person ID from IMDB ID if created during the importation.
+            if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+                $person_id = masvideos_get_person_id_by_imdb_id( $data['imdb_id'] );
+
+                if ( $person_id ) {
+                    $data['id'] = $person_id;
+                }
+            }
+
             $object   = $this->get_person_object( $data );
             $updating = false;
 
