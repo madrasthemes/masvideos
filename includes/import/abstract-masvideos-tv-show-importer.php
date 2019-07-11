@@ -227,8 +227,44 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
             do_action( 'masvideos_tv_show_import_before_process_item', $data );
 
             if ( 'episode' === $data['type'] ) {
+                // Get episode ID from TMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+                    $episode_id = masvideos_get_episode_id_by_tmdb_id( $data['tmdb_id'] );
+
+                    if ( $episode_id ) {
+                        $data['id'] = $episode_id;
+                    }
+                }
+
+                // Get episode ID from IMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+                    $episode_id = masvideos_get_episode_id_by_imdb_id( $data['imdb_id'] );
+
+                    if ( $episode_id ) {
+                        $data['id'] = $episode_id;
+                    }
+                }
+
                 $object   = $this->get_episode_object( $data );
             } else {
+                // Get tv show ID from TMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+                    $tv_show_id = masvideos_get_tv_show_id_by_tmdb_id( $data['tmdb_id'] );
+
+                    if ( $tv_show_id ) {
+                        $data['id'] = $tv_show_id;
+                    }
+                }
+
+                // Get tv show ID from IMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+                    $tv_show_id = masvideos_get_tv_show_id_by_imdb_id( $data['imdb_id'] );
+
+                    if ( $tv_show_id ) {
+                        $data['id'] = $tv_show_id;
+                    }
+                }
+
                 $object   = $this->get_tv_show_object( $data );
             }
             $updating = false;

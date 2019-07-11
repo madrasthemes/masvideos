@@ -196,6 +196,24 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 		try {
 			do_action( 'masvideos_movie_import_before_process_item', $data );
 
+			// Get movie ID from TMDB ID if created during the importation.
+			if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+				$movie_id = masvideos_get_movie_id_by_tmdb_id( $data['tmdb_id'] );
+
+				if ( $movie_id ) {
+					$data['id'] = $movie_id;
+				}
+			}
+
+			// Get movie ID from IMDB ID if created during the importation.
+			if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+				$movie_id = masvideos_get_movie_id_by_imdb_id( $data['imdb_id'] );
+
+				if ( $movie_id ) {
+					$data['id'] = $movie_id;
+				}
+			}
+
 			$object   = $this->get_movie_object( $data );
 			$updating = false;
 
