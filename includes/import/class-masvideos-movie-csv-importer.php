@@ -548,10 +548,10 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 		 */
 		$regex_match_data_formatting = array(
 			'/cast:images*/'             => array( $this, 'parse_images_field' ),
-			'/cast:category*/'             => array( $this, 'parse_person_categories_field' ),
+			'/cast:category*/'           => array( $this, 'parse_person_categories_field' ),
 			'/cast:position*/'           => 'intval',
 			'/crew:images*/'             => array( $this, 'parse_images_field' ),
-			'/crew:category*/'             => array( $this, 'parse_person_categories_field' ),
+			'/crew:category*/'           => array( $this, 'parse_person_categories_field' ),
 			'/crew:position*/'           => 'intval',
 			'/attributes:value*/'        => array( $this, 'parse_comma_field' ),
 			'/attributes:visible*/'      => array( $this, 'parse_bool_field' ),

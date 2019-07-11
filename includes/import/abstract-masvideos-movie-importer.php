@@ -163,22 +163,22 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	 */
 	protected function get_person_object( $data ) {
 		// Get person ID from TMDB ID if created during the importation.
-        if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
-            $person_id = masvideos_get_person_id_by_tmdb_id( $data['tmdb_id'] );
+		if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+			$person_id = masvideos_get_person_id_by_tmdb_id( $data['tmdb_id'] );
 
-            if ( $person_id ) {
-                $data['id'] = $person_id;
-            }
-        }
+			if ( $person_id ) {
+				$data['id'] = $person_id;
+			}
+		}
 
-        // Get person ID from IMDB ID if created during the importation.
-        if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
-            $person_id = masvideos_get_person_id_by_imdb_id( $data['imdb_id'] );
+		// Get person ID from IMDB ID if created during the importation.
+		if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+			$person_id = masvideos_get_person_id_by_imdb_id( $data['imdb_id'] );
 
-            if ( $person_id ) {
-                $data['id'] = $person_id;
-            }
-        }
+			if ( $person_id ) {
+				$data['id'] = $person_id;
+			}
+		}
 
 		$id = isset( $data['id'] ) ? absint( $data['id'] ) : 0;
 
