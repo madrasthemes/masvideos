@@ -64,7 +64,6 @@ add_action( 'masvideos_after_persons_loop_item_title', 'masvideos_template_loop_
 /**
  * Person Single.
  */
-
 add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_sidebar_open', 10 );
 add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_sidebar', 20 );
 add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_sidebar_close', 30 );
@@ -81,6 +80,7 @@ add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_templ
 add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_birthday', 40 );
 add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_birth_place', 50 );
 add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_also_know_as', 60 );
+
 /**
  * Episodes Loop.
  */
@@ -408,6 +408,7 @@ add_action( 'masvideos_after_single_movie_summary', 'masvideos_related_movies', 
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_movie_tabs', 30 );
 
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_movie_cast_crew_tabs', 30 );
+add_action( 'masvideos_after_single_movie_summary', 'masvideos_template_single_movie_gallery', 30 );
 
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_recommended_movies', 30 );
 add_action( 'masvideos_after_single_movie_summary', 'masvideos_movie_related_videos', 30 );
