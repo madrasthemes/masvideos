@@ -563,7 +563,7 @@ if ( ! function_exists( 'masvideos_template_single_person_movies_tab' ) ) {
                     ?>
                     <div class="person-cast-movies">
                         <h2 class="movie-cast-title">
-                            <?php echo apply_filters( 'masvideos_template_single_movie_movies_cast_title_text',  esc_html__( 'Action', 'masvideos' ) ); ?>
+                            <?php echo apply_filters( 'masvideos_template_single_movie_movies_cast_title_text',  esc_html__( 'Acting', 'masvideos' ) ); ?>
                         </h2>
                         <?php
                         foreach( $cast_movie_ids as $cast_movie_id ) {
@@ -664,7 +664,7 @@ if ( ! function_exists( 'masvideos_template_single_person_tv_shows_tab' ) ) {
                     ?>
                     <div class="person-cast-tv-shows">
                         <h2 class="tv-show-cast-title">
-                            <?php echo apply_filters( 'masvideos_template_single_tv_show_tv_shows_cast_title_text',  esc_html__( 'Action', 'masvideos' ) ); ?>
+                            <?php echo apply_filters( 'masvideos_template_single_tv_show_tv_shows_cast_title_text',  esc_html__( 'Acting', 'masvideos' ) ); ?>
                         </h2>
                         <?php
                         foreach( $cast_tv_show_ids as $cast_tv_show_id ) {
