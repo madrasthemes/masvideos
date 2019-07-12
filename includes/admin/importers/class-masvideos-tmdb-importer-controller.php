@@ -91,9 +91,10 @@ class MasVideos_TMDB_Importer_Controller {
         $this->steps = apply_filters( 'masvideos_tmdb_importer_steps', $default_steps );
 
         // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification
-        $this->step            = isset( $_REQUEST['step'] ) ? sanitize_key( $_REQUEST['step'] ) : current( array_keys( $this->steps ) );
-        $this->file            = isset( $_REQUEST['file'] ) ? masvideos_clean( wp_unslash( $_REQUEST['file'] ) ) : '';
-        $this->type            = ! empty( $_REQUEST['type'] ) ? masvideos_clean( wp_unslash( $_REQUEST['type'] ) ) : '';
+        $this->step             = isset( $_REQUEST['step'] ) ? sanitize_key( $_REQUEST['step'] ) : current( array_keys( $this->steps ) );
+        $this->file             = isset( $_REQUEST['file'] ) ? masvideos_clean( wp_unslash( $_REQUEST['file'] ) ) : '';
+        $this->type             = ! empty( $_REQUEST['type'] ) ? masvideos_clean( wp_unslash( $_REQUEST['type'] ) ) : '';
+        // $this->results_csv_data = ! empty( $_REQUEST['results_csv_data'] ) ? masvideos_clean( wp_unslash( $_REQUEST['results_csv_data'] ) ) : array();
     }
 
     /**
@@ -124,6 +125,7 @@ class MasVideos_TMDB_Importer_Controller {
         $params = array(
             'step'            => $keys[ $step_index + 1 ],
             'file'            => str_replace( DIRECTORY_SEPARATOR, '/', $this->file ),
+            'type'            => $this->type,
             '_wpnonce'        => wp_create_nonce( 'masvideos-tmdb-fetch-data' ), // wp_nonce_url() escapes & to &amp; breaking redirects.
         );
 
@@ -193,53 +195,53 @@ class MasVideos_TMDB_Importer_Controller {
 
         switch ( $type ) {
             case 'now-playing-movies':
+                $this->type = 'movie';
                 $this->results = $tmdb->getNowPlayingMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
                 }
                 $this->results_csv_data = $movies;
-                $this->type = 'movie';
                 break;
 
             case 'popular-movies':
+                $this->type = 'movie';
                 $this->results = $tmdb->getPopularMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
                 }
                 $this->results_csv_data = $movies;
-                $this->type = 'movie';
                 break;
 
             case 'top-rated-movies':
+                $this->type = 'movie';
                 $this->results = $tmdb->getTopRatedMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
                 }
                 $this->results_csv_data = $movies;
-                $this->type = 'movie';
                 break;
 
             case 'upcoming-movies':
+                $this->type = 'movie';
                 $this->results = $tmdb->getUpcomingMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
                 }
                 $this->results_csv_data = $movies;
-                $this->type = 'movie';
                 break;
 
             default:
+                $this->type = 'movie';
                 $this->results = $tmdb->getNowPlayingMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
                 }
                 $this->results_csv_data = $movies;
-                $this->type = 'movie';
                 break;
         }
 
@@ -247,17 +249,17 @@ class MasVideos_TMDB_Importer_Controller {
         // echo '<pre>' . print_r( $this->results_csv_data, 1 ) . '</pre>';
         // exit;
 
-        // $file = $this->handle_upload();
+        $file = $this->handle_upload();
 
-        // if ( is_wp_error( $file ) ) {
-        //     // $this->add_error( $file->get_error_message() );
-        //     return;
-        // } else {
-        //     $this->file = $file;
-        // }
+        if ( is_wp_error( $file ) ) {
+            // $this->add_error( $file->get_error_message() );
+            return;
+        } else {
+            $this->file = $file;
+        }
 
-        // wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
-        // exit;
+        wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
+        exit;
     }
 
     /**
