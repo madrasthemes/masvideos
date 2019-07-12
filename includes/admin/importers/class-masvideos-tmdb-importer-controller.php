@@ -29,6 +29,13 @@ class MasVideos_TMDB_Importer_Controller {
     protected $results = array();
 
     /**
+     * API results data for CSV.
+     *
+     * @var array
+     */
+    protected $results_csv_data = array();
+
+    /**
      * API results.
      *
      * @var array
@@ -160,7 +167,7 @@ class MasVideos_TMDB_Importer_Controller {
             return;
         }
 
-        include_once MASVIDEOS_ABSPATH . 'includes/integrations/tmdb-api/tmdb-api.php';
+        include_once MASVIDEOS_ABSPATH . 'includes/integrations/tmdb/class-masvideos-tmdb.php';
 
         // Configuration
         $cnf = array(
@@ -182,48 +189,85 @@ class MasVideos_TMDB_Importer_Controller {
             'company'       => array( 'movies' ),
         );
 
-        $tmdb = new TMDB( $cnf );
+        $tmdb = new MasVideos_TMDB( $cnf );
 
         switch ( $type ) {
             case 'now-playing-movies':
                 $this->results = $tmdb->getNowPlayingMovies( $page );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                }
+                $this->results_csv_data = $movies;
                 $this->type = 'movie';
                 break;
 
             case 'popular-movies':
                 $this->results = $tmdb->getPopularMovies( $page );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                }
+                $this->results_csv_data = $movies;
                 $this->type = 'movie';
                 break;
 
             case 'top-rated-movies':
                 $this->results = $tmdb->getTopRatedMovies( $page );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                }
+                $this->results_csv_data = $movies;
                 $this->type = 'movie';
                 break;
 
             case 'upcoming-movies':
                 $this->results = $tmdb->getUpcomingMovies( $page );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                }
+                $this->results_csv_data = $movies;
                 $this->type = 'movie';
                 break;
 
             default:
                 $this->results = $tmdb->getNowPlayingMovies( $page );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                }
+                $this->results_csv_data = $movies;
                 $this->type = 'movie';
                 break;
         }
 
         // echo '<pre>' . print_r( $this->results, 1 ) . '</pre>';
+        // echo '<pre>' . print_r( $this->results_csv_data, 1 ) . '</pre>';
+        // exit;
 
-        $file = $this->handle_upload();
+        // $file = $this->handle_upload();
 
-        if ( is_wp_error( $file ) ) {
-            // $this->add_error( $file->get_error_message() );
-            return;
-        } else {
-            $this->file = $file;
-        }
+        // if ( is_wp_error( $file ) ) {
+        //     // $this->add_error( $file->get_error_message() );
+        //     return;
+        // } else {
+        //     $this->file = $file;
+        // }
 
-        wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
-        exit;
+        // wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
+        // exit;
+    }
+
+    /**
+     * Generate movie data array for CSV.
+     */
+    protected function handle_movie_data( $tmdb, $data ) {
+        // echo '<pre>' . print_r( $data, 1 ) . '</pre>';
+        // exit;
+        $movie = $data;
+        return $movie;
     }
 
     /**
@@ -232,30 +276,16 @@ class MasVideos_TMDB_Importer_Controller {
     protected function handle_upload() {
         $upload_dir = wp_upload_dir( null, false );
 
-        $json = $this->results;
         $file_name = 'masvideos-tmdb-csv-output' . date('U') . '.csv';
         $file = $upload_dir['path'] . '/' . $file_name;
 
-        // See if the string contains something
-        if ( empty( $json ) ) { 
-            die( "The JSON string is empty!" );
-        }
-
-        // If passed a string, turn it into an array
-        if ( is_array( $json ) === false ) {
-            $json = json_decode( $json, true );
-        }
-
         $f = fopen( $file, 'w+' );
         if ( $f === false ) {
-            die( "Couldn't create the file to store the CSV, or the path is invalid." );
+            die( __( 'Couldn\'t create the file to store the CSV, or the path is invalid.', 'masvideos' ) );
         }
 
         $firstLineKeys = array();
-        foreach ( $json as $line ) {
-            if( ! is_array( $line ) ) {
-                $line = json_decode( $line->getJSON(), true );
-            }
+        foreach ( $this->results_csv_data as $line ) {
             if ( empty( $firstLineKeys ) ) {
                 $firstLineKeys = array_keys( $line );
                 fputcsv( $f, $firstLineKeys );

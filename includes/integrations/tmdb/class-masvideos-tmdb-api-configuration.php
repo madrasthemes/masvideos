@@ -1,16 +1,13 @@
 <?php
 /**
- *  This class handles all the data you can get from the api Configuration
+ * MasVideos TMDB API Configuration.
  *
- *	@package TMDB_V3_API_PHP
- *  @author Alvaro Octal | <a href="https://twitter.com/Alvaro_Octal">Twitter</a>
- *  @version 0.1
- *  @date 20/01/2015
- *  @link https://github.com/Alvaroctal/TMDB-PHP-API
- *  @copyright Licensed under BSD (http://www.opensource.org/licenses/bsd-license.php)
+ * @package MasVideos/Integrations
  */
 
-class APIConfiguration {
+defined( 'ABSPATH' ) || exit;
+
+class MasVideos_TMDB_API_Configuration {
 
     //------------------------------------------------------------------------------
     // Class Variables
@@ -23,7 +20,7 @@ class APIConfiguration {
      *
      *  @param array $data An array with the data of a Configuration
      */
-    public function __construct($data) {
+    public function __construct( $data ) {
         $this->_data = $data;
     }
 
@@ -101,8 +98,8 @@ class APIConfiguration {
      *  @param string $item The item of the $data array you want
      *  @return array
      */
-    public function get($item = '') {
-        return (empty($item)) ? $this->_data : $this->_data[$item];
+    public function get( $item = '' ) {
+        return ( empty( $item ) ) ? $this->_data : $this->_data[$item];
     }
 
     //------------------------------------------------------------------------------
@@ -115,7 +112,6 @@ class APIConfiguration {
      *  @return string
      */
     public function getJSON() {
-        return json_encode($this->_data, JSON_PRETTY_PRINT);
+        return json_encode( $this->_data, JSON_PRETTY_PRINT );
     }
 }
-?>

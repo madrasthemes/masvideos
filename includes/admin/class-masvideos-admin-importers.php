@@ -129,7 +129,7 @@ class MasVideos_Admin_Importers {
 			register_importer( 'masvideos_tv_show_csv', __( 'MAS Videos TV Shows (CSV)', 'masvideos' ), __( 'Import <strong>tv shows</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'tv_show_importer' ) );
 			register_importer( 'masvideos_video_csv', __( 'MAS Videos Videos (CSV)', 'masvideos' ), __( 'Import <strong>videos</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'video_importer' ) );
 			register_importer( 'masvideos_movie_csv', __( 'MAS Videos Movies (CSV)', 'masvideos' ), __( 'Import <strong>movies</strong> to your website via a csv file.', 'masvideos' ), array( $this, 'movie_importer' ) );
-			register_importer( 'masvideos_tmdb_import', __( 'MAS Videos TMDB Import', 'masvideos' ), __( 'Import <strong>movies, videos, tv shows</strong> to your website via TMDB API.', 'masvideos' ), array( $this, 'tmdb_importer' ) );
+			register_importer( 'masvideos_tmdb_import', __( 'MAS Videos TMDB Import', 'masvideos' ), __( 'Import <strong>movies, tv shows, persons</strong> to your website via TMDB API.', 'masvideos' ), array( $this, 'tmdb_importer' ) );
 		}
 	}
 
