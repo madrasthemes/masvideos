@@ -192,7 +192,7 @@ function masvideos_get_default_movie_rows_per_page() {
  * @param int|WP_Post|MasVideos_Movies_Query $movie_id Movie ID or movie object.
  */
 function masvideos_movie_class( $class = '', $movie_id = null ) {
-    // echo 'class="' . esc_attr( join( ' ', wc_get_movie_class( $class, $movie_id ) ) ) . '"';
+    // echo 'class="' . esc_attr( join( ' ', masvideos_movie_get_movie_class( $class, $movie_id ) ) ) . '"';
     post_class();
 }
 
@@ -1431,6 +1431,32 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                 </div>
                 <?php
             }
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_gallery' ) ) {
+    function masvideos_template_single_movie_gallery() {
+        global $movie;
+
+        $columns           = apply_filters( 'masvideos_movie_gallery_thumbnails_columns', 8 );
+        $attachment_ids    = $movie->get_gallery_image_ids();
+        $wrapper_classes   = apply_filters( 'masvideos_single_movie_image_gallery_classes', array(
+            'masvideos-movie-gallery',
+            'masvideos-movie-gallery--' . ( $movie->get_image_id() ? 'with-images' : 'without-images' ),
+            'masvideos-movie-gallery--columns-' . absint( $columns ),
+            'images',
+        ) );
+        if ( $attachment_ids && $movie->get_image_id() ) {
+            ?>
+            <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>">
+                <?php
+                    foreach ( $attachment_ids as $attachment_id ) {
+                        echo apply_filters( 'masvideos_single_movie_image_thumbnail_html', masvideos_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+                    }
+                ?>
+            </div>
+            <?php
         }
     }
 }

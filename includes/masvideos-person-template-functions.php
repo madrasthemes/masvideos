@@ -448,3 +448,474 @@ if ( ! function_exists( 'masvideos_template_loop_person_title' ) ) {
         the_title( '<h3 class="masvideos-loop-person__title  person__title">', '</h3>' );
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_person_content_sidebar_open' ) ) {
+    /**
+     * person sidebar open in the single person.
+     */
+    function masvideos_template_single_person_content_sidebar_open() {
+        echo '<div class="single-person__content-sidebar">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_content_sidebar' ) ) {
+    /**
+     * person sidebar do action in the single person.
+     */
+    function masvideos_template_single_person_content_sidebar() {
+        do_action( 'masvideos_template_single_person_content_sidebar' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_content_sidebar_close' ) ) {
+    /**
+     * person sidebar close in the single person.
+     */
+    function masvideos_template_single_person_content_sidebar_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_content_body_open' ) ) {
+    /**
+     * person sidebar open in the single person.
+     */
+    function masvideos_template_single_person_content_body_open() {
+        echo '<div class="single-person__content-body">';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_title' ) ) {
+    /**
+     * Show the person title in the single person. By default this is an H1.
+     */
+    function masvideos_template_single_person_title() {
+        the_title( '<h1 class="masvideos-single-person__title  single-person___title">', '</h1>' );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_short_desc' ) ) {
+    /**
+     * Show the person short description in the single person. By default this is an H1.
+     */
+    function masvideos_template_single_person_short_desc() {
+        global $post;
+
+        $short_description = apply_filters( 'masvideos_template_single_person_short_desc', $post->post_excerpt );
+
+        if ( ! $short_description ) {
+            return;
+        }
+
+        ?>
+        <div class="single-person__short-description">
+            <?php echo '<div>' . $short_description . '</div>'; ?>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_credits_tabs' ) ) {
+
+    /**
+     * Movie cast and crew tabs in the movie single.
+     */
+    function masvideos_template_single_person_credits_tabs() {
+        global $person;
+
+        $tabs = array();
+
+        // Movies tab - shows person content.
+        if ( $person && ( ! empty( $person->get_movie_cast() ) || ! empty( $person->get_movie_crew() ) ) ) {
+            $tabs['cast'] = array(
+                'title'     => esc_html__( 'Movies', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_person_movies_tab',
+                'priority'  => 10
+            );
+        }
+
+        // TV Shows tab - shows person content.
+        if ( $person && ( ! empty( $person->get_tv_show_cast() ) || ! empty( $person->get_tv_show_crew() ) ) ) {
+            $tabs['crew'] = array(
+                'title'     => esc_html__( 'TV Shows', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_person_tv_shows_tab',
+                'priority'  => 20
+            );
+        }
+
+        $tabs = apply_filters( 'masvideos_template_single_person_credits_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'person-credits-tabs' ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_movies_tab' ) ) {
+    function masvideos_template_single_person_movies_tab() {
+        global $person;
+        $cast_movie_ids = $person->get_movie_cast();
+        $crew_movie_ids = $person->get_movie_crew();
+
+        if( ! empty( $cast_movie_ids ) || ! empty( $crew_movie_ids ) ) {
+            ?><div class="person-movies-credits"><?php
+                if( ! empty( $cast_movie_ids ) ) {
+                    ?>
+                    <div class="person-cast-movies">
+                        <h2 class="movie-cast-title">
+                            <?php echo apply_filters( 'masvideos_template_single_movie_movies_cast_title_text',  esc_html__( 'Action', 'masvideos' ) ); ?>
+                        </h2>
+                        <?php
+                        foreach( $cast_movie_ids as $cast_movie_id ) {
+                            $movie = masvideos_get_movie( $cast_movie_id );
+                            if( $movie && is_a( $movie, 'MasVideos_Movie' ) ) {
+                                $release_date = $movie->get_movie_release_date();
+                                $movie_cast = $movie->get_cast(); 
+                                $found_key = array_search( $person->get_ID(), array_column( $movie_cast, 'id' ) );
+                                ?>
+                                <div class="person-cast-movie">
+                                    <div class="movie-release-year">
+                                        <?php if( ! empty( $release_date ) ) : ?>
+                                            <?php echo date( 'Y', strtotime( $release_date ) ); ?>
+                                        <?php else : ?>
+                                            -
+                                        <?php endif; ?>
+                                    </div>
+                                    <a href="<?php the_permalink( $movie->get_ID() ); ?>">
+                                        <h3 class="movie-name"><?php echo esc_html( $movie->get_name() ); ?></h3>
+                                    </a>
+                                    <?php if( $found_key !== false ) : ?>
+                                        <span class="person-role-separator"> - </span>
+                                        <span class="person-role">
+                                            <?php echo esc_html( $movie_cast[$found_key]['character'] ); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </div>
+                    <?php
+                }
+
+                if( ! empty( $crew_movie_ids ) ) {
+                    $category_based_movies = array();
+
+                    foreach( $crew_movie_ids as $crew_movie_id ) {
+                        $movie = masvideos_get_movie( $crew_movie_id );
+                        if( $movie && is_a( $movie, 'MasVideos_Movie' ) ) {
+                            $movie_crew = $movie->get_crew();
+                            $found_keys = array_keys( array_column( $movie_crew, 'id' ), $person->get_ID() );
+
+                            foreach( $found_keys as $found_key ) {
+                                if( $found_key !== false ) {
+                                    $category_based_movies[$movie_crew[$found_key]['category']][] = array(
+                                        'movie_id'      => $movie->get_ID(),
+                                        'movie_name'    => $movie->get_name(),
+                                        'release_year'  => ! empty( $movie->get_movie_release_date() ) ? date( 'Y', strtotime( $movie->get_movie_release_date() ) ) : '-',
+                                        'job'           => $movie_crew[$found_key]['job'],
+                                    );
+                                }
+                            }
+                        }
+                    }
+
+                    foreach( $category_based_movies as $term_id => $movies ) {
+                        $term = get_term( $term_id );
+                        array_multisort( array_column( $movies, 'release_year' ), SORT_DESC, $movies );
+                        ?>
+                        <div class="person-crew-movies">
+                            <h2 class="person-crews-movies-category-title"><?php echo esc_html( ! is_wp_error( $term ) ? $term->name : __( 'Unknown', 'masvideos' ) ); ?></h2>
+                            <?php foreach( $movies as $movie ): ?>
+                                <div class="person-crew-movie">
+                                    <div class="movie-release-year">
+                                        <?php echo esc_html( $movie['release_year'] ); ?>
+                                    </div>
+                                    <a href="<?php the_permalink( $movie['movie_id'] ); ?>">
+                                        <h3 class="movie-name"><?php echo esc_html( $movie['movie_name'] ); ?></h3>
+                                    </a>
+                                    <?php if( $found_key !== false ) : ?>
+                                        <span class="person-role-separator"> - </span>
+                                        <span class="person-role">
+                                            <?php echo esc_html( $movie['job'] ); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php
+                    }
+                }
+            ?></div><?php
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_tv_shows_tab' ) ) {
+    function masvideos_template_single_person_tv_shows_tab() {
+        global $person;
+        $cast_tv_show_ids = $person->get_tv_show_cast();
+        $crew_tv_show_ids = $person->get_tv_show_crew();
+
+        if( ! empty( $cast_tv_show_ids ) || ! empty( $crew_tv_show_ids ) ) {
+            ?><div class="person-tv-shows-credits"><?php
+                if( ! empty( $cast_tv_show_ids ) ) {
+                    ?>
+                    <div class="person-cast-tv-shows">
+                        <h2 class="tv-show-cast-title">
+                            <?php echo apply_filters( 'masvideos_template_single_tv_show_tv_shows_cast_title_text',  esc_html__( 'Action', 'masvideos' ) ); ?>
+                        </h2>
+                        <?php
+                        foreach( $cast_tv_show_ids as $cast_tv_show_id ) {
+                            $tv_show = masvideos_get_tv_show( $cast_tv_show_id );
+                            if( $tv_show && is_a( $tv_show, 'MasVideos_TV_Show' ) ) {
+                                $release_date = $tv_show->get_tv_show_release_date();
+                                $tv_show_cast = $tv_show->get_cast(); 
+                                $found_key = array_search( $person->get_ID(), array_column( $tv_show_cast, 'id' ) );
+                                $seasons = $tv_show->get_seasons();
+
+                                if( ! empty( $seasons ) ) {
+                                    $season_years = array_column( $seasons, 'year' );
+                                    $start = count( $season_years ) ? min( $season_years ) : '';
+                                    $end = count( $season_years ) ? max( $season_years ) : '';
+
+                                    if( ! empty( $start ) && ! empty( $end ) ) {
+                                        $tv_show_year = $start . ' - ' . $end;
+                                    } elseif( ! empty( $start ) ) {
+                                        $tv_show_year = $start;
+                                    } elseif( ! empty( $end ) ) {
+                                        $tv_show_year = $end;
+                                    }
+                                }
+
+                                ?>
+                                <div class="person-cast-tv-show">
+                                    <div class="tv-show-release-year">
+                                        <?php echo ( ! empty( $tv_show_year ) ? esc_html( $tv_show_year ) : '-' ); ?>
+                                    </div>
+                                    <a href="<?php the_permalink( $tv_show->get_ID() ); ?>">
+                                        <h3 class="tv-show-name"><?php echo esc_html( $tv_show->get_name() ); ?></h3>
+                                    </a>
+                                    <?php if( $found_key !== false ) : ?>
+                                        <span class="person-role-separator"> - </span>
+                                        <span class="person-role">
+                                            <?php echo esc_html( $tv_show_cast[$found_key]['character'] ); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </div>
+                    <?php
+                }
+
+                if( ! empty( $crew_tv_show_ids ) ) {
+                    $category_based_tv_shows = array();
+
+                    foreach( $crew_tv_show_ids as $crew_tv_show_id ) {
+                        $tv_show = masvideos_get_tv_show( $crew_tv_show_id );
+                        if( $tv_show && is_a( $tv_show, 'MasVideos_TV_Show' ) ) {
+                            $tv_show_crew = $tv_show->get_crew();
+                            $found_keys = array_keys( array_column( $tv_show_crew, 'id' ), $person->get_ID() );
+                            $seasons = $tv_show->get_seasons();
+
+                            if( ! empty( $seasons ) ) {
+                                $season_years = array_column( $seasons, 'year' );
+                                $start = count( $season_years ) ? min( $season_years ) : '';
+                                $end = count( $season_years ) ? max( $season_years ) : '';
+
+                                if( ! empty( $start ) && ! empty( $end ) ) {
+                                    $tv_show_year = $start . ' - ' . $end;
+                                } elseif( ! empty( $start ) ) {
+                                    $tv_show_year = $start;
+                                } elseif( ! empty( $end ) ) {
+                                    $tv_show_year = $end;
+                                }
+                            }
+
+                            foreach( $found_keys as $found_key ) {
+                                if( $found_key !== false ) {
+                                    $category_based_tv_shows[$tv_show_crew[$found_key]['category']][] = array(
+                                        'tv_show_id'    => $tv_show->get_ID(),
+                                        'tv_show_name'  => $tv_show->get_name(),
+                                        'release_year'  => $tv_show_year,
+                                        'job'           => $tv_show_crew[$found_key]['job'],
+                                    );
+                                }
+                            }
+                        }
+                    }
+
+                    foreach( $category_based_tv_shows as $term_id => $tv_shows ) {
+                        $term = get_term( $term_id );
+                        array_multisort( array_column( $tv_shows, 'release_year' ), SORT_DESC, $tv_shows );
+                        ?>
+                        <div class="person-crew-tv-shows">
+                            <h2 class="person-crews-tv-shows-category-title"><?php echo esc_html( ! is_wp_error( $term ) ? $term->name : __( 'Unknown', 'masvideos' ) ); ?></h2>
+                            <?php foreach( $tv_shows as $tv_show ): ?>
+                                <div class="person-crew-tv-show">
+                                    <div class="tv-show-release-year">
+                                        <?php echo ( ! empty( $tv_show['release_date'] ) ? esc_html( $tv_show['release_date'] ) : '-' ); ?>
+                                    </div>
+                                    <a href="<?php the_permalink( $tv_show['tv_show_id'] ); ?>">
+                                        <h3 class="tv-show-name"><?php echo esc_html( $tv_show['tv_show_name'] ); ?></h3>
+                                    </a>
+                                    <?php if( $found_key !== false ) : ?>
+                                        <span class="person-role-separator"> - </span>
+                                        <span class="person-role">
+                                            <?php echo esc_html( $tv_show['job'] ); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php
+                    }
+                }
+            ?></div><?php
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_description' ) ) {
+    /**
+     * Show the person description in the single person. By default this is an H1.
+     */
+    function masvideos_template_single_person_description() {
+        ?>
+        <div class="single-person__description">
+            <div><?php the_content(); ?></div>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_content_body_close' ) ) {
+    /**
+     * person sidebar close in the single person.
+     */
+    function masvideos_template_single_person_content_body_close() {
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_poster' ) ) {
+    /**
+     * person poster in the single person.
+     */
+    function masvideos_template_single_person_poster() {
+        ?>
+        <div class="single-person__poster">
+            <?php masvideos_template_loop_person_poster(); ?>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_categories' ) ) {
+    /**
+     * person categories in the single person.
+     */
+    function masvideos_template_single_person_categories() {
+        global $post;
+        $terms = get_the_terms( $post, 'person_cat' );
+        if( ! $terms || is_wp_error( $terms ) )
+            return;
+
+        $term_names = wp_list_pluck( $terms, 'name' );
+
+        if( ! empty( $term_names ) ) :
+            $title = apply_filters( 'masvideos_template_single_person_categories_title_text', __( 'Known For', 'masvideos' ) );
+            ?>
+            <div class="single-person__categories">
+                <h4 class="single-person__sidebar-title category-title"><?php echo esc_html( $title ); ?></h4>
+                <?php echo wp_kses_post( implode( ', ', $term_names ) ); ?>
+            </div>
+            <?php
+        endif;
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_credits' ) ) {
+    /**
+     * person credits in the single person.
+     */
+    function masvideos_template_single_person_credits() {
+        global $person;
+        $movie_cast = $person->get_movie_cast() ? $person->get_movie_cast() : array();
+        $movie_crew = $person->get_movie_crew() ? $person->get_movie_crew() : array();
+        $tv_show_cast = $person->get_tv_show_cast() ? $person->get_tv_show_cast() : array();
+        $tv_show_crew = $person->get_tv_show_crew() ? $person->get_tv_show_crew() : array();
+        $credits = array_unique( array_merge ( $movie_cast, $movie_crew, $tv_show_cast, $tv_show_crew ) );
+        if( count( $credits ) > 0 ) :
+            $title = apply_filters( 'masvideos_template_single_person_credits_title_text', __( 'Known Credits', 'masvideos' ) );
+            ?>
+            <div class="single-person__credits">
+                <h4 class="single-person__sidebar-title credits-title"><?php echo esc_html( $title ); ?></h4>
+                <?php echo wp_kses_post( count( $credits ) ); ?>
+            </div>
+            <?php
+        endif;
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_birthday' ) ) {
+    /**
+     * person birthday in the single person.
+     */
+    function masvideos_template_single_person_birthday() {
+        global $person;
+        $birthday = $person->get_birthday();
+        if( ! empty( $birthday ) ) :
+            $title = apply_filters( 'masvideos_template_single_person_birthday_title_text', __( 'Birthday', 'masvideos' ) );
+            $format = apply_filters( 'masvideos_template_single_person_birthday_format', 'd-m-Y' );
+            ?>
+            <div class="single-person__birthday">
+                <h4 class="single-person__sidebar-title birthday-title"><?php echo esc_html( $title ); ?></h4>
+                <?php echo date( $format, strtotime( $birthday ) ); ?>
+            </div>
+            <?php
+        endif;
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_birth_place' ) ) {
+    /**
+     * person birth place in the single person.
+     */
+    function masvideos_template_single_person_birth_place() {
+        global $person;
+        $birth_place = $person->get_place_of_birth();
+        if( ! empty( $birth_place ) ) :
+            $title = apply_filters( 'masvideos_template_single_person_birth_place_title_text', __( 'Place of Birth', 'masvideos' ) );
+            ?>
+            <div class="single-person__birth-place">
+                <h4 class="single-person__sidebar-title birth-place-title"><?php echo esc_html( $title ); ?></h4>
+                <?php echo wp_kses_post( $birth_place ); ?>
+            </div>
+            <?php
+        endif;
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_person_also_know_as' ) ) {
+    /**
+     * person birth place in the single person.
+     */
+    function masvideos_template_single_person_also_know_as() {
+        global $person;
+        $also_know_as = $person->get_also_known_as();
+        if( ! empty( $also_know_as ) ) :
+            $title = apply_filters( 'masvideos_template_single_person_also_know_as_title_text', __( 'Also Know As', 'masvideos' ) );
+            ?>
+            <div class="single-person__other-names">
+                <h4 class="single-person__sidebar-title other-names-title"><?php echo esc_html( $title ); ?></h4>
+                <?php echo wp_kses_post( $also_know_as ); ?>
+            </div>
+            <?php
+        endif;
+    }
+}
