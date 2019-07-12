@@ -684,7 +684,7 @@ if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
 if ( ! function_exists( 'masvideos_photoswipe' ) ) {
 
     /**
-     * Get the shop sidebar template.
+     * Get the photoswipe markup template.
      */
     function masvideos_photoswipe() {
         masvideos_get_template( 'global/photoswipe.php' );
