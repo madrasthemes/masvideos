@@ -681,6 +681,16 @@ if ( ! function_exists( 'masvideos_breadcrumb' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_photoswipe' ) ) {
+
+    /**
+     * Get the shop sidebar template.
+     */
+    function masvideos_photoswipe() {
+        masvideos_get_template( 'global/photoswipe.php' );
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_content_area_open' ) ) {
     /**
      * Content Area open in the loop.

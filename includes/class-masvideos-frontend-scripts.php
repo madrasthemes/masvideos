@@ -155,6 +155,16 @@ class MasVideos_Frontend_Scripts {
                 'deps'    => array( 'jquery' ),
                 'version' => '2.70',
             ),
+            'photoswipe'                    => array(
+                'src'     => self::get_asset_url( 'assets/js/photoswipe/photoswipe' . $suffix . '.js' ),
+                'deps'    => array(),
+                'version' => '4.1.1',
+            ),
+            'photoswipe-ui-default'         => array(
+                'src'     => self::get_asset_url( 'assets/js/photoswipe/photoswipe-ui-default' . $suffix . '.js' ),
+                'deps'    => array( 'photoswipe' ),
+                'version' => '4.1.1',
+            ),
             'select2'                       => array(
                 'src'     => self::get_asset_url( 'assets/js/select2/select2.full' . $suffix . '.js' ),
                 'deps'    => array( 'jquery' ),
@@ -241,6 +251,18 @@ class MasVideos_Frontend_Scripts {
      */
     private static function register_styles() {
         $register_styles = array(
+            'photoswipe'                => array(
+                'src'     => self::get_asset_url( 'assets/css/photoswipe/photoswipe.css' ),
+                'deps'    => array(),
+                'version' => WC_VERSION,
+                'has_rtl' => false,
+            ),
+            'photoswipe-default-skin'   => array(
+                'src'     => self::get_asset_url( 'assets/css/photoswipe/default-skin/default-skin.css' ),
+                'deps'    => array( 'photoswipe' ),
+                'version' => WC_VERSION,
+                'has_rtl' => false,
+            ),
             'select2'                   => array(
                 'src'     => self::get_asset_url( 'assets/css/select2.css' ),
                 'deps'    => array(),
@@ -305,6 +327,12 @@ class MasVideos_Frontend_Scripts {
             self::enqueue_script( 'selectWoo' );
             self::enqueue_style( 'select2' );
             self::enqueue_script( 'masvideos-edit-video' );
+        }
+
+        if ( current_theme_supports( 'masvideos-movie-gallery-lightbox' ) ) {
+            self::enqueue_script( 'photoswipe-ui-default' );
+            self::enqueue_style( 'photoswipe-default-skin' );
+            add_action( 'wp_footer', 'masvideos_photoswipe' );
         }
 
         // CSS Styles.
@@ -382,6 +410,17 @@ class MasVideos_Frontend_Scripts {
                 $params = array(
                     'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'masvideos' ),
                     'review_rating_required'    => get_option( 'masvideos_movie_review_rating_required' ),
+                    'photoswipe_enabled'        => apply_filters( 'masvideos_single_movie_photoswipe_enabled', get_theme_support( 'masvideos-movie-gallery-lightbox' ) ),
+                    'photoswipe_options'        => apply_filters(
+                        'masvideos_single_movie_photoswipe_options',
+                        array(
+                            'shareEl'               => false,
+                            'closeOnScroll'         => false,
+                            'history'               => false,
+                            'hideAnimationDuration' => 0,
+                            'showAnimationDuration' => 0,
+                        )
+                    ),
                 );
                 break;
             case 'masvideos-playlist-tv-show':
