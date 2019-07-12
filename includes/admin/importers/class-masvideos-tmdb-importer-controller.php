@@ -264,9 +264,80 @@ class MasVideos_TMDB_Importer_Controller {
      * Generate movie data array for CSV.
      */
     protected function handle_movie_data( $tmdb, $data ) {
-        // echo '<pre>' . print_r( $data, 1 ) . '</pre>';
-        // exit;
-        $movie = $data;
+        foreach( $data as $key => $values ) {
+            if( ! is_array( $values ) && ! empty( $values ) ) {
+                switch( $key ) {
+                    case 'title' :
+                        $movie['Title'] = $values;
+                        break;
+                    case 'tagline' :
+                        $movie['Short description'] = $values;
+                        break;
+                    case 'overview' :
+                        $movie['Description'] = $values;
+                        break;
+                    case 'release_date' :
+                        $movie['Movie Release Date'] = $values;
+                        break;
+                    case 'runtime' :
+                        $movie['Movie Run Time'] = $values;
+                        break;
+                    case 'status' :
+                        $movie['movie_status'] = $values;
+                        break;
+                    case 'homepage' :
+                        $movie['Movie Choice'] = 'movie_url';
+                        $movie['Movie Link'] = $values;
+                        break;
+                    case 'poster_path' :
+                    case 'backdrop_path' :
+                        $movie['Images'] = $tmdb->getImageURL() . $values;
+                        break;
+                    case 'id' :
+                        $movie['TMDB ID'] = $values;
+                        break;
+                    case 'imdb_id' :
+                        $movie['IMDB ID'] = $values;
+                        break;
+                    default :
+                        $movie[$key] = $values;
+                        break;
+                }
+            } elseif( !empty( $values ) ) {
+                if( $key == 'credits' ) {
+                    if( isset( $values['cast'] ) && !empty( $values['cast'] ) ) {
+                        $i = 1;
+                        foreach( $values['cast'] as $cast ) {
+                            $movie["Cast ${i} Person IMDB ID"] = '';
+                            $movie["Cast ${i} Person TMDB ID"] = $cast['id'];
+                            $movie["Cast ${i} Person Name"] = $cast['name'];
+                            $movie["Cast ${i} Person Images"] = ! empty( $cast['profile_path'] ) ? $tmdb->getImageURL() . $cast['profile_path'] : '';
+                            $movie["Cast ${i} Person Category"] = 'Acting';
+                            $movie["Cast ${i} Person Character"] = $cast['character'];
+                            $movie["Cast ${i} Position"] = $cast['order'];
+                            $i++;
+                        }
+                    }
+
+                    if( isset( $values['crew'] ) && !empty( $values['crew'] ) ) {
+                        $i = 1;
+                        foreach( $values['crew'] as $crew ) {
+                            $movie["Crew ${i} Person IMDB ID"] = '';
+                            $movie["Crew ${i} Person TMDB ID"] = $crew['id'];
+                            $movie["Crew ${i} Person Name"] = $crew['name'];
+                            $movie["Crew ${i} Person Images"] = ! empty( $crew['profile_path'] ) ? $tmdb->getImageURL() . $crew['profile_path'] : '';
+                            $movie["Crew ${i} Person Category"] = $crew['department'];
+                            $movie["Crew ${i} Person Job"] = $crew['job'];
+                            $movie["Crew ${i} Position"] = $crew['order'];
+                            $i++;
+                        }
+                    }
+                } elseif( $key == 'genres' ) {
+                    $movie['Genres'] = implode( ",", array_column( $values, 'name') );
+                }
+            }
+        }
+
         return $movie;
     }
 
