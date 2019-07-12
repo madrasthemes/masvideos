@@ -156,6 +156,89 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	}
 
 	/**
+	 * Prepare a single person for create or update.
+	 *
+	 * @param  array $data     Item data.
+	 * @return MasVideos_Person|WP_Error
+	 */
+	protected function get_person_object( $data ) {
+		// Get person ID from TMDB ID if created during the importation.
+		if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+			$person_id = masvideos_get_person_id_by_tmdb_id( $data['tmdb_id'] );
+
+			if ( $person_id ) {
+				$data['id'] = $person_id;
+			}
+		}
+
+		// Get person ID from IMDB ID if created during the importation.
+		if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+			$person_id = masvideos_get_person_id_by_imdb_id( $data['imdb_id'] );
+
+			if ( $person_id ) {
+				$data['id'] = $person_id;
+			}
+		}
+
+		$id = isset( $data['id'] ) ? absint( $data['id'] ) : 0;
+
+		if ( ! empty( $data['id'] ) ) {
+			$person = masvideos_get_person( $id );
+
+			if ( ! $person ) {
+				return new WP_Error(
+					'masvideos_movie_csv_importer_invalid_person_id',
+					/* translators: %d: person ID */
+					sprintf( __( 'Invalid person ID %d.', 'masvideos' ), $id ),
+					array(
+						'id'     => $id,
+						'status' => 401,
+					)
+				);
+			}
+		} else {
+			$person = new MasVideos_Person( $id );
+
+			$person->set_status( 'publish' );
+			$person->set_slug( '' );
+
+			if( ! empty( $data['name'] ) ) {
+				$person->set_name( $data['name'] );
+			}
+
+			if( ! empty( $data['imdb_id'] ) ) {
+				$person->set_imdb_id( $data['imdb_id'] );
+			}
+
+			if( ! empty( $data['tmdb_id'] ) ) {
+				$person->set_tmdb_id( $data['tmdb_id'] );
+			}
+
+			// Images field maps to image and gallery id fields.
+			if ( isset( $data['images'] ) ) {
+				$images               = $data['images'];
+				$data['raw_image_id'] = array_shift( $images );
+
+				if ( ! empty( $images ) ) {
+					$data['raw_gallery_image_ids'] = $images;
+				}
+				unset( $data['images'] );
+
+				$this->set_image_data( $person, $data );
+			}
+
+			if( ! empty( $data['category'] ) ) {
+				$person->set_category_ids( $data['category'] );
+			}
+
+			$person->save();
+
+		}
+
+		return apply_filters( 'masvideos_movie_import_get_person_object', $person, $data );
+	}
+
+	/**
 	 * Prepare a single movie for create or update.
 	 *
 	 * @param  array $data     Item data.
@@ -196,6 +279,24 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 		try {
 			do_action( 'masvideos_movie_import_before_process_item', $data );
 
+			// Get movie ID from TMDB ID if created during the importation.
+			if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+				$movie_id = masvideos_get_movie_id_by_tmdb_id( $data['tmdb_id'] );
+
+				if ( $movie_id ) {
+					$data['id'] = $movie_id;
+				}
+			}
+
+			// Get movie ID from IMDB ID if created during the importation.
+			if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+				$movie_id = masvideos_get_movie_id_by_imdb_id( $data['imdb_id'] );
+
+				if ( $movie_id ) {
+					$data['id'] = $movie_id;
+				}
+			}
+
 			$object   = $this->get_movie_object( $data );
 			$updating = false;
 
@@ -212,7 +313,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 				$object->set_slug( '' );
 			}
 
-			$result = $object->set_props( array_diff_key( $data, array_flip( array( 'meta_data', 'raw_image_id', 'raw_gallery_image_ids', 'raw_attributes' ) ) ) );
+			$result = $object->set_props( array_diff_key( $data, array_flip( array( 'meta_data', 'raw_image_id', 'raw_gallery_image_ids', 'raw_cast', 'raw_crew', 'raw_attributes', 'raw_sources' ) ) ) );
 
 			if ( is_wp_error( $result ) ) {
 				throw new Exception( $result->get_error_message() );
@@ -281,6 +382,45 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	 * @throws Exception             If data cannot be set.
 	 */
 	protected function set_movie_data( &$movie, $data ) {
+		if ( isset( $data['raw_cast'] ) ) {
+			$cast          = array();
+
+			foreach ( $data['raw_cast'] as $position => $person ) {
+				$person_object = $this->get_person_object( $person );
+				if ( ! is_wp_error( $person_object ) ) {
+					$person = array(
+						'id'           => $person_object->get_id(),
+						'character'    => isset( $person['character'] ) ? $person['character'] : '',
+						'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
+					);
+
+					$cast[] = $person;
+				}
+			}
+
+			$movie->set_cast( $cast );
+		}
+
+		if ( isset( $data['raw_crew'] ) ) {
+			$crew          = array();
+
+			foreach ( $data['raw_crew'] as $position => $person ) {
+				$person_object = $this->get_person_object( $person );
+				if ( ! is_wp_error( $person_object ) ) {
+					$person = array(
+						'id'           => $person_object->get_id(),
+						'category'     => isset( $person['category'] ) ? $person['category'] : '',
+						'job'          => isset( $person['job'] ) ? $person['job'] : '',
+						'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
+					);
+
+					$crew[] = $person;
+				}
+			}
+
+			$movie->set_crew( $crew );
+		}
+
 		if ( isset( $data['raw_attributes'] ) ) {
 			$attributes          = array();
 			// $existing_attributes = $movie->get_attributes();
@@ -331,6 +471,28 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 			}
 
 			$movie->set_attributes( $attributes );
+		}
+
+		if ( isset( $data['raw_sources'] ) ) {
+			$sources          = array();
+
+			foreach ( $data['raw_sources'] as $position => $source ) {
+				$source = array(
+					'name'          => isset( $source['name'] ) ? masvideos_clean( $source['name'] ) : '',
+					'choice'        => isset( $source['choice'] ) ? masvideos_clean( $source['choice'] ) : '',
+					'embed_content' => isset( $source['embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $source['embed_content'] ) ) : '',
+					'link'          => isset( $source['link'] ) ? masvideos_clean( $source['link'] ) : '',
+					'quality'       => isset( $source['quality'] ) ? masvideos_clean( $source['quality'] ) : '',
+					'language'      => isset( $source['language'] ) ? masvideos_clean( $source['language'] ) : '',
+					'player'        => isset( $source['player'] ) ? masvideos_clean( $source['player'] ) : '',
+					'date_added'    => isset( $source['date_added'] ) ? masvideos_clean( $source['date_added'] ) : '',
+					'position'      => isset( $source['position'] ) ? absint( $source['position'] ) : $position
+				);
+
+				$sources[] = $source;
+			}
+
+			$movie->set_sources( $sources );
 		}
 	}
 

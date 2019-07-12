@@ -527,29 +527,79 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                     'masvideos_csv_tv_show_import_mapping_special_columns',
                     array(
                         /* translators: %d: Season number */
-                        __( 'Season %d name', 'masvideos' ) => 'seasons:name',
+                        __( 'Season %d name', 'masvideos' )               => 'seasons:name',
                         /* translators: %d: Season number */
-                        __( 'Season %d image', 'masvideos' ) => 'seasons:image_id',
+                        __( 'Season %d image', 'masvideos' )              => 'seasons:image_id',
                         /* translators: %d: Season number */
-                        __( 'Season %d episode(s)', 'masvideos' ) => 'seasons:episodes',
+                        __( 'Season %d episode(s)', 'masvideos' )         => 'seasons:episodes',
                         /* translators: %d: Season number */
-                        __( 'Season %d year', 'masvideos' ) => 'seasons:year',
+                        __( 'Season %d year', 'masvideos' )               => 'seasons:year',
                         /* translators: %d: Season number */
-                        __( 'Season %d description', 'masvideos' ) => 'seasons:description',
+                        __( 'Season %d description', 'masvideos' )        => 'seasons:description',
                         /* translators: %d: Season number */
-                        __( 'Season %d position', 'masvideos' ) => 'seasons:position',
+                        __( 'Season %d position', 'masvideos' )           => 'seasons:position',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Person ID', 'masvideos' )            => 'cast:id',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Person IMDB ID', 'masvideos' )       => 'cast:imdb_id',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Person TMDB ID', 'masvideos' )       => 'cast:tmdb_id',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Person Name', 'masvideos' )          => 'cast:name',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Person Images', 'masvideos' )        => 'cast:images',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Person Category', 'masvideos' )      => 'cast:category',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Person Character', 'masvideos' )     => 'cast:character',
+                        /* translators: %d: Cast number */
+                        __( 'Cast %d Position', 'masvideos' )             => 'cast:position',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Person ID', 'masvideos' )            => 'crew:id',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Person IMDB ID', 'masvideos' )       => 'crew:imdb_id',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Person TMDB ID', 'masvideos' )       => 'crew:tmdb_id',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Person Name', 'masvideos' )          => 'crew:name',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Person Images', 'masvideos' )        => 'crew:images',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Person Category', 'masvideos' )      => 'crew:category',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Person Job', 'masvideos' )           => 'crew:job',
+                        /* translators: %d: Crew number */
+                        __( 'Crew %d Position', 'masvideos' )             => 'crew:position',
                         /* translators: %d: Attribute number */
-                        __( 'Attribute %d name', 'masvideos' ) => 'attributes:name',
+                        __( 'Attribute %d name', 'masvideos' )            => 'attributes:name',
                         /* translators: %d: Attribute number */
-                        __( 'Attribute %d value(s)', 'masvideos' ) => 'attributes:value',
+                        __( 'Attribute %d value(s)', 'masvideos' )        => 'attributes:value',
                         /* translators: %d: Attribute number */
-                        __( 'Attribute %d visible', 'masvideos' ) => 'attributes:visible',
+                        __( 'Attribute %d visible', 'masvideos' )         => 'attributes:visible',
                         /* translators: %d: Attribute number */
-                        __( 'Attribute %d global', 'masvideos' ) => 'attributes:taxonomy',
+                        __( 'Attribute %d global', 'masvideos' )          => 'attributes:taxonomy',
                         /* translators: %d: Attribute number */
-                        __( 'Attribute %d default', 'masvideos' ) => 'attributes:default',
+                        __( 'Attribute %d default', 'masvideos' )         => 'attributes:default',
+                        /* translators: %d: Source number */
+                        __( 'Source %d name', 'masvideos' )               => 'sources:name',
+                        /* translators: %d: Source number */
+                        __( 'Source %d choice', 'masvideos' )             => 'sources:choice',
+                        /* translators: %d: Source number */
+                        __( 'Source %d embed content', 'masvideos' )      => 'sources:embed_content',
+                        /* translators: %d: Source number */
+                        __( 'Source %d link', 'masvideos' )               => 'sources:link',
+                        /* translators: %d: Source number */
+                        __( 'Source %d quality', 'masvideos' )            => 'sources:quality',
+                        /* translators: %d: Source number */
+                        __( 'Source %d language', 'masvideos' )           => 'sources:language',
+                        /* translators: %d: Source number */
+                        __( 'Source %d player', 'masvideos' )             => 'sources:player',
+                        /* translators: %d: Source number */
+                        __( 'Source %d date added', 'masvideos' )         => 'sources:date_added',
+                        /* translators: %d: Source number */
+                        __( 'Source %d position', 'masvideos' )           => 'sources:position',
                         /* translators: %d: Meta number */
-                        __( 'Meta: %s', 'masvideos' ) => 'meta:',
+                        __( 'Meta: %s', 'masvideos' )                     => 'meta:',
                     )
                 )
             )
@@ -674,14 +724,54 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
                     'seasons:position' . $index     => __( 'Season position', 'masvideos' ),
                 ),
             ),
+            'cast'                   => array(
+                'name'    => __( 'Cast', 'masvideos' ),
+                'options' => array(
+                    'cast:id' . $index                 => __( 'Cast Person ID', 'masvideos' ),
+                    'cast:imdb_id' . $index            => __( 'Cast Person IMDB ID', 'masvideos' ),
+                    'cast:tmdb_id' . $index            => __( 'Cast Person TMDB ID', 'masvideos' ),
+                    'cast:name' . $index               => __( 'Cast Person Name', 'masvideos' ),
+                    'cast:images' . $index             => __( 'Cast Person Images', 'masvideos' ),
+                    'cast:category' . $index           => __( 'Cast Person Category', 'masvideos' ),
+                    'cast:character' . $index          => __( 'Cast Person Character', 'masvideos' ),
+                    'cast:position' . $index           => __( 'Cast Position', 'masvideos' ),
+                ),
+            ),
+            'crew'                   => array(
+                'name'    => __( 'Crew', 'masvideos' ),
+                'options' => array(
+                    'crew:id' . $index                 => __( 'Crew Person ID', 'masvideos' ),
+                    'crew:imdb_id' . $index            => __( 'Crew Person IMDB ID', 'masvideos' ),
+                    'crew:tmdb_id' . $index            => __( 'Crew Person TMDB ID', 'masvideos' ),
+                    'crew:name' . $index               => __( 'Crew Person Name', 'masvideos' ),
+                    'crew:images' . $index             => __( 'Crew Person Images', 'masvideos' ),
+                    'crew:category' . $index           => __( 'Crew Person Category', 'masvideos' ),
+                    'crew:job' . $index                => __( 'Crew Person Job', 'masvideos' ),
+                    'crew:position' . $index           => __( 'Crew Position', 'masvideos' ),
+                ),
+            ),
             'attributes'             => array(
                 'name'    => __( 'Attributes', 'masvideos' ),
                 'options' => array(
-                    'attributes:name' . $index     => __( 'Attribute name', 'masvideos' ),
-                    'attributes:value' . $index    => __( 'Attribute value(s)', 'masvideos' ),
-                    'attributes:taxonomy' . $index => __( 'Is a global attribute?', 'masvideos' ),
-                    'attributes:visible' . $index  => __( 'Attribute visibility', 'masvideos' ),
-                    'attributes:default' . $index  => __( 'Default attribute', 'masvideos' ),
+                    'attributes:name' . $index         => __( 'Attribute name', 'masvideos' ),
+                    'attributes:value' . $index        => __( 'Attribute value(s)', 'masvideos' ),
+                    'attributes:taxonomy' . $index     => __( 'Is a global attribute?', 'masvideos' ),
+                    'attributes:visible' . $index      => __( 'Attribute visibility', 'masvideos' ),
+                    'attributes:default' . $index      => __( 'Default attribute', 'masvideos' ),
+                ),
+            ),
+            'sources'                => array(
+                'name'    => __( 'Sources', 'masvideos' ),
+                'options' => array(
+                    'sources:name' . $index            => __( 'Source Name', 'masvideos' ),
+                    'sources:choice' . $index          => __( 'Source Choice', 'masvideos' ),
+                    'sources:embed_content' . $index   => __( 'Source Embed Content', 'masvideos' ),
+                    'sources:link' . $index            => __( 'Source Link', 'masvideos' ),
+                    'sources:quality' . $index         => __( 'Source Quality', 'masvideos' ),
+                    'sources:language' . $index        => __( 'Source Language', 'masvideos' ),
+                    'sources:player' . $index          => __( 'Source Player', 'masvideos' ),
+                    'sources:date_added' . $index      => __( 'Source Date Added', 'masvideos' ),
+                    'sources:position' . $index        => __( 'Source Position', 'masvideos' ),
                 ),
             ),
             'reviews_allowed'        => __( 'Allow customer reviews?', 'masvideos' ),
