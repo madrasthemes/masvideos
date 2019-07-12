@@ -254,13 +254,13 @@ class MasVideos_Frontend_Scripts {
             'photoswipe'                => array(
                 'src'     => self::get_asset_url( 'assets/css/photoswipe/photoswipe.css' ),
                 'deps'    => array(),
-                'version' => WC_VERSION,
+                'version' => MASVIDEOS_VERSION,
                 'has_rtl' => false,
             ),
             'photoswipe-default-skin'   => array(
                 'src'     => self::get_asset_url( 'assets/css/photoswipe/default-skin/default-skin.css' ),
                 'deps'    => array( 'photoswipe' ),
-                'version' => WC_VERSION,
+                'version' => MASVIDEOS_VERSION,
                 'has_rtl' => false,
             ),
             'select2'                   => array(
