@@ -33,6 +33,13 @@ class MasVideos_TMDB_Importer_Controller {
      *
      * @var array
      */
+    protected $results_csv_data_key = array();
+
+    /**
+     * API results data for CSV.
+     *
+     * @var array
+     */
     protected $results_csv_data = array();
 
     /**
@@ -151,6 +158,16 @@ class MasVideos_TMDB_Importer_Controller {
      * Output information about the uploading process.
      */
     protected function fetch_form() {
+        $type_options = apply_filters( 'masvideos_tmdb_importer_type_options', array(
+            'now-playing-movies'    => __( 'Now Playing Movies', 'masvideos' ),
+            'popular-movies'        => __( 'Popular Movies', 'masvideos' ),
+            'top-rated-movies'      => __( 'Top Rated Movies', 'masvideos' ),
+            'upcoming-movies'       => __( 'Upcoming Movies', 'masvideos' ),
+            'discover-movies'       => __( 'Discover Movies', 'masvideos' ),
+            'latest-movies'         => __( 'Latest Movie', 'masvideos' ),
+            'movie-by-id'           => __( 'Movie By ID', 'masvideos' ),
+            'search-movie'          => __( 'Search Movie', 'masvideos' ),
+        ) );
         include dirname( __FILE__ ) . '/views/html-tmdb-import-fetch-form.php';
     }
 
@@ -162,8 +179,10 @@ class MasVideos_TMDB_Importer_Controller {
 
         // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification -- Nonce already verified in MasVideos_Movie_CSV_Importer_Controller::upload_form_handler()
         $api_key = get_option( 'masvideos_tmdb_api', '' );
-        $type = isset( $_POST['type'] ) ? masvideos_clean( wp_unslash( $_POST['type'] ) ) : '';
-        $page = isset( $_POST['page'] ) ? masvideos_clean( wp_unslash( $_POST['page'] ) ) : 1;
+        $type = isset( $_POST['masvideos-tmdb-type'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-type'] ) ) : '';
+        $page = isset( $_POST['masvideos-tmdb-page-number'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-page-number'] ) ) : 1;
+        $tmdb_id = isset( $_POST['masvideos-tmdb-movie-id'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-movie-id'] ) ) : 1;
+        $movie_title = isset( $_POST['masvideos-tmdb-search-movie'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-search-movie'] ) ) : '';
 
         if ( empty( $api_key ) || empty( $type ) ) {
             return;
@@ -199,7 +218,11 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results = $tmdb->getNowPlayingMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
-                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movies[] = $movie;
+                    if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                        $this->results_csv_data_key = array_keys( $movie );
+                    }
                 }
                 $this->results_csv_data = $movies;
                 break;
@@ -209,17 +232,25 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results = $tmdb->getPopularMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
-                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movies[] = $movie;
+                    if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                        $this->results_csv_data_key = array_keys( $movie );
+                    }
                 }
                 $this->results_csv_data = $movies;
                 break;
 
-            case 'top-rated-movies':
+            case 'top-rated-moviess':
                 $this->type = 'movie';
                 $this->results = $tmdb->getTopRatedMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
-                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movies[] = $movie;
+                    if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                        $this->results_csv_data_key = array_keys( $movie );
+                    }
                 }
                 $this->results_csv_data = $movies;
                 break;
@@ -229,25 +260,80 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results = $tmdb->getUpcomingMovies( $page );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
-                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movies[] = $movie;
+                    if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                        $this->results_csv_data_key = array_keys( $movie );
+                    }
+                }
+                $this->results_csv_data = $movies;
+                break;
+
+            case 'discover-movies':
+                $this->type = 'movie';
+                $this->results = $tmdb->getDiscoverMovies( $page );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movies[] = $movie;
+                    if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                        $this->results_csv_data_key = array_keys( $movie );
+                    }
+                }
+                $this->results_csv_data = $movies;
+                break;
+
+            case 'latest-movies':
+                $this->type = 'movie';
+                $this->results = $tmdb->getLatestMovie();
+                $movies = array();
+                $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $this->results['id'] ) );
+                $movies[] = $movie;
+                if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                    $this->results_csv_data_key = array_keys( $movie );
+                }
+                $this->results_csv_data = $movies;
+                break;
+
+            case 'movie-by-id':
+                $this->type = 'movie';
+                $this->results = $tmdb->getMovie( $tmdb_id );
+                $movies = array();
+                $movie = $this->handle_movie_data( $tmdb, $this->results );
+                $movies[] = $movie;
+                if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                    $this->results_csv_data_key = array_keys( $movie );
+                }
+                $this->results_csv_data = $movies;
+                break;
+
+            case 'search-movie':
+                $this->type = 'movie';
+                $this->results = $tmdb->searchMovie( $movie_title );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    if ( ! empty( $movie ) ) {
+                        $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                        $movies[] = $movie;
+                        if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                            $this->results_csv_data_key = array_keys( $movie );
+                        }
+                    }
                 }
                 $this->results_csv_data = $movies;
                 break;
 
             default:
-                $this->type = 'movie';
-                $this->results = $tmdb->getNowPlayingMovies( $page );
-                $movies = array();
-                foreach ( $this->results as $key => $movie ) {
-                    $movies[] = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
-                }
-                $this->results_csv_data = $movies;
                 break;
         }
 
         // echo '<pre>' . print_r( $this->results, 1 ) . '</pre>';
         // echo '<pre>' . print_r( $this->results_csv_data, 1 ) . '</pre>';
         // exit;
+
+        if ( empty( $this->results_csv_data ) ) {
+            return;
+        }
 
         $file = $this->handle_upload();
 
@@ -266,8 +352,10 @@ class MasVideos_TMDB_Importer_Controller {
      * Generate movie data array for CSV.
      */
     protected function handle_movie_data( $tmdb, $data ) {
+        // echo '<pre>' . print_r( $data, 1 ) . '</pre>';
+        // exit;
         foreach( $data as $key => $values ) {
-            if( ! is_array( $values ) && ! empty( $values ) ) {
+            if( ! is_array( $values ) ) {
                 switch( $key ) {
                     case 'title' :
                         $movie['Title'] = $values;
@@ -293,7 +381,7 @@ class MasVideos_TMDB_Importer_Controller {
                         break;
                     case 'poster_path' :
                     case 'backdrop_path' :
-                        $movie['Images'] = $tmdb->getImageURL() . $values;
+                        $movie['Images'] = ! empty( $values ) ? $tmdb->getImageURL() . $values : $values;
                         break;
                     case 'id' :
                         $movie['TMDB ID'] = $values;
@@ -305,7 +393,7 @@ class MasVideos_TMDB_Importer_Controller {
                         $movie[$key] = $values;
                         break;
                 }
-            } elseif( !empty( $values ) ) {
+            } else {
                 if( $key == 'credits' ) {
                     if( isset( $values['cast'] ) && !empty( $values['cast'] ) ) {
                         $i = 1;
