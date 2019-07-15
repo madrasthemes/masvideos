@@ -41,11 +41,11 @@
             data: {
                 action          : 'masvideos_do_ajax_person_import',
                 position        : $this.position,
+                mapping         : $this.mapping,
                 file            : $this.file,
                 update_existing : $this.update_existing,
                 delimiter       : $this.delimiter,
-                security        : $this.security,
-                mapping         : $this.mapping
+                security        : $this.security
             },
             dataType: 'json',
             success: function( response ) {
