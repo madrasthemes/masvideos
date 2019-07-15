@@ -308,7 +308,7 @@ class MasVideos_Admin_Importers {
 			'start_pos'       => isset( $_POST['position'] ) ? absint( $_POST['position'] ) : 0, // PHPCS: input var ok.
 			'mapping'         => isset( $_POST['mapping'] ) ? (array) masvideos_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
 			'update_existing' => isset( $_POST['update_existing'] ) ? (bool) $_POST['update_existing'] : false, // PHPCS: input var ok.
-			'lines'           => apply_filters( 'masvideos_person_import_batch_size', 30 ),
+			'lines'           => apply_filters( 'masvideos_person_import_batch_size', 5 ),
 			'parse'           => true,
 		);
 
@@ -398,7 +398,7 @@ class MasVideos_Admin_Importers {
 			'start_pos'       => isset( $_POST['position'] ) ? absint( $_POST['position'] ) : 0, // PHPCS: input var ok.
 			'mapping'         => isset( $_POST['mapping'] ) ? (array) masvideos_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
 			'update_existing' => isset( $_POST['update_existing'] ) ? (bool) $_POST['update_existing'] : false, // PHPCS: input var ok.
-			'lines'           => apply_filters( 'masvideos_tv_show_import_batch_size', 30 ),
+			'lines'           => apply_filters( 'masvideos_tv_show_import_batch_size', 5 ),
 			'parse'           => true,
 		);
 
@@ -488,7 +488,7 @@ class MasVideos_Admin_Importers {
 			'start_pos'       => isset( $_POST['position'] ) ? absint( $_POST['position'] ) : 0, // PHPCS: input var ok.
 			'mapping'         => isset( $_POST['mapping'] ) ? (array) masvideos_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
 			'update_existing' => isset( $_POST['update_existing'] ) ? (bool) $_POST['update_existing'] : false, // PHPCS: input var ok.
-			'lines'           => apply_filters( 'masvideos_video_import_batch_size', 30 ),
+			'lines'           => apply_filters( 'masvideos_video_import_batch_size', 5 ),
 			'parse'           => true,
 		);
 
@@ -578,7 +578,7 @@ class MasVideos_Admin_Importers {
 			'start_pos'       => isset( $_POST['position'] ) ? absint( $_POST['position'] ) : 0, // PHPCS: input var ok.
 			'mapping'         => isset( $_POST['mapping'] ) ? (array) masvideos_clean( wp_unslash( $_POST['mapping'] ) ) : array(), // PHPCS: input var ok.
 			'update_existing' => isset( $_POST['update_existing'] ) ? (bool) $_POST['update_existing'] : false, // PHPCS: input var ok.
-			'lines'           => apply_filters( 'masvideos_movie_import_batch_size', 30 ),
+			'lines'           => apply_filters( 'masvideos_movie_import_batch_size', 5 ),
 			'parse'           => true,
 		);
 
