@@ -216,8 +216,9 @@ class MasVideos_TMDB {
      *  @return string
      */
     private function _call($action, $appendToResponse = '') {
+        $append_to_response = is_array( $appendToResponse ) ? implode( ',', $appendToResponse ) : $appendToResponse;
 
-        $url = $this->api_url . $action . '?api_key=' . $this->getConfig()->getAPIKey() . '&language=' . $this->getConfig()->getLang() . '&append_to_response=' . implode( ',', (array) $appendToResponse ) . '&include_adult='. $this->getConfig()->getAdult();
+        $url = $this->api_url . $action . '?api_key=' . $this->getConfig()->getAPIKey() . '&language=' . $this->getConfig()->getLang() . '&append_to_response=' . $append_to_response . '&include_adult='. $this->getConfig()->getAdult();
 
         if ( $this->getConfig()->getDebug() ) {
             echo '<pre><a href="' . $url . '">check request</a></pre>';
