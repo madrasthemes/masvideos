@@ -445,16 +445,11 @@ class MasVideos_TMDB_Importer_Controller {
             die( __( 'Couldn\'t create the file to store the CSV, or the path is invalid.', 'masvideos' ) );
         }
 
-        $firstLineKeys = array();
+        fputcsv( $f, $this->results_csv_data_key );
+        $lineKeys = array_fill_keys( $this->results_csv_data_key, '' );
         foreach ( $this->results_csv_data as $line ) {
-            if ( empty( $firstLineKeys ) ) {
-                $firstLineKeys = array_keys( $line );
-                fputcsv( $f, $firstLineKeys );
-                $firstLineKeys = array_flip( $firstLineKeys );
-            }
-
             // Using array_merge is important to maintain the order of keys acording to the first element
-            fputcsv( $f, array_merge( $firstLineKeys, $line ) );
+            fputcsv( $f, array_merge( $lineKeys, $line ) );
         }
         fclose( $f );
 
