@@ -19,6 +19,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
+if( empty( $attributes ) ) {
+    return;
+}
+
 ?>
 <table class="tv-show__attributes">
 
