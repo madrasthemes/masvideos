@@ -326,6 +326,8 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 			$object = apply_filters( 'masvideos_movie_import_pre_insert_movie_object', $object, $data );
 			$object->save();
 
+			$this->set_movie_credits( $object, $data );
+
 			do_action( 'masvideos_movie_import_inserted_movie_object', $object, $data );
 
 			return array(
@@ -375,13 +377,13 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	}
 
 	/**
-	 * Set movie data.
+	 * Set movie credits data.
 	 *
 	 * @param MasVideos_Movie $movie Movie instance.
 	 * @param array           $data  Item data.
 	 * @throws Exception             If data cannot be set.
 	 */
-	protected function set_movie_data( &$movie, $data ) {
+	protected function set_movie_credits( &$movie, $data ) {
 		if ( isset( $data['raw_cast'] ) ) {
 			$cast          = array();
 
@@ -395,6 +397,12 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 					);
 
 					$cast[] = $person;
+
+					if( ! empty( $person['id'] ) ) {
+						$movie_id = $movie->get_id();
+						MasVideos_Meta_Box_Person_Data::update_credit( $movie_id, $person['id'], 'movie_cast' );
+					}
+
 				}
 			}
 
@@ -415,12 +423,28 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 					);
 
 					$crew[] = $person;
+
+					if( ! empty( $person['id'] ) ) {
+						$movie_id = $movie->get_id();
+						MasVideos_Meta_Box_Person_Data::update_credit( $movie_id, $person['id'], 'movie_crew' );
+					}
 				}
 			}
 
 			$movie->set_crew( $crew );
 		}
 
+		$movie->save();
+	}
+
+	/**
+	 * Set movie data.
+	 *
+	 * @param MasVideos_Movie $movie Movie instance.
+	 * @param array           $data  Item data.
+	 * @throws Exception             If data cannot be set.
+	 */
+	protected function set_movie_data( &$movie, $data ) {
 		if ( isset( $data['raw_attributes'] ) ) {
 			$attributes          = array();
 			// $existing_attributes = $movie->get_attributes();
