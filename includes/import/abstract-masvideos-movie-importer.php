@@ -385,7 +385,8 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 	 */
 	protected function set_movie_credits( &$movie, $data ) {
 		if ( isset( $data['raw_cast'] ) ) {
-			$cast          = array();
+			$existing_cast = $movie->get_cast( 'edit' );
+			$cast          = ! empty( $existing_cast ) ? $existing_cast : array();
 
 			foreach ( $data['raw_cast'] as $position => $person ) {
 				$person_object = $this->get_person_object( $person );
@@ -396,7 +397,12 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 						'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
 					);
 
-					$cast[] = $person;
+					$found_key = array_search( $person['id'], array_column( $cast, 'id' ) );
+					if( $found_key !== false ) {
+						$cast[$found_key] = $person;
+					} else {
+						$cast[] = $person;
+					}
 
 					if( ! empty( $person['id'] ) ) {
 						$movie_id = $movie->get_id();
@@ -410,19 +416,36 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 		}
 
 		if ( isset( $data['raw_crew'] ) ) {
-			$crew          = array();
+			$existing_crew = $movie->get_crew( 'edit' );
+			$crew          = ! empty( $existing_crew ) ? $existing_crew : array();
 
 			foreach ( $data['raw_crew'] as $position => $person ) {
 				$person_object = $this->get_person_object( $person );
 				if ( ! is_wp_error( $person_object ) ) {
 					$person = array(
 						'id'           => $person_object->get_id(),
-						'category'     => isset( $person['category'] ) ? $person['category'] : '',
+						'category'     => isset( $person['category'] ) && is_array( $person['category'] ) ? implode( ',', $person['category'] ) : '',
 						'job'          => isset( $person['job'] ) ? $person['job'] : '',
 						'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
 					);
 
-					$crew[] = $person;
+					$found_key = false;
+
+					$found_keys = array_keys( array_column( $crew, 'id' ), $person['id'] );
+					if( ! empty( $found_keys ) ) {
+						foreach( $found_keys as $key ) {
+							if( $key !== false && isset( $crew[$key]['category'] ) && $crew[$key]['category'] == $person['category'] ) {
+								$found_key = $key;
+								break;
+							}
+						}
+					}
+
+					if( $found_key !== false ) {
+						$crew[$found_key] = $person;
+					} else {
+						$crew[] = $person;
+					}
 
 					if( ! empty( $person['id'] ) ) {
 						$movie_id = $movie->get_id();
