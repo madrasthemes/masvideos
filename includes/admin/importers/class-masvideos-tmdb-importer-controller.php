@@ -405,8 +405,8 @@ class MasVideos_TMDB_Importer_Controller {
                             $movie["Cast {$cast_no} Person Name"] = $values['cast'][$i]['name'];
                             $movie["Cast {$cast_no} Person Images"] = ! empty( $values['cast'][$i]['profile_path'] ) ? $tmdb->getImageURL() . $values['cast'][$i]['profile_path'] : '';
                             $movie["Cast {$cast_no} Person Category"] = 'Acting';
-                            $movie["Cast {$cast_no} Person Character"] = $values['cast'][$i]['character'];
-                            $movie["Cast {$cast_no} Position"] = $values['cast'][$i]['order'];
+                            $movie["Cast {$cast_no} Person Character"] = ! empty( $values['cast'][$i]['character'] ) ? $values['cast'][$i]['character'] : '';
+                            $movie["Cast {$cast_no} Position"] = ! empty( $values['cast'][$i]['order'] ) ? $values['cast'][$i]['order'] : $cast_no;
                         }
                     }
 
@@ -415,12 +415,12 @@ class MasVideos_TMDB_Importer_Controller {
                         for( $i = $offset - 1; $i < min( ( $limit + $offset - 1 ), count( $values['crew'] ) ); $i++ ) {
                             $crew_no = $i + 1;
                             $movie["Crew {$crew_no} Person IMDB ID"] = '';
-                            $movie["Crew {$crew_no} Person TMDB ID"] = $values['cast'][$i]['id'];
-                            $movie["Crew {$crew_no} Person Name"] = $values['cast'][$i]['name'];
-                            $movie["Crew {$crew_no} Person Images"] = ! empty( $values['cast'][$i]['profile_path'] ) ? $tmdb->getImageURL() . $values['cast'][$i]['profile_path'] : '';
-                            $movie["Crew {$crew_no} Person Category"] = $values['cast'][$i]['department'];
-                            $movie["Crew {$crew_no} Person Job"] = $values['cast'][$i]['job'];
-                            $movie["Crew {$crew_no} Position"] = $values['cast'][$i]['order'];
+                            $movie["Crew {$crew_no} Person TMDB ID"] = $values['crew'][$i]['id'];
+                            $movie["Crew {$crew_no} Person Name"] = $values['crew'][$i]['name'];
+                            $movie["Crew {$crew_no} Person Images"] = ! empty( $values['crew'][$i]['profile_path'] ) ? $tmdb->getImageURL() . $values['crew'][$i]['profile_path'] : '';
+                            $movie["Crew {$crew_no} Person Category"] = ! empty( $values['crew'][$i]['department'] ) ? $values['crew'][$i]['department'] : '';
+                            $movie["Crew {$crew_no} Person Job"] = ! empty( $values['crew'][$i]['job'] ) ? $values['crew'][$i]['job'] : '';
+                            $movie["Crew {$crew_no} Position"] = ! empty( $values['crew'][$i]['order'] ) ? $values['crew'][$i]['order'] : $crew_no;
                         }
                     }
                 } elseif( $key == 'genres' ) {
