@@ -159,14 +159,22 @@ class MasVideos_TMDB_Importer_Controller {
      */
     protected function fetch_form() {
         $type_options = apply_filters( 'masvideos_tmdb_importer_type_options', array(
+            'search-movie'          => __( 'Search Movie', 'masvideos' ),
+            'movie-by-id'           => __( 'Movie By ID', 'masvideos' ),
+            'latest-movie'          => __( 'Latest Movie', 'masvideos' ),
             'now-playing-movies'    => __( 'Now Playing Movies', 'masvideos' ),
+            'upcoming-movies'       => __( 'Upcoming Movies', 'masvideos' ),
             'popular-movies'        => __( 'Popular Movies', 'masvideos' ),
             'top-rated-movies'      => __( 'Top Rated Movies', 'masvideos' ),
-            'upcoming-movies'       => __( 'Upcoming Movies', 'masvideos' ),
             'discover-movies'       => __( 'Discover Movies', 'masvideos' ),
-            'latest-movies'         => __( 'Latest Movie', 'masvideos' ),
-            'movie-by-id'           => __( 'Movie By ID', 'masvideos' ),
-            'search-movie'          => __( 'Search Movie', 'masvideos' ),
+            'search-tv-show'        => __( 'Search TV Show', 'masvideos' ),
+            'tv-show-by-id'         => __( 'TV Show By ID', 'masvideos' ),
+            'latest-tv-show'        => __( 'Latest TV Show', 'masvideos' ),
+            'on-air-tv-shows'       => __( 'ON Air TV Shows', 'masvideos' ),
+            'on-air-today-tv-shows' => __( 'ON Air Today TV Shows', 'masvideos' ),
+            'popular-tv-shows'      => __( 'Popular TV Shows', 'masvideos' ),
+            'top-rated-tv-shows'    => __( 'Top Rated TV Shows', 'masvideos' ),
+            'discover-tv-shows'     => __( 'Discover TV Shows', 'masvideos' ),
         ) );
         include dirname( __FILE__ ) . '/views/html-tmdb-import-fetch-form.php';
     }
@@ -181,8 +189,8 @@ class MasVideos_TMDB_Importer_Controller {
         $api_key = get_option( 'masvideos_tmdb_api', '' );
         $type = isset( $_POST['masvideos-tmdb-type'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-type'] ) ) : '';
         $page = isset( $_POST['masvideos-tmdb-page-number'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-page-number'] ) ) : 1;
-        $tmdb_id = isset( $_POST['masvideos-tmdb-movie-id'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-movie-id'] ) ) : 1;
-        $movie_title = isset( $_POST['masvideos-tmdb-search-movie'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-search-movie'] ) ) : '';
+        $tmdb_id = isset( $_POST['masvideos-tmdb-id'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-id'] ) ) : 1;
+        $keyword = isset( $_POST['masvideos-tmdb-search-keyword'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-search-keyword'] ) ) : '';
 
         if ( empty( $api_key ) || empty( $type ) ) {
             return;
@@ -227,6 +235,20 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results_csv_data = $movies;
                 break;
 
+            case 'upcoming-movies':
+                $this->type = 'movie';
+                $this->results = $tmdb->getUpcomingMovies( $page );
+                $movies = array();
+                foreach ( $this->results as $key => $movie ) {
+                    $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
+                    $movies[] = $movie;
+                    if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
+                        $this->results_csv_data_key = array_keys( $movie );
+                    }
+                }
+                $this->results_csv_data = $movies;
+                break;
+
             case 'popular-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getPopularMovies( $page );
@@ -255,20 +277,6 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results_csv_data = $movies;
                 break;
 
-            case 'upcoming-movies':
-                $this->type = 'movie';
-                $this->results = $tmdb->getUpcomingMovies( $page );
-                $movies = array();
-                foreach ( $this->results as $key => $movie ) {
-                    $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
-                    $movies[] = $movie;
-                    if ( count( $this->results_csv_data_key ) < count( $movie ) ) {
-                        $this->results_csv_data_key = array_keys( $movie );
-                    }
-                }
-                $this->results_csv_data = $movies;
-                break;
-
             case 'discover-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getDiscoverMovies( $page );
@@ -283,7 +291,7 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results_csv_data = $movies;
                 break;
 
-            case 'latest-movies':
+            case 'latest-movie':
                 $this->type = 'movie';
                 $this->results = $tmdb->getLatestMovie();
                 $movies = array();
@@ -309,7 +317,7 @@ class MasVideos_TMDB_Importer_Controller {
 
             case 'search-movie':
                 $this->type = 'movie';
-                $this->results = $tmdb->searchMovie( $movie_title );
+                $this->results = $tmdb->searchMovie( $keyword );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     if ( ! empty( $movie ) ) {
@@ -321,6 +329,266 @@ class MasVideos_TMDB_Importer_Controller {
                     }
                 }
                 $this->results_csv_data = $movies;
+                break;
+
+            case 'on-air-tv-shows':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->getOnTheAirTVShows( $page );
+                $tv_shows = array();
+                $episode_keys = array();
+                foreach ( $this->results as $key => $tv_show ) {
+                    if ( ! empty( $tv_show ) ) {
+                        $tv_show = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                        if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                            $episodes = $tv_show['episodes'];
+                            unset( $tv_show['episodes'] );
+                        } else {
+                            $episodes = array();
+                        }
+
+                        $tv_shows[] = $tv_show;
+
+                        foreach ( $episodes as $key => $episode ) {
+                            $tv_shows[] = $episode;
+                            if ( count( $episode_keys ) < count( $episode ) ) {
+                                $episode_keys = array_keys( $episode );
+                            }
+                        }
+
+                        if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                            $this->results_csv_data_key = array_keys( $tv_show );
+                        }
+                    }
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
+                break;
+
+            case 'on-air-today-tv-shows':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->getAiringTodayTVShows( $page );
+                $tv_shows = array();
+                $episode_keys = array();
+                foreach ( $this->results as $key => $tv_show ) {
+                    if ( ! empty( $tv_show ) ) {
+                        $tv_show = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                        if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                            $episodes = $tv_show['episodes'];
+                            unset( $tv_show['episodes'] );
+                        } else {
+                            $episodes = array();
+                        }
+
+                        $tv_shows[] = $tv_show;
+
+                        foreach ( $episodes as $key => $episode ) {
+                            $tv_shows[] = $episode;
+                            if ( count( $episode_keys ) < count( $episode ) ) {
+                                $episode_keys = array_keys( $episode );
+                            }
+                        }
+
+                        if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                            $this->results_csv_data_key = array_keys( $tv_show );
+                        }
+                    }
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
+                break;
+
+            case 'popular-tv-shows':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->getAiringTodayTVShows( $page );
+                $tv_shows = array();
+                $episode_keys = array();
+                foreach ( $this->results as $key => $tv_show ) {
+                    if ( ! empty( $tv_show ) ) {
+                        $tv_show = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                        if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                            $episodes = $tv_show['episodes'];
+                            unset( $tv_show['episodes'] );
+                        } else {
+                            $episodes = array();
+                        }
+
+                        $tv_shows[] = $tv_show;
+
+                        foreach ( $episodes as $key => $episode ) {
+                            $tv_shows[] = $episode;
+                            if ( count( $episode_keys ) < count( $episode ) ) {
+                                $episode_keys = array_keys( $episode );
+                            }
+                        }
+
+                        if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                            $this->results_csv_data_key = array_keys( $tv_show );
+                        }
+                    }
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
+                break;
+
+            case 'top-rated-tv-showss':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->getTopRatedTVShows( $page );
+                $tv_shows = array();
+                $episode_keys = array();
+                foreach ( $this->results as $key => $tv_show ) {
+                    if ( ! empty( $tv_show ) ) {
+                        $tv_show = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                        if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                            $episodes = $tv_show['episodes'];
+                            unset( $tv_show['episodes'] );
+                        } else {
+                            $episodes = array();
+                        }
+
+                        $tv_shows[] = $tv_show;
+
+                        foreach ( $episodes as $key => $episode ) {
+                            $tv_shows[] = $episode;
+                            if ( count( $episode_keys ) < count( $episode ) ) {
+                                $episode_keys = array_keys( $episode );
+                            }
+                        }
+
+                        if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                            $this->results_csv_data_key = array_keys( $tv_show );
+                        }
+                    }
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
+                break;
+
+            case 'discover-tv-shows':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->getDiscoverTVShows( $page );
+                $tv_shows = array();
+                $episode_keys = array();
+                foreach ( $this->results as $key => $tv_show ) {
+                    if ( ! empty( $tv_show ) ) {
+                        $tv_show = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                        if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                            $episodes = $tv_show['episodes'];
+                            unset( $tv_show['episodes'] );
+                        } else {
+                            $episodes = array();
+                        }
+
+                        $tv_shows[] = $tv_show;
+
+                        foreach ( $episodes as $key => $episode ) {
+                            $tv_shows[] = $episode;
+                            if ( count( $episode_keys ) < count( $episode ) ) {
+                                $episode_keys = array_keys( $episode );
+                            }
+                        }
+
+                        if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                            $this->results_csv_data_key = array_keys( $tv_show );
+                        }
+                    }
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
+                break;
+
+            case 'latest-tv-show':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->getLatestTVShow();
+                $tv_shows = array();
+                $episode_keys = array();
+                foreach ( $this->results as $key => $tv_show ) {
+                    if ( ! empty( $tv_show ) ) {
+                        $tv_show = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                        if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                            $episodes = $tv_show['episodes'];
+                            unset( $tv_show['episodes'] );
+                        } else {
+                            $episodes = array();
+                        }
+
+                        $tv_shows[] = $tv_show;
+
+                        foreach ( $episodes as $key => $episode ) {
+                            $tv_shows[] = $episode;
+                            if ( count( $episode_keys ) < count( $episode ) ) {
+                                $episode_keys = array_keys( $episode );
+                            }
+                        }
+
+                        if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                            $this->results_csv_data_key = array_keys( $tv_show );
+                        }
+                    }
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
+                break;
+
+            case 'tv-show-by-id':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->getTVShow( $tmdb_id );
+                $tv_shows = array();
+                $episode_keys = array();
+                $tv_show = $this->handle_tv_show_data( $tmdb, $this->results );
+                if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                    $episodes = $tv_show['episodes'];
+                    unset( $tv_show['episodes'] );
+                } else {
+                    $episodes = array();
+                }
+
+                $tv_shows[] = $tv_show;
+
+                foreach ( $episodes as $key => $episode ) {
+                    $tv_shows[] = $episode;
+                    if ( count( $episode_keys ) < count( $episode ) ) {
+                        $episode_keys = array_keys( $episode );
+                    }
+                }
+
+                if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                    $this->results_csv_data_key = array_keys( $tv_show );
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
+                break;
+
+            case 'search-tv-show':
+                $this->type = 'tv_show';
+                $this->results = $tmdb->searchTVShow( $keyword );
+                $tv_shows = array();
+                $episode_keys = array();
+                foreach ( $this->results as $key => $tv_show ) {
+                    if ( ! empty( $tv_show ) ) {
+                        $tv_show = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                        if( isset( $tv_show['episodes'] ) && ! empty( $tv_show['episodes'] ) ) {
+                            $episodes = $tv_show['episodes'];
+                            unset( $tv_show['episodes'] );
+                        } else {
+                            $episodes = array();
+                        }
+
+                        $tv_shows[] = $tv_show;
+
+                        foreach ( $episodes as $key => $episode ) {
+                            $tv_shows[] = $episode;
+                            if ( count( $episode_keys ) < count( $episode ) ) {
+                                $episode_keys = array_keys( $episode );
+                            }
+                        }
+
+                        if ( count( $this->results_csv_data_key ) < count( $tv_show ) ) {
+                            $this->results_csv_data_key = array_keys( $tv_show );
+                        }
+                    }
+                }
+                $this->results_csv_data_key = array_unique( array_merge( $this->results_csv_data_key, $episode_keys ) );
+                $this->results_csv_data = $tv_shows;
                 break;
 
             default:
@@ -430,6 +698,145 @@ class MasVideos_TMDB_Importer_Controller {
         }
 
         return $movie;
+    }
+
+    /**
+     * Generate movie data array for CSV.
+     */
+    protected function handle_episode_data( $tmdb, $data, $parent_tv_show, $parent_season ) {
+        foreach ( $data as $key => $values ) {
+            if( ! is_array( $values ) ) {
+                switch( $key ) {
+                    case 'name' :
+                        $episode['Title'] = $values;
+                        break;
+                    case 'overview' :
+                        $episode['Description'] = $values;
+                        break;
+                    case 'air_date' :
+                        $episode['Episode Release Date'] = $values;
+                        break;
+                    case 'episode_number' :
+                        $episode['Episode Number'] = $values;
+                        break;
+                    case 'still_path' :
+                        $episode['Images'] = ! empty( $values ) ? $tmdb->getImageURL() . $values : $values;
+                        break;
+                    case 'id' :
+                        $episode['TMDB ID'] = $values;
+                        break;
+                    case 'imdb_id' :
+                        $episode['IMDB ID'] = $values;
+                        break;
+                    default :
+                        $episode[$key] = $values;
+                        break;
+                }
+            } elseif( $key == 'genres' ) {
+                $episode['Genres'] = implode( ",", array_column( $values, 'name') );
+            }
+        }
+
+        $episode['type'] = 'episode';
+        $episode['Parent TV Show'] = $parent_tv_show;
+        $episode['Parent Season'] = $parent_season;
+        return $episode;
+    }
+
+    /**
+     * Generate movie data array for CSV.
+     */
+    protected function handle_tv_show_data( $tmdb, $data ) {
+        $episodes = array();
+
+        foreach( $data as $key => $values ) {
+            if( ! is_array( $values ) ) {
+                switch( $key ) {
+                    case 'name' :
+                        $tv_show['Title'] = $values;
+                        break;
+                    case 'status' :
+                        $tv_show['tv_show_status'] = $values;
+                        break;
+                    case 'homepage' :
+                        $tv_show['TV Show Choice'] = 'tv_show_url';
+                        $tv_show['TV Show Link'] = $values;
+                        break;
+                    case 'poster_path' :
+                    case 'backdrop_path' :
+                        $tv_show['Images'] = ! empty( $values ) ? $tmdb->getImageURL() . $values : $values;
+                        break;
+                    case 'id' :
+                        $tv_show['TMDB ID'] = $values;
+                        break;
+                    case 'imdb_id' :
+                        $tv_show['IMDB ID'] = $values;
+                        break;
+                    case 'type' :
+                        $tv_show['tv_show_type'] = $values;
+                        break;
+                    default :
+                        $tv_show[$key] = $values;
+                        break;
+                }
+            } else {
+                if( $key == 'credits' ) {
+                    $offset = apply_filters( 'masvideos_tmdb_import_tv_show_cast_crew_offset', 1 );
+                    $limit = 15;
+                    if( isset( $values['cast'] ) && !empty( $values['cast'] ) ) {
+                        for( $i = $offset - 1; $i < min( ( $limit + $offset - 1 ), count( $values['cast'] ) ); $i++ ) {
+                            $cast_no = $i + 1;
+                            $tv_show["Cast {$cast_no} Person IMDB ID"] = '';
+                            $tv_show["Cast {$cast_no} Person TMDB ID"] = $values['cast'][$i]['id'];
+                            $tv_show["Cast {$cast_no} Person Name"] = $values['cast'][$i]['name'];
+                            $tv_show["Cast {$cast_no} Person Images"] = ! empty( $values['cast'][$i]['profile_path'] ) ? $tmdb->getImageURL() . $values['cast'][$i]['profile_path'] : '';
+                            $tv_show["Cast {$cast_no} Person Category"] = 'Acting';
+                            $tv_show["Cast {$cast_no} Person Character"] = ! empty( $values['cast'][$i]['character'] ) ? $values['cast'][$i]['character'] : '';
+                            $tv_show["Cast {$cast_no} Position"] = ! empty( $values['cast'][$i]['order'] ) ? $values['cast'][$i]['order'] : $cast_no;
+                        }
+                    }
+
+                    if( isset( $values['crew'] ) && !empty( $values['crew'] ) ) {
+                        $i = 1;
+                        for( $i = $offset - 1; $i < min( ( $limit + $offset - 1 ), count( $values['crew'] ) ); $i++ ) {
+                            $crew_no = $i + 1;
+                            $tv_show["Crew {$crew_no} Person IMDB ID"] = '';
+                            $tv_show["Crew {$crew_no} Person TMDB ID"] = $values['crew'][$i]['id'];
+                            $tv_show["Crew {$crew_no} Person Name"] = $values['crew'][$i]['name'];
+                            $tv_show["Crew {$crew_no} Person Images"] = ! empty( $values['crew'][$i]['profile_path'] ) ? $tmdb->getImageURL() . $values['crew'][$i]['profile_path'] : '';
+                            $tv_show["Crew {$crew_no} Person Category"] = ! empty( $values['crew'][$i]['department'] ) ? $values['crew'][$i]['department'] : '';
+                            $tv_show["Crew {$crew_no} Person Job"] = ! empty( $values['crew'][$i]['job'] ) ? $values['crew'][$i]['job'] : '';
+                            $tv_show["Crew {$crew_no} Position"] = ! empty( $values['crew'][$i]['order'] ) ? $values['crew'][$i]['order'] : $crew_no;
+                        }
+                    }
+                } elseif( $key == 'genres' ) {
+                    $tv_show['Genres'] = implode( ",", array_column( $values, 'name') );
+                } elseif( $key == 'seasons' ) {
+                    $i = 1;
+                    foreach( $values as $season ) {
+                        $season_data = $tmdb->getSeason( $data['id'], $season['season_number'] );
+                        $tv_show["Season ${i} name"] = isset( $season_data['name'] ) ? $season_data['name'] : '';
+                        $tv_show["Season ${i} image"] = isset( $season_data['poster_path'] ) && ! empty( $season_data['poster_path'] ) ? $tmdb->getImageURL() . $season_data['poster_path'] : '';
+                        $tv_show["Season ${i} description"] = isset( $season_data['overview'] ) ? $season_data['overview'] : '';
+                        $tv_show["Season ${i} position"] = isset( $season_data['season_number'] ) ? $season_data['season_number'] : '';
+                        $tv_show["Season ${i} number"] = isset( $season_data['season_number'] ) ? $season_data['season_number'] : '';
+                        $tv_show["Season ${i} IMDB ID"] = '';
+                        $tv_show["Season ${i} TMDB ID"] = isset( $season_data['id'] ) ? $season_data['id'] : '';
+                        $tv_show["Season ${i} year"] = isset( $season_data['air_date'] ) ? $season_data['air_date'] : '';
+                        if( ! empty( $season_data['episodes'] ) ) {
+                            foreach ( $season_data['episodes'] as $key => $episode ) {
+                                $episodes[] = $this->handle_episode_data( $tmdb, $episode, $tv_show['Title'], $season_data['name'] );
+                            }
+                        }
+                        $i++;
+                    }
+                }
+            }
+        }
+
+        $tv_show['episodes'] = $episodes;
+        $tv_show['type'] = 'tv_show';
+        return $tv_show;
     }
 
     /**
