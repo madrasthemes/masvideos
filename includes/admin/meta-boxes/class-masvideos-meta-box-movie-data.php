@@ -221,14 +221,14 @@ class MasVideos_Meta_Box_Movie_Data {
 
         if ( isset( $data['source_names'], $data['source_embed_content'] ) ) {
             $source_names         = $data['source_names'];
-            $source_choice        = $data['source_choice'];
+            $source_choice        = isset( $data['source_choice'] ) ? $data['source_choice'] : array();
             $source_embed_content = $data['source_embed_content'];
-            $source_link          = $data['source_link'];
-            $source_quality       = $data['source_quality'];
-            $source_language      = $data['source_language'];
-            $source_player        = $data['source_player'];
-            $source_date_added    = $data['source_date_added'];
-            $source_position      = $data['source_position'];
+            $source_link          = isset( $data['source_link'] ) ? $data['source_link'] : array();
+            $source_quality       = isset( $data['source_quality'] ) ? $data['source_quality'] : array();
+            $source_language      = isset( $data['source_language'] ) ? $data['source_language'] : array();
+            $source_player        = isset( $data['source_player'] ) ? $data['source_player'] : array();
+            $source_date_added    = isset( $data['source_date_added'] ) ? $data['source_date_added'] : array();
+            $source_position      = isset( $data['source_position'] ) ? $data['source_position'] : array();
             $source_names_max_key = max( array_keys( $source_names ) );
 
             for ( $i = 0; $i <= $source_names_max_key; $i++ ) {

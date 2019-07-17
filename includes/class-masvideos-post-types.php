@@ -949,7 +949,7 @@ class MasVideos_Post_Types {
                     'hierarchical'          => true,
                     'label'                 => __( 'Categories', 'masvideos' ),
                     'labels'                => array(
-                        'name'              => __( 'Video categories', 'masvideos' ),
+                        'name'              => __( 'Person categories', 'masvideos' ),
                         'singular_name'     => __( 'Category', 'masvideos' ),
                         'menu_name'         => _x( 'Categories', 'Admin menu name', 'masvideos' ),
                         'search_items'      => __( 'Search categories', 'masvideos' ),
@@ -986,9 +986,9 @@ class MasVideos_Post_Types {
             apply_filters(
                 'masvideos_taxonomy_args_person_tag', array(
                     'hierarchical'          => false,
-                    'label'                 => __( 'Video tags', 'masvideos' ),
+                    'label'                 => __( 'Person tags', 'masvideos' ),
                     'labels'                => array(
-                        'name'                       => __( 'Video tags', 'masvideos' ),
+                        'name'                       => __( 'Person tags', 'masvideos' ),
                         'singular_name'              => __( 'Tag', 'masvideos' ),
                         'menu_name'                  => _x( 'Tags', 'Admin menu name', 'masvideos' ),
                         'search_items'               => __( 'Search tags', 'masvideos' ),

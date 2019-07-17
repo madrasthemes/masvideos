@@ -79,7 +79,7 @@ add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_templ
 add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_credits', 30 );
 add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_birthday', 40 );
 add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_birth_place', 50 );
-add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_also_know_as', 60 );
+add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_also_known_as', 60 );
 
 /**
  * Episodes Loop.
