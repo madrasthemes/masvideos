@@ -533,6 +533,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			'movie_attachment_id'    => array( $this, 'parse_images_field' ),
 			'movie_embed_content'    => 'masvideos_sanitize_textarea_iframe',
 			'movie_url_link'         => 'esc_url_raw',
+			'movie_is_affiliate_link'=> array( $this, 'parse_bool_field' ),
 			'movie_release_date'     => array( $this, 'parse_date_field' ),
 			'movie_run_time'         => array( $this, 'parse_skip_field' ),
 			'movie_censor_rating'    => array( $this, 'parse_skip_field' ),
@@ -558,6 +559,7 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			'/attributes:taxonomy*/'     => array( $this, 'parse_bool_field' ),
 			'/sources:embed_content*/'   => 'masvideos_sanitize_textarea_iframe',
 			'/sources:link*/'            => 'esc_url_raw',
+			'/sources:is_affiliate*/'	 => array( $this, 'parse_bool_field' ),
 			'/sources:date_added*/'      => array( $this, 'parse_date_field' ),
 			'/sources:position*/'        => 'intval',
 			'/meta:*/'                   => 'wp_kses_post', // Allow some HTML in meta fields.
@@ -778,6 +780,12 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			} elseif ( $this->starts_with( $key, 'sources:link' ) ) {
 				if ( ! empty( $value ) ) {
 					$sources[ str_replace( 'sources:link', '', $key ) ]['link'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:is_affiliate' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:is_affiliate', '', $key ) ]['is_affiliate'] = $value;
 				}
 				unset( $data[ $key ] );
 

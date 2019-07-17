@@ -219,7 +219,7 @@
                     width: 50%;
                 }
 
-                select,
+                select:not( .short ),
                 .select2-container {
                     width: 100% !important;
                 }

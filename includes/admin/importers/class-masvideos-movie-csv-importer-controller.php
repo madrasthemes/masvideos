@@ -509,6 +509,7 @@ class MasVideos_Movie_CSV_Importer_Controller {
 					__( 'Movie Attachment', 'masvideos' )          => 'movie_attachment_id',
 					__( 'Movie Embed Content', 'masvideos' )       => 'movie_embed_content',
 					__( 'Movie Link', 'masvideos' )                => 'movie_url_link',
+					__( 'Is Affiliate URL ?', 'masvideos' )        => 'movie_is_affiliate_link',
 					__( 'Movie Release Date', 'masvideos' )        => 'movie_release_date',
 					__( 'Movie Run Time', 'masvideos' )            => 'movie_run_time',
 					__( 'Movie Censor Rating', 'masvideos' )       => 'movie_censor_rating',
@@ -575,6 +576,8 @@ class MasVideos_Movie_CSV_Importer_Controller {
 						__( 'Source %d embed content', 'masvideos' )      => 'sources:embed_content',
 						/* translators: %d: Source number */
 						__( 'Source %d link', 'masvideos' )               => 'sources:link',
+						/* translators: %d: Source number */
+						__( 'Source %d is_affiliate', 'masvideos' )		  => 'sources:is_affiliate',
 						/* translators: %d: Source number */
 						__( 'Source %d quality', 'masvideos' )            => 'sources:quality',
 						/* translators: %d: Source number */
@@ -692,6 +695,7 @@ class MasVideos_Movie_CSV_Importer_Controller {
 			'movie_attachment_id'    => __( 'Movie Attachment', 'masvideos' ),
 			'movie_embed_content'    => __( 'Movie Embed Content', 'masvideos' ),
 			'movie_url_link'         => __( 'Movie Link', 'masvideos' ),
+			'movie_is_affiliate_link'=> __( 'Is Affiliate URL ?', 'masvideos' ),
 			'movie_release_date'     => __( 'Movie Release Date', 'masvideos' ),
 			'movie_run_time'         => __( 'Movie Run Time', 'masvideos' ),
 			'movie_censor_rating'    => __( 'Movie Censor Rating', 'masvideos' ),
@@ -742,6 +746,7 @@ class MasVideos_Movie_CSV_Importer_Controller {
 					'sources:choice' . $index          => __( 'Source Choice', 'masvideos' ),
 					'sources:embed_content' . $index   => __( 'Source Embed Content', 'masvideos' ),
 					'sources:link' . $index            => __( 'Source Link', 'masvideos' ),
+					'sources:is_affiliate' . $index    => __( 'Source Is Affiliate', 'masvideos' ),
 					'sources:quality' . $index         => __( 'Source Quality', 'masvideos' ),
 					'sources:language' . $index        => __( 'Source Language', 'masvideos' ),
 					'sources:player' . $index          => __( 'Source Player', 'masvideos' ),

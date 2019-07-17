@@ -1115,6 +1115,7 @@ class MasVideos_AJAX {
             'choice'        => '',
             'embed_content' => '',
             'link'          => '',
+            'is_affiliate'  => '',
             'quality'       => '',
             'language'      => '',
             'player'        => '',

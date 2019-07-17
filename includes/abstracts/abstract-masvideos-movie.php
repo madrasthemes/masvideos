@@ -70,6 +70,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'movie_attachment_id'   => '',
         'movie_embed_content'   => '',
         'movie_url_link'        => '',
+        'movie_is_affiliate_link'=> '',
         'gallery_image_ids'     => array(),
         'rating_counts'         => array(),
         'average_rating'        => 0,
@@ -392,6 +393,17 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function get_movie_url_link( $context = 'view' ) {
         return $this->get_prop( 'movie_url_link', $context );
+    }
+
+    /**
+     * If the movie url link is affiliate.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return bool|string
+     */
+    public function get_movie_is_affiliate_link( $context = 'view' ) {
+        return $this->get_prop( 'movie_is_affiliate_link', $context );
     }
 
     /**
@@ -796,6 +808,16 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_movie_url_link( $movie_url_link = '' ) {
         $this->set_prop( 'movie_url_link', $movie_url_link );
+    }
+
+    /**
+     * Set if the movie url link is affiliate.
+     *
+     * @since 1.0.0
+     * @param bool|string $movie_is_affiliate_link.
+     */
+    public function set_movie_is_affiliate_link( $movie_is_affiliate_link = '' ) {
+        $this->set_prop( 'movie_is_affiliate_link', $movie_is_affiliate_link );
     }
 
     /**
