@@ -1184,8 +1184,16 @@ if ( ! function_exists( 'masvideos_template_single_movie_play_source_link' ) ) {
      * Single movie play source link
      */
     function masvideos_template_single_movie_play_source_link( $source ) {
-        if( ! empty( $source['embed_content'] ) ) {
-            $source_content = apply_filters( 'the_content', $source['embed_content'] );
+        $source_content = ( $source['choice'] == 'movie_url' ) ? $source['link'] : $source['embed_content'];
+
+        if( isset( $source['is_affiliate'] ) && $source['is_affiliate'] && ! empty( $source_content ) ) {
+            ?>
+            <a href="<?php echo esc_url( $source_content ); ?>" class="play-source movie-affiliate-play-source" target="_blank">
+                <span><?php echo apply_filters( 'masvideos_movie_play_source_text', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
+            </a>
+            <?php
+        } else {
+            $source_content = apply_filters( 'the_content', $source_content );
             ?>
             <a href="#" class="play-source movie-play-source" data-content="<?php echo esc_attr( htmlspecialchars( $source_content ) ); ?>">
                 <span><?php echo apply_filters( 'masvideos_movie_play_source_text', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
