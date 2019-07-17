@@ -1361,9 +1361,6 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
         $casts = $movie->get_cast();
 
         if( ! empty( $casts ) ) {
-            $cast_positions = array_column( $casts, 'position' );
-            array_multisort( $cast_positions, SORT_ASC, $casts );
-
             ?>
             <div class="movie-casts">
                 <?php
@@ -1401,9 +1398,6 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
         $category_based_crews = array();
 
         if( ! empty( $crews ) ) {
-            $crew_positions = array_column( $crews, 'position' );
-            array_multisort( $crew_positions, SORT_ASC, $crews );
-
             foreach( $crews as $crew ) {
                 $person = masvideos_get_person( $crew['id'] );
                 if( $person && is_a( $person, 'MasVideos_Person' ) ) {

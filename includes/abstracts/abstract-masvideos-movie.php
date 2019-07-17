@@ -70,6 +70,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'movie_attachment_id'   => '',
         'movie_embed_content'   => '',
         'movie_url_link'        => '',
+        'movie_is_affiliate_link'=> '',
         'gallery_image_ids'     => array(),
         'rating_counts'         => array(),
         'average_rating'        => 0,
@@ -395,6 +396,17 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
+     * If the movie url link is affiliate.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return bool|string
+     */
+    public function get_movie_is_affiliate_link( $context = 'view' ) {
+        return $this->get_prop( 'movie_is_affiliate_link', $context );
+    }
+
+    /**
      * Get rating count.
      *
      * @param  string $context What the value is for. Valid values are view and edit.
@@ -633,6 +645,9 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param array $cast List of cast.
      */
     public function set_cast( $cast ) {
+        if ( ! empty( $cast ) && is_array( $cast ) ) {
+            uasort( $cast, 'masvideos_attribute_uasort_comparison' );
+        }
         $this->set_prop( 'cast', $cast );
     }
 
@@ -643,6 +658,9 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param array $crew List of crew.
      */
     public function set_crew( $crew ) {
+        if ( ! empty( $crew ) && is_array( $crew ) ) {
+            uasort( $crew, 'masvideos_attribute_uasort_comparison' );
+        }
         $this->set_prop( 'crew', $crew );
     }
 
@@ -690,6 +708,9 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param array $sources List of sources.
      */
     public function set_sources( $sources ) {
+        if ( ! empty( $sources ) && is_array( $sources ) ) {
+            uasort( $sources, 'masvideos_attribute_uasort_comparison' );
+        }
         $this->set_prop( 'sources', $sources );
     }
 
@@ -787,6 +808,16 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_movie_url_link( $movie_url_link = '' ) {
         $this->set_prop( 'movie_url_link', $movie_url_link );
+    }
+
+    /**
+     * Set if the movie url link is affiliate.
+     *
+     * @since 1.0.0
+     * @param bool|string $movie_is_affiliate_link.
+     */
+    public function set_movie_is_affiliate_link( $movie_is_affiliate_link = '' ) {
+        $this->set_prop( 'movie_is_affiliate_link', $movie_is_affiliate_link );
     }
 
     /**
