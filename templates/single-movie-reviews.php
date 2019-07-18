@@ -76,8 +76,9 @@ if ( ! comments_open() ) {
     </div>
 
     <div id="comments">
-        <?php if ( have_comments() ) : ?>
-
+        <?php if ( have_comments() ) : 
+            $title = apply_filters( 'masvideos_reviews_title', esc_html__( 'Users Reviews', 'masvideos' ), $movie ); ?>
+            <?php echo sprintf( '<h2 class="masvideos-reviews__title">%s</h2>', $title ); ?>
             <ol class="commentlist">
                 <?php wp_list_comments( apply_filters( 'masvideos_movie_review_list_args', array( 'callback' => 'masvideos_movie_comments' ) ) ); ?>
             </ol>

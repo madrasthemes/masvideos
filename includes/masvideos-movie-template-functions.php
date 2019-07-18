@@ -965,8 +965,10 @@ if ( ! function_exists( 'masvideos_movie_related_videos' ) ) {
 
         if( ! empty( $related_video_ids ) ) {
             echo '<section class="movie__related-video">';
+            echo '<div class="movie__related-video--inner">';
                 echo sprintf( '<h2 class="movie__related-video--title">%s</h2>', $title );
                 echo MasVideos_Shortcodes::videos( $args );
+            echo '</div>';
             echo '</section>';
         }
     }
@@ -1374,7 +1376,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
                                     <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
                                 </a>
                             </div>
-                            <a href="<?php the_permalink( $person->get_ID() ); ?>">
+                            <a class="persion-name-link" href="<?php the_permalink( $person->get_ID() ); ?>">
                                 <h3 class="persion-name"><?php echo esc_html( $person->get_name() ); ?></h3>
                             </a>
                             <div class="persion-role">
@@ -1420,7 +1422,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                                     <?php echo wp_kses_post( $crew['person_image'] ); ?>
                                 </a>
                             </div>
-                            <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                            <a class="persion-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
                                 <h3 class="persion-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
                             </a>
                             <div class="persion-role">
@@ -1447,14 +1449,19 @@ if ( ! function_exists( 'masvideos_template_single_movie_gallery' ) ) {
             'masvideos-movie-gallery--columns-' . absint( $columns ),
             'images',
         ) );
+        $title = apply_filters( 'masvideos_template_single_movie_gallery_title', esc_html__( 'Gallery', 'masvideos' ));
+
         if ( $attachment_ids && $movie->get_image_id() ) {
             ?>
             <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>">
-                <?php
+                <?php echo sprintf( '<h2 class="masvideos-movie-gallery__title">%s</h2>', $title ); ?>
+                <div class="masvideos-movie-gallery__inner">
+                    <?php
                     foreach ( $attachment_ids as $attachment_id ) {
                         echo apply_filters( 'masvideos_single_movie_image_thumbnail_html', masvideos_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
                     }
                 ?>
+                </div>
             </div>
             <?php
         }
