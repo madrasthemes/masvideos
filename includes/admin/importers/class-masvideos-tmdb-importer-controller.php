@@ -43,6 +43,13 @@ class MasVideos_TMDB_Importer_Controller {
     protected $results_csv_data = array();
 
     /**
+     * API results data count.
+     *
+     * @var int
+     */
+    protected $results_csv_data_count = '';
+
+    /**
      * API results.
      *
      * @var array
@@ -101,6 +108,7 @@ class MasVideos_TMDB_Importer_Controller {
         $this->step             = isset( $_REQUEST['step'] ) ? sanitize_key( $_REQUEST['step'] ) : current( array_keys( $this->steps ) );
         $this->file             = isset( $_REQUEST['file'] ) ? masvideos_clean( wp_unslash( $_REQUEST['file'] ) ) : '';
         $this->type             = ! empty( $_REQUEST['type'] ) ? masvideos_clean( wp_unslash( $_REQUEST['type'] ) ) : '';
+        $this->results_csv_data_count = ! empty( $_REQUEST['result_count'] ) ? masvideos_clean( wp_unslash( $_REQUEST['result_count'] ) ) : '';
         // $this->results_csv_data = ! empty( $_REQUEST['results_csv_data'] ) ? masvideos_clean( wp_unslash( $_REQUEST['results_csv_data'] ) ) : array();
     }
 
@@ -133,6 +141,7 @@ class MasVideos_TMDB_Importer_Controller {
             'step'            => $keys[ $step_index + 1 ],
             'file'            => str_replace( DIRECTORY_SEPARATOR, '/', $this->file ),
             'type'            => $this->type,
+            'result_count'    => $this->results_csv_data_count,
             '_wpnonce'        => wp_create_nonce( 'masvideos-tmdb-fetch-data' ), // wp_nonce_url() escapes & to &amp; breaking redirects.
         );
 
@@ -224,6 +233,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'now-playing-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getNowPlayingMovies( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
@@ -238,6 +248,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'upcoming-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getUpcomingMovies( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
@@ -252,6 +263,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'popular-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getPopularMovies( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
@@ -263,9 +275,10 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results_csv_data = $movies;
                 break;
 
-            case 'top-rated-moviess':
+            case 'top-rated-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getTopRatedMovies( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
@@ -280,6 +293,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'discover-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getDiscoverMovies( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $movie['id'] ) );
@@ -294,6 +308,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'latest-movie':
                 $this->type = 'movie';
                 $this->results = $tmdb->getLatestMovie();
+                $this->results_csv_data_count = 1;
                 $movies = array();
                 $movie = $this->handle_movie_data( $tmdb, $tmdb->getMovie( $this->results['id'] ) );
                 $movies[] = $movie;
@@ -306,6 +321,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'movie-by-id':
                 $this->type = 'movie';
                 $this->results = $tmdb->getMovie( $tmdb_id );
+                $this->results_csv_data_count = 1;
                 $movies = array();
                 $movie = $this->handle_movie_data( $tmdb, $this->results );
                 $movies[] = $movie;
@@ -318,6 +334,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'search-movie':
                 $this->type = 'movie';
                 $this->results = $tmdb->searchMovie( $keyword );
+                $this->results_csv_data_count = count( $this->results );
                 $movies = array();
                 foreach ( $this->results as $key => $movie ) {
                     if ( ! empty( $movie ) ) {
@@ -334,6 +351,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'on-air-tv-shows':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->getOnTheAirTVShows( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $tv_shows = array();
                 $episode_keys = array();
                 foreach ( $this->results as $key => $tv_show ) {
@@ -367,6 +385,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'on-air-today-tv-shows':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->getAiringTodayTVShows( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $tv_shows = array();
                 $episode_keys = array();
                 foreach ( $this->results as $key => $tv_show ) {
@@ -400,6 +419,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'popular-tv-shows':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->getAiringTodayTVShows( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $tv_shows = array();
                 $episode_keys = array();
                 foreach ( $this->results as $key => $tv_show ) {
@@ -433,6 +453,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'top-rated-tv-showss':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->getTopRatedTVShows( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $tv_shows = array();
                 $episode_keys = array();
                 foreach ( $this->results as $key => $tv_show ) {
@@ -466,6 +487,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'discover-tv-shows':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->getDiscoverTVShows( $page );
+                $this->results_csv_data_count = count( $this->results );
                 $tv_shows = array();
                 $episode_keys = array();
                 foreach ( $this->results as $key => $tv_show ) {
@@ -499,6 +521,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'latest-tv-show':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->getLatestTVShow();
+                $this->results_csv_data_count = 1;
                 $tv_shows = array();
                 $episode_keys = array();
                 foreach ( $this->results as $key => $tv_show ) {
@@ -532,6 +555,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'tv-show-by-id':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->getTVShow( $tmdb_id );
+                $this->results_csv_data_count = 1;
                 $tv_shows = array();
                 $episode_keys = array();
                 $tv_show = $this->handle_tv_show_data( $tmdb, $this->results );
@@ -561,6 +585,7 @@ class MasVideos_TMDB_Importer_Controller {
             case 'search-tv-show':
                 $this->type = 'tv_show';
                 $this->results = $tmdb->searchTVShow( $keyword );
+                $this->results_csv_data_count = count( $this->results );
                 $tv_shows = array();
                 $episode_keys = array();
                 foreach ( $this->results as $key => $tv_show ) {
@@ -646,6 +671,7 @@ class MasVideos_TMDB_Importer_Controller {
                     case 'homepage' :
                         $movie['Movie Choice'] = 'movie_url';
                         $movie['Movie Link'] = $values;
+                        $movie['Is Affiliate URL ?'] = 1;
                         break;
                     case 'poster_path' :
                     case 'backdrop_path' :
