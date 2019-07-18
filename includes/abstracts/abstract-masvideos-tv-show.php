@@ -559,7 +559,7 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function set_cast( $cast ) {
         if ( ! empty( $cast ) && is_array( $cast ) ) {
-            uasort( $cast, 'masvideos_attribute_uasort_comparison' );
+            array_multisort( array_column( $cast, 'position' ), SORT_ASC, $cast );
         }
         $this->set_prop( 'cast', $cast );
     }
@@ -572,7 +572,7 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function set_crew( $crew ) {
         if ( ! empty( $crew ) && is_array( $crew ) ) {
-            uasort( $crew, 'masvideos_attribute_uasort_comparison' );
+            array_multisort( array_column( $crew, 'position' ), SORT_ASC, $crew );
         }
         $this->set_prop( 'crew', $crew );
     }
@@ -622,7 +622,7 @@ class MasVideos_TV_Show extends MasVideos_Data {
      */
     public function set_seasons( $seasons ) {
         if ( ! empty( $seasons ) && is_array( $seasons ) ) {
-            uasort( $seasons, 'masvideos_attribute_uasort_comparison' );
+            array_multisort( array_column( $seasons, 'position' ), SORT_ASC, $seasons );
         }
         $this->set_prop( 'seasons', $seasons );
     }

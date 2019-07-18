@@ -646,7 +646,7 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_cast( $cast ) {
         if ( ! empty( $cast ) && is_array( $cast ) ) {
-            uasort( $cast, 'masvideos_attribute_uasort_comparison' );
+            array_multisort( array_column( $cast, 'position' ), SORT_ASC, $cast );
         }
         $this->set_prop( 'cast', $cast );
     }
@@ -659,7 +659,7 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_crew( $crew ) {
         if ( ! empty( $crew ) && is_array( $crew ) ) {
-            uasort( $crew, 'masvideos_attribute_uasort_comparison' );
+            array_multisort( array_column( $crew, 'position' ), SORT_ASC, $crew );
         }
         $this->set_prop( 'crew', $crew );
     }
@@ -709,7 +709,7 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_sources( $sources ) {
         if ( ! empty( $sources ) && is_array( $sources ) ) {
-            uasort( $sources, 'masvideos_attribute_uasort_comparison' );
+            array_multisort( array_column( $sources, 'position' ), SORT_ASC, $sources );
         }
         $this->set_prop( 'sources', $sources );
     }
