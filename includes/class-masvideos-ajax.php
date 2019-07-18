@@ -996,15 +996,17 @@ class MasVideos_AJAX {
             $cast       = $movie->get_cast( 'edit' );
             $i          = -1;
 
-            foreach ( $data['person_ids'] as $person_id ) {
-                $person = isset( $cast[ absint( $person_id ) ] ) ? $cast[ absint( $person_id ) ] : false;
-                if ( ! $person ) {
-                    continue;
-                }
-                $i++;
-                $metabox_class = array();
+            if( isset( $data['person_ids'] ) ) {
+                foreach ( $data['person_ids'] as $person_id ) {
+                    $person = isset( $cast[ absint( $person_id ) ] ) ? $cast[ absint( $person_id ) ] : false;
+                    if ( ! $person ) {
+                        continue;
+                    }
+                    $i++;
+                    $metabox_class = array();
 
-                include( 'admin/meta-boxes/views/html-movie-cast-person.php' );
+                    include( 'admin/meta-boxes/views/html-movie-cast-person.php' );
+                }
             }
 
             $response['html'] = ob_get_clean();
@@ -1076,15 +1078,17 @@ class MasVideos_AJAX {
             $crew       = $movie->get_crew( 'edit' );
             $i          = -1;
 
-            foreach ( $data['person_ids'] as $person_id ) {
-                $person = isset( $crew[ absint( $person_id ) ] ) ? $crew[ absint( $person_id ) ] : false;
-                if ( ! $person ) {
-                    continue;
-                }
-                $i++;
-                $metabox_class = array();
+            if( isset( $data['person_ids'] ) ) {
+                foreach ( $data['person_ids'] as $person_id ) {
+                    $person = isset( $crew[ absint( $person_id ) ] ) ? $crew[ absint( $person_id ) ] : false;
+                    if ( ! $person ) {
+                        continue;
+                    }
+                    $i++;
+                    $metabox_class = array();
 
-                include( 'admin/meta-boxes/views/html-movie-crew-person.php' );
+                    include( 'admin/meta-boxes/views/html-movie-crew-person.php' );
+                }
             }
 
             $response['html'] = ob_get_clean();
