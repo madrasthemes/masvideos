@@ -370,6 +370,148 @@ if ( ! function_exists( 'masvideos_display_person_page_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_persons_control_bar' ) ) {
+    /**
+     * Display Control Bar.
+     */
+    function masvideos_persons_control_bar() {
+        echo '<div class="masvideos-control-bar masvideos-persons-control-bar">';
+            masvideos_persons_count();
+            masvideos_persons_catalog_ordering();
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_persons_catalog_ordering' ) ) {
+    function masvideos_persons_catalog_ordering() {
+        if ( ! masvideos_get_persons_loop_prop( 'is_paginated' ) || ! masvideos_persons_will_display() ) {
+            return;
+        }
+
+        $catalog_orderby_options = apply_filters( 'masvideos_default_persons_catalog_orderby_options', array(
+            'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
+            'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
+            'date'          => esc_html__( 'Latest', 'masvideos' ),
+            'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
+        ) );
+
+        $default_orderby = masvideos_get_persons_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_default_persons_catalog_orderby', get_option( 'masvideos_default_persons_catalog_orderby', 'release_date' ) );
+        $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
+
+        if ( masvideos_get_persons_loop_prop( 'is_search' ) ) {
+            $catalog_orderby_options = array_merge( array( 'relevance' => esc_html__( 'Relevance', 'masvideos' ) ), $catalog_orderby_options );
+
+            unset( $catalog_orderby_options['menu_order'] );
+        }
+
+        if ( ! array_key_exists( $orderby, $catalog_orderby_options ) ) {
+            $orderby = current( array_keys( $catalog_orderby_options ) );
+        }
+
+        ?>
+        <form method="get">
+            <select name="orderby" class="orderby" onchange="this.form.submit();">
+                <?php foreach ( $catalog_orderby_options as $id => $name ) : ?>
+                    <option value="<?php echo esc_attr( $id ); ?>" <?php selected( $orderby, $id ); ?>><?php echo esc_html( $name ); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="hidden" name="paged" value="1" />
+        </form>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_persons_page_control_bar' ) ) {
+    /**
+     * Display Page Control Bar.
+     */
+    function masvideos_persons_page_control_bar() {
+        echo '<div class="masvideos-page-control-bar masvideos-persons-page-control-bar">';
+            masvideos_persons_count();
+            masvideos_persons_pagination();
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_persons_count' ) ) {
+
+    /**
+     * Output the result count text (Showing x - x of x results).
+     */
+    function masvideos_persons_count() {
+        if ( ! masvideos_get_persons_loop_prop( 'is_paginated' ) || ! masvideos_persons_will_display() ) {
+            return;
+        }
+        $args = array(
+            'total'    => masvideos_get_persons_loop_prop( 'total' ),
+            'per_page' => masvideos_get_persons_loop_prop( 'per_page' ),
+            'current'  => masvideos_get_persons_loop_prop( 'current_page' ),
+        );
+
+        ?>
+        <p class="masvideos-result-count masvideos-persons-result-count">
+            <?php
+            if ( $args['total'] <= $args['per_page'] || -1 === $args['per_page'] ) {
+                /* translators: %d: total results */
+                printf( _n( 'Showing the single result', 'Showing all %d results', $args['total'], 'masvideos' ), $args['total'] );
+            } else {
+                $first = ( $args['per_page'] * $args['current'] ) - $args['per_page'] + 1;
+                $last  = min( $args['total'], $args['per_page'] * $args['current'] );
+                /* translators: 1: first result 2: last result 3: total results */
+                printf( _nx( 'Showing the single result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), $first, $last, $args['total'] );
+            }
+            ?>
+        </p>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_persons_pagination' ) ) {
+    /**
+     * Display Pagination.
+     */
+    function masvideos_persons_pagination() {
+        if ( ! masvideos_get_persons_loop_prop( 'is_paginated' ) || ! masvideos_persons_will_display() ) {
+            return;
+        }
+
+        $args = array(
+            'total'   => masvideos_get_persons_loop_prop( 'total_pages' ),
+            'current' => masvideos_get_persons_loop_prop( 'current_page' ),
+            'base'    => esc_url_raw( add_query_arg( 'person-page', '%#%', false ) ),
+            'format'  => '?person-page=%#%',
+        );
+
+        if ( ! masvideos_get_persons_loop_prop( 'is_shortcode' ) ) {
+            $args['format'] = '';
+            $args['base']   = esc_url_raw( str_replace( 999999999, '%#%', remove_query_arg( 'add-to-cart', get_pagenum_link( 999999999, false ) ) ) );
+        }
+
+        if (  $args['total'] <= 1 ) {
+            return;
+        }
+        ?>
+
+        <nav class="masvideos-pagination masvideos-persons-pagination">
+            <?php
+                echo paginate_links( apply_filters( 'masvideos_persons_pagination_args', array( // WPCS: XSS ok.
+                    'base'         => $args['base'],
+                    'format'       => $args['format'],
+                    'add_args'     => false,
+                    'current'      => max( 1, $args['current'] ),
+                    'total'        => $args['total'],
+                    'prev_text'    => '&larr;',
+                    'next_text'    => '&rarr;',
+                    'type'         => 'list',
+                    'end_size'     => 3,
+                    'mid_size'     => 3,
+                ) ) );
+            ?>
+        </nav>
+        <?php
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_loop_person_link_open' ) ) {
     /**
      * Insert the opening anchor tag for person in the loop.

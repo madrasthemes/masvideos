@@ -1371,17 +1371,18 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
                     if( $person && is_a( $person, 'MasVideos_Person' ) ) {
                         ?>
                         <div class="movie-cast">
-                            <div class="persion-image">
+                            <div class="person-image">
                                 <a href="<?php the_permalink( $person->get_ID() ); ?>">
                                     <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
                                 </a>
                             </div>
-                            <a class="persion-name-link" href="<?php the_permalink( $person->get_ID() ); ?>">
-                                <h3 class="persion-name"><?php echo esc_html( $person->get_name() ); ?></h3>
+                            <a class="person-name-link" href="<?php the_permalink( $person->get_ID() ); ?>">
+                                <h3 class="person-name"><?php echo esc_html( $person->get_name() ); ?></h3>
                             </a>
-                            <div class="persion-role">
+                            <div class="person-role">
                                 <?php echo esc_html( $cast['character'] ); ?>
                             </div>
+                            <?php do_action( 'masvideos_template_single_movie_cast_end', $cast ); ?>
                         </div>
                         <?php
                     }
@@ -1417,17 +1418,18 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                     <h2 class="movie-crews-category-title"><?php echo esc_html( ! is_wp_error( $term ) ? $term->name : __( 'Unknown', 'masvideos' ) ); ?></h2>
                     <?php foreach( $crews as $crew ): ?>
                         <div class="movie-crew">
-                            <div class="persion-image">
+                            <div class="person-image">
                                 <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
                                     <?php echo wp_kses_post( $crew['person_image'] ); ?>
                                 </a>
                             </div>
-                            <a class="persion-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
-                                <h3 class="persion-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
+                            <a class="person-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                                <h3 class="person-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
                             </a>
-                            <div class="persion-role">
+                            <div class="person-role">
                                 <?php echo esc_html( $crew['job'] ); ?>
                             </div>
+                            <?php do_action( 'masvideos_template_single_movie_crew_end', $crew ); ?>
                         </div>
                     <?php endforeach; ?>
                 </div>

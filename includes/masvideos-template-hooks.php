@@ -17,6 +17,8 @@ add_action( 'masvideos_before_movies_loop', 'masvideos_movies_control_bar', 10 )
 add_action( 'masvideos_after_movies_loop', 'masvideos_movies_page_control_bar', 10 );
 add_action( 'masvideos_before_tv_shows_loop', 'masvideos_tv_shows_control_bar', 10 );
 add_action( 'masvideos_after_tv_shows_loop', 'masvideos_tv_shows_page_control_bar', 10 );
+add_action( 'masvideos_before_persons_loop', 'masvideos_persons_control_bar', 10 );
+add_action( 'masvideos_after_persons_loop', 'masvideos_persons_page_control_bar', 10 );
 add_action( 'masvideos_before_videos_loop', 'masvideos_videos_control_bar', 10 );
 add_action( 'masvideos_after_main_content', 'masvideos_template_loop_content_area_close', 999 );
 
