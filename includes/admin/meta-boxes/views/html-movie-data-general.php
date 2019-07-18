@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     'movie_embed'   => __( 'Embed Movie', 'masvideos' ),
                     'movie_url'     => __( 'Movie URL', 'masvideos' ),
                 ),
-                'class'         => 'show_hide_select',
+                'class'         => 'short show_hide_select',
             )
         );
 
@@ -42,13 +42,22 @@ if ( ! defined( 'ABSPATH' ) ) {
             )
         );
 
-        masvideos_wp_video_url(
+        masvideos_wp_text_input(
             array(
                 'id'            => '_movie_url_link',
                 'value'         => is_callable( array( $movie_object, 'get_movie_url_link' ) ) ? $movie_object->get_movie_url_link( 'edit' ) : '',
                 'label'         => __( 'Movie URL', 'masvideos' ),
                 'placeholder'   => 'http://',
                 'description'   => __( 'Enter the external URL to the video.', 'masvideos' ),
+                'wrapper_class' => 'show_if_movie_url hide',
+            )
+        );
+
+        masvideos_wp_checkbox(
+            array(
+                'id'            => '_movie_is_affiliate_link',
+                'value'         => is_callable( array( $movie_object, 'get_movie_is_affiliate_link' ) ) ? masvideos_bool_to_string( $movie_object->get_movie_is_affiliate_link() ) : '',
+                'label'         => __( 'Is Affiliate URL ?', 'masvideos' ),
                 'wrapper_class' => 'show_if_movie_url hide',
             )
         );

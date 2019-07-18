@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function masvideos_wp_text_input( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
     $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
     $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
@@ -73,7 +73,7 @@ function masvideos_wp_text_input( $field ) {
 function masvideos_wp_hidden_input( $field ) {
     global $thepostid, $post;
 
-    $thepostid      = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid      = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['value'] = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
     $field['class'] = isset( $field['class'] ) ? $field['class'] : '';
 
@@ -88,7 +88,7 @@ function masvideos_wp_hidden_input( $field ) {
 function masvideos_wp_textarea_input( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
     $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
     $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
@@ -133,7 +133,7 @@ function masvideos_wp_textarea_input( $field ) {
 function masvideos_wp_checkbox( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['class']         = isset( $field['class'] ) ? $field['class'] : 'checkbox';
     $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
     $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -176,7 +176,7 @@ function masvideos_wp_checkbox( $field ) {
 function masvideos_wp_select( $field ) {
     global $thepostid, $post;
 
-    $thepostid = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field     = wp_parse_args(
         $field, array(
             'class'             => 'select short',
@@ -233,7 +233,7 @@ function masvideos_wp_select( $field ) {
 function masvideos_wp_radio( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['class']         = isset( $field['class'] ) ? $field['class'] : 'select short';
     $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
     $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -276,7 +276,7 @@ function masvideos_wp_radio( $field ) {
 function masvideos_wp_upload_video( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
     $field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
     $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -303,7 +303,7 @@ function masvideos_wp_upload_video( $field ) {
 function masvideos_wp_embed_video( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
     $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
     $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
@@ -337,7 +337,7 @@ function masvideos_wp_embed_video( $field ) {
 function masvideos_wp_video_url( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
     $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
     $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
@@ -374,7 +374,7 @@ function masvideos_wp_video_url( $field ) {
 function masvideos_wp_date_picker( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : 'YYYY-MM-DD';
     $field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
     $field['style']         = isset( $field['style'] ) ? $field['style'] : '';
@@ -409,7 +409,7 @@ function masvideos_wp_date_picker( $field ) {
 function masvideos_wp_upload_image( $field ) {
     global $thepostid, $post;
 
-    $thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+    $thepostid              = empty( $thepostid ) && ! empty( $post ) ? $post->ID : $thepostid;
     $field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
     $field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
     $field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';

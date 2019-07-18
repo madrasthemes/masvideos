@@ -64,4 +64,5 @@ if ( ! defined( 'ABSPATH' ) ) {
             do_action( 'masvideos_movie_review_before_comment_meta', $comment );?>
 
         </div>
+        <?php do_action( 'masvideos_movie_review_after', $comment ); ?>
     </div>

@@ -23,7 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 if( empty( $attributes ) ) {
 	return;
 }
-
 ?>
 <table class="movie__attributes">
 

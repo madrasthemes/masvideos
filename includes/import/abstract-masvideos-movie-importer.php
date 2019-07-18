@@ -529,6 +529,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 					'choice'        => isset( $source['choice'] ) ? masvideos_clean( $source['choice'] ) : '',
 					'embed_content' => isset( $source['embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $source['embed_content'] ) ) : '',
 					'link'          => isset( $source['link'] ) ? masvideos_clean( $source['link'] ) : '',
+					'is_affiliate'	=> isset( $source['is_affiliate'] ),
 					'quality'       => isset( $source['quality'] ) ? masvideos_clean( $source['quality'] ) : '',
 					'language'      => isset( $source['language'] ) ? masvideos_clean( $source['language'] ) : '',
 					'player'        => isset( $source['player'] ) ? masvideos_clean( $source['player'] ) : '',

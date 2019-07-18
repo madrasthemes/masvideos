@@ -343,6 +343,14 @@ if ( ! function_exists ( 'masvideos_get_the_movie' ) ) {
             $movie_src = $movie->get_movie_embed_content();
         } elseif ( $movie_choice == 'movie_url' ) {
             $movie_src = $movie->get_movie_url_link();
+
+            if( $movie->get_movie_is_affiliate_link() ) {
+                ob_start();
+                ?><a href="<?php echo esc_url( $movie_src ); ?>" class="movie-affiliate-link" target="_blank">
+                    <?php echo masvideos_get_movie_thumbnail( 'full' ); ?>
+                </a><?php
+                $movie_src = ob_get_clean();
+            }
         }
 
         return apply_filters( 'the_content', $movie_src );
