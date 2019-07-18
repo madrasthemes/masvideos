@@ -19,6 +19,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 ?>
 <table class="movie__attributes">
 

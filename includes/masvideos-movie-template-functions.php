@@ -1447,14 +1447,19 @@ if ( ! function_exists( 'masvideos_template_single_movie_gallery' ) ) {
             'masvideos-movie-gallery--columns-' . absint( $columns ),
             'images',
         ) );
+        $title = apply_filters( 'masvideos_template_single_movie_gallery_title', esc_html__( 'Gallery', 'masvideos' ));
+
         if ( $attachment_ids && $movie->get_image_id() ) {
             ?>
             <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>">
-                <?php
+                <?php echo sprintf( '<h2 class="masvideos-movie-gallery__title">%s</h2>', $title ); ?>
+                <div class="masvideos-movie-gallery__inner">
+                    <?php
                     foreach ( $attachment_ids as $attachment_id ) {
                         echo apply_filters( 'masvideos_single_movie_image_thumbnail_html', masvideos_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
                     }
                 ?>
+                </div>
             </div>
             <?php
         }
