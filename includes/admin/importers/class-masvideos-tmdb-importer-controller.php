@@ -671,6 +671,7 @@ class MasVideos_TMDB_Importer_Controller {
                     case 'homepage' :
                         $movie['Movie Choice'] = 'movie_url';
                         $movie['Movie Link'] = $values;
+                        $movie['Is Affiliate URL ?'] = 1;
                         break;
                     case 'poster_path' :
                     case 'backdrop_path' :

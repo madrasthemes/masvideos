@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php if( $this->type === 'movie' ) : ?>
             <p><?php echo sprintf( '%d %s', $this->results_csv_data_count, esc_html__( 'Movies available.', 'masvideos' ) ); ?></p>
         <?php elseif( $this->type === 'tv_show' ) : ?>
-            <p><?php echo sprintf( '%d %s', $this->results_csv_data_count, esc_html__( 'TV Shows available.', 'masvideos' ) ); ?></p>
+            <p><?php echo sprintf( '%d %s', $this->results_csv_data_count, esc_html__( 'TV Shows found.', 'masvideos' ) ); ?></p>
         <?php endif; ?>
     </header>
     <section>
