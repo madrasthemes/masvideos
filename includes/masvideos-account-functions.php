@@ -277,6 +277,18 @@ function masvideos_get_edit_video_fields() {
             'label'        => __( 'Enable Video Comments', 'masvideos' ),
             'required'     => false,
             'class'        => array( 'form-row-reviews_allowed' ),
+            'priority'     => 55,
+        ),
+        'video_choice'  => array(
+            'type'         => 'select',
+            'options'      => array(
+                'video_file'    => __( 'Upload Video', 'masvideos' ),
+                'video_embed'   => __( 'Embed Video', 'masvideos' ),
+                'video_url'     => __( 'Video URL', 'masvideos' ),
+            ),
+            'label'        => __( 'Video Method', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-video_choice' ),
             'priority'     => 60,
         ),
         'video_attachment_id'   => array(
@@ -284,7 +296,21 @@ function masvideos_get_edit_video_fields() {
             'label'        => __( 'Video', 'masvideos' ),
             'required'     => false,
             'class'        => array( 'form-row-video_attachment_id', 'form-field' ),
+            'priority'     => 65,
+        ),
+        'video_embed_content'   => array(
+            'type'         => 'textarea',
+            'label'        => __( 'Embed Video', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-video_embed_content', 'form-field' ),
             'priority'     => 70,
+        ),
+        'video_url_link'   => array(
+            'type'         => 'text',
+            'label'        => __( 'Video URL', 'masvideos' ),
+            'required'     => false,
+            'class'        => array( 'form-row-video_url_link', 'form-field' ),
+            'priority'     => 75,
         ),
         'image_id'         => array(
             'type'         => 'image',

@@ -164,6 +164,8 @@ class MasVideos_Form_Handler {
                     $value = (int) isset( $_POST[ $key ] );
                 } elseif ( 'term-multiselect' === $field['type'] ) {
                     $value = isset( $_POST[ $key ] ) ? masvideos_clean( wp_unslash( $_POST[ $key ] ) ) : array();
+                } elseif ( 'video_embed_content' === $key ) {
+                    $value = isset( $_POST[ $key ] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST[ $key ] ) ) : '';
                 } else {
                     $value = isset( $_POST[ $key ] ) ? masvideos_clean( wp_unslash( $_POST[ $key ] ) ) : '';
                 }
