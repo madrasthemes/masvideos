@@ -1382,6 +1382,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
                             <div class="persion-role">
                                 <?php echo esc_html( $cast['character'] ); ?>
                             </div>
+                            <?php do_action( 'masvideos_template_single_movie_cast_end', $cast ); ?>
                         </div>
                         <?php
                     }
@@ -1428,6 +1429,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                             <div class="persion-role">
                                 <?php echo esc_html( $crew['job'] ); ?>
                             </div>
+                            <?php do_action( 'masvideos_template_single_movie_crew_end', $crew ); ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
