@@ -275,7 +275,7 @@ class MasVideos_TMDB_Importer_Controller {
                 $this->results_csv_data = $movies;
                 break;
 
-            case 'top-rated-moviess':
+            case 'top-rated-movies':
                 $this->type = 'movie';
                 $this->results = $tmdb->getTopRatedMovies( $page );
                 $this->results_csv_data_count = count( $this->results );
