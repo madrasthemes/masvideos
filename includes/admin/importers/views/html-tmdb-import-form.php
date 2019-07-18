@@ -13,6 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     <header>
         <h2><?php esc_html_e( 'Import', 'masvideos' ); ?></h2>
         <p><?php esc_html_e( 'This tool allows you to import data.', 'masvideos' ); ?></p>
+        <?php if( $this->type === 'movie' ) : ?>
+            <p><?php echo sprintf( '%d %s', $this->results_csv_data_count, esc_html__( 'Movies available.', 'masvideos' ) ); ?></p>
+        <?php elseif( $this->type === 'tv_show' ) : ?>
+            <p><?php echo sprintf( '%d %s', $this->results_csv_data_count, esc_html__( 'TV Shows available.', 'masvideos' ) ); ?></p>
+        <?php endif; ?>
     </header>
     <section>
         <input type="hidden" name="file_url" value="<?php echo esc_attr( $file_url ) ?>" />
