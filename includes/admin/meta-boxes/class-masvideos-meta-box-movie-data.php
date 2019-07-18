@@ -221,14 +221,15 @@ class MasVideos_Meta_Box_Movie_Data {
 
         if ( isset( $data['source_names'], $data['source_embed_content'] ) ) {
             $source_names         = $data['source_names'];
-            $source_choice        = $data['source_choice'];
+            $source_choice        = isset( $data['source_choice'] ) ? $data['source_choice'] : array();
             $source_embed_content = $data['source_embed_content'];
-            $source_link          = $data['source_link'];
-            $source_quality       = $data['source_quality'];
-            $source_language      = $data['source_language'];
-            $source_player        = $data['source_player'];
-            $source_date_added    = $data['source_date_added'];
-            $source_position      = $data['source_position'];
+            $source_link          = isset( $data['source_link'] ) ? $data['source_link'] : array();
+            $source_is_affiliate  = isset( $data['source_is_affiliate'] ) ? $data['source_is_affiliate'] : array();
+            $source_quality       = isset( $data['source_quality'] ) ? $data['source_quality'] : array();
+            $source_language      = isset( $data['source_language'] ) ? $data['source_language'] : array();
+            $source_player        = isset( $data['source_player'] ) ? $data['source_player'] : array();
+            $source_date_added    = isset( $data['source_date_added'] ) ? $data['source_date_added'] : array();
+            $source_position      = isset( $data['source_position'] ) ? $data['source_position'] : array();
             $source_names_max_key = max( array_keys( $source_names ) );
 
             for ( $i = 0; $i <= $source_names_max_key; $i++ ) {
@@ -240,7 +241,8 @@ class MasVideos_Meta_Box_Movie_Data {
                     'name'          => isset( $source_names[ $i ] ) ? masvideos_clean( $source_names[ $i ] ) : '',
                     'choice'        => isset( $source_choice[ $i ] ) ? masvideos_clean( $source_choice[ $i ] ) : '',
                     'embed_content' => isset( $source_embed_content[ $i ] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $source_embed_content[ $i ] ) ) : '',
-                    'link'          => isset( $source_link[ $i ] ) ? masvideos_clean( $source_link[ $i ] ) : '',
+                    'link'          => isset( $source_link[ $i ] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $source_link[ $i ] ) ) : '',
+                    'is_affiliate'  => isset( $source_is_affiliate[ $i ] ),
                     'quality'       => isset( $source_quality[ $i ] ) ? masvideos_clean( $source_quality[ $i ] ) : '',
                     'language'      => isset( $source_language[ $i ] ) ? masvideos_clean( $source_language[ $i ] ) : '',
                     'player'        => isset( $source_player[ $i ] ) ? masvideos_clean( $source_player[ $i ] ) : '',
@@ -334,6 +336,7 @@ class MasVideos_Meta_Box_Movie_Data {
                 'movie_attachment_id'       => isset( $_POST['_movie_attachment_id'] ) ? masvideos_clean( $_POST['_movie_attachment_id'] ) : null,
                 'movie_embed_content'       => isset( $_POST['_movie_embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $_POST['_movie_embed_content'] ) ) : null,
                 'movie_url_link'            => isset( $_POST['_movie_url_link'] ) ? masvideos_clean( $_POST['_movie_url_link'] ) : null,
+                'movie_is_affiliate_link'   => isset( $_POST['_movie_is_affiliate_link'] ),
                 'attributes'                => $attributes,
                 'movie_release_date'        => isset( $_POST['_movie_release_date'] ) ? masvideos_clean( $_POST['_movie_release_date'] ) : null,
                 'movie_run_time'            => isset( $_POST['_movie_run_time'] ) ? masvideos_clean( $_POST['_movie_run_time'] ) : null,

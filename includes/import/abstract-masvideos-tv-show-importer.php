@@ -385,6 +385,8 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
 
             if ( 'episode' === $data['type'] ) {
                 $this->set_episode_data_to_tv_show( $object, $data );
+            } else {
+                $this->set_tv_show_credits( $object, $data );
             }
 
             do_action( 'masvideos_tv_show_import_inserted_tv_show_object', $object, $data );
@@ -556,6 +558,66 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
      * @param array           $data  Item data.
      * @throws Exception             If data cannot be set.
      */
+    protected function set_tv_show_credits( &$tv_show, $data ) {
+        if ( isset( $data['raw_cast'] ) ) {
+            $cast          = array();
+
+            foreach ( $data['raw_cast'] as $position => $person ) {
+                $person_object = $this->get_person_object( $person );
+                if ( ! is_wp_error( $person_object ) ) {
+                    $person = array(
+                        'id'           => $person_object->get_id(),
+                        'character'    => isset( $person['character'] ) ? $person['character'] : '',
+                        'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
+                    );
+
+                    $cast[] = $person;
+
+                    if( ! empty( $person['id'] ) ) {
+                        $tv_show_id = $tv_show->get_id();
+                        MasVideos_Meta_Box_Person_Data::update_credit( $tv_show_id, $person['id'], 'tv_show_cast' );
+                    }
+                }
+            }
+
+            $tv_show->set_cast( $cast );
+        }
+
+        if ( isset( $data['raw_crew'] ) ) {
+            $crew          = array();
+
+            foreach ( $data['raw_crew'] as $position => $person ) {
+                $person_object = $this->get_person_object( $person );
+                if ( ! is_wp_error( $person_object ) ) {
+                    $person = array(
+                        'id'           => $person_object->get_id(),
+                        'category'     => isset( $person['category'] ) ? $person['category'] : '',
+                        'job'          => isset( $person['job'] ) ? $person['job'] : '',
+                        'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
+                    );
+
+                    $crew[] = $person;
+
+                    if( ! empty( $person['id'] ) ) {
+                        $tv_show_id = $tv_show->get_id();
+                        MasVideos_Meta_Box_Person_Data::update_credit( $tv_show_id, $person['id'], 'tv_show_crew' );
+                    }
+                }
+            }
+
+            $tv_show->set_crew( $crew );
+        }
+
+        $tv_show->save();
+    }
+
+    /**
+     * Set tv show data.
+     *
+     * @param MasVideos_TV_Show $tv_show TV Show instance.
+     * @param array           $data  Item data.
+     * @throws Exception             If data cannot be set.
+     */
     protected function set_tv_show_data( &$tv_show, $data ) {
         if ( isset( $data['raw_seasons'] ) ) {
             $seasons          = array();
@@ -583,45 +645,6 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
             }
 
             $tv_show->set_seasons( $seasons );
-        }
-
-        if ( isset( $data['raw_cast'] ) ) {
-            $cast          = array();
-
-            foreach ( $data['raw_cast'] as $position => $person ) {
-                $person_object = $this->get_person_object( $person );
-                if ( ! is_wp_error( $person_object ) ) {
-                    $person = array(
-                        'id'           => $person_object->get_id(),
-                        'character'    => isset( $person['character'] ) ? $person['character'] : '',
-                        'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
-                    );
-
-                    $cast[] = $person;
-                }
-            }
-
-            $tv_show->set_cast( $cast );
-        }
-
-        if ( isset( $data['raw_crew'] ) ) {
-            $crew          = array();
-
-            foreach ( $data['raw_crew'] as $position => $person ) {
-                $person_object = $this->get_person_object( $person );
-                if ( ! is_wp_error( $person_object ) ) {
-                    $person = array(
-                        'id'           => $person_object->get_id(),
-                        'category'     => isset( $person['category'] ) ? $person['category'] : '',
-                        'job'          => isset( $person['job'] ) ? $person['job'] : '',
-                        'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
-                    );
-
-                    $crew[] = $person;
-                }
-            }
-
-            $tv_show->set_crew( $crew );
         }
 
         if ( isset( $data['raw_attributes'] ) ) {

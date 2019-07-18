@@ -312,11 +312,14 @@ class MasVideos_AJAX {
         $metabox_class = array();
         $source        = array(
             'name'          => sprintf( __( 'Source %d', 'masvideos' ), $i+1 ),
-            'image_id'      => 0,
-            'episodes'      => array(),
-            'year'          => '',
-            'description'   => '',
-            'position'      => 0
+            'choice'        => '',
+            'embed_content' => '',
+            'link'          => '',
+            'quality'       => '',
+            'language'      => '',
+            'player'        => '',
+            'date_added'    => '',
+            'position'      => $i,
         );
 
         include 'admin/meta-boxes/views/html-episode-source.php';
@@ -546,7 +549,7 @@ class MasVideos_AJAX {
         $person        = array(
             'id'            => absint( $_POST['person_id'] ),
             'character'     => '',
-            'position'      => 0
+            'position'      => $i
         );
 
         include 'admin/meta-boxes/views/html-tv-show-cast-person.php';
@@ -626,7 +629,7 @@ class MasVideos_AJAX {
             'id'            => absint( $_POST['person_id'] ),
             'category'      => '',
             'job'           => '',
-            'position'      => 0
+            'position'      => $i
         );
 
         include 'admin/meta-boxes/views/html-tv-show-crew-person.php';
@@ -951,7 +954,7 @@ class MasVideos_AJAX {
         $person        = array(
             'id'            => absint( $_POST['person_id'] ),
             'character'     => '',
-            'position'      => 0
+            'position'      => $i
         );
 
         include 'admin/meta-boxes/views/html-movie-cast-person.php';
@@ -1031,7 +1034,7 @@ class MasVideos_AJAX {
             'id'            => absint( $_POST['person_id'] ),
             'category'      => '',
             'job'           => '',
-            'position'      => 0
+            'position'      => $i
         );
 
         include 'admin/meta-boxes/views/html-movie-crew-person.php';
@@ -1109,11 +1112,15 @@ class MasVideos_AJAX {
         $metabox_class = array();
         $source        = array(
             'name'          => sprintf( __( 'Source %d', 'masvideos' ), $i+1 ),
-            'image_id'      => 0,
-            'episodes'      => array(),
-            'year'          => '',
-            'description'   => '',
-            'position'      => 0
+            'choice'        => '',
+            'embed_content' => '',
+            'link'          => '',
+            'is_affiliate'  => '',
+            'quality'       => '',
+            'language'      => '',
+            'player'        => '',
+            'date_added'    => '',
+            'position'      => $i,
         );
 
         include 'admin/meta-boxes/views/html-movie-source.php';

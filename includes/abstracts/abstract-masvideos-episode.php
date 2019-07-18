@@ -648,6 +648,9 @@ class MasVideos_Episode extends MasVideos_Data {
      * @param array $sources List of sources.
      */
     public function set_sources( $sources ) {
+        if ( ! empty( $sources ) && is_array( $sources ) ) {
+            array_multisort( array_column( $seasons, 'position' ), SORT_ASC, $seasons );
+        }
         $this->set_prop( 'sources', $sources );
     }
 
