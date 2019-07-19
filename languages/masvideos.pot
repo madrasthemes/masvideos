@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the MAS Videos package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MAS Videos 1.0.7\n"
+"Project-Id-Version: MAS Videos 1.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/madrasthemes/masvideos/issues\n"
-"POT-Creation-Date: 2019-06-14 14:58:46+00:00\n"
+"POT-Creation-Date: 2019-07-19 16:02:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
-"X-Generator: grunt-wp-i18n1.0.2\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
 
 #: includes/abstracts/abstract-masvideos-data.php:298
 #. translators: %s: $key Key to check
@@ -20,11 +20,26 @@ msgid ""
 "data, including \"%s\". Use getters and setters."
 msgstr ""
 
-#: includes/abstracts/abstract-masvideos-episode.php:538
-#: includes/abstracts/abstract-masvideos-movie.php:526
-#: includes/abstracts/abstract-masvideos-tv-show.php:463
+#: includes/abstracts/abstract-masvideos-episode.php:562
+#: includes/abstracts/abstract-masvideos-movie.php:596
+#: includes/abstracts/abstract-masvideos-person.php:489
+#: includes/abstracts/abstract-masvideos-tv-show.php:509
 #: includes/abstracts/abstract-masvideos-video.php:467
 msgid "Invalid catalog visibility option."
+msgstr ""
+
+#: includes/abstracts/abstract-masvideos-episode.php:841
+#: includes/abstracts/abstract-masvideos-movie.php:911
+#: includes/abstracts/abstract-masvideos-person.php:708
+#: includes/abstracts/abstract-masvideos-tv-show.php:724
+msgid "Invalid or duplicated IMDB Id."
+msgstr ""
+
+#: includes/abstracts/abstract-masvideos-episode.php:857
+#: includes/abstracts/abstract-masvideos-movie.php:927
+#: includes/abstracts/abstract-masvideos-person.php:724
+#: includes/abstracts/abstract-masvideos-tv-show.php:740
+msgid "Invalid or duplicated TMDB Id."
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-assets.php:63
@@ -32,23 +47,23 @@ msgstr ""
 msgid "MasVideos"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:122
+#: includes/admin/class-masvideos-admin-assets.php:127
 msgid "Are you sure you want to remove the selected items?"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:126
+#: includes/admin/class-masvideos-admin-assets.php:131
 msgid "Please select some items."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:127
+#: includes/admin/class-masvideos-admin-assets.php:132
 msgid "Remove this item meta?"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:128
+#: includes/admin/class-masvideos-admin-assets.php:133
 msgid "Remove this attribute?"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:129
+#: includes/admin/class-masvideos-admin-assets.php:134
 #: includes/admin/class-masvideos-admin-attributes.php:208
 #: includes/admin/class-masvideos-admin-attributes.php:275
 #: includes/admin/class-masvideos-admin-attributes.php:313
@@ -56,17 +71,24 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-attributes.php:419
 #: includes/admin/class-masvideos-admin-attributes.php:472
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:497
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:629
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:685
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:497
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:627
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:500
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:646
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:698
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:497
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:625
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:17
-#: includes/admin/meta-boxes/views/html-episode-source.php:17
+#: includes/admin/meta-boxes/views/html-episode-source.php:18
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:17
-#: includes/admin/meta-boxes/views/html-movie-source.php:17
+#: includes/admin/meta-boxes/views/html-movie-cast-person.php:20
+#: includes/admin/meta-boxes/views/html-movie-crew-person.php:20
+#: includes/admin/meta-boxes/views/html-movie-source.php:19
+#: includes/admin/meta-boxes/views/html-person-attribute.php:17
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:17
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:17
+#: includes/admin/meta-boxes/views/html-tv-show-cast-person.php:20
+#: includes/admin/meta-boxes/views/html-tv-show-crew-person.php:20
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:18
 #: includes/admin/meta-boxes/views/html-video-attribute.php:17
 #: includes/widgets/class-masvideos-widget-movies-genres.php:50
 #: includes/widgets/class-masvideos-widget-tv-shows-genres.php:50
@@ -78,51 +100,63 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:130
+#: includes/admin/class-masvideos-admin-assets.php:135
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:8
 #: includes/admin/meta-boxes/views/html-episode-source.php:8
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:8
+#: includes/admin/meta-boxes/views/html-movie-cast-person.php:11
+#: includes/admin/meta-boxes/views/html-movie-crew-person.php:11
 #: includes/admin/meta-boxes/views/html-movie-source.php:8
+#: includes/admin/meta-boxes/views/html-person-attribute.php:8
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:8
+#: includes/admin/meta-boxes/views/html-tv-show-cast-person.php:11
+#: includes/admin/meta-boxes/views/html-tv-show-crew-person.php:11
 #: includes/admin/meta-boxes/views/html-tv-show-season.php:8
 #: includes/admin/meta-boxes/views/html-video-attribute.php:8
 msgid "Remove"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:131
+#: includes/admin/class-masvideos-admin-assets.php:136
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:9
 #: includes/admin/meta-boxes/views/html-episode-source.php:9
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:9
+#: includes/admin/meta-boxes/views/html-movie-cast-person.php:12
+#: includes/admin/meta-boxes/views/html-movie-crew-person.php:12
 #: includes/admin/meta-boxes/views/html-movie-source.php:9
+#: includes/admin/meta-boxes/views/html-person-attribute.php:9
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:9
+#: includes/admin/meta-boxes/views/html-tv-show-cast-person.php:12
+#: includes/admin/meta-boxes/views/html-tv-show-crew-person.php:12
 #: includes/admin/meta-boxes/views/html-tv-show-season.php:9
 #: includes/admin/meta-boxes/views/html-video-attribute.php:9
 msgid "Click to toggle"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:132
+#: includes/admin/class-masvideos-admin-assets.php:137
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:29
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:29
+#: includes/admin/meta-boxes/views/html-person-attribute.php:29
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:29
 #: includes/admin/meta-boxes/views/html-video-attribute.php:29
 msgid "Value(s)"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:133
+#: includes/admin/class-masvideos-admin-assets.php:138
 msgid "Enter some text, or some attributes by pipe (|) separating values."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:134
+#: includes/admin/class-masvideos-admin-assets.php:139
 msgid "Visible on the masvideos page"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:135
+#: includes/admin/class-masvideos-admin-assets.php:140
 msgid "Enter a name for the new attribute term:"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-assets.php:136
-#: includes/admin/meta-boxes/views/html-episode-data-general.php:103
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:103
+#: includes/admin/class-masvideos-admin-assets.php:141
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:121
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:130
+#: includes/admin/meta-boxes/views/html-person-data-general.php:85
 #: includes/admin/meta-boxes/views/html-tv-show-data-general.php:24
 #: includes/admin/meta-boxes/views/html-video-data-general.php:74
 msgid "Featured"
@@ -172,7 +206,7 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-attributes.php:316
 #: includes/admin/class-masvideos-admin-attributes.php:447
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:497
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:643
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:695
 msgid "Type"
 msgstr ""
 
@@ -238,18 +272,21 @@ msgstr ""
 #: includes/class-masvideos-post-types.php:309
 #: includes/class-masvideos-post-types.php:374
 #: includes/class-masvideos-post-types.php:428
+#: includes/class-masvideos-post-types.php:493
 #: includes/masvideos-account-functions.php:117
 #: includes/masvideos-account-functions.php:155
 msgid "Edit"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-attributes.php:336
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:55
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:55
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
 #: includes/masvideos-account-functions.php:121
 #: includes/masvideos-account-functions.php:159
-#: includes/masvideos-template-functions.php:494
-#: includes/masvideos-template-functions.php:506
+#: includes/masvideos-template-functions.php:511
+#: includes/masvideos-template-functions.php:523
 msgid "Delete"
 msgstr ""
 
@@ -289,51 +326,81 @@ msgstr ""
 msgid "Are you sure you want to delete this attribute?"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:41
+#: includes/admin/class-masvideos-admin-importers.php:42
+msgid "Person Import"
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-importers.php:49
 msgid "TV Show Import"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:48
+#: includes/admin/class-masvideos-admin-importers.php:56
 msgid "Video Import"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:55
+#: includes/admin/class-masvideos-admin-importers.php:63
 msgid "Movie Import"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:112
-msgid "MasVideos TV Shows (CSV)"
+#: includes/admin/class-masvideos-admin-importers.php:70
+msgid "TMDB Import"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:112
+#: includes/admin/class-masvideos-admin-importers.php:128
+msgid "MAS Videos Persons (CSV)"
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-importers.php:128
+msgid "Import <strong>persons</strong> to your website via a csv file."
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-importers.php:129
+msgid "MAS Videos TV Shows (CSV)"
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-importers.php:129
 msgid "Import <strong>tv shows</strong> to your website via a csv file."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:113
-msgid "MasVideos Videos (CSV)"
+#: includes/admin/class-masvideos-admin-importers.php:130
+msgid "MAS Videos Videos (CSV)"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:113
+#: includes/admin/class-masvideos-admin-importers.php:130
 msgid "Import <strong>videos</strong> to your website via a csv file."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:114
-msgid "MasVideos Movies (CSV)"
+#: includes/admin/class-masvideos-admin-importers.php:131
+msgid "MAS Videos Movies (CSV)"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:114
+#: includes/admin/class-masvideos-admin-importers.php:131
 msgid "Import <strong>movies</strong> to your website via a csv file."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:244
+#: includes/admin/class-masvideos-admin-importers.php:132
+msgid "MAS Videos TMDB Import"
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-importers.php:132
+msgid ""
+"Import <strong>movies, tv shows, persons</strong> to your website via TMDB "
+"API."
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-importers.php:299
+msgid "Insufficient privileges to import persons."
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-importers.php:389
 msgid "Insufficient privileges to import tv shows."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:334
+#: includes/admin/class-masvideos-admin-importers.php:479
 msgid "Insufficient privileges to import videos."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-importers.php:424
+#: includes/admin/class-masvideos-admin-importers.php:569
 msgid "Insufficient privileges to import movies."
 msgstr ""
 
@@ -341,63 +408,77 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-menus.php:49
 #: includes/admin/class-masvideos-admin-menus.php:50
 #: includes/admin/class-masvideos-admin-menus.php:51
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:647
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:674
+#: includes/admin/class-masvideos-admin-menus.php:52
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:733
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:643
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:754
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:639
 #: includes/admin/meta-boxes/class-masvideos-meta-box-episode-data.php:63
-#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:70
-#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:69
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:91
+#: includes/admin/meta-boxes/class-masvideos-meta-box-person-data.php:62
+#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:83
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-data.php:62
 msgid "Attributes"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:120
+#: includes/admin/class-masvideos-admin-meta-boxes.php:124
+msgid "Person short description"
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-meta-boxes.php:125
+msgid "Person data"
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-meta-boxes.php:129
 msgid "Episode short description"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:121
+#: includes/admin/class-masvideos-admin-meta-boxes.php:130
 msgid "Episode data"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:126
-#: includes/admin/class-masvideos-admin-meta-boxes.php:136
-#: includes/admin/class-masvideos-admin-meta-boxes.php:146
-#: includes/admin/class-masvideos-admin-meta-boxes.php:156
-#: includes/customizer/class-masvideos-customizer.php:197
-#: includes/customizer/class-masvideos-customizer.php:341
-#: includes/customizer/class-masvideos-customizer.php:464
+#: includes/admin/class-masvideos-admin-meta-boxes.php:135
+#: includes/admin/class-masvideos-admin-meta-boxes.php:145
+#: includes/admin/class-masvideos-admin-meta-boxes.php:155
+#: includes/admin/class-masvideos-admin-meta-boxes.php:165
+#: includes/customizer/class-masvideos-customizer.php:257
+#: includes/customizer/class-masvideos-customizer.php:523
 #: includes/masvideos-movie-template-functions.php:396
 #: includes/masvideos-tv-show-template-functions.php:397
 #: includes/masvideos-video-template-functions.php:395
 msgid "Rating"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:130
+#: includes/admin/class-masvideos-admin-meta-boxes.php:139
 msgid "TV Show short description"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:131
+#: includes/admin/class-masvideos-admin-meta-boxes.php:140
 msgid "TV Show data"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:140
+#: includes/admin/class-masvideos-admin-meta-boxes.php:149
 msgid "Video short description"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:141
+#: includes/admin/class-masvideos-admin-meta-boxes.php:150
 msgid "Video data"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:142
+#: includes/admin/class-masvideos-admin-meta-boxes.php:151
 msgid "Video Gallery"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:150
+#: includes/admin/class-masvideos-admin-meta-boxes.php:159
 msgid "Movie short description"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-meta-boxes.php:151
+#: includes/admin/class-masvideos-admin-meta-boxes.php:160
 msgid "Movie data"
+msgstr ""
+
+#: includes/admin/class-masvideos-admin-meta-boxes.php:161
+msgid "Movie gallery"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-notices.php:105
@@ -545,26 +626,26 @@ msgstr ""
 msgid "Episode base"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-posts.php:61
-#: includes/admin/class-masvideos-admin-taxonomies.php:162
-#: includes/admin/class-masvideos-admin-taxonomies.php:267
+#: includes/admin/class-masvideos-admin-posts.php:58
+#: includes/admin/class-masvideos-admin-taxonomies.php:155
+#: includes/admin/class-masvideos-admin-taxonomies.php:260
 #: includes/admin/masvideos-meta-box-functions.php:429
 #: includes/masvideos-account-functions.php:291
-#: includes/masvideos-template-functions.php:457
+#: includes/masvideos-template-functions.php:474
 msgid "Image"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-posts.php:90
-#: includes/admin/class-masvideos-admin-taxonomies.php:97
-#: includes/admin/class-masvideos-admin-taxonomies.php:123
-#: includes/admin/class-masvideos-admin-taxonomies.php:191
-#: includes/admin/class-masvideos-admin-taxonomies.php:202
-#: includes/admin/class-masvideos-admin-taxonomies.php:228
-#: includes/admin/class-masvideos-admin-taxonomies.php:296
+#: includes/admin/class-masvideos-admin-posts.php:87
+#: includes/admin/class-masvideos-admin-taxonomies.php:90
+#: includes/admin/class-masvideos-admin-taxonomies.php:116
+#: includes/admin/class-masvideos-admin-taxonomies.php:184
+#: includes/admin/class-masvideos-admin-taxonomies.php:195
+#: includes/admin/class-masvideos-admin-taxonomies.php:221
+#: includes/admin/class-masvideos-admin-taxonomies.php:289
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-taxonomies.php:81
+#: includes/admin/class-masvideos-admin-taxonomies.php:74
 msgid ""
 "Attribute terms can be assigned to movies and "
 "variations.<br/><br/><b>Note</b>: Deleting a term will remove it from all "
@@ -572,7 +653,7 @@ msgid ""
 "not automatically assign it back to movies."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-taxonomies.php:88
+#: includes/admin/class-masvideos-admin-taxonomies.php:81
 msgid ""
 "Attribute terms can be assigned to mvideoes and "
 "variations.<br/><br/><b>Note</b>: Deleting a term will remove it from all "
@@ -580,48 +661,55 @@ msgid ""
 "not automatically assign it back to videos."
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-taxonomies.php:100
-#: includes/admin/class-masvideos-admin-taxonomies.php:127
-#: includes/admin/class-masvideos-admin-taxonomies.php:205
-#: includes/admin/class-masvideos-admin-taxonomies.php:232
+#: includes/admin/class-masvideos-admin-taxonomies.php:93
+#: includes/admin/class-masvideos-admin-taxonomies.php:120
+#: includes/admin/class-masvideos-admin-taxonomies.php:198
+#: includes/admin/class-masvideos-admin-taxonomies.php:225
 #: includes/admin/masvideos-meta-box-functions.php:432
-#: includes/masvideos-template-functions.php:462
+#: includes/masvideos-template-functions.php:479
 msgid "Upload/Add image"
 msgstr ""
 
-#: includes/admin/class-masvideos-admin-taxonomies.php:101
-#: includes/admin/class-masvideos-admin-taxonomies.php:128
-#: includes/admin/class-masvideos-admin-taxonomies.php:206
-#: includes/admin/class-masvideos-admin-taxonomies.php:233
+#: includes/admin/class-masvideos-admin-taxonomies.php:94
+#: includes/admin/class-masvideos-admin-taxonomies.php:121
+#: includes/admin/class-masvideos-admin-taxonomies.php:199
+#: includes/admin/class-masvideos-admin-taxonomies.php:226
 msgid "Remove image"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:127
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:127
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:127
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:127
 msgid "Upload CSV file"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:132
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:132
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:132
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:132
 msgid "Column mapping"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:137
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:137
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:99
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:137
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:137
 #: includes/admin/importers/views/html-csv-import-header.php:13
+#: includes/admin/importers/views/html-tmdb-import-form.php:14
 msgid "Import"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:142
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:142
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:142
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:142
 msgid "Done!"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:314
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:314
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:314
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:314
 msgid ""
@@ -633,6 +721,9 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:318
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:354
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:402
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:318
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:354
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:402
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:318
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:354
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:402
@@ -640,18 +731,21 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:354
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:402
 #: includes/import/class-masvideos-movie-csv-importer.php:67
+#: includes/import/class-masvideos-person-csv-importer.php:67
 #: includes/import/class-masvideos-tv-show-csv-importer.php:67
 #: includes/import/class-masvideos-video-csv-importer.php:67
 msgid "Invalid file type. The importer supports CSV and TXT file formats."
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:361
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:361
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:361
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:361
 msgid "Please upload or provide the link to a valid CSV file."
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:380
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:380
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:380
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:380
 msgid ""
@@ -660,21 +754,25 @@ msgid ""
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:384
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:384
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:384
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:384
 msgid "Upload a new file"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:408
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:408
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:408
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:408
 msgid "The file does not exist, please try again."
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:496
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:628
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:684
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:496
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:626
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:496
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:642
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:694
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:496
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:624
 #: includes/widgets/class-masvideos-movies-widget.php:36
@@ -684,78 +782,91 @@ msgid "ID"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:498
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:630
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:686
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:498
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:628
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:501
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:647
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:699
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:498
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:626
 msgid "Published"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:499
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:631
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:687
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:499
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:629
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:502
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:648
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:700
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:499
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:627
 msgid "Is featured?"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:500
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:632
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:688
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:500
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:630
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:503
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:649
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:701
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:500
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:628
 msgid "Visibility in catalog"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:501
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:633
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:689
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:501
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:631
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:504
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:650
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:702
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:501
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:629
 msgid "Short description"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:502
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:634
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:690
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:502
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:632
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:505
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:651
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:703
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:502
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:630
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:63
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:70
 #: includes/masvideos-account-functions.php:242
 #: includes/masvideos-episode-template-functions.php:733
-#: includes/masvideos-movie-template-functions.php:949
+#: includes/masvideos-movie-template-functions.php:990
 #: includes/masvideos-tv-show-template-functions.php:1046
 msgid "Description"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:503
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:656
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:757
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:503
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:506
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:683
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:777
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:503
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:648
 msgid "Allow customer reviews?"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:504
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:635
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:691
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:507
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:652
-#: includes/class-masvideos-post-types.php:510
-#: includes/class-masvideos-post-types.php:607
-#: includes/class-masvideos-post-types.php:799
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:704
+#: includes/class-masvideos-post-types.php:573
+#: includes/class-masvideos-post-types.php:668
+#: includes/class-masvideos-post-types.php:856
 msgid "Genres"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:505
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:636
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:692
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:505
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:634
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:508
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:653
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:705
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:505
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:632
 #: includes/masvideos-account-functions.php:258
@@ -763,258 +874,724 @@ msgid "Tags"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:506
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:637
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:693
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:506
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:635
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:509
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:654
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:706
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:506
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:633
 msgid "Images"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:507
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:658
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:759
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:507
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:653
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:510
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:685
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:779
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:507
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:650
 msgid "Position"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:508
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:638
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:694
 msgid "Movie Choice"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:509
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:639
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:695
 msgid "Movie Attachment"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:510
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:640
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:696
 msgid "Movie Embed Content"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:511
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:641
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:697
 msgid "Movie Link"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:512
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:642
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:698
 #: includes/admin/meta-boxes/views/html-movie-data-general.php:60
-msgid "Movie Release Date"
+#: includes/admin/meta-boxes/views/html-movie-source.php:65
+msgid "Is Affiliate URL ?"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:513
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:643
-msgid "Movie Run Time"
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:699
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:69
+msgid "Movie Release Date"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:514
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:644
-msgid "Movie Censor Rating"
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:700
+msgid "Movie Run Time"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:515
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:701
+msgid "Movie Censor Rating"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:516
 msgid "Recommended Movie"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:526
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:540
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:517
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:703
+msgid "Related Video"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:518
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:704
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:512
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:640
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:518
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:714
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:88
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:97
+#: includes/admin/meta-boxes/views/html-person-data-general.php:52
+#: includes/admin/meta-boxes/views/html-tv-show-data-general.php:33
+msgid "IMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:519
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:705
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:513
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:641
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:519
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:715
+#: includes/admin/importers/views/html-tmdb-import-fetch-form.php:36
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:97
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:106
+#: includes/admin/meta-boxes/views/html-person-data-general.php:61
+#: includes/admin/meta-boxes/views/html-tv-show-data-general.php:42
+msgid "TMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:530
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:542
+#. translators: %d: Cast number
+msgid "Cast %d Person ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:532
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:544
+#. translators: %d: Cast number
+msgid "Cast %d Person IMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:534
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:546
+#. translators: %d: Cast number
+msgid "Cast %d Person TMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:536
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:548
+#. translators: %d: Cast number
+msgid "Cast %d Person Name"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:538
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:550
+#. translators: %d: Cast number
+msgid "Cast %d Person Images"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:540
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:552
+#. translators: %d: Cast number
+msgid "Cast %d Person Category"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:542
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:554
+#. translators: %d: Cast number
+msgid "Cast %d Person Character"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:544
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:556
+#. translators: %d: Cast number
+msgid "Cast %d Position"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:546
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:558
+#. translators: %d: Crew number
+msgid "Crew %d Person ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:548
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:560
+#. translators: %d: Crew number
+msgid "Crew %d Person IMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:550
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:562
+#. translators: %d: Crew number
+msgid "Crew %d Person TMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:552
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:564
+#. translators: %d: Crew number
+msgid "Crew %d Person Name"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:554
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:566
+#. translators: %d: Crew number
+msgid "Crew %d Person Images"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:556
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:568
+#. translators: %d: Crew number
+msgid "Crew %d Person Category"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:558
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:570
+#. translators: %d: Crew number
+msgid "Crew %d Person Job"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:560
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:572
+#. translators: %d: Crew number
+msgid "Crew %d Position"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:562
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:524
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:574
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:522
 #. translators: %d: Attribute number
 msgid "Attribute %d name"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:528
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:542
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:564
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:526
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:576
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:524
 #. translators: %d: Attribute number
 msgid "Attribute %d value(s)"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:530
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:544
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:566
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:528
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:578
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:526
 #. translators: %d: Attribute number
 msgid "Attribute %d visible"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:532
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:546
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:568
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:530
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:580
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:528
 #. translators: %d: Attribute number
 msgid "Attribute %d global"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:534
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:548
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:570
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:532
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:582
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:530
 #. translators: %d: Attribute number
 msgid "Attribute %d default"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:536
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:550
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:572
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:584
+#. translators: %d: Source number
+msgid "Source %d name"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:574
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:586
+#. translators: %d: Source number
+msgid "Source %d choice"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:576
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:588
+#. translators: %d: Source number
+msgid "Source %d embed content"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:578
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:590
+#. translators: %d: Source number
+msgid "Source %d link"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:580
+#. translators: %d: Source number
+msgid "Source %d is_affiliate"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:582
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:592
+#. translators: %d: Source number
+msgid "Source %d quality"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:584
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:594
+#. translators: %d: Source number
+msgid "Source %d language"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:586
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:596
+#. translators: %d: Source number
+msgid "Source %d player"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:588
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:598
+#. translators: %d: Source number
+msgid "Source %d date added"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:590
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:600
+#. translators: %d: Source number
+msgid "Source %d position"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:592
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:534
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:602
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:532
 #. translators: %d: Meta number
 msgid "Meta: %s"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:645
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:702
 #: includes/admin/meta-boxes/views/html-movie-data-linked-movies.php:14
 msgid "Recommended Movies"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:649
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:676
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:707
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:728
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:79
+#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:65
+#: includes/masvideos-movie-template-functions.php:1336
+#: includes/masvideos-tv-show-template-functions.php:1353
+msgid "Cast"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:709
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:730
+msgid "Cast Person ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:710
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:731
+msgid "Cast Person IMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:711
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:732
+msgid "Cast Person TMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:712
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:733
+msgid "Cast Person Name"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:713
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:734
+msgid "Cast Person Images"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:714
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:735
+msgid "Cast Person Category"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:715
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:736
+msgid "Cast Person Character"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:716
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:737
+msgid "Cast Position"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:720
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:741
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:85
+#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:71
+#: includes/masvideos-movie-template-functions.php:1345
+#: includes/masvideos-tv-show-template-functions.php:1362
+msgid "Crew"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:722
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:743
+msgid "Crew Person ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:723
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:744
+msgid "Crew Person IMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:724
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:745
+msgid "Crew Person TMDB ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:725
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:746
+msgid "Crew Person Name"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:726
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:747
+msgid "Crew Person Images"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:727
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:748
+msgid "Crew Person Category"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:728
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:749
+msgid "Crew Person Job"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:729
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:750
+msgid "Crew Position"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:735
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:645
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:756
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:641
 msgid "Attribute name"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:650
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:677
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:736
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:646
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:757
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:642
 msgid "Attribute value(s)"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:651
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:678
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:737
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:647
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:758
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:643
 msgid "Is a global attribute?"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:652
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:679
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:738
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:648
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:759
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:644
 msgid "Attribute visibility"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:653
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:680
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:739
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:649
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:760
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:645
 msgid "Default attribute"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:657
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:684
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:743
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:764
+#: includes/admin/meta-boxes/class-masvideos-meta-box-episode-data.php:69
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:97
+#: includes/masvideos-episode-template-functions.php:742
+#: includes/masvideos-movie-template-functions.php:999
+msgid "Sources"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:745
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:766
+msgid "Source Name"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:746
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:767
+msgid "Source Choice"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:747
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:768
+msgid "Source Embed Content"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:748
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:769
+msgid "Source Link"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:749
+msgid "Source Is Affiliate"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:750
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:770
+msgid "Source Quality"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:751
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:771
+msgid "Source Language"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:752
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:772
+msgid "Source Player"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:753
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:773
+msgid "Source Date Added"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:754
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:774
+msgid "Source Position"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-movie-csv-importer-controller.php:758
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:652
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:778
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:649
 msgid "Import as meta"
 msgstr ""
 
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:504
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:633
+#: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:504
+#: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:631
+#: includes/class-masvideos-post-types.php:762
+#: includes/class-masvideos-post-types.php:950
+#: includes/masvideos-account-functions.php:250
+msgid "Categories"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:508
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:636
+#: includes/admin/meta-boxes/views/html-person-data-general.php:14
+msgid "Also known as"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:509
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:637
+#: includes/admin/meta-boxes/views/html-person-data-general.php:23
+msgid "Birth Place"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:510
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:638
+#: includes/admin/meta-boxes/views/html-person-data-general.php:32
+msgid "Birth Date"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:511
+#: includes/admin/importers/class-masvideos-person-csv-importer-controller.php:639
+#: includes/admin/meta-boxes/views/html-person-data-general.php:42
+msgid "Death Date"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:94
+#: includes/admin/importers/views/html-tmdb-import-fetch-form.php:14
+msgid "Fetch TMDB API"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:171
+msgid "Search Movie"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:172
+msgid "Movie By ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:173
+msgid "Latest Movie"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:174
+msgid "Now Playing Movies"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:175
+msgid "Upcoming Movies"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:176
+msgid "Popular Movies"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:177
+msgid "Top Rated Movies"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:178
+msgid "Discover Movies"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:179
+msgid "Search TV Show"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:180
+msgid "TV Show By ID"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:181
+msgid "Latest TV Show"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:182
+msgid "ON Air TV Shows"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:183
+msgid "ON Air Today TV Shows"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:184
+msgid "Popular TV Shows"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:185
+msgid "Top Rated TV Shows"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:186
+msgid "Discover TV Shows"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:879
+msgid "Couldn't create the file to store the CSV, or the path is invalid."
+msgstr ""
+
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:498
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:644
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:696
 #: includes/class-masvideos-post-types.php:144
 msgid "Parent TV Show"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:499
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:645
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:697
 msgid "Parent Season"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:511
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:655
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:707
 #: includes/admin/meta-boxes/views/html-episode-data-general.php:14
 msgid "Episode Number"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:512
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:656
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:708
 msgid "Episode Choice"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:513
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:657
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:709
 msgid "Episode Attachment"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:514
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:658
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:710
 msgid "Episode Embed Content"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:515
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:659
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:711
 msgid "Episode Link"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:516
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:660
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:712
 #: includes/admin/meta-boxes/views/html-episode-data-general.php:69
 msgid "Episode Release Date"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:517
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:661
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:713
 msgid "Episode Run Time"
-msgstr ""
-
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:528
-#. translators: %d: Season number
-msgid "Season %d name"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:530
 #. translators: %d: Season number
-msgid "Season %d image"
+msgid "Season %d name"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:532
 #. translators: %d: Season number
-msgid "Season %d episode(s)"
+msgid "Season %d image"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:534
 #. translators: %d: Season number
-msgid "Season %d year"
+msgid "Season %d episode(s)"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:536
 #. translators: %d: Season number
-msgid "Season %d description"
+msgid "Season %d year"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:538
 #. translators: %d: Season number
+msgid "Season %d description"
+msgstr ""
+
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:540
+#. translators: %d: Season number
 msgid "Season %d position"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:663
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:717
 msgid "Seasons"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:665
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:719
 msgid "Season name"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:666
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:27
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:720
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:29
 msgid "Season image"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:667
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:721
 msgid "Season episode(s)"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:668
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:722
 msgid "Season year"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:669
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:723
 msgid "Season description"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:670
+#: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:724
 msgid "Season position"
-msgstr ""
-
-#: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:504
-#: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:631
-#: includes/class-masvideos-post-types.php:703
-#: includes/masvideos-account-functions.php:250
-msgid "Categories"
 msgstr ""
 
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:508
@@ -1189,6 +1766,8 @@ msgid "Show advanced options"
 msgstr ""
 
 #: includes/admin/importers/views/html-csv-import-form.php:101
+#: includes/admin/importers/views/html-tmdb-import-fetch-form.php:46
+#: includes/admin/importers/views/html-tmdb-import-form.php:27
 msgid "Continue"
 msgstr ""
 
@@ -1230,76 +1809,116 @@ msgstr ""
 msgid "Your posts are now being imported..."
 msgstr ""
 
+#: includes/admin/importers/views/html-tmdb-import-fetch-form.php:15
+msgid "This tool allows you to fetch data from TMDB."
+msgstr ""
+
+#: includes/admin/importers/views/html-tmdb-import-fetch-form.php:20
+msgid "Type:"
+msgstr ""
+
+#: includes/admin/importers/views/html-tmdb-import-fetch-form.php:32
+msgid "Keyword"
+msgstr ""
+
+#: includes/admin/importers/views/html-tmdb-import-fetch-form.php:40
+msgid "Page Number"
+msgstr ""
+
+#: includes/admin/importers/views/html-tmdb-import-form.php:15
+msgid "This tool allows you to import data."
+msgstr ""
+
+#: includes/admin/importers/views/html-tmdb-import-form.php:17
+msgid "Movies found."
+msgstr ""
+
+#: includes/admin/importers/views/html-tmdb-import-form.php:19
+msgid "TV Shows found."
+msgstr ""
+
 #: includes/admin/masvideos-meta-box-functions.php:294
-#: includes/masvideos-template-functions.php:438
+#: includes/masvideos-template-functions.php:455
 msgid "Upload/Add video"
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:295
-#: includes/masvideos-template-functions.php:439
+#: includes/masvideos-template-functions.php:456
 msgid "Remove this video"
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:433
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:33
-#: includes/masvideos-template-functions.php:463
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:35
+#: includes/masvideos-template-functions.php:480
 msgid "Remove this image"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-episode-data.php:57
-#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:58
-#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:57
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:61
+#: includes/admin/meta-boxes/class-masvideos-meta-box-person-data.php:56
+#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:59
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-data.php:56
+#: includes/customizer/class-masvideos-customizer.php:53
 msgid "General"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-masvideos-meta-box-episode-data.php:69
-#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:76
-#: includes/masvideos-episode-template-functions.php:742
-#: includes/masvideos-movie-template-functions.php:958
-msgid "Sources"
-msgstr ""
-
-#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:64
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:67
 msgid "Linked Movies"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:63
-msgid "Seasons & Episodes"
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-data.php:73
+msgid "Linked Videos"
 msgstr ""
 
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:55
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:55
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:494
-#: includes/masvideos-template-functions.php:506
+#: includes/masvideos-template-functions.php:511
+#: includes/masvideos-template-functions.php:523
 msgid "Delete image"
 msgstr ""
 
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
+msgid "Add images to movie gallery"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:506
+#: includes/masvideos-template-functions.php:523
+msgid "Add to gallery"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
+msgid "Add movie gallery images"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:77
+msgid "Seasons & Episodes"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
+#: includes/masvideos-template-functions.php:523
 msgid "Add images to video gallery"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:506
-msgid "Add to gallery"
-msgstr ""
-
-#: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:506
+#: includes/masvideos-template-functions.php:523
 msgid "Add video gallery images"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:40
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:40
+#: includes/admin/meta-boxes/views/html-person-attribute.php:40
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:40
 #: includes/admin/meta-boxes/views/html-video-attribute.php:40
-#: includes/masvideos-template-functions.php:413
+#: includes/masvideos-template-functions.php:430
 msgid "Select terms"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:56
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:56
+#: includes/admin/meta-boxes/views/html-person-attribute.php:56
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:56
 #: includes/admin/meta-boxes/views/html-video-attribute.php:56
 msgid "Select all"
@@ -1307,6 +1926,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:57
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:57
+#: includes/admin/meta-boxes/views/html-person-attribute.php:57
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:57
 #: includes/admin/meta-boxes/views/html-video-attribute.php:57
 msgid "Select none"
@@ -1314,6 +1934,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:58
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:58
+#: includes/admin/meta-boxes/views/html-person-attribute.php:58
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:58
 #: includes/admin/meta-boxes/views/html-video-attribute.php:58
 msgid "Add new"
@@ -1321,6 +1942,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-attribute.php:66
 #: includes/admin/meta-boxes/views/html-movie-attribute.php:66
+#: includes/admin/meta-boxes/views/html-person-attribute.php:66
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:66
 #: includes/admin/meta-boxes/views/html-video-attribute.php:66
 #. translators: %s: MASVIDEOS_DELIMITER
@@ -1337,10 +1959,20 @@ msgstr ""
 #: includes/admin/meta-boxes/views/html-episode-data-sources.php:31
 #: includes/admin/meta-boxes/views/html-movie-data-attributes.php:9
 #: includes/admin/meta-boxes/views/html-movie-data-attributes.php:51
+#: includes/admin/meta-boxes/views/html-movie-data-cast-persons.php:9
+#: includes/admin/meta-boxes/views/html-movie-data-cast-persons.php:33
+#: includes/admin/meta-boxes/views/html-movie-data-crew-persons.php:9
+#: includes/admin/meta-boxes/views/html-movie-data-crew-persons.php:33
 #: includes/admin/meta-boxes/views/html-movie-data-sources.php:9
 #: includes/admin/meta-boxes/views/html-movie-data-sources.php:31
+#: includes/admin/meta-boxes/views/html-person-data-attributes.php:9
+#: includes/admin/meta-boxes/views/html-person-data-attributes.php:51
 #: includes/admin/meta-boxes/views/html-tv-show-data-attributes.php:9
 #: includes/admin/meta-boxes/views/html-tv-show-data-attributes.php:51
+#: includes/admin/meta-boxes/views/html-tv-show-data-cast-persons.php:9
+#: includes/admin/meta-boxes/views/html-tv-show-data-cast-persons.php:33
+#: includes/admin/meta-boxes/views/html-tv-show-data-crew-persons.php:9
+#: includes/admin/meta-boxes/views/html-tv-show-data-crew-persons.php:33
 #: includes/admin/meta-boxes/views/html-tv-show-data-seasons.php:9
 #: includes/admin/meta-boxes/views/html-tv-show-data-seasons.php:31
 #: includes/admin/meta-boxes/views/html-video-data-attributes.php:9
@@ -1354,10 +1986,20 @@ msgstr ""
 #: includes/admin/meta-boxes/views/html-episode-data-sources.php:31
 #: includes/admin/meta-boxes/views/html-movie-data-attributes.php:9
 #: includes/admin/meta-boxes/views/html-movie-data-attributes.php:51
+#: includes/admin/meta-boxes/views/html-movie-data-cast-persons.php:9
+#: includes/admin/meta-boxes/views/html-movie-data-cast-persons.php:33
+#: includes/admin/meta-boxes/views/html-movie-data-crew-persons.php:9
+#: includes/admin/meta-boxes/views/html-movie-data-crew-persons.php:33
 #: includes/admin/meta-boxes/views/html-movie-data-sources.php:9
 #: includes/admin/meta-boxes/views/html-movie-data-sources.php:31
+#: includes/admin/meta-boxes/views/html-person-data-attributes.php:9
+#: includes/admin/meta-boxes/views/html-person-data-attributes.php:51
 #: includes/admin/meta-boxes/views/html-tv-show-data-attributes.php:9
 #: includes/admin/meta-boxes/views/html-tv-show-data-attributes.php:51
+#: includes/admin/meta-boxes/views/html-tv-show-data-cast-persons.php:9
+#: includes/admin/meta-boxes/views/html-tv-show-data-cast-persons.php:33
+#: includes/admin/meta-boxes/views/html-tv-show-data-crew-persons.php:9
+#: includes/admin/meta-boxes/views/html-tv-show-data-crew-persons.php:33
 #: includes/admin/meta-boxes/views/html-tv-show-data-seasons.php:9
 #: includes/admin/meta-boxes/views/html-tv-show-data-seasons.php:31
 #: includes/admin/meta-boxes/views/html-video-data-attributes.php:9
@@ -1371,13 +2013,19 @@ msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-data-attributes.php:28
 #: includes/admin/meta-boxes/views/html-movie-data-attributes.php:28
+#: includes/admin/meta-boxes/views/html-movie-data-cast-persons.php:13
+#: includes/admin/meta-boxes/views/html-movie-data-crew-persons.php:13
+#: includes/admin/meta-boxes/views/html-person-data-attributes.php:28
 #: includes/admin/meta-boxes/views/html-tv-show-data-attributes.php:28
+#: includes/admin/meta-boxes/views/html-tv-show-data-cast-persons.php:13
+#: includes/admin/meta-boxes/views/html-tv-show-data-crew-persons.php:13
 #: includes/admin/meta-boxes/views/html-video-data-attributes.php:28
 msgid "Add"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-data-attributes.php:53
 #: includes/admin/meta-boxes/views/html-movie-data-attributes.php:53
+#: includes/admin/meta-boxes/views/html-person-data-attributes.php:53
 #: includes/admin/meta-boxes/views/html-tv-show-data-attributes.php:53
 #: includes/admin/meta-boxes/views/html-video-data-attributes.php:53
 msgid "Save attributes"
@@ -1419,6 +2067,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/views/html-episode-data-general.php:60
 #: includes/admin/meta-boxes/views/html-movie-data-general.php:51
+#: includes/admin/meta-boxes/views/html-movie-source.php:57
 #: includes/admin/meta-boxes/views/html-video-data-general.php:51
 msgid "Enter the external URL to the video."
 msgstr ""
@@ -1435,18 +2084,27 @@ msgstr ""
 msgid "Enter the episode run time duration."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-data-general.php:93
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:93
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:89
+msgid "Enter IMDB ID of the episode."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:98
+msgid "Enter TMDB ID of the episode."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:111
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:120
+#: includes/admin/meta-boxes/views/html-person-data-general.php:75
 #: includes/admin/meta-boxes/views/html-tv-show-data-general.php:14
 #: includes/admin/meta-boxes/views/html-video-data-general.php:64
 msgid "Catalog visibility"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-data-general.php:95
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:113
 msgid "This setting determines which catalog pages episode will be listed on."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-data-general.php:104
+#: includes/admin/meta-boxes/views/html-episode-data-general.php:122
 msgid "This is a featured episode."
 msgstr ""
 
@@ -1460,56 +2118,55 @@ msgstr ""
 msgid "Save sources"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:33
-#: includes/admin/meta-boxes/views/html-movie-source.php:33
+#: includes/admin/meta-boxes/views/html-episode-source.php:35
 msgid "Embed Content"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:34
+#: includes/admin/meta-boxes/views/html-episode-source.php:36
 msgid "Enter the embed content to the episode."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:48
-#: includes/admin/meta-boxes/views/html-movie-source.php:48
+#: includes/admin/meta-boxes/views/html-episode-source.php:50
+#: includes/admin/meta-boxes/views/html-movie-source.php:80
 #: templates/single-episode/sources.php:34
 #: templates/single-movie/sources.php:34
 msgid "Quality"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:49
+#: includes/admin/meta-boxes/views/html-episode-source.php:51
 msgid "Enter the source quality of the episode."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:62
-#: includes/admin/meta-boxes/views/html-movie-source.php:62
+#: includes/admin/meta-boxes/views/html-episode-source.php:64
+#: includes/admin/meta-boxes/views/html-movie-source.php:94
 #: templates/single-episode/sources.php:35
 #: templates/single-movie/sources.php:35
 msgid "Language"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:63
+#: includes/admin/meta-boxes/views/html-episode-source.php:65
 msgid "Enter the source language of the episode."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:76
-#: includes/admin/meta-boxes/views/html-movie-source.php:76
+#: includes/admin/meta-boxes/views/html-episode-source.php:78
+#: includes/admin/meta-boxes/views/html-movie-source.php:108
 #: templates/single-episode/sources.php:36
 #: templates/single-movie/sources.php:36
 msgid "Player"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:77
+#: includes/admin/meta-boxes/views/html-episode-source.php:79
 msgid "Enter the source player of the episode."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:90
-#: includes/admin/meta-boxes/views/html-movie-source.php:90
+#: includes/admin/meta-boxes/views/html-episode-source.php:92
+#: includes/admin/meta-boxes/views/html-movie-source.php:122
 #: templates/single-episode/sources.php:37
 #: templates/single-movie/sources.php:37
 msgid "Date Added"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-episode-source.php:91
+#: includes/admin/meta-boxes/views/html-episode-source.php:93
 msgid "Enter the source added date of the episode."
 msgstr ""
 
@@ -1517,8 +2174,55 @@ msgstr ""
 msgid "Visible on the movie page"
 msgstr ""
 
+#: includes/admin/meta-boxes/views/html-movie-cast-person.php:32
+#: includes/admin/meta-boxes/views/html-tv-show-cast-person.php:32
+msgid "Character"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-cast-person.php:33
+#: includes/admin/meta-boxes/views/html-tv-show-cast-person.php:33
+msgid "Enter the character name."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-crew-person.php:27
+#: includes/admin/meta-boxes/views/html-tv-show-crew-person.php:27
+msgid "Department"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-crew-person.php:28
+#: includes/admin/meta-boxes/views/html-tv-show-crew-person.php:28
+msgid "Select term"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-crew-person.php:48
+#: includes/admin/meta-boxes/views/html-tv-show-crew-person.php:48
+msgid "Job"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-crew-person.php:49
+#: includes/admin/meta-boxes/views/html-tv-show-crew-person.php:49
+msgid "Enter the job name."
+msgstr ""
+
 #: includes/admin/meta-boxes/views/html-movie-data-attributes.php:12
 msgid "Custom movie attribute"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-data-cast-persons.php:11
+#: includes/admin/meta-boxes/views/html-movie-data-crew-persons.php:11
+#: includes/admin/meta-boxes/views/html-tv-show-data-cast-persons.php:11
+#: includes/admin/meta-boxes/views/html-tv-show-data-crew-persons.php:11
+msgid "Search for a person&hellip;"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-data-cast-persons.php:35
+#: includes/admin/meta-boxes/views/html-tv-show-data-cast-persons.php:35
+msgid "Save cast"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-data-crew-persons.php:35
+#: includes/admin/meta-boxes/views/html-tv-show-data-crew-persons.php:35
+msgid "Save crew"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-movie-data-general.php:14
@@ -1531,11 +2235,15 @@ msgid "Upload Movie"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-movie-data-general.php:17
+#: includes/admin/meta-boxes/views/html-movie-source.php:37
+#: includes/admin/meta-boxes/views/html-movie-source.php:47
 msgid "Embed Movie"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-movie-data-general.php:18
 #: includes/admin/meta-boxes/views/html-movie-data-general.php:49
+#: includes/admin/meta-boxes/views/html-movie-source.php:38
+#: includes/admin/meta-boxes/views/html-movie-source.php:56
 msgid "Movie URL"
 msgstr ""
 
@@ -1548,35 +2256,43 @@ msgid "Embed Movie Content"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-movie-data-general.php:40
-#: includes/admin/meta-boxes/views/html-movie-source.php:34
+#: includes/admin/meta-boxes/views/html-movie-source.php:48
 msgid "Enter the embed content to the movie."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:61
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:70
 msgid "Enter the release date of the movie."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:70
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:79
 msgid "Movie Time Dutration"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:71
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:80
 msgid "Enter the movie run time duration."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:79
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:88
 msgid "Movie Censore Rating"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:80
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:89
 msgid "Enter the movie censore rating."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:95
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:98
+msgid "Enter IMDB ID of the movie."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:107
+msgid "Enter TMDB ID of the movie."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:122
 msgid "This setting determines which catalog pages movie will be listed on."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-data-general.php:104
+#: includes/admin/meta-boxes/views/html-movie-data-general.php:131
 msgid "This is a featured movie."
 msgstr ""
 
@@ -1590,20 +2306,77 @@ msgid ""
 "viewed movie, for example, movies that are better quality."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-source.php:49
+#: includes/admin/meta-boxes/views/html-movie-data-linked-videos.php:14
+#: includes/masvideos-video-template-functions.php:865
+msgid "Related Videos"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-data-linked-videos.php:15
+msgid "Search for a related video&hellip;"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-data-linked-videos.php:25
+msgid "Linked Videos are videos that related to this movie."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-source.php:35
+msgid "Choose Method"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-movie-source.php:81
 msgid "Enter the source quality of the movie."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-source.php:63
+#: includes/admin/meta-boxes/views/html-movie-source.php:95
 msgid "Enter the source language of the movie."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-source.php:77
+#: includes/admin/meta-boxes/views/html-movie-source.php:109
 msgid "Enter the source player of the movie."
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-movie-source.php:91
+#: includes/admin/meta-boxes/views/html-movie-source.php:123
 msgid "Enter the source added date of the movie."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-attribute.php:74
+msgid "Visible on the person page"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-attributes.php:12
+msgid "Custom person attribute"
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:15
+msgid "Enter alternate names of the person."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:24
+msgid "Enter Birth Place of the person."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:33
+msgid "Enter the birth date of the person."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:43
+msgid "Enter the death date of the person."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:53
+msgid "Enter IMDB ID of the person."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:62
+msgid "Enter TMDB ID of the person."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:77
+msgid "This setting determines which catalog pages person will be listed on."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-person-data-general.php:86
+msgid "This is a featured person."
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:74
@@ -1622,6 +2395,14 @@ msgstr ""
 msgid "This is a featured tv show."
 msgstr ""
 
+#: includes/admin/meta-boxes/views/html-tv-show-data-general.php:34
+msgid "Enter IMDB ID of the tv show."
+msgstr ""
+
+#: includes/admin/meta-boxes/views/html-tv-show-data-general.php:43
+msgid "Enter TMDB ID of the tv show."
+msgstr ""
+
 #: includes/admin/meta-boxes/views/html-tv-show-data-seasons.php:11
 msgid "Add Season"
 msgstr ""
@@ -1630,23 +2411,23 @@ msgstr ""
 msgid "Save seasons"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:32
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:34
 msgid "Upload an image"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:39
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:42
 msgid "Episode(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:40
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:43
 msgid "Search for episodes"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:57
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:62
 msgid "Year"
 msgstr ""
 
-#: includes/admin/meta-boxes/views/html-tv-show-season.php:64
+#: includes/admin/meta-boxes/views/html-tv-show-season.php:71
 msgid "Enter some description."
 msgstr ""
 
@@ -1709,11 +2490,11 @@ msgstr ""
 msgid "Skip"
 msgstr ""
 
-#: includes/class-masvideos-ajax.php:143 includes/class-masvideos-ajax.php:622
+#: includes/class-masvideos-ajax.php:314 includes/class-masvideos-ajax.php:1118
 msgid "Source %d"
 msgstr ""
 
-#: includes/class-masvideos-ajax.php:492
+#: includes/class-masvideos-ajax.php:825
 msgid "Season %d"
 msgstr ""
 
@@ -1772,9 +2553,9 @@ msgstr ""
 msgid "Please rate the movie."
 msgstr ""
 
-#: includes/class-masvideos-data-store.php:82
-#: includes/class-masvideos-data-store.php:88
-#: includes/class-masvideos-data-store.php:94
+#: includes/class-masvideos-data-store.php:83
+#: includes/class-masvideos-data-store.php:89
+#: includes/class-masvideos-data-store.php:95
 msgid "Invalid data store."
 msgstr ""
 
@@ -1805,10 +2586,10 @@ msgstr ""
 msgid "Posttype is not valid."
 msgstr ""
 
-#: includes/class-masvideos-frontend-scripts.php:365
-#: includes/class-masvideos-frontend-scripts.php:371
-#: includes/class-masvideos-frontend-scripts.php:377
-#: includes/class-masvideos-frontend-scripts.php:383
+#: includes/class-masvideos-frontend-scripts.php:393
+#: includes/class-masvideos-frontend-scripts.php:399
+#: includes/class-masvideos-frontend-scripts.php:405
+#: includes/class-masvideos-frontend-scripts.php:411
 msgid "Please select a rating"
 msgstr ""
 
@@ -1816,7 +2597,7 @@ msgstr ""
 msgid "MAS Videos Blocks"
 msgstr ""
 
-#: includes/class-masvideos-install.php:253
+#: includes/class-masvideos-install.php:258
 msgid "Monthly"
 msgstr ""
 
@@ -1825,7 +2606,7 @@ msgid "Episodes"
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:66
-#: includes/data-stores/class-masvideos-episode-data-store-cpt.php:88
+#: includes/data-stores/class-masvideos-episode-data-store-cpt.php:90
 #: includes/widgets/class-masvideos-widget-search.php:35
 msgid "Episode"
 msgstr ""
@@ -1841,6 +2622,7 @@ msgstr ""
 #: includes/class-masvideos-post-types.php:307
 #: includes/class-masvideos-post-types.php:372
 #: includes/class-masvideos-post-types.php:426
+#: includes/class-masvideos-post-types.php:491
 msgid "Add New"
 msgstr ""
 
@@ -1921,12 +2703,13 @@ msgid "This is where you can add new episodes to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:130
-#: includes/customizer/class-masvideos-customizer.php:416
+#: includes/customizer/class-masvideos-customizer.php:475
+#: includes/masvideos-person-template-functions.php:682
 msgid "TV Shows"
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:131
-#: includes/data-stores/class-masvideos-tv-show-data-store-cpt.php:79
+#: includes/data-stores/class-masvideos-tv-show-data-store-cpt.php:83
 #: includes/widgets/class-masvideos-widget-search.php:36
 msgid "TV Show"
 msgstr ""
@@ -2097,7 +2880,7 @@ msgstr ""
 
 #: includes/class-masvideos-post-types.php:249
 #: includes/class-masvideos-query.php:77
-#: includes/customizer/class-masvideos-customizer.php:293
+#: includes/customizer/class-masvideos-customizer.php:353
 #: includes/masvideos-account-functions.php:30
 msgid "Videos"
 msgstr ""
@@ -2279,12 +3062,13 @@ msgid "This is where you can add new video playlists to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:368
-#: includes/customizer/class-masvideos-customizer.php:149
+#: includes/customizer/class-masvideos-customizer.php:209
+#: includes/masvideos-person-template-functions.php:673
 msgid "Movies"
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:369
-#: includes/data-stores/class-masvideos-movie-data-store-cpt.php:87
+#: includes/data-stores/class-masvideos-movie-data-store-cpt.php:93
 #: includes/data-stores/class-masvideos-movie-playlist-data-store-cpt.php:71
 #: includes/data-stores/class-masvideos-tv-show-playlist-data-store-cpt.php:71
 #: includes/widgets/class-masvideos-widget-search.php:38
@@ -2459,272 +3243,393 @@ msgstr ""
 msgid "This is where you can add new movie playlists to your site."
 msgstr ""
 
+#: includes/class-masvideos-post-types.php:487
+#: includes/customizer/class-masvideos-customizer.php:640
+msgid "Persons"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:488
+#: includes/data-stores/class-masvideos-person-data-store-cpt.php:85
+msgid "Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:489
+msgid "All Persons"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:492
+msgid "Add New Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:494
+msgid "Edit Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:495
+msgid "New Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:496
+msgid "View Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:497
+msgid "View Persons"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:498
+msgid "Search Persons"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:499
+msgid "No persons found"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:500
+msgid "No persons found in trash"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:501
+msgid "Parent Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:502
+msgid "Person Image"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:503
+msgid "Set Person Image"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:504
+msgid "Remove Person Image"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:505
+msgid "Use as Person Image"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:506
+msgid "Insert into Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:507
+msgid "Uploaded to this Person"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:508
+msgid "Filter Persons"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:509
+msgid "Persons navigation"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:510
+msgid "Persons list"
+msgstr ""
+
 #: includes/class-masvideos-post-types.php:512
+msgid "This is where you can add new persons to your site."
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:575
 msgid "Episode genres"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:513
-#: includes/class-masvideos-post-types.php:610
-#: includes/class-masvideos-post-types.php:802
+#: includes/class-masvideos-post-types.php:576
+#: includes/class-masvideos-post-types.php:671
+#: includes/class-masvideos-post-types.php:859
 msgid "Genre"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:515
-#: includes/class-masvideos-post-types.php:612
-#: includes/class-masvideos-post-types.php:804
+#: includes/class-masvideos-post-types.php:578
+#: includes/class-masvideos-post-types.php:673
+#: includes/class-masvideos-post-types.php:861
 msgid "Search genres"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:516
-#: includes/class-masvideos-post-types.php:613
-#: includes/class-masvideos-post-types.php:805
+#: includes/class-masvideos-post-types.php:579
+#: includes/class-masvideos-post-types.php:674
+#: includes/class-masvideos-post-types.php:862
 msgid "All genres"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:517
-#: includes/class-masvideos-post-types.php:614
-#: includes/class-masvideos-post-types.php:806
+#: includes/class-masvideos-post-types.php:580
+#: includes/class-masvideos-post-types.php:675
+#: includes/class-masvideos-post-types.php:863
 msgid "Parent genre"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:518
-#: includes/class-masvideos-post-types.php:615
-#: includes/class-masvideos-post-types.php:807
+#: includes/class-masvideos-post-types.php:581
+#: includes/class-masvideos-post-types.php:676
+#: includes/class-masvideos-post-types.php:864
 msgid "Parent genre:"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:519
-#: includes/class-masvideos-post-types.php:616
-#: includes/class-masvideos-post-types.php:808
+#: includes/class-masvideos-post-types.php:582
+#: includes/class-masvideos-post-types.php:677
+#: includes/class-masvideos-post-types.php:865
 msgid "Edit genre"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:520
-#: includes/class-masvideos-post-types.php:617
-#: includes/class-masvideos-post-types.php:809
+#: includes/class-masvideos-post-types.php:583
+#: includes/class-masvideos-post-types.php:678
+#: includes/class-masvideos-post-types.php:866
 msgid "Update genre"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:521
-#: includes/class-masvideos-post-types.php:618
-#: includes/class-masvideos-post-types.php:810
+#: includes/class-masvideos-post-types.php:584
+#: includes/class-masvideos-post-types.php:679
+#: includes/class-masvideos-post-types.php:867
 msgid "Add new genre"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:522
-#: includes/class-masvideos-post-types.php:619
-#: includes/class-masvideos-post-types.php:811
+#: includes/class-masvideos-post-types.php:585
+#: includes/class-masvideos-post-types.php:680
+#: includes/class-masvideos-post-types.php:868
 msgid "New genre name"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:523
-#: includes/class-masvideos-post-types.php:620
-#: includes/class-masvideos-post-types.php:812
+#: includes/class-masvideos-post-types.php:586
+#: includes/class-masvideos-post-types.php:681
+#: includes/class-masvideos-post-types.php:869
 msgid "No genres found"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:550
-#: includes/class-masvideos-post-types.php:552
+#: includes/class-masvideos-post-types.php:612
+#: includes/class-masvideos-post-types.php:614
 msgid "Episode tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:553
-#: includes/class-masvideos-post-types.php:650
-#: includes/class-masvideos-post-types.php:746
-#: includes/class-masvideos-post-types.php:842
+#: includes/class-masvideos-post-types.php:615
+#: includes/class-masvideos-post-types.php:710
+#: includes/class-masvideos-post-types.php:804
+#: includes/class-masvideos-post-types.php:898
+#: includes/class-masvideos-post-types.php:992
 msgid "Tag"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:555
-#: includes/class-masvideos-post-types.php:652
-#: includes/class-masvideos-post-types.php:748
-#: includes/class-masvideos-post-types.php:844
+#: includes/class-masvideos-post-types.php:617
+#: includes/class-masvideos-post-types.php:712
+#: includes/class-masvideos-post-types.php:806
+#: includes/class-masvideos-post-types.php:900
+#: includes/class-masvideos-post-types.php:994
 msgid "Search tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:556
-#: includes/class-masvideos-post-types.php:653
-#: includes/class-masvideos-post-types.php:749
-#: includes/class-masvideos-post-types.php:845
+#: includes/class-masvideos-post-types.php:618
+#: includes/class-masvideos-post-types.php:713
+#: includes/class-masvideos-post-types.php:807
+#: includes/class-masvideos-post-types.php:901
+#: includes/class-masvideos-post-types.php:995
 msgid "All tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:557
-#: includes/class-masvideos-post-types.php:654
-#: includes/class-masvideos-post-types.php:750
-#: includes/class-masvideos-post-types.php:846
+#: includes/class-masvideos-post-types.php:619
+#: includes/class-masvideos-post-types.php:714
+#: includes/class-masvideos-post-types.php:808
+#: includes/class-masvideos-post-types.php:902
+#: includes/class-masvideos-post-types.php:996
 msgid "Edit tag"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:558
-#: includes/class-masvideos-post-types.php:655
-#: includes/class-masvideos-post-types.php:751
-#: includes/class-masvideos-post-types.php:847
+#: includes/class-masvideos-post-types.php:620
+#: includes/class-masvideos-post-types.php:715
+#: includes/class-masvideos-post-types.php:809
+#: includes/class-masvideos-post-types.php:903
+#: includes/class-masvideos-post-types.php:997
 msgid "Update tag"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:559
-#: includes/class-masvideos-post-types.php:656
-#: includes/class-masvideos-post-types.php:752
-#: includes/class-masvideos-post-types.php:848
+#: includes/class-masvideos-post-types.php:621
+#: includes/class-masvideos-post-types.php:716
+#: includes/class-masvideos-post-types.php:810
+#: includes/class-masvideos-post-types.php:904
+#: includes/class-masvideos-post-types.php:998
 msgid "Add new tag"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:560
-#: includes/class-masvideos-post-types.php:657
-#: includes/class-masvideos-post-types.php:753
-#: includes/class-masvideos-post-types.php:849
+#: includes/class-masvideos-post-types.php:622
+#: includes/class-masvideos-post-types.php:717
+#: includes/class-masvideos-post-types.php:811
+#: includes/class-masvideos-post-types.php:905
+#: includes/class-masvideos-post-types.php:999
 msgid "New tag name"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:561
-#: includes/class-masvideos-post-types.php:658
-#: includes/class-masvideos-post-types.php:754
-#: includes/class-masvideos-post-types.php:850
+#: includes/class-masvideos-post-types.php:623
+#: includes/class-masvideos-post-types.php:718
+#: includes/class-masvideos-post-types.php:812
+#: includes/class-masvideos-post-types.php:906
+#: includes/class-masvideos-post-types.php:1000
 msgid "Popular tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:562
-#: includes/class-masvideos-post-types.php:659
-#: includes/class-masvideos-post-types.php:755
-#: includes/class-masvideos-post-types.php:851
+#: includes/class-masvideos-post-types.php:624
+#: includes/class-masvideos-post-types.php:719
+#: includes/class-masvideos-post-types.php:813
+#: includes/class-masvideos-post-types.php:907
+#: includes/class-masvideos-post-types.php:1001
 msgid "Separate tags with commas"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:563
-#: includes/class-masvideos-post-types.php:660
-#: includes/class-masvideos-post-types.php:756
-#: includes/class-masvideos-post-types.php:852
+#: includes/class-masvideos-post-types.php:625
+#: includes/class-masvideos-post-types.php:720
+#: includes/class-masvideos-post-types.php:814
+#: includes/class-masvideos-post-types.php:908
+#: includes/class-masvideos-post-types.php:1002
 msgid "Add or remove tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:564
-#: includes/class-masvideos-post-types.php:661
-#: includes/class-masvideos-post-types.php:757
-#: includes/class-masvideos-post-types.php:853
+#: includes/class-masvideos-post-types.php:626
+#: includes/class-masvideos-post-types.php:721
+#: includes/class-masvideos-post-types.php:815
+#: includes/class-masvideos-post-types.php:909
+#: includes/class-masvideos-post-types.php:1003
 msgid "Choose from the most used tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:565
-#: includes/class-masvideos-post-types.php:662
-#: includes/class-masvideos-post-types.php:758
-#: includes/class-masvideos-post-types.php:854
+#: includes/class-masvideos-post-types.php:627
+#: includes/class-masvideos-post-types.php:722
+#: includes/class-masvideos-post-types.php:816
+#: includes/class-masvideos-post-types.php:910
+#: includes/class-masvideos-post-types.php:1004
 msgid "No tags found"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:609
+#: includes/class-masvideos-post-types.php:670
 msgid "TV Show genres"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:647
-#: includes/class-masvideos-post-types.php:649
+#: includes/class-masvideos-post-types.php:707
+#: includes/class-masvideos-post-types.php:709
 msgid "TV Show tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:705
+#: includes/class-masvideos-post-types.php:764
 msgid "Video categories"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:706
+#: includes/class-masvideos-post-types.php:765
+#: includes/class-masvideos-post-types.php:953
 msgid "Category"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:708
+#: includes/class-masvideos-post-types.php:767
+#: includes/class-masvideos-post-types.php:955
 msgid "Search categories"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:709
+#: includes/class-masvideos-post-types.php:768
+#: includes/class-masvideos-post-types.php:956
 msgid "All categories"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:710
+#: includes/class-masvideos-post-types.php:769
+#: includes/class-masvideos-post-types.php:957
 msgid "Parent category"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:711
+#: includes/class-masvideos-post-types.php:770
+#: includes/class-masvideos-post-types.php:958
 msgid "Parent category:"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:712
+#: includes/class-masvideos-post-types.php:771
+#: includes/class-masvideos-post-types.php:959
 msgid "Edit category"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:713
+#: includes/class-masvideos-post-types.php:772
+#: includes/class-masvideos-post-types.php:960
 msgid "Update category"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:714
+#: includes/class-masvideos-post-types.php:773
+#: includes/class-masvideos-post-types.php:961
 msgid "Add new category"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:715
+#: includes/class-masvideos-post-types.php:774
+#: includes/class-masvideos-post-types.php:962
 msgid "New category name"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:716
+#: includes/class-masvideos-post-types.php:775
+#: includes/class-masvideos-post-types.php:963
 msgid "No categories found"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:743
-#: includes/class-masvideos-post-types.php:745
+#: includes/class-masvideos-post-types.php:801
+#: includes/class-masvideos-post-types.php:803
 msgid "Video tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:801
+#: includes/class-masvideos-post-types.php:858
 msgid "Movie genres"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:839
-#: includes/class-masvideos-post-types.php:841
+#: includes/class-masvideos-post-types.php:895
+#: includes/class-masvideos-post-types.php:897
 msgid "Movie tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:894
+#: includes/class-masvideos-post-types.php:952
+msgid "Person categories"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:989
+#: includes/class-masvideos-post-types.php:991
+msgid "Person tags"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:1044
 #. translators: %s: attribute name
 msgid "%s %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:897
+#: includes/class-masvideos-post-types.php:1047
 #. translators: %s: attribute name
 msgid "Search %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:899
+#: includes/class-masvideos-post-types.php:1049
 #. translators: %s: attribute name
 msgid "All %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:901
+#: includes/class-masvideos-post-types.php:1051
 #. translators: %s: attribute name
 msgid "Parent %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:903
+#: includes/class-masvideos-post-types.php:1053
 #. translators: %s: attribute name
 msgid "Parent %s:"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:905
+#: includes/class-masvideos-post-types.php:1055
 #. translators: %s: attribute name
 msgid "Edit %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:907
+#: includes/class-masvideos-post-types.php:1057
 #. translators: %s: attribute name
 msgid "Update %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:909
+#: includes/class-masvideos-post-types.php:1059
 #. translators: %s: attribute name
 msgid "Add new %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:911
+#: includes/class-masvideos-post-types.php:1061
 #. translators: %s: attribute name
 msgid "New %s"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:913
+#: includes/class-masvideos-post-types.php:1063
 #. translators: %s: attribute name
 msgid "No &quot;%s&quot; found"
 msgstr ""
@@ -2754,7 +3659,7 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: includes/class-masvideos.php:139 includes/class-masvideos.php:146
+#: includes/class-masvideos.php:153 includes/class-masvideos.php:160
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -2762,161 +3667,206 @@ msgstr ""
 msgid "MAS Videos"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:51
+#: includes/customizer/class-masvideos-customizer.php:72
+msgid "TMDB API Key"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:73
+msgid "Add TMDB API Key to integrate with TMDB."
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:90
 msgid "My Account"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:69
+#: includes/customizer/class-masvideos-customizer.php:108
 msgid "My Account Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:89
+#: includes/customizer/class-masvideos-customizer.php:128
 msgid "Upload Video Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:111
+#: includes/customizer/class-masvideos-customizer.php:150
+msgid "Account Creation"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:171
 msgid "Generate Username"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:132
+#: includes/customizer/class-masvideos-customizer.php:192
 msgid "Generate Password"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:167
+#: includes/customizer/class-masvideos-customizer.php:227
 msgid "Movies Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:187
+#: includes/customizer/class-masvideos-customizer.php:247
 msgid "Default movie sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:188
+#: includes/customizer/class-masvideos-customizer.php:248
 msgid "How should movies be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:193
-#: includes/customizer/class-masvideos-customizer.php:337
-#: includes/customizer/class-masvideos-customizer.php:460
+#: includes/customizer/class-masvideos-customizer.php:253
+#: includes/customizer/class-masvideos-customizer.php:397
+#: includes/customizer/class-masvideos-customizer.php:519
+#: includes/customizer/class-masvideos-customizer.php:684
 #: includes/masvideos-movie-template-functions.php:392
+#: includes/masvideos-person-template-functions.php:392
 #: includes/masvideos-tv-show-template-functions.php:393
 #: includes/masvideos-video-template-functions.php:391
 msgid "Name: Ascending"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:194
-#: includes/customizer/class-masvideos-customizer.php:338
-#: includes/customizer/class-masvideos-customizer.php:461
+#: includes/customizer/class-masvideos-customizer.php:254
+#: includes/customizer/class-masvideos-customizer.php:398
+#: includes/customizer/class-masvideos-customizer.php:520
+#: includes/customizer/class-masvideos-customizer.php:685
 #: includes/masvideos-movie-template-functions.php:393
+#: includes/masvideos-person-template-functions.php:393
 #: includes/masvideos-tv-show-template-functions.php:394
 #: includes/masvideos-video-template-functions.php:392
 msgid "Name: Descending"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:195
-#: includes/customizer/class-masvideos-customizer.php:339
-#: includes/customizer/class-masvideos-customizer.php:462
+#: includes/customizer/class-masvideos-customizer.php:255
+#: includes/customizer/class-masvideos-customizer.php:399
+#: includes/customizer/class-masvideos-customizer.php:521
+#: includes/customizer/class-masvideos-customizer.php:686
 #: includes/masvideos-movie-template-functions.php:394
+#: includes/masvideos-person-template-functions.php:394
 #: includes/masvideos-tv-show-template-functions.php:395
 #: includes/masvideos-video-template-functions.php:393
 msgid "Latest"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:196
-#: includes/customizer/class-masvideos-customizer.php:340
-#: includes/customizer/class-masvideos-customizer.php:463
+#: includes/customizer/class-masvideos-customizer.php:256
+#: includes/customizer/class-masvideos-customizer.php:400
+#: includes/customizer/class-masvideos-customizer.php:522
+#: includes/customizer/class-masvideos-customizer.php:687
 #: includes/masvideos-movie-template-functions.php:395
+#: includes/masvideos-person-template-functions.php:395
 #: includes/masvideos-tv-show-template-functions.php:396
 #: includes/masvideos-video-template-functions.php:394
 msgid "Menu Order"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:218
+#: includes/customizer/class-masvideos-customizer.php:278
 msgid "Movies per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:219
+#: includes/customizer/class-masvideos-customizer.php:279
 msgid "How many movies should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:248
-#: includes/customizer/class-masvideos-customizer.php:392
-#: includes/customizer/class-masvideos-customizer.php:515
+#: includes/customizer/class-masvideos-customizer.php:308
+#: includes/customizer/class-masvideos-customizer.php:451
+#: includes/customizer/class-masvideos-customizer.php:574
+#: includes/customizer/class-masvideos-customizer.php:738
 msgid "Rows per page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:249
+#: includes/customizer/class-masvideos-customizer.php:309
 msgid "How many rows of movies should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:276
+#: includes/customizer/class-masvideos-customizer.php:336
 msgid "Enable Movies Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:311
+#: includes/customizer/class-masvideos-customizer.php:371
 msgid "Videos Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:331
+#: includes/customizer/class-masvideos-customizer.php:391
 msgid "Default video sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:332
+#: includes/customizer/class-masvideos-customizer.php:392
 msgid "How should videos be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:362
+#: includes/customizer/class-masvideos-customizer.php:421
 msgid "Videos per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:363
+#: includes/customizer/class-masvideos-customizer.php:422
 msgid "How many videos should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:393
+#: includes/customizer/class-masvideos-customizer.php:452
 msgid "How many rows of videos should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:434
+#: includes/customizer/class-masvideos-customizer.php:493
 msgid "TV Shows Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:454
+#: includes/customizer/class-masvideos-customizer.php:513
 msgid "Default tv show sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:455
+#: includes/customizer/class-masvideos-customizer.php:514
 msgid "How should tv shows be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:485
+#: includes/customizer/class-masvideos-customizer.php:544
 msgid "TV Shows per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:486
+#: includes/customizer/class-masvideos-customizer.php:545
 msgid "How many tv shows should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:516
+#: includes/customizer/class-masvideos-customizer.php:575
 msgid "How many rows of tv shows should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:543
+#: includes/customizer/class-masvideos-customizer.php:602
 msgid "Enable TV Shows Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:564
+#: includes/customizer/class-masvideos-customizer.php:623
 msgid "Enable Episodes Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:589
+#: includes/customizer/class-masvideos-customizer.php:658
+msgid "Persons Page"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:678
+msgid "Default person sorting"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:679
+msgid "How should persons be sorted in the catalog by default?"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:708
+msgid "Persons per row"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:709
+msgid "How many persons should be shown per row?"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:739
+msgid "How many rows of persons should be shown per page?"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:770
 msgid "No page set"
 msgstr ""
 
-#: includes/data-stores/class-masvideos-episode-data-store-cpt.php:131
+#: includes/data-stores/class-masvideos-episode-data-store-cpt.php:133
 msgid "Invalid episode."
 msgstr ""
 
-#: includes/data-stores/class-masvideos-movie-data-store-cpt.php:130
+#: includes/data-stores/class-masvideos-movie-data-store-cpt.php:136
 msgid "Invalid movie."
 msgstr ""
 
@@ -2924,7 +3874,11 @@ msgstr ""
 msgid "Invalid movie playlist."
 msgstr ""
 
-#: includes/data-stores/class-masvideos-tv-show-data-store-cpt.php:122
+#: includes/data-stores/class-masvideos-person-data-store-cpt.php:128
+msgid "Invalid person."
+msgstr ""
+
+#: includes/data-stores/class-masvideos-tv-show-data-store-cpt.php:126
 msgid "Invalid tv show."
 msgstr ""
 
@@ -2940,31 +3894,40 @@ msgstr ""
 msgid "Invalid video playlist."
 msgstr ""
 
-#: includes/import/abstract-masvideos-movie-importer.php:174
+#: includes/import/abstract-masvideos-movie-importer.php:192
+#: includes/import/abstract-masvideos-person-importer.php:174
+#: includes/import/abstract-masvideos-tv-show-importer.php:192
+#. translators: %d: person ID
+msgid "Invalid person ID %d."
+msgstr ""
+
+#: includes/import/abstract-masvideos-movie-importer.php:257
 #. translators: %d: movie ID
 msgid "Invalid movie ID %d."
 msgstr ""
 
-#: includes/import/abstract-masvideos-movie-importer.php:414
-#: includes/import/abstract-masvideos-tv-show-importer.php:577
+#: includes/import/abstract-masvideos-movie-importer.php:624
+#: includes/import/abstract-masvideos-person-importer.php:432
+#: includes/import/abstract-masvideos-tv-show-importer.php:804
 #: includes/import/abstract-masvideos-video-importer.php:414
 #. translators: %s: image URL
 msgid "Not able to attach \"%s\"."
 msgstr ""
 
-#: includes/import/abstract-masvideos-movie-importer.php:423
-#: includes/import/abstract-masvideos-tv-show-importer.php:586
+#: includes/import/abstract-masvideos-movie-importer.php:633
+#: includes/import/abstract-masvideos-person-importer.php:441
+#: includes/import/abstract-masvideos-tv-show-importer.php:813
 #: includes/import/abstract-masvideos-video-importer.php:423
 #. translators: %s: image URL
 msgid "Unable to use image \"%s\"."
 msgstr ""
 
-#: includes/import/abstract-masvideos-tv-show-importer.php:174
+#: includes/import/abstract-masvideos-tv-show-importer.php:257
 #. translators: %d: episode ID
 msgid "Invalid episode ID %d."
 msgstr ""
 
-#: includes/import/abstract-masvideos-tv-show-importer.php:204
+#: includes/import/abstract-masvideos-tv-show-importer.php:287
 #. translators: %d: tv show ID
 msgid "Invalid tv show ID %d."
 msgstr ""
@@ -2974,28 +3937,38 @@ msgstr ""
 msgid "Invalid video ID %d."
 msgstr ""
 
-#: includes/import/class-masvideos-movie-csv-importer.php:685
-#: includes/import/class-masvideos-tv-show-csv-importer.php:732
+#: includes/import/class-masvideos-movie-csv-importer.php:944
+#: includes/import/class-masvideos-person-csv-importer.php:683
+#: includes/import/class-masvideos-tv-show-csv-importer.php:982
 #: includes/import/class-masvideos-video-csv-importer.php:681
 #. translators: %d: movie ID
+#. translators: %d: person ID
 #. translators: %d: tv show ID
 #. translators: %d: video ID
 msgid "ID %d"
 msgstr ""
 
-#: includes/import/class-masvideos-movie-csv-importer.php:723
+#: includes/import/class-masvideos-movie-csv-importer.php:982
 msgid "A movie with this ID already exists."
 msgstr ""
 
-#: includes/import/class-masvideos-movie-csv-importer.php:731
+#: includes/import/class-masvideos-movie-csv-importer.php:990
 msgid "No matching movie exists to update."
 msgstr ""
 
-#: includes/import/class-masvideos-tv-show-csv-importer.php:770
+#: includes/import/class-masvideos-person-csv-importer.php:721
+msgid "A person with this ID already exists."
+msgstr ""
+
+#: includes/import/class-masvideos-person-csv-importer.php:729
+msgid "No matching person exists to update."
+msgstr ""
+
+#: includes/import/class-masvideos-tv-show-csv-importer.php:1020
 msgid "A tv show with this ID already exists."
 msgstr ""
 
-#: includes/import/class-masvideos-tv-show-csv-importer.php:778
+#: includes/import/class-masvideos-tv-show-csv-importer.php:1028
 msgid "No matching tv show exists to update."
 msgstr ""
 
@@ -3005,6 +3978,10 @@ msgstr ""
 
 #: includes/import/class-masvideos-video-csv-importer.php:727
 msgid "No matching video exists to update."
+msgstr ""
+
+#: includes/integrations/tmdb/class-masvideos-tmdb.php:36
+msgid "Unable to read configuration, verify that the API key is valid"
 msgstr ""
 
 #: includes/masvideos-account-functions.php:29
@@ -3054,35 +4031,35 @@ msgstr ""
 msgid "Gallery Image"
 msgstr ""
 
-#: includes/masvideos-attribute-functions.php:326
-#: includes/masvideos-attribute-functions.php:353
+#: includes/masvideos-attribute-functions.php:358
+#: includes/masvideos-attribute-functions.php:385
 msgid "Select"
 msgstr ""
 
-#: includes/masvideos-attribute-functions.php:576
+#: includes/masvideos-attribute-functions.php:621
 msgid "Please, provide an attribute name."
 msgstr ""
 
-#: includes/masvideos-attribute-functions.php:589
+#: includes/masvideos-attribute-functions.php:634
 #. translators: %s: attribute slug
 msgid "Slug \"%s\" is too long (28 characters max). Shorten it, please."
 msgstr ""
 
-#: includes/masvideos-attribute-functions.php:592
+#: includes/masvideos-attribute-functions.php:637
 #. translators: %s: attribute slug
 msgid "Slug \"%s\" is not allowed because it is a reserved term. Change it, please."
 msgstr ""
 
-#: includes/masvideos-attribute-functions.php:595
+#: includes/masvideos-attribute-functions.php:640
 #. translators: %s: attribute slug
 msgid "Slug \"%s\" is already in use. Change it, please."
 msgstr ""
 
-#: includes/masvideos-attribute-functions.php:650
+#: includes/masvideos-attribute-functions.php:695
 msgid "Could not update the attribute."
 msgstr ""
 
-#: includes/masvideos-core-functions.php:104
+#: includes/masvideos-core-functions.php:105
 #. translators: %s template
 msgid "%s does not exist."
 msgstr ""
@@ -3090,6 +4067,7 @@ msgstr ""
 #: includes/masvideos-episode-functions.php:55
 #: includes/masvideos-movie-functions.php:55
 #: includes/masvideos-movie-playlist-functions.php:55
+#: includes/masvideos-person-functions.php:55
 #: includes/masvideos-tv-show-functions.php:55
 #: includes/masvideos-tv-show-playlist-functions.php:55
 #: includes/masvideos-video-functions.php:55
@@ -3097,6 +4075,7 @@ msgstr ""
 #. translators: 1: masvideos_get_episode 2: masvideos_init
 #. translators: 1: masvideos_get_movie 2: masvideos_init
 #. translators: 1: masvideos_get_movie_playlist 2: masvideos_init
+#. translators: 1: masvideos_get_person 2: masvideos_init
 #. translators: 1: masvideos_get_tv_show 2: masvideos_init
 #. translators: 1: masvideos_get_tv_show_playlist 2: masvideos_init
 #. translators: 1: masvideos_get_video 2: masvideos_init
@@ -3106,6 +4085,7 @@ msgstr ""
 
 #: includes/masvideos-episode-functions.php:114
 #: includes/masvideos-movie-functions.php:114
+#: includes/masvideos-person-functions.php:114
 #: includes/masvideos-tv-show-functions.php:114
 #: includes/masvideos-video-functions.php:114
 msgid "Catalog and search results"
@@ -3113,6 +4093,7 @@ msgstr ""
 
 #: includes/masvideos-episode-functions.php:115
 #: includes/masvideos-movie-functions.php:115
+#: includes/masvideos-person-functions.php:115
 #: includes/masvideos-tv-show-functions.php:115
 #: includes/masvideos-video-functions.php:115
 msgid "Catalog only"
@@ -3120,6 +4101,7 @@ msgstr ""
 
 #: includes/masvideos-episode-functions.php:116
 #: includes/masvideos-movie-functions.php:116
+#: includes/masvideos-person-functions.php:116
 #: includes/masvideos-tv-show-functions.php:116
 #: includes/masvideos-video-functions.php:116
 msgid "Search results only"
@@ -3127,6 +4109,7 @@ msgstr ""
 
 #: includes/masvideos-episode-functions.php:117
 #: includes/masvideos-movie-functions.php:117
+#: includes/masvideos-person-functions.php:117
 #: includes/masvideos-tv-show-functions.php:117
 #: includes/masvideos-video-functions.php:117
 msgid "Hidden"
@@ -3138,6 +4121,7 @@ msgstr ""
 
 #: includes/masvideos-episode-template-functions.php:326
 #: includes/masvideos-movie-template-functions.php:326
+#: includes/masvideos-person-template-functions.php:326
 #: includes/masvideos-tv-show-template-functions.php:327
 #: includes/masvideos-video-template-functions.php:325
 #. translators: %s: search query
@@ -3146,6 +4130,7 @@ msgstr ""
 
 #: includes/masvideos-episode-template-functions.php:330
 #: includes/masvideos-movie-template-functions.php:330
+#: includes/masvideos-person-template-functions.php:330
 #: includes/masvideos-tv-show-template-functions.php:331
 #: includes/masvideos-video-template-functions.php:329
 #. translators: %s: page number
@@ -3175,7 +4160,7 @@ msgid "Related Episodes"
 msgstr ""
 
 #: includes/masvideos-episode-template-functions.php:751
-#: includes/masvideos-movie-template-functions.php:967
+#: includes/masvideos-movie-template-functions.php:1008
 #: includes/masvideos-tv-show-template-functions.php:1064
 msgid "Review"
 msgstr ""
@@ -3190,7 +4175,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/masvideos-episode-template-functions.php:957
-#: includes/masvideos-movie-template-functions.php:1152
+#: includes/masvideos-movie-template-functions.php:1194
+#: includes/masvideos-movie-template-functions.php:1201
 msgid "Play Now"
 msgstr ""
 
@@ -3223,12 +4209,14 @@ msgid "No movies were found matching your selection."
 msgstr ""
 
 #: includes/masvideos-movie-template-functions.php:403
+#: includes/masvideos-person-template-functions.php:402
 #: includes/masvideos-tv-show-template-functions.php:404
 #: includes/masvideos-video-template-functions.php:402
 msgid "Relevance"
 msgstr ""
 
 #: includes/masvideos-movie-template-functions.php:457
+#: includes/masvideos-person-template-functions.php:456
 #: includes/masvideos-tv-show-template-functions.php:459
 #: includes/masvideos-video-template-functions.php:444
 #. translators: %d: total results
@@ -3251,20 +4239,40 @@ msgstr ""
 msgid "We Recommend"
 msgstr ""
 
-#: includes/masvideos-movie-template-functions.php:1030
+#: includes/masvideos-movie-template-functions.php:961
+msgid "Trailers & Clips"
+msgstr ""
+
+#: includes/masvideos-movie-template-functions.php:1071
 #: includes/masvideos-tv-show-template-functions.php:1105
 #: includes/masvideos-video-template-functions.php:939
 msgid "+ Playlist"
 msgstr ""
 
-#: includes/masvideos-movie-template-functions.php:1036
+#: includes/masvideos-movie-template-functions.php:1077
 #: includes/masvideos-tv-show-template-functions.php:1111
 #: includes/masvideos-video-template-functions.php:945
 msgid "Create a playlist"
 msgstr ""
 
-#: includes/masvideos-movie-template-functions.php:1038
+#: includes/masvideos-movie-template-functions.php:1079
 msgid "Sign in to add this movie to a playlist."
+msgstr ""
+
+#: includes/masvideos-movie-template-functions.php:1354
+#: includes/masvideos-tv-show-template-functions.php:1371
+msgid "Crew & Casts"
+msgstr ""
+
+#: includes/masvideos-movie-template-functions.php:1422
+#: includes/masvideos-person-template-functions.php:771
+#: includes/masvideos-person-template-functions.php:899
+#: includes/masvideos-tv-show-template-functions.php:1434
+msgid "Unknown"
+msgstr ""
+
+#: includes/masvideos-movie-template-functions.php:1462
+msgid "Gallery"
 msgstr ""
 
 #: includes/masvideos-notice-functions.php:25
@@ -3275,6 +4283,35 @@ msgstr ""
 #: includes/masvideos-notice-functions.php:127
 #: includes/masvideos-notice-functions.php:182
 msgid "This function should not be called before masvideos_init."
+msgstr ""
+
+#: includes/masvideos-person-template-functions.php:287
+msgid "No persons were found matching your selection."
+msgstr ""
+
+#: includes/masvideos-person-template-functions.php:708
+#: includes/masvideos-person-template-functions.php:809
+msgid "Acting"
+msgstr ""
+
+#: includes/masvideos-person-template-functions.php:973
+msgid "Known For"
+msgstr ""
+
+#: includes/masvideos-person-template-functions.php:996
+msgid "Known Credits"
+msgstr ""
+
+#: includes/masvideos-person-template-functions.php:1015
+msgid "Birthday"
+msgstr ""
+
+#: includes/masvideos-person-template-functions.php:1035
+msgid "Place of Birth"
+msgstr ""
+
+#: includes/masvideos-person-template-functions.php:1054
+msgid "Also Known As"
 msgstr ""
 
 #: includes/masvideos-rest-functions.php:74
@@ -3310,42 +4347,43 @@ msgstr ""
 msgid "The date you provided is invalid."
 msgstr ""
 
-#: includes/masvideos-template-functions.php:235
+#: includes/masvideos-template-functions.php:252
 msgid "Placeholder"
 msgstr ""
 
-#: includes/masvideos-template-functions.php:302
+#: includes/masvideos-template-functions.php:319
 msgid "required"
 msgstr ""
 
-#: includes/masvideos-template-functions.php:304
+#: includes/masvideos-template-functions.php:321
 msgid "optional"
 msgstr ""
 
-#: includes/masvideos-template-functions.php:386
+#: includes/masvideos-template-functions.php:403
 msgid "Choose an option"
 msgstr ""
 
-#: includes/masvideos-template-functions.php:588
+#: includes/masvideos-template-functions.php:605
 #. translators: 1: The rating, 2: The number of ratings
 msgid "%1$s rating based on %2$s rating"
 msgid_plural "%1$s rating based on %2$s ratings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/masvideos-template-functions.php:592
+#: includes/masvideos-template-functions.php:609
 #. translators: 1: The rating
 msgid "%s rating"
 msgstr ""
 
 #: includes/masvideos-term-functions.php:230
 #: includes/masvideos-term-functions.php:442
-#: includes/masvideos-term-functions.php:654
+#: includes/masvideos-term-functions.php:472
 #: includes/masvideos-term-functions.php:684
 msgid "Select a Genre"
 msgstr ""
 
-#: includes/masvideos-term-functions.php:896
+#: includes/masvideos-term-functions.php:886
+#: includes/masvideos-term-functions.php:1098
 #: includes/widgets/class-masvideos-widget-videos-categories.php:258
 msgid "Select a category"
 msgstr ""
@@ -3365,7 +4403,7 @@ msgid "Newest Episode: "
 msgstr ""
 
 #: includes/masvideos-tv-show-template-functions.php:756
-msgid "<div class=\"tv-show__episode\">%s</div> Episode"
+msgid "<span>%s</span> Episode"
 msgid_plural "<span>%s</span> Episodes"
 msgstr[0] ""
 msgstr[1] ""
@@ -3424,10 +4462,6 @@ msgstr ""
 
 #: includes/masvideos-video-template-functions.php:587
 msgid "ago"
-msgstr ""
-
-#: includes/masvideos-video-template-functions.php:865
-msgid "Related Videos"
 msgstr ""
 
 #: includes/masvideos-video-template-functions.php:894
@@ -3911,6 +4945,30 @@ msgstr ""
 msgid "MAS Videos Filter Videos by Rating"
 msgstr ""
 
+#: templates/global/photoswipe.php:33
+msgid "Close (Esc)"
+msgstr ""
+
+#: templates/global/photoswipe.php:34
+msgid "Share"
+msgstr ""
+
+#: templates/global/photoswipe.php:35
+msgid "Toggle fullscreen"
+msgstr ""
+
+#: templates/global/photoswipe.php:36
+msgid "Zoom in/out"
+msgstr ""
+
+#: templates/global/photoswipe.php:48
+msgid "Previous (arrow left)"
+msgstr ""
+
+#: templates/global/photoswipe.php:49
+msgid "Next (arrow right)"
+msgstr ""
+
 #: templates/myaccount/dashboard.php:27
 #. translators: 1: user display name 2: logout url
 msgid "Hello %1$s (not %1$s? <a href=\"%2$s\">Log out</a>)"
@@ -3950,7 +5008,7 @@ msgid "Username or email address"
 msgstr ""
 
 #: templates/myaccount/form-login.php:37
-#: templates/myaccount/form-register.php:49
+#: templates/myaccount/form-register.php:51
 msgid "Password"
 msgstr ""
 
@@ -3966,16 +5024,16 @@ msgstr ""
 msgid "Lost your password?"
 msgstr ""
 
-#: templates/myaccount/form-register.php:26
-#: templates/myaccount/form-register.php:59
+#: templates/myaccount/form-register.php:28
+#: templates/myaccount/form-register.php:61
 msgid "Register"
 msgstr ""
 
-#: templates/myaccount/form-register.php:35
+#: templates/myaccount/form-register.php:37
 msgid "Username"
 msgstr ""
 
-#: templates/myaccount/form-register.php:42
+#: templates/myaccount/form-register.php:44
 msgid "Email address"
 msgstr ""
 
@@ -4077,9 +5135,13 @@ msgid "Your review"
 msgstr ""
 
 #: templates/single-episode-reviews.php:97
-#: templates/single-movie-reviews.php:97
+#: templates/single-movie-reviews.php:98
 #: templates/single-tv-show-reviews.php:97
 msgid "There are no reviews yet."
+msgstr ""
+
+#: templates/single-movie-reviews.php:80
+msgid "Users Reviews"
 msgstr ""
 
 #: templates/single-video-reviews.php:34
@@ -4177,97 +5239,113 @@ msgid "Searching&hellip;"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:117
-#: includes/masvideos-core-functions.php:295
+#: includes/masvideos-core-functions.php:296
 msgctxt "slug"
 msgid "movie-genre"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:126
-#: includes/masvideos-core-functions.php:296
+#: includes/masvideos-core-functions.php:297
 msgctxt "slug"
 msgid "movie-tag"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:144
-#: includes/masvideos-core-functions.php:290
+#: includes/masvideos-core-functions.php:291
 msgctxt "slug"
 msgid "video-category"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:153
-#: includes/masvideos-core-functions.php:291
+#: includes/masvideos-core-functions.php:292
 msgctxt "slug"
 msgid "video-tag"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:171
-#: includes/masvideos-core-functions.php:300
+#: includes/masvideos-core-functions.php:301
 msgctxt "slug"
 msgid "tv-show-genre"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:180
-#: includes/masvideos-core-functions.php:301
+#: includes/masvideos-core-functions.php:302
 msgctxt "slug"
 msgid "tv-show-tag"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:396
 #: includes/admin/class-masvideos-admin-permalink-settings.php:399
-#: includes/masvideos-core-functions.php:294
+#: includes/masvideos-core-functions.php:295
 msgctxt "slug"
 msgid "movie"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:433
 #: includes/admin/class-masvideos-admin-permalink-settings.php:436
-#: includes/masvideos-core-functions.php:289
+#: includes/masvideos-core-functions.php:290
 msgctxt "slug"
 msgid "video"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:470
 #: includes/admin/class-masvideos-admin-permalink-settings.php:473
-#: includes/masvideos-core-functions.php:299
+#: includes/masvideos-core-functions.php:300
 msgctxt "slug"
 msgid "tv-show"
 msgstr ""
 
 #: includes/admin/class-masvideos-admin-permalink-settings.php:493
-#: includes/masvideos-core-functions.php:304
+#: includes/masvideos-core-functions.php:305
 msgctxt "slug"
 msgid "episode"
 msgstr ""
 
-#: includes/masvideos-core-functions.php:293
+#: includes/masvideos-core-functions.php:294
 msgctxt "slug"
 msgid "video-playlist"
 msgstr ""
 
-#: includes/masvideos-core-functions.php:298
+#: includes/masvideos-core-functions.php:299
 msgctxt "slug"
 msgid "movie-playlist"
 msgstr ""
 
-#: includes/masvideos-core-functions.php:303
+#: includes/masvideos-core-functions.php:304
 msgctxt "slug"
 msgid "tv-show-playlist"
 msgstr ""
 
-#: includes/masvideos-core-functions.php:305
+#: includes/masvideos-core-functions.php:306
 msgctxt "slug"
 msgid "episode-genre"
 msgstr ""
 
-#: includes/masvideos-core-functions.php:306
+#: includes/masvideos-core-functions.php:307
 msgctxt "slug"
 msgid "episode-tag"
 msgstr ""
 
-#: includes/masvideos-episode-functions.php:436
-#: includes/masvideos-movie-functions.php:398
+#: includes/masvideos-core-functions.php:309
+msgctxt "slug"
+msgid "person"
+msgstr ""
+
+#: includes/masvideos-core-functions.php:310
+msgctxt "slug"
+msgid "person-category"
+msgstr ""
+
+#: includes/masvideos-core-functions.php:311
+msgctxt "slug"
+msgid "person-tag"
+msgstr ""
+
+#: includes/masvideos-episode-functions.php:444
+#: includes/masvideos-movie-functions.php:414
+#: includes/masvideos-person-functions.php:381
 #: includes/masvideos-tv-show-functions.php:408
-#: includes/masvideos-video-functions.php:407
+#: includes/masvideos-video-functions.php:415
 msgctxt "slug"
 msgid "uncategorized"
 msgstr ""
@@ -4300,54 +5378,64 @@ msgctxt "default-slug"
 msgid "episode"
 msgstr ""
 
-#: includes/class-masvideos-install.php:267
+#: includes/class-masvideos-install.php:272
 msgctxt "Page slug"
 msgid "my-account"
 msgstr ""
 
-#: includes/class-masvideos-install.php:272
+#: includes/class-masvideos-install.php:277
 msgctxt "Page slug"
 msgid "upload-video"
 msgstr ""
 
-#: includes/class-masvideos-install.php:277
+#: includes/class-masvideos-install.php:282
 msgctxt "Page slug"
 msgid "movies"
 msgstr ""
 
-#: includes/class-masvideos-install.php:282
+#: includes/class-masvideos-install.php:287
 msgctxt "Page slug"
 msgid "tv-shows"
 msgstr ""
 
-#: includes/class-masvideos-install.php:287
+#: includes/class-masvideos-install.php:292
 msgctxt "Page slug"
 msgid "videos"
 msgstr ""
 
-#: includes/class-masvideos-install.php:268
-msgctxt "Page title"
-msgid "My Account"
+#: includes/class-masvideos-install.php:297
+msgctxt "Page slug"
+msgid "persons"
 msgstr ""
 
 #: includes/class-masvideos-install.php:273
 msgctxt "Page title"
-msgid "Upload Video"
+msgid "My Account"
 msgstr ""
 
 #: includes/class-masvideos-install.php:278
 msgctxt "Page title"
-msgid "Movies"
+msgid "Upload Video"
 msgstr ""
 
 #: includes/class-masvideos-install.php:283
 msgctxt "Page title"
-msgid "TV Shows"
+msgid "Movies"
 msgstr ""
 
 #: includes/class-masvideos-install.php:288
 msgctxt "Page title"
+msgid "TV Shows"
+msgstr ""
+
+#: includes/class-masvideos-install.php:293
+msgctxt "Page title"
 msgid "Videos"
+msgstr ""
+
+#: includes/class-masvideos-install.php:298
+msgctxt "Page title"
+msgid "Persons"
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:68
@@ -4385,27 +5473,34 @@ msgctxt "Admin menu name"
 msgid "Movie Playlists"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:514
-#: includes/class-masvideos-post-types.php:611
-#: includes/class-masvideos-post-types.php:803
+#: includes/class-masvideos-post-types.php:490
+msgctxt "Admin menu name"
+msgid "Persons"
+msgstr ""
+
+#: includes/class-masvideos-post-types.php:577
+#: includes/class-masvideos-post-types.php:672
+#: includes/class-masvideos-post-types.php:860
 msgctxt "Admin menu name"
 msgid "Genres"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:554
-#: includes/class-masvideos-post-types.php:651
-#: includes/class-masvideos-post-types.php:747
-#: includes/class-masvideos-post-types.php:843
+#: includes/class-masvideos-post-types.php:616
+#: includes/class-masvideos-post-types.php:711
+#: includes/class-masvideos-post-types.php:805
+#: includes/class-masvideos-post-types.php:899
+#: includes/class-masvideos-post-types.php:993
 msgctxt "Admin menu name"
 msgid "Tags"
 msgstr ""
 
-#: includes/class-masvideos-post-types.php:707
+#: includes/class-masvideos-post-types.php:766
+#: includes/class-masvideos-post-types.php:954
 msgctxt "Admin menu name"
 msgid "Categories"
 msgstr ""
 
-#: includes/data-stores/class-masvideos-data-store-wp.php:500
+#: includes/data-stores/class-masvideos-data-store-wp.php:504
 #. Translators: This is a comma-separated list of very common words that should
 #. be excluded from a search, like a, an, and the. These are usually called
 #. "stopwords". You should not simply translate these individual words into
@@ -4418,6 +5513,7 @@ msgid ""
 msgstr ""
 
 #: includes/masvideos-movie-template-functions.php:462
+#: includes/masvideos-person-template-functions.php:461
 #: includes/masvideos-tv-show-template-functions.php:464
 #: includes/masvideos-video-template-functions.php:449
 #. translators: 1: first result 2: last result 3: total results
@@ -4427,7 +5523,7 @@ msgid_plural "Showing %1$d&ndash;%2$d of %3$d results"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/masvideos-template-functions.php:645
+#: includes/masvideos-template-functions.php:662
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
