@@ -1049,13 +1049,13 @@ if ( ! function_exists( 'masvideos_template_single_person_also_known_as' ) ) {
      */
     function masvideos_template_single_person_also_known_as() {
         global $person;
-        $also_know_as = $person->get_also_known_as();
-        if( ! empty( $also_know_as ) ) :
-            $title = apply_filters( 'masvideos_template_single_person_also_known_as_title_text', __( 'Also Know As', 'masvideos' ) );
+        $also_known_as = $person->get_also_known_as();
+        if( ! empty( $also_known_as ) ) :
+            $title = apply_filters( 'masvideos_template_single_person_also_known_as_title_text', __( 'Also Known As', 'masvideos' ) );
             ?>
             <div class="single-person__other-names">
                 <h4 class="single-person__sidebar-title other-names-title"><?php echo esc_html( $title ); ?></h4>
-                <?php echo wp_kses_post( $also_know_as ); ?>
+                <?php echo wp_kses_post( $also_known_as ); ?>
             </div>
             <?php
         endif;
