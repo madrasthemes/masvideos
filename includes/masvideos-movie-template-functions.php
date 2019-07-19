@@ -1376,13 +1376,17 @@ if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
                                     <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
                                 </a>
                             </div>
-                            <a class="person-name-link" href="<?php the_permalink( $person->get_ID() ); ?>">
-                                <h3 class="person-name"><?php echo esc_html( $person->get_name() ); ?></h3>
-                            </a>
-                            <div class="person-role">
-                                <?php echo esc_html( $cast['character'] ); ?>
+                            <div class="movie-cast__person-info">
+                                <a class="person-name-link" href="<?php the_permalink( $person->get_ID() ); ?>">
+                                    <h3 class="person-name"><?php echo esc_html( $person->get_name() ); ?></h3>
+                                </a>
+                                <?php if( !empty( $cast['character'] )): ?>
+                                    <div class="person-role">
+                                        <?php echo esc_html( $cast['character'] ); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php do_action( 'masvideos_template_single_movie_cast_end', $cast ); ?>
                             </div>
-                            <?php do_action( 'masvideos_template_single_movie_cast_end', $cast ); ?>
                         </div>
                         <?php
                     }
@@ -1423,13 +1427,17 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                                     <?php echo wp_kses_post( $crew['person_image'] ); ?>
                                 </a>
                             </div>
-                            <a class="person-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
-                                <h3 class="person-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
-                            </a>
-                            <div class="person-role">
-                                <?php echo esc_html( $crew['job'] ); ?>
+                            <div class="movie-crew__person-info">
+                                <a class="person-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                                    <h3 class="person-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
+                                </a>
+                                <?php if( !empty( $cast['character'] )): ?>
+                                    <div class="person-role">
+                                        <?php echo esc_html( $crew['job'] ); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php do_action( 'masvideos_template_single_movie_crew_end', $crew ); ?>
                             </div>
-                            <?php do_action( 'masvideos_template_single_movie_crew_end', $crew ); ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
