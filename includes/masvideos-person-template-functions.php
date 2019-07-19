@@ -395,7 +395,7 @@ if ( ! function_exists( 'masvideos_persons_catalog_ordering' ) ) {
             'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
         ) );
 
-        $default_orderby = masvideos_get_persons_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_default_persons_catalog_orderby', get_option( 'masvideos_default_persons_catalog_orderby', 'release_date' ) );
+        $default_orderby = masvideos_get_persons_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'masvideos_default_persons_catalog_orderby', get_option( 'masvideos_default_persons_catalog_orderby', 'date' ) );
         $orderby         = isset( $_GET['orderby'] ) ? masvideos_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby; // WPCS: sanitization ok, input var ok, CSRF ok.
 
         if ( masvideos_get_persons_loop_prop( 'is_search' ) ) {

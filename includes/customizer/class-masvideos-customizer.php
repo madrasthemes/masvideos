@@ -147,7 +147,7 @@ class MasVideos_Customizer {
         $wp_customize->add_control(
             'masvideos_enable_myaccount_registration',
             array(
-                'label'    => esc_html__( 'Account creation', 'masvideos' ),
+                'label'    => esc_html__( 'Account Creation', 'masvideos' ),
                 'section'  => 'masvideos_myaccount',
                 'settings' => 'masvideos_enable_myaccount_registration',
                 'type'     => 'checkbox',
@@ -398,7 +398,6 @@ class MasVideos_Customizer {
                     'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
                     'date'          => esc_html__( 'Latest', 'masvideos' ),
                     'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
-                    'rating'        => esc_html__( 'Rating', 'masvideos' ),
                 ) ),
             )
         );
@@ -686,7 +685,6 @@ class MasVideos_Customizer {
                     'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
                     'date'          => esc_html__( 'Latest', 'masvideos' ),
                     'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
-                    'rating'        => esc_html__( 'Rating', 'masvideos' ),
                 ) ),
             )
         );
