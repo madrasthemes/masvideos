@@ -1431,7 +1431,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
                                 <a class="person-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
                                     <h3 class="person-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
                                 </a>
-                                <?php if( !empty( $cast['character'] )): ?>
+                                <?php if( !empty( $crew['job'] )): ?>
                                     <div class="person-role">
                                         <?php echo esc_html( $crew['job'] ); ?>
                                     </div>
