@@ -83,7 +83,7 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Changelog ==
 
-= 1.1.0 - 2019-07-20 =
+= 1.1.1 - 2019-07-20 =
 * Fix – Episode sources warning issue fixed
 
 = 1.1.0 - 2019-07-19 =
