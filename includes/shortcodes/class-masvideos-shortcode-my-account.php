@@ -39,6 +39,7 @@ class MasVideos_Shortcode_My_Account {
         } else {
             $title = apply_filters( 'masvideos_my_account_upload_video_title', esc_html__( 'Upload video', 'masvideos' ) );
             $button_text = apply_filters( 'masvideos_my_account_upload_video_button_text', esc_html__( 'Submit video', 'masvideos' ) );
+            $button_draft_text = apply_filters( 'masvideos_my_account_upload_video_button_draft_text', esc_html__( 'Save as Draft', 'masvideos' ) );
             $fields = masvideos_get_edit_video_fields();
             $video = false;
 
@@ -65,6 +66,7 @@ class MasVideos_Shortcode_My_Account {
                 'button_text'   => $button_text,
                 'fields'        => $fields,
                 'video'         => $video,
+                'button_draft_text' => $button_draft_text,
             ) );
         }
     }

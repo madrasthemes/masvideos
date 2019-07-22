@@ -43,6 +43,7 @@ do_action( 'masvideos_before_edit_video_form' ); ?>
 
         <p>
             <button type="submit" class="button" name="edit-video" value="<?php echo esc_attr( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></button>
+            <button type="submit" class="button" name="edit-video" value="draft"><?php echo esc_html( $button_draft_text ); ?></button>
             <?php wp_nonce_field( 'masvideos-edit-video', 'masvideos-edit-video-nonce' ); ?>
             <input name="id" type="hidden" value="<?php echo esc_attr( $id ); ?>" />
         </p>

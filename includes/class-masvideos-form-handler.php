@@ -197,6 +197,10 @@ class MasVideos_Form_Handler {
                 }
             }
 
+            if ( $_POST['edit-video'] == 'draft' ) {
+                $video->{"set_status"}( 'draft' );
+            }
+
             /**
              * Hook: masvideos_after_save_upload_video_validation.
              *
