@@ -198,7 +198,7 @@ class MasVideos_Form_Handler {
             }
 
             if ( $_POST['edit-video'] == 'draft' ) {
-                $video->{"set_status"}( 'draft' );
+                $video->set_status( 'draft' );
             }
 
             /**
