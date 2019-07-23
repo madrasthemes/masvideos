@@ -121,14 +121,14 @@ class MasVideos_Meta_Box_Episode_Data {
 
         if ( isset( $data['source_names'], $data['source_embed_content'] ) ) {
             $source_names         = $data['source_names'];
-            $source_choice        = $data['source_choice'];
+            $source_choice        = isset( $data['source_choice'] ) ? $data['source_choice'] : array();
             $source_embed_content = $data['source_embed_content'];
-            $source_link          = $data['source_link'];
-            $source_quality       = $data['source_quality'];
-            $source_language      = $data['source_language'];
-            $source_player        = $data['source_player'];
-            $source_date_added    = $data['source_date_added'];
-            $source_position      = $data['source_position'];
+            $source_link          = isset( $data['source_link'] ) ? $data['source_link'] : array();
+            $source_quality       = isset( $data['source_quality'] ) ? $data['source_quality'] : array();
+            $source_language      = isset( $data['source_language'] ) ? $data['source_language'] : array();
+            $source_player        = isset( $data['source_player'] ) ? $data['source_player'] : array();
+            $source_date_added    = isset( $data['source_date_added'] ) ? $data['source_date_added'] : array();
+            $source_position      = isset( $data['source_position'] ) ? $data['source_position'] : array();
             $source_names_max_key = max( array_keys( $source_names ) );
 
             for ( $i = 0; $i <= $source_names_max_key; $i++ ) {
@@ -215,43 +215,6 @@ class MasVideos_Meta_Box_Episode_Data {
     }
 
     /**
-     * Prepare attributes for a specific variation or defaults.
-     *
-     * @param  array  $all_attributes
-     * @param  string $key_prefix
-     * @param  int    $index
-     * @return array
-     */
-    private static function prepare_set_attributes( $all_attributes, $key_prefix = 'attribute_', $index = null ) {
-        $attributes = array();
-
-        if ( $all_attributes ) {
-            foreach ( $all_attributes as $attribute ) {
-                if ( $attribute->get_variation() ) {
-                    $attribute_key = sanitize_title( $attribute->get_name() );
-
-                    if ( ! is_null( $index ) ) {
-                        $value = isset( $_POST[ $key_prefix . $attribute_key ][ $index ] ) ? wp_unslash( $_POST[ $key_prefix . $attribute_key ][ $index ] ) : '';
-                    } else {
-                        $value = isset( $_POST[ $key_prefix . $attribute_key ] ) ? wp_unslash( $_POST[ $key_prefix . $attribute_key ] ) : '';
-                    }
-
-                    if ( $attribute->is_taxonomy() ) {
-                        // Don't use masvideos_clean as it destroys sanitized characters.
-                        $value = sanitize_title( $value );
-                    } else {
-                        $value = html_entity_decode( masvideos_clean( $value ), ENT_QUOTES, get_bloginfo( 'charset' ) ); // WPCS: sanitization ok.
-                    }
-
-                    $attributes[ $attribute_key ] = $value;
-                }
-            }
-        }
-
-        return $attributes;
-    }
-
-    /**
      * Save meta box data.
      *
      * @param int  $post_id
@@ -259,7 +222,6 @@ class MasVideos_Meta_Box_Episode_Data {
      */
     public static function save( $post_id, $post ) {
         // Process episode type first so we have the correct class to run setters.
-        // $episode_type = empty( $_POST['episode-type'] ) ? MasVideos_Episode_Factory::get_episode_type( $post_id ) : sanitize_title( stripslashes( $_POST['episode-type'] ) );
         $classname    = MasVideos_Episode_Factory::get_episode_classname( $post_id );
         $episode      = new $classname( $post_id );
         $attributes   = self::prepare_attributes();
@@ -277,8 +239,9 @@ class MasVideos_Meta_Box_Episode_Data {
                 'episode_url_link'            => isset( $_POST['_episode_url_link'] ) ? masvideos_clean( $_POST['_episode_url_link'] ) : null,
                 'episode_release_date'        => isset( $_POST['_episode_release_date'] ) ? masvideos_clean( $_POST['_episode_release_date'] ) : null,
                 'episode_run_time'            => isset( $_POST['_episode_run_time'] ) ? masvideos_clean( $_POST['_episode_run_time'] ) : null,
+                'imdb_id'                     => isset( $_POST['_imdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_imdb_id'] ) ) : null,
+                'tmdb_id'                     => isset( $_POST['_tmdb_id'] ) ? masvideos_clean( wp_unslash( $_POST['_tmdb_id'] ) ) : null,
                 'attributes'                  => $attributes,
-                // 'default_attributes' => self::prepare_set_attributes( $attributes, 'default_attribute_' ),
             )
         );
 

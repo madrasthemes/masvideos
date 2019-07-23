@@ -33,6 +33,84 @@ if ( ! function_exists( 'is_ajax' ) ) {
     }
 }
 
+if ( ! function_exists( 'is_persons' ) ) {
+
+    /**
+     * Is_shop - Returns true when viewing the person type archive (shop).
+     *
+     * @return bool
+     */
+    function is_persons() {
+        return ( is_post_type_archive( 'person' ) || is_page( masvideos_get_page_id( 'persons' ) ) );
+    }
+}
+
+if ( ! function_exists( 'is_person_taxonomy' ) ) {
+
+    /**
+     * Is_person_taxonomy - Returns true when viewing a person taxonomy archive.
+     *
+     * @return bool
+     */
+    function is_person_taxonomy() {
+        return is_tax( get_object_taxonomies( 'person' ) );
+    }
+}
+
+if ( ! function_exists( 'is_person_category' ) ) {
+
+    /**
+     * Is_person_category - Returns true when viewing a person category.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_person_category( $term = '' ) {
+        return is_tax( 'person_cat', $term );
+    }
+}
+
+if ( ! function_exists( 'is_person_tag' ) ) {
+
+    /**
+     * Is_person_tag - Returns true when viewing a person tag.
+     *
+     * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+     * @return bool
+     */
+    function is_person_tag( $term = '' ) {
+        return is_tax( 'person_tag', $term );
+    }
+}
+
+if ( ! function_exists( 'is_person' ) ) {
+
+    /**
+     * Is_person - Returns true when viewing a single person.
+     *
+     * @return bool
+     */
+    function is_person() {
+        return is_singular( array( 'person' ) );
+    }
+}
+
+if ( ! function_exists( 'taxonomy_is_person_attribute' ) ) {
+
+    /**
+     * Returns true when the passed taxonomy name is a person attribute.
+     *
+     * @uses   $maspersons_attributes global which stores taxonomy names upon registration
+     * @param  string $name of the attribute.
+     * @return bool
+     */
+    function taxonomy_is_person_attribute( $name ) {
+        global $masvideos_attributes;
+
+        return taxonomy_exists( $name ) && isset( $masvideos_attributes['person'] ) && array_key_exists( $name, (array) $masvideos_attributes['person'] );
+    }
+}
+
 if ( ! function_exists( 'is_videos' ) ) {
 
     /**

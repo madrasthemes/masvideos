@@ -54,6 +54,9 @@ function masvideos_importer_default_english_mappings( $mappings ) {
 		'Button text'                             => 'button_text',
 		'Position'                                => 'menu_order',
 		'Recommended Movie'                       => 'recommended_movie_ids',
+		'Related Video'                           => 'related_video_ids',
+		'IMDB ID'								  => 'imdb_id',
+		'TMDB ID' 								  => 'tmdb_id',
 	);
 
 	return array_merge( $mappings, $new_mappings );

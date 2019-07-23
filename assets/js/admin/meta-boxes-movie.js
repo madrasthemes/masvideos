@@ -26,7 +26,7 @@ jQuery( function( $ ) {
     });
 
     // Type box.
-    $( '.type_box' ).appendTo( '#masvideos-movie-data .hndle span' );
+    $( '.type_box' ).appendTo( '#masvideos-movie-data .handle span' );
 
     // Date picker fields.
     function date_picker_select( datepicker ) {
@@ -49,6 +49,272 @@ jQuery( function( $ ) {
             }
         });
         $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
+    });
+
+    // Cast Person Tables.
+
+    // Initial order.
+    var masvideos_person_items = $( '.movie_cast_persons' ).find( '.masvideos_cast_person' ).get();
+
+    masvideos_person_items.sort( function( a, b ) {
+       var compA = parseInt( $( a ).attr( 'rel' ), 10 );
+       var compB = parseInt( $( b ).attr( 'rel' ), 10 );
+       return ( compA < compB ) ? -1 : ( compA > compB ) ? 1 : 0;
+    });
+    $( masvideos_person_items ).each( function( index, el ) {
+        $( '.movie_cast_persons' ).append( el );
+    });
+
+    function movie_cast_person_row_indexes() {
+        $( '.movie_cast_persons .masvideos_cast_person' ).each( function( index, el ) {
+            $( '.person_position', el ).val( parseInt( $( el ).index( '.movie_cast_persons .masvideos_cast_person' ), 10 ) );
+        });
+    }
+
+    $( '.movie_cast_persons .masvideos_cast_person' ).each( function( index, el ) {
+        if ( $( el ).css( 'display' ) !== 'none' ) {
+            var exclude_ids = $( '#movie_cast_persons select.person_id' ).data( 'exclude' ) || [];
+            exclude_ids.push( $( el ).data( 'person_id' ) );
+            $( '#movie_cast_persons select.person_id' ).data( 'exclude', exclude_ids );
+        }
+    });
+
+    // Add rows.
+    $( 'button.add_person_movie_cast' ).on( 'click', function() {
+        var size         = $( '.movie_cast_persons .masvideos_cast_person' ).length;
+        var person_id    = $( '#movie_cast_persons select.person_id' ).val();
+        var $wrapper     = $( this ).closest( '#movie_cast_persons' );
+        var $persons     = $wrapper.find( '.movie_cast_persons' );
+        var data         = {
+            action:   'masvideos_add_person_movie_cast',
+            person_id: person_id,
+            i:        size,
+            security: masvideos_admin_meta_boxes.add_person_movie_nonce
+        };
+
+        $wrapper.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
+            $persons.append( response );
+
+            $( document.body ).trigger( 'masvideos-enhanced-select-init' );
+            movie_cast_person_row_indexes();
+            $wrapper.unblock();
+
+            $( document.body ).trigger( 'masvideos_added_person_movie_cast' );
+        });
+
+        if ( person_id ) {
+            var exclude_ids = $( '#movie_cast_persons select.person_id' ).data( 'exclude' ) || [];
+            exclude_ids.push( person_id );
+            $( '#movie_cast_persons select.person_id' ).data( 'exclude', exclude_ids );
+            $( '#movie_cast_persons select.person_id' ).val( '' ).trigger( 'change' );
+        }
+
+        return false;
+    });
+
+    $( '.movie_cast_persons' ).on( 'blur', 'input.person_id', function() {
+        $( this ).closest( '.masvideos_cast_person' ).find( 'strong.person_id' ).text( $( this ).val() );
+    });
+
+    $( '.movie_cast_persons' ).on( 'click', '.remove_row', function() {
+        if ( window.confirm( masvideos_admin_meta_boxes.remove_person ) ) {
+            var $parent = $( this ).parent().parent();
+
+            $parent.find( 'select, input[type=text], input[type=hidden]' ).val( '' );
+            $parent.hide();
+            var exclude_ids = $( '#movie_cast_persons select.person_id' ).data( 'exclude' ) || [];
+            exclude_ids.splice( $.inArray( $parent.data( 'person_id' ), exclude_ids ), 1 );
+            $( '#movie_cast_persons select.person_id' ).data( 'exclude', exclude_ids );
+            movie_cast_person_row_indexes();
+        }
+        return false;
+    });
+
+    // Person ordering.
+    $( '.movie_cast_persons' ).sortable({
+        items: '.masvideos_cast_person',
+        cursor: 'move',
+        axis: 'y',
+        handle: 'h3',
+        scrollSensitivity: 40,
+        forcePlaceholderSize: true,
+        helper: 'clone',
+        opacity: 0.65,
+        placeholder: 'masvideos-metabox-sortable-placeholder',
+        start: function( event, ui ) {
+            ui.item.css( 'background-color', '#f6f6f6' );
+        },
+        stop: function( event, ui ) {
+            ui.item.removeAttr( 'style' );
+            movie_cast_person_row_indexes();
+        }
+    });
+
+    // Save persons and update variations.
+    $( '.save_persons_movie_cast' ).on( 'click', function() {
+
+        $( '#masvideos-movie-data' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        var data = {
+            post_id     : masvideos_admin_meta_boxes.post_id,
+            data        : $( '.movie_cast_persons' ).find( 'input, select, textarea' ).serialize(),
+            action      : 'masvideos_save_persons_movie_cast',
+            security    : masvideos_admin_meta_boxes.save_persons_movie_nonce
+        };
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function() {
+            // Reload variations panel.
+            var this_page = window.location.toString();
+            this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+            $( '#masvideos-movie-data' ).unblock();
+        });
+    });
+
+    // Crew Person Tables.
+
+    // Initial order.
+    var masvideos_person_items = $( '.movie_crew_persons' ).find( '.masvideos_crew_person' ).get();
+
+    masvideos_person_items.sort( function( a, b ) {
+       var compA = parseInt( $( a ).attr( 'rel' ), 10 );
+       var compB = parseInt( $( b ).attr( 'rel' ), 10 );
+       return ( compA < compB ) ? -1 : ( compA > compB ) ? 1 : 0;
+    });
+    $( masvideos_person_items ).each( function( index, el ) {
+        $( '.movie_crew_persons' ).append( el );
+    });
+
+    function movie_crew_person_row_indexes() {
+        $( '.movie_crew_persons .masvideos_crew_person' ).each( function( index, el ) {
+            $( '.person_position', el ).val( parseInt( $( el ).index( '.movie_crew_persons .masvideos_crew_person' ), 10 ) );
+        });
+    }
+
+    $( '.movie_crew_persons .masvideos_crew_person' ).each( function( index, el ) {
+        if ( $( el ).css( 'display' ) !== 'none' ) {
+            var exclude_ids = $( '#movie_crew_persons select.person_id' ).data( 'exclude' ) || [];
+            // exclude_ids.push( $( el ).data( 'person_id' ) );
+            $( '#movie_crew_persons select.person_id' ).data( 'exclude', exclude_ids );
+        }
+    });
+
+    // Add rows.
+    $( 'button.add_person_movie_crew' ).on( 'click', function() {
+        var size         = $( '.movie_crew_persons .masvideos_crew_person' ).length;
+        var person_id    = $( '#movie_crew_persons select.person_id' ).val();
+        var $wrapper     = $( this ).closest( '#movie_crew_persons' );
+        var $persons     = $wrapper.find( '.movie_crew_persons' );
+        var data         = {
+            action:   'masvideos_add_person_movie_crew',
+            person_id: person_id,
+            i:        size,
+            security: masvideos_admin_meta_boxes.add_person_movie_nonce
+        };
+
+        $wrapper.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
+            $persons.append( response );
+
+            $( document.body ).trigger( 'masvideos-enhanced-select-init' );
+            movie_crew_person_row_indexes();
+            $wrapper.unblock();
+
+            $( document.body ).trigger( 'masvideos_added_person_movie_crew' );
+        });
+
+        if ( person_id ) {
+            var exclude_ids = $( '#movie_crew_persons select.person_id' ).data( 'exclude' ) || [];
+            // exclude_ids.push( person_id );
+            $( '#movie_crew_persons select.person_id' ).data( 'exclude', exclude_ids );
+            $( '#movie_crew_persons select.person_id' ).val( '' ).trigger( 'change' );
+        }
+
+        return false;
+    });
+
+    $( '.movie_crew_persons' ).on( 'blur', 'input.person_id', function() {
+        $( this ).closest( '.masvideos_crew_person' ).find( 'strong.person_id' ).text( $( this ).val() );
+    });
+
+    $( '.movie_crew_persons' ).on( 'click', '.remove_row', function() {
+        if ( window.confirm( masvideos_admin_meta_boxes.remove_person ) ) {
+            var $parent = $( this ).parent().parent();
+
+            $parent.find( 'select, input[type=text], input[type=hidden]' ).val( '' );
+            $parent.hide();
+            var exclude_ids = $( '#movie_crew_persons select.person_id' ).data( 'exclude' ) || [];
+            // exclude_ids.splice( $.inArray( $parent.data( 'person_id' ), exclude_ids ), 1 );
+            $( '#movie_crew_persons select.person_id' ).data( 'exclude', exclude_ids );
+            movie_crew_person_row_indexes();
+        }
+        return false;
+    });
+
+    // Person ordering.
+    $( '.movie_crew_persons' ).sortable({
+        items: '.masvideos_crew_person',
+        cursor: 'move',
+        axis: 'y',
+        handle: 'h3',
+        scrollSensitivity: 40,
+        forcePlaceholderSize: true,
+        helper: 'clone',
+        opacity: 0.65,
+        placeholder: 'masvideos-metabox-sortable-placeholder',
+        start: function( event, ui ) {
+            ui.item.css( 'background-color', '#f6f6f6' );
+        },
+        stop: function( event, ui ) {
+            ui.item.removeAttr( 'style' );
+            movie_crew_person_row_indexes();
+        }
+    });
+
+    // Save persons and update variations.
+    $( '.save_persons_movie_crew' ).on( 'click', function() {
+
+        $( '#masvideos-movie-data' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        var data = {
+            post_id     : masvideos_admin_meta_boxes.post_id,
+            data        : $( '.movie_crew_persons' ).find( 'input, select, textarea' ).serialize(),
+            action      : 'masvideos_save_persons_movie_crew',
+            security    : masvideos_admin_meta_boxes.save_persons_movie_nonce
+        };
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function() {
+            // Reload variations panel.
+            var this_page = window.location.toString();
+            this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+            $( '#masvideos-movie-data' ).unblock();
+        });
     });
 
     // Source Tables.

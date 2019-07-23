@@ -192,7 +192,7 @@ function masvideos_get_default_movie_rows_per_page() {
  * @param int|WP_Post|MasVideos_Movies_Query $movie_id Movie ID or movie object.
  */
 function masvideos_movie_class( $class = '', $movie_id = null ) {
-    // echo 'class="' . esc_attr( join( ' ', wc_get_movie_class( $class, $movie_id ) ) ) . '"';
+    // echo 'class="' . esc_attr( join( ' ', masvideos_movie_get_movie_class( $class, $movie_id ) ) ) . '"';
     post_class();
 }
 
@@ -933,6 +933,47 @@ if ( ! function_exists( 'masvideos_recommended_movies' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_movie_related_videos' ) ) {
+
+    /**
+     * Output the related videos of a movie.
+     *
+     * @param array $args Provided arguments.
+     */
+    function masvideos_movie_related_videos( $movie_id = false, $args = array() ) {
+        global $movie;
+
+        $movie_id = $movie_id ? $movie_id : $movie->get_id();
+
+        if ( ! $movie_id ) {
+            return;
+        }
+
+        $defaults = apply_filters( 'masvideos_movie_related_videos_default_args', array(
+            'limit'          => 4,
+            'columns'        => 4,
+            'orderby'        => 'post__in',
+            'order'          => 'asc',
+        ) );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $title = apply_filters( 'masvideos_movie_related_videos_title', esc_html__( 'Trailers & Clips', 'masvideos' ), $movie_id );
+
+        $related_video_ids = $movie->get_related_video_ids();
+        $args['ids'] = implode( ',', $related_video_ids );
+
+        if( ! empty( $related_video_ids ) ) {
+            echo '<section class="movie__related-video">';
+            echo '<div class="movie__related-video--inner">';
+                echo sprintf( '<h2 class="movie__related-video--title">%s</h2>', $title );
+                echo MasVideos_Shortcodes::videos( $args );
+            echo '</div>';
+            echo '</section>';
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_single_movie_tabs' ) ) {
 
     /**
@@ -1145,8 +1186,16 @@ if ( ! function_exists( 'masvideos_template_single_movie_play_source_link' ) ) {
      * Single movie play source link
      */
     function masvideos_template_single_movie_play_source_link( $source ) {
-        if( ! empty( $source['embed_content'] ) ) {
-            $source_content = apply_filters( 'the_content', $source['embed_content'] );
+        $source_content = ( $source['choice'] == 'movie_url' ) ? $source['link'] : $source['embed_content'];
+
+        if( isset( $source['is_affiliate'] ) && $source['is_affiliate'] && ! empty( $source_content ) ) {
+            ?>
+            <a href="<?php echo esc_url( $source_content ); ?>" class="play-source movie-affiliate-play-source" target="_blank">
+                <span><?php echo apply_filters( 'masvideos_movie_play_source_text', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
+            </a>
+            <?php
+        } else {
+            $source_content = apply_filters( 'the_content', $source_content );
             ?>
             <a href="#" class="play-source movie-play-source" data-content="<?php echo esc_attr( htmlspecialchars( $source_content ) ); ?>">
                 <span><?php echo apply_filters( 'masvideos_movie_play_source_text', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
@@ -1268,5 +1317,163 @@ if ( ! function_exists( 'masvideos_template_single_movie_info_right_wrap_close' 
         ?>
         </div>
         <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_cast_crew_tabs' ) ) {
+
+    /**
+     * Movie cast and crew tabs in the movie single.
+     */
+    function masvideos_template_single_movie_cast_crew_tabs() {
+        global $movie;
+
+        $tabs = array();
+
+        // Cast tab - shows movie content.
+        if ( $movie && ! empty( $movie->get_cast() ) ) {
+            $tabs['cast'] = array(
+                'title'     => esc_html__( 'Cast', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_movie_cast_tab',
+                'priority'  => 10
+            );
+        }
+
+        // Crew tab - shows movie content.
+        if ( $movie && ! empty( $movie->get_crew() ) ) {
+            $tabs['crew'] = array(
+                'title'     => esc_html__( 'Crew', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_movie_crew_tab',
+                'priority'  => 20
+            );
+        }
+
+        $tabs = apply_filters( 'masvideos_template_single_movie_cast_crew_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            ?><h2 class="crew-casts-title"><?php echo apply_filters( 'masvideos_template_single_movie_cast_crew_section_title', esc_html__( 'Crew & Casts', 'masvideos' ) ); ?></h2><?php
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'movie-cast-crew-tabs' ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_cast_tab' ) ) {
+    function masvideos_template_single_movie_cast_tab() {
+        global $movie;
+        $casts = $movie->get_cast();
+
+        if( ! empty( $casts ) ) {
+            ?>
+            <div class="movie-casts">
+                <?php
+                foreach( $casts as $cast ) {
+                    $person = masvideos_get_person( $cast['id'] );
+                    if( $person && is_a( $person, 'MasVideos_Person' ) ) {
+                        ?>
+                        <div class="movie-cast">
+                            <div class="person-image">
+                                <a href="<?php the_permalink( $person->get_ID() ); ?>">
+                                    <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
+                                </a>
+                            </div>
+                            <div class="movie-cast__person-info">
+                                <a class="person-name-link" href="<?php the_permalink( $person->get_ID() ); ?>">
+                                    <h3 class="person-name"><?php echo esc_html( $person->get_name() ); ?></h3>
+                                </a>
+                                <?php if( !empty( $cast['character'] )): ?>
+                                    <div class="person-role">
+                                        <?php echo esc_html( $cast['character'] ); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php do_action( 'masvideos_template_single_movie_cast_end', $cast ); ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+                ?>
+            </div>
+            <?php
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_crew_tab' ) ) {
+    function masvideos_template_single_movie_crew_tab() {
+        global $movie;
+        $crews = $movie->get_crew();
+        $category_based_crews = array();
+
+        if( ! empty( $crews ) ) {
+            foreach( $crews as $crew ) {
+                $person = masvideos_get_person( $crew['id'] );
+                if( $person && is_a( $person, 'MasVideos_Person' ) ) {
+                    $crew['person_name'] = $person->get_name();
+                    $crew['person_url'] = get_the_permalink( $person->get_ID() );
+                    $crew['person_image'] = masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person );
+                    $category_based_crews[$crew['category']][] = $crew;
+                }
+            }
+
+            foreach( $category_based_crews as $term_id => $crews ) {
+                $term = get_term( $term_id );
+                ?>
+                <div class="movie-crews">
+                    <h2 class="movie-crews-category-title"><?php echo esc_html( ! is_wp_error( $term ) ? $term->name : __( 'Unknown', 'masvideos' ) ); ?></h2>
+                    <?php foreach( $crews as $crew ): ?>
+                        <div class="movie-crew">
+                            <div class="person-image">
+                                <a href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                                    <?php echo wp_kses_post( $crew['person_image'] ); ?>
+                                </a>
+                            </div>
+                            <div class="movie-crew__person-info">
+                                <a class="person-name-link" href="<?php echo esc_url( $crew['person_url'] ); ?>">
+                                    <h3 class="person-name"><?php echo esc_html( $crew['person_name'] ); ?></h3>
+                                </a>
+                                <?php if( !empty( $crew['job'] )): ?>
+                                    <div class="person-role">
+                                        <?php echo esc_html( $crew['job'] ); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php do_action( 'masvideos_template_single_movie_crew_end', $crew ); ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php
+            }
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_movie_gallery' ) ) {
+    function masvideos_template_single_movie_gallery() {
+        global $movie;
+
+        $columns           = apply_filters( 'masvideos_movie_gallery_thumbnails_columns', 8 );
+        $attachment_ids    = $movie->get_gallery_image_ids();
+        $wrapper_classes   = apply_filters( 'masvideos_single_movie_image_gallery_classes', array(
+            'masvideos-movie-gallery',
+            'masvideos-movie-gallery--' . ( $movie->get_image_id() ? 'with-images' : 'without-images' ),
+            'masvideos-movie-gallery--columns-' . absint( $columns ),
+            'images',
+        ) );
+        $title = apply_filters( 'masvideos_template_single_movie_gallery_title', esc_html__( 'Gallery', 'masvideos' ));
+
+        if ( $attachment_ids && $movie->get_image_id() ) {
+            ?>
+            <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>">
+                <?php echo sprintf( '<h2 class="masvideos-movie-gallery__title">%s</h2>', $title ); ?>
+                <div class="masvideos-movie-gallery__inner">
+                    <?php
+                    foreach ( $attachment_ids as $attachment_id ) {
+                        echo apply_filters( 'masvideos_single_movie_image_thumbnail_html', masvideos_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+                    }
+                ?>
+                </div>
+            </div>
+            <?php
+        }
     }
 }

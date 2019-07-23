@@ -454,6 +454,58 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 	}
 
 	/**
+	 * Parse a category field from a CSV.
+	 * Categories are separated by commas and subcategories are "parent > subcategory".
+	 *
+	 * @param string $value Field value.
+	 * @return array of arrays with "parent" and "name" keys.
+	 */
+	public function parse_person_categories_field( $value ) {
+		if ( empty( $value ) ) {
+			return array();
+		}
+
+		$row_terms  = $this->explode_values( $value );
+		$categories = array();
+
+		foreach ( $row_terms as $row_term ) {
+			$parent = null;
+			$_terms = array_map( 'trim', explode( '>', $row_term ) );
+			$total  = count( $_terms );
+
+			foreach ( $_terms as $index => $_term ) {
+				// Check if category exists. Parent must be empty string or null if doesn't exists.
+				$term = term_exists( $_term, 'person_cat', $parent );
+
+				if ( is_array( $term ) ) {
+					$term_id = $term['term_id'];
+					// Don't allow users without capabilities to create new categories.
+				} elseif ( ! current_user_can( 'manage_person_terms' ) ) {
+					break;
+				} else {
+					$term = wp_insert_term( $_term, 'person_cat', array( 'parent' => intval( $parent ) ) );
+
+					if ( is_wp_error( $term ) ) {
+						break; // We cannot continue if the term cannot be inserted.
+					}
+
+					$term_id = $term['term_id'];
+				}
+
+				// Only requires assign the last category.
+				if ( ( 1 + $index ) === $total ) {
+					$categories[] = $term_id;
+				} else {
+					// Store parent to be able to insert or query categories based in parent ID.
+					$parent = $term_id;
+				}
+			}
+		}
+
+		return $categories;
+	}
+
+	/**
 	 * Get formatting callback.
 	 *
 	 * @return array
@@ -481,21 +533,36 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 			'movie_attachment_id'    => array( $this, 'parse_images_field' ),
 			'movie_embed_content'    => 'masvideos_sanitize_textarea_iframe',
 			'movie_url_link'         => 'esc_url_raw',
+			'movie_is_affiliate_link'=> array( $this, 'parse_bool_field' ),
 			'movie_release_date'     => array( $this, 'parse_date_field' ),
 			'movie_run_time'         => array( $this, 'parse_skip_field' ),
 			'movie_censor_rating'    => array( $this, 'parse_skip_field' ),
 			'menu_order'             => 'intval',
 			'recommended_movie_ids'  => array( $this, 'parse_relative_comma_field' ),
+			'related_video_ids'      => array( $this, 'parse_relative_comma_field' ),
+			'imdb_id'                => array( $this, 'parse_skip_field' ),
+			'tmdb_id'                => array( $this, 'parse_skip_field' ),
 		);
 
 		/**
 		 * Match special column names.
 		 */
 		$regex_match_data_formatting = array(
-			'/attributes:value*/'    => array( $this, 'parse_comma_field' ),
-			'/attributes:visible*/'  => array( $this, 'parse_bool_field' ),
-			'/attributes:taxonomy*/' => array( $this, 'parse_bool_field' ),
-			'/meta:*/'               => 'wp_kses_post', // Allow some HTML in meta fields.
+			'/cast:images*/'             => array( $this, 'parse_images_field' ),
+			'/cast:category*/'           => array( $this, 'parse_person_categories_field' ),
+			'/cast:position*/'           => 'intval',
+			'/crew:images*/'             => array( $this, 'parse_images_field' ),
+			'/crew:category*/'           => array( $this, 'parse_person_categories_field' ),
+			'/crew:position*/'           => 'intval',
+			'/attributes:value*/'        => array( $this, 'parse_comma_field' ),
+			'/attributes:visible*/'      => array( $this, 'parse_bool_field' ),
+			'/attributes:taxonomy*/'     => array( $this, 'parse_bool_field' ),
+			'/sources:embed_content*/'   => 'masvideos_sanitize_textarea_iframe',
+			'/sources:link*/'            => 'esc_url_raw',
+			'/sources:is_affiliate*/'	 => array( $this, 'parse_bool_field' ),
+			'/sources:date_added*/'      => array( $this, 'parse_date_field' ),
+			'/sources:position*/'        => 'intval',
+			'/meta:*/'                   => 'wp_kses_post', // Allow some HTML in meta fields.
 		);
 
 		$callbacks = array();
@@ -565,11 +632,110 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 		}
 
 		// Handle special column names which span multiple columns.
+		$cast = array();
+		$crew = array();
 		$attributes = array();
+		$sources = array();
 		$meta_data  = array();
 
 		foreach ( $data as $key => $value ) {
-			if ( $this->starts_with( $key, 'attributes:name' ) ) {
+			if ( $this->starts_with( $key, 'cast:id' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:id', '', $key ) ]['id'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'cast:imdb_id' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:imdb_id', '', $key ) ]['imdb_id'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'cast:tmdb_id' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:tmdb_id', '', $key ) ]['tmdb_id'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'cast:name' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:name', '', $key ) ]['name'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'cast:images' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:images', '', $key ) ]['images'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'cast:category' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:category', '', $key ) ]['category'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'cast:character' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:character', '', $key ) ]['character'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'cast:position' ) ) {
+				if ( ! empty( $value ) ) {
+					$cast[ str_replace( 'cast:position', '', $key ) ]['position'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:id' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:id', '', $key ) ]['id'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:imdb_id' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:imdb_id', '', $key ) ]['imdb_id'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:tmdb_id' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:tmdb_id', '', $key ) ]['tmdb_id'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:name' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:name', '', $key ) ]['name'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:images' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:images', '', $key ) ]['images'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:category' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:category', '', $key ) ]['category'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:job' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:job', '', $key ) ]['job'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'crew:position' ) ) {
+				if ( ! empty( $value ) ) {
+					$crew[ str_replace( 'crew:position', '', $key ) ]['position'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'attributes:name' ) ) {
 				if ( ! empty( $value ) ) {
 					$attributes[ str_replace( 'attributes:name', '', $key ) ]['name'] = $value;
 				}
@@ -593,12 +759,94 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 				}
 				unset( $data[ $key ] );
 
+			} elseif ( $this->starts_with( $key, 'sources:name' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:name', '', $key ) ]['name'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:choice' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:choice', '', $key ) ]['choice'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:embed_content' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:embed_content', '', $key ) ]['embed_content'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:link' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:link', '', $key ) ]['link'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:is_affiliate' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:is_affiliate', '', $key ) ]['is_affiliate'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:quality' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:quality', '', $key ) ]['quality'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:language' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:language', '', $key ) ]['language'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:player' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:player', '', $key ) ]['player'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:date_added' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:date_added', '', $key ) ]['date_added'] = $value;
+				}
+				unset( $data[ $key ] );
+
+			} elseif ( $this->starts_with( $key, 'sources:position' ) ) {
+				if ( ! empty( $value ) ) {
+					$sources[ str_replace( 'sources:position', '', $key ) ]['position'] = $value;
+				}
+				unset( $data[ $key ] );
+
 			} elseif ( $this->starts_with( $key, 'meta:' ) ) {
 				$meta_data[] = array(
 					'key'   => str_replace( 'meta:', '', $key ),
 					'value' => $value,
 				);
 				unset( $data[ $key ] );
+			}
+		}
+
+		if ( ! empty( $cast ) ) {
+			// Remove empty cast and clear indexes.
+			foreach ( $cast as $person ) {
+				if ( empty( $person['id'] ) && empty( $person['name'] ) ) {
+					continue;
+				}
+
+				$data['raw_cast'][] = $person;
+			}
+		}
+
+		if ( ! empty( $crew ) ) {
+			// Remove empty crew and clear indexes.
+			foreach ( $crew as $person ) {
+				if ( empty( $person['id'] ) && empty( $person['name'] ) ) {
+					continue;
+				}
+
+				$data['raw_crew'][] = $person;
 			}
 		}
 
@@ -610,6 +858,17 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 				}
 
 				$data['raw_attributes'][] = $attribute;
+			}
+		}
+
+		if ( ! empty( $sources ) ) {
+			// Remove empty sources and clear indexes.
+			foreach ( $sources as $source ) {
+				if ( empty( $source['name'] ) ) {
+					continue;
+				}
+
+				$data['raw_sources'][] = $source;
 			}
 		}
 

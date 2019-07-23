@@ -40,7 +40,7 @@ $sources = $movie->get_sources();
     <tbody>
         <?php foreach ( $sources as $key => $source ) : ?>
             <?php
-                if( empty( $source['embed_content'] ) ) {
+                if( empty( $source['embed_content'] ) && empty( $source['link'] ) ) {
                     continue;
                 }
             ?>

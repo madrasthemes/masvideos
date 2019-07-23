@@ -25,12 +25,11 @@ if ( defined( 'MASVIDEOS_REMOVE_ALL_DATA' ) && true === MASVIDEOS_REMOVE_ALL_DAT
 
     // Pages.
     wp_trash_post( get_option( 'masvideos_myaccount_page_id' ) );
+    wp_trash_post( get_option( 'masvideos_upload_video_page_id' ) );
     wp_trash_post( get_option( 'masvideos_movies_page_id' ) );
-    wp_trash_post( get_option( 'masvideos_movie_playlists_page_id' ) );
     wp_trash_post( get_option( 'masvideos_tv_shows_page_id' ) );
-    wp_trash_post( get_option( 'masvideos_tv_show_playlists_page_id' ) );
     wp_trash_post( get_option( 'masvideos_videos_page_id' ) );
-    wp_trash_post( get_option( 'masvideos_video_playlists_page_id' ) );
+    wp_trash_post( get_option( 'masvideos_persons_page_id' ) );
 
     // Tables.
     MasVideos_Install::drop_tables();

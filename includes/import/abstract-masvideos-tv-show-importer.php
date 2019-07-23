@@ -156,6 +156,89 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
     }
 
     /**
+     * Prepare a single person for create or update.
+     *
+     * @param  array $data     Item data.
+     * @return MasVideos_Person|WP_Error
+     */
+    protected function get_person_object( $data ) {
+        // Get person ID from TMDB ID if created during the importation.
+        if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+            $person_id = masvideos_get_person_id_by_tmdb_id( $data['tmdb_id'] );
+
+            if ( $person_id ) {
+                $data['id'] = $person_id;
+            }
+        }
+
+        // Get person ID from IMDB ID if created during the importation.
+        if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+            $person_id = masvideos_get_person_id_by_imdb_id( $data['imdb_id'] );
+
+            if ( $person_id ) {
+                $data['id'] = $person_id;
+            }
+        }
+
+        $id = isset( $data['id'] ) ? absint( $data['id'] ) : 0;
+
+        if ( ! empty( $data['id'] ) ) {
+            $person = masvideos_get_person( $id );
+
+            if ( ! $person ) {
+                return new WP_Error(
+                    'masvideos_tv_show_csv_importer_invalid_person_id',
+                    /* translators: %d: person ID */
+                    sprintf( __( 'Invalid person ID %d.', 'masvideos' ), $id ),
+                    array(
+                        'id'     => $id,
+                        'status' => 401,
+                    )
+                );
+            }
+        } else {
+            $person = new MasVideos_Person( $id );
+
+            $person->set_status( 'publish' );
+            $person->set_slug( '' );
+
+            if( ! empty( $data['name'] ) ) {
+                $person->set_name( $data['name'] );
+            }
+
+            if( ! empty( $data['imdb_id'] ) ) {
+                $person->set_imdb_id( $data['imdb_id'] );
+            }
+
+            if( ! empty( $data['tmdb_id'] ) ) {
+                $person->set_tmdb_id( $data['tmdb_id'] );
+            }
+
+            // Images field maps to image and gallery id fields.
+            if ( isset( $data['images'] ) ) {
+                $images               = $data['images'];
+                $data['raw_image_id'] = array_shift( $images );
+
+                if ( ! empty( $images ) ) {
+                    $data['raw_gallery_image_ids'] = $images;
+                }
+                unset( $data['images'] );
+
+                $this->set_image_data( $person, $data );
+            }
+
+            if( ! empty( $data['category'] ) ) {
+                $person->set_category_ids( $data['category'] );
+            }
+
+            $person->save();
+
+        }
+
+        return apply_filters( 'masvideos_tv_show_import_get_person_object', $person, $data );
+    }
+
+    /**
      * Prepare a single episode for create or update.
      *
      * @param  array $data     Item data.
@@ -227,8 +310,44 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
             do_action( 'masvideos_tv_show_import_before_process_item', $data );
 
             if ( 'episode' === $data['type'] ) {
+                // Get episode ID from TMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+                    $episode_id = masvideos_get_episode_id_by_tmdb_id( $data['tmdb_id'] );
+
+                    if ( $episode_id ) {
+                        $data['id'] = $episode_id;
+                    }
+                }
+
+                // Get episode ID from IMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+                    $episode_id = masvideos_get_episode_id_by_imdb_id( $data['imdb_id'] );
+
+                    if ( $episode_id ) {
+                        $data['id'] = $episode_id;
+                    }
+                }
+
                 $object   = $this->get_episode_object( $data );
             } else {
+                // Get tv show ID from TMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['tmdb_id'] ) ) {
+                    $tv_show_id = masvideos_get_tv_show_id_by_tmdb_id( $data['tmdb_id'] );
+
+                    if ( $tv_show_id ) {
+                        $data['id'] = $tv_show_id;
+                    }
+                }
+
+                // Get tv show ID from IMDB ID if created during the importation.
+                if ( empty( $data['id'] ) && ! empty( $data['imdb_id'] ) ) {
+                    $tv_show_id = masvideos_get_tv_show_id_by_imdb_id( $data['imdb_id'] );
+
+                    if ( $tv_show_id ) {
+                        $data['id'] = $tv_show_id;
+                    }
+                }
+
                 $object   = $this->get_tv_show_object( $data );
             }
             $updating = false;
@@ -246,7 +365,7 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
                 $object->set_slug( '' );
             }
 
-            $result = $object->set_props( array_diff_key( $data, array_flip( array( 'meta_data', 'raw_image_id', 'raw_gallery_image_ids', 'raw_attributes' ) ) ) );
+            $result = $object->set_props( array_diff_key( $data, array_flip( array( 'meta_data', 'raw_image_id', 'raw_gallery_image_ids', 'raw_cast', 'raw_crew', 'raw_attributes', 'raw_sources' ) ) ) );
 
             if ( is_wp_error( $result ) ) {
                 throw new Exception( $result->get_error_message() );
@@ -266,6 +385,8 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
 
             if ( 'episode' === $data['type'] ) {
                 $this->set_episode_data_to_tv_show( $object, $data );
+            } else {
+                $this->set_tv_show_credits( $object, $data );
             }
 
             do_action( 'masvideos_tv_show_import_inserted_tv_show_object', $object, $data );
@@ -375,6 +496,28 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
 
             $episode->set_attributes( $attributes );
         }
+
+        if ( isset( $data['raw_sources'] ) ) {
+            $sources          = array();
+
+            foreach ( $data['raw_sources'] as $position => $source ) {
+                $source = array(
+                    'name'          => isset( $source['name'] ) ? masvideos_clean( $source['name'] ) : '',
+                    'choice'        => isset( $source['choice'] ) ? masvideos_clean( $source['choice'] ) : '',
+                    'embed_content' => isset( $source['embed_content'] ) ? masvideos_sanitize_textarea_iframe( stripslashes( $source['embed_content'] ) ) : '',
+                    'link'          => isset( $source['link'] ) ? masvideos_clean( $source['link'] ) : '',
+                    'quality'       => isset( $source['quality'] ) ? masvideos_clean( $source['quality'] ) : '',
+                    'language'      => isset( $source['language'] ) ? masvideos_clean( $source['language'] ) : '',
+                    'player'        => isset( $source['player'] ) ? masvideos_clean( $source['player'] ) : '',
+                    'date_added'    => isset( $source['date_added'] ) ? masvideos_clean( $source['date_added'] ) : '',
+                    'position'      => isset( $source['position'] ) ? absint( $source['position'] ) : $position
+                );
+
+                $sources[] = $source;
+            }
+
+            $episode->set_sources( $sources );
+        }
     }
 
     /**
@@ -406,6 +549,90 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
                 $episode->set_tv_show_season_id( $season_key );
             }
         }
+    }
+
+    /**
+     * Set tv show data.
+     *
+     * @param MasVideos_TV_Show $tv_show TV Show instance.
+     * @param array           $data  Item data.
+     * @throws Exception             If data cannot be set.
+     */
+    protected function set_tv_show_credits( &$tv_show, $data ) {
+        if ( isset( $data['raw_cast'] ) ) {
+            $existing_cast = $tv_show->get_cast( 'edit' );
+            $cast          = ! empty( $existing_cast ) ? $existing_cast : array();
+
+            foreach ( $data['raw_cast'] as $position => $person ) {
+                $person_object = $this->get_person_object( $person );
+                if ( ! is_wp_error( $person_object ) ) {
+                    $person = array(
+                        'id'           => $person_object->get_id(),
+                        'character'    => isset( $person['character'] ) ? $person['character'] : '',
+                        'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
+                    );
+
+                    $found_key = array_search( $person['id'], array_column( $cast, 'id' ) );
+                    if( $found_key !== false ) {
+                        $cast[$found_key] = $person;
+                    } else {
+                        $cast[] = $person;
+                    }
+
+                    if( ! empty( $person['id'] ) ) {
+                        $tv_show_id = $tv_show->get_id();
+                        MasVideos_Meta_Box_Person_Data::update_credit( $tv_show_id, $person['id'], 'tv_show_cast' );
+                    }
+
+                }
+            }
+
+            $tv_show->set_cast( $cast );
+        }
+
+        if ( isset( $data['raw_crew'] ) ) {
+            $existing_crew = $tv_show->get_crew( 'edit' );
+            $crew          = ! empty( $existing_crew ) ? $existing_crew : array();
+
+            foreach ( $data['raw_crew'] as $position => $person ) {
+                $person_object = $this->get_person_object( $person );
+                if ( ! is_wp_error( $person_object ) ) {
+                    $person = array(
+                        'id'           => $person_object->get_id(),
+                        'category'     => isset( $person['category'] ) && is_array( $person['category'] ) ? implode( ',', $person['category'] ) : '',
+                        'job'          => isset( $person['job'] ) ? $person['job'] : '',
+                        'position'     => isset( $person['position'] ) ? absint( $person['position'] ) : $position
+                    );
+
+                    $found_key = false;
+
+                    $found_keys = array_keys( array_column( $crew, 'id' ), $person['id'] );
+                    if( ! empty( $found_keys ) ) {
+                        foreach( $found_keys as $key ) {
+                            if( $key !== false && isset( $crew[$key]['category'] ) && $crew[$key]['category'] == $person['category'] ) {
+                                $found_key = $key;
+                                break;
+                            }
+                        }
+                    }
+
+                    if( $found_key !== false ) {
+                        $crew[$found_key] = $person;
+                    } else {
+                        $crew[] = $person;
+                    }
+
+                    if( ! empty( $person['id'] ) ) {
+                        $tv_show_id = $tv_show->get_id();
+                        MasVideos_Meta_Box_Person_Data::update_credit( $tv_show_id, $person['id'], 'tv_show_crew' );
+                    }
+                }
+            }
+
+            $tv_show->set_crew( $crew );
+        }
+
+        $tv_show->save();
     }
 
     /**

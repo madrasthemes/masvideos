@@ -33,10 +33,49 @@ class MasVideos_Customizer {
             'title'          => esc_html__( 'MAS Videos', 'masvideos' ),
         ) );
 
+        $this->add_general_section( $wp_customize );
         $this->add_myaccount_section( $wp_customize );
         $this->add_movies_section( $wp_customize );
         $this->add_videos_section( $wp_customize );
         $this->add_tv_shows_section( $wp_customize );
+        $this->add_persons_section( $wp_customize );
+    }
+
+    /**
+     * General section.
+     *
+     * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+     */
+    private function add_general_section( $wp_customize ) {
+        $wp_customize->add_section(
+            'masvideos_general',
+            array(
+                'title'    => esc_html__( 'General', 'masvideos' ),
+                'priority' => 10,
+                'panel'    => 'masvideos',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_tmdb_api',
+            array(
+                'default'              => '',
+                'type'                 => 'option',
+                'capability'           => 'manage_masvideos',
+                'sanitize_callback'    => 'wp_kses_post',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_tmdb_api',
+            array(
+                'label'       => esc_html__( 'TMDB API Key', 'masvideos' ),
+                'description' => esc_html__( 'Add TMDB API Key to integrate with TMDB.', 'masvideos' ),
+                'section'     => 'masvideos_general',
+                'settings'    => 'masvideos_tmdb_api',
+                'type'        => 'text',
+            )
+        );
     }
 
     /**
@@ -49,7 +88,7 @@ class MasVideos_Customizer {
             'masvideos_myaccount',
             array(
                 'title'    => esc_html__( 'My Account', 'masvideos' ),
-                'priority' => 10,
+                'priority' => 20,
                 'panel'    => 'masvideos',
             )
         );
@@ -108,7 +147,7 @@ class MasVideos_Customizer {
         $wp_customize->add_control(
             'masvideos_enable_myaccount_registration',
             array(
-                'label'    => esc_html__( 'Account creation', 'masvideos' ),
+                'label'    => esc_html__( 'Account Creation', 'masvideos' ),
                 'section'  => 'masvideos_myaccount',
                 'settings' => 'masvideos_enable_myaccount_registration',
                 'type'     => 'checkbox',
@@ -168,7 +207,7 @@ class MasVideos_Customizer {
             'masvideos_movies',
             array(
                 'title'    => esc_html__( 'Movies', 'masvideos' ),
-                'priority' => 20,
+                'priority' => 30,
                 'panel'    => 'masvideos',
             )
         );
@@ -312,7 +351,7 @@ class MasVideos_Customizer {
             'masvideos_videos',
             array(
                 'title'    => esc_html__( 'Videos', 'masvideos' ),
-                'priority' => 30,
+                'priority' => 40,
                 'panel'    => 'masvideos',
             )
         );
@@ -359,7 +398,6 @@ class MasVideos_Customizer {
                     'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
                     'date'          => esc_html__( 'Latest', 'masvideos' ),
                     'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
-                    'rating'        => esc_html__( 'Rating', 'masvideos' ),
                 ) ),
             )
         );
@@ -435,7 +473,7 @@ class MasVideos_Customizer {
             'masvideos_tv_shows',
             array(
                 'title'    => esc_html__( 'TV Shows', 'masvideos' ),
-                'priority' => 40,
+                'priority' => 50,
                 'panel'    => 'masvideos',
             )
         );
@@ -588,6 +626,128 @@ class MasVideos_Customizer {
                 'type'     => 'checkbox',
             )
         );
+    }
+
+    /**
+     * Persons section.
+     *
+     * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+     */
+    private function add_persons_section( $wp_customize ) {
+        $wp_customize->add_section(
+            'masvideos_persons',
+            array(
+                'title'    => esc_html__( 'Persons', 'masvideos' ),
+                'priority' => 30,
+                'panel'    => 'masvideos',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_persons_page_id',
+            array(
+                'default'       => '',
+                'type'          => 'option',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_persons_page_id',
+            array(
+                'label'       => esc_html__( 'Persons Page', 'masvideos' ),
+                'section'     => 'masvideos_persons',
+                'settings'    => 'masvideos_persons_page_id',
+                'type'        => 'select',
+                'choices'     => $this->get_all_pages_array(),
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_default_persons_catalog_orderby',
+            array(
+                'default'           => 'date',
+                'type'              => 'option',
+                'capability'        => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_default_persons_catalog_orderby',
+            array(
+                'label'       => esc_html__( 'Default person sorting', 'masvideos' ),
+                'description' => esc_html__( 'How should persons be sorted in the catalog by default?', 'masvideos' ),
+                'section'     => 'masvideos_persons',
+                'settings'    => 'masvideos_default_persons_catalog_orderby',
+                'type'        => 'select',
+                'choices'     => apply_filters( 'masvideos_default_persons_catalog_orderby_options', array(
+                    'title-asc'     => esc_html__( 'Name: Ascending', 'masvideos' ),
+                    'title-desc'    => esc_html__( 'Name: Descending', 'masvideos' ),
+                    'date'          => esc_html__( 'Latest', 'masvideos' ),
+                    'menu_order'    => esc_html__( 'Menu Order', 'masvideos' ),
+                ) ),
+            )
+        );
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_person_columns' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_person_columns',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_person_columns',
+                array(
+                    'label'       => esc_html__( 'Persons per row', 'masvideos' ),
+                    'description' => esc_html__( 'How many persons should be shown per row?', 'masvideos' ),
+                    'section'     => 'masvideos_persons',
+                    'settings'    => 'masvideos_person_columns',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'person_grid::min_columns', 1 ),
+                        'max'  => masvideos_get_theme_support( 'person_grid::max_columns', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
+
+        // The following settings should be hidden if the theme is declaring the values.
+        if ( ! has_filter( 'masvideos_person_rows' ) ) {
+            $wp_customize->add_setting(
+                'masvideos_person_rows',
+                array(
+                    'default'              => 4,
+                    'type'                 => 'option',
+                    'capability'           => 'manage_masvideos',
+                    'sanitize_callback'    => 'absint',
+                    'sanitize_js_callback' => 'absint',
+                )
+            );
+
+            $wp_customize->add_control(
+                'masvideos_person_rows',
+                array(
+                    'label'       => esc_html__( 'Rows per page', 'masvideos' ),
+                    'description' => esc_html__( 'How many rows of persons should be shown per page?', 'masvideos' ),
+                    'section'     => 'masvideos_videos',
+                    'settings'    => 'masvideos_video_rows',
+                    'type'        => 'number',
+                    'input_attrs' => array(
+                        'min'  => masvideos_get_theme_support( 'person_grid::min_rows', 1 ),
+                        'max'  => masvideos_get_theme_support( 'person_grid::max_rows', '' ),
+                        'step' => 1,
+                    ),
+                )
+            );
+        }
     }
 
     /**

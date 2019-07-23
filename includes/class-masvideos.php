@@ -17,7 +17,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
          *
          * @var string
          */
-        public $version = '1.0.8';
+        public $version = '1.1.1';
 
         /**
          * The single instance of the class.
@@ -39,6 +39,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
          * @var MasVideos_Query
          */
         public $query = null;
+
+        /**
+         * Query instance.
+         *
+         * @var MasVideos_Persons_Query
+         */
+        public $person_query = null;
 
         /**
          * Query instance.
@@ -67,6 +74,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
          * @var MasVideos_Movies_Query
          */
         public $movie_query = null;
+
+        /**
+         * Person factory instance.
+         *
+         * @var MasVideos_Person_Factory
+         */
+        public $person_factory = null;
 
         /**
          * Episode factory instance.
@@ -181,6 +195,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
              * Interfaces.
              */
             include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-object-data-store-interface.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-person-data-store-interface.php';
             include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-episode-data-store-interface.php';
             include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-tv-show-data-store-interface.php';
             include_once MASVIDEOS_ABSPATH . 'includes/interfaces/class-masvideos-tv-show-playlist-data-store-interface.php';
@@ -195,6 +210,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-data.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-object-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-episode.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-person.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-tv-show.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-tv-show-playlist.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-video.php';
@@ -213,6 +229,8 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-ajax.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-comments.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-person-factory.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-person-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-episode-factory.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-episode-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-tv-show-factory.php';
@@ -237,6 +255,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
              */
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-data-store.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-data-store-wp.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-person-data-store-cpt.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-episode-data-store-cpt.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-tv-show-data-store-cpt.php';
             include_once MASVIDEOS_ABSPATH . 'includes/data-stores/class-masvideos-tv-show-playlist-data-store-cpt.php';
@@ -256,6 +275,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->theme_support_includes();
 
             $this->query = new MasVideos_Query();
+            $this->person_query = new MasVideos_Persons_Query();
             $this->episode_query = new MasVideos_Episodes_Query();
             $this->tv_show_query = new MasVideos_TV_Shows_Query();
             $this->video_query = new MasVideos_Videos_Query();
@@ -319,6 +339,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             $this->load_plugin_textdomain();
 
             // Load class instances.
+            $this->person_factory                    = new MasVideos_Person_Factory();
             $this->episode_factory                   = new MasVideos_Episode_Factory();
             $this->tv_show_factory                   = new MasVideos_TV_Show_Factory();
             $this->tv_show_playlist_factory          = new MasVideos_TV_Show_Playlist_Factory();

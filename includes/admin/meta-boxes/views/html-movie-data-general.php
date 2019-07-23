@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     'movie_embed'   => __( 'Embed Movie', 'masvideos' ),
                     'movie_url'     => __( 'Movie URL', 'masvideos' ),
                 ),
-                'class'         => 'show_hide_select',
+                'class'         => 'short show_hide_select',
             )
         );
 
@@ -42,13 +42,22 @@ if ( ! defined( 'ABSPATH' ) ) {
             )
         );
 
-        masvideos_wp_video_url(
+        masvideos_wp_text_input(
             array(
                 'id'            => '_movie_url_link',
                 'value'         => is_callable( array( $movie_object, 'get_movie_url_link' ) ) ? $movie_object->get_movie_url_link( 'edit' ) : '',
                 'label'         => __( 'Movie URL', 'masvideos' ),
                 'placeholder'   => 'http://',
                 'description'   => __( 'Enter the external URL to the video.', 'masvideos' ),
+                'wrapper_class' => 'show_if_movie_url hide',
+            )
+        );
+
+        masvideos_wp_checkbox(
+            array(
+                'id'            => '_movie_is_affiliate_link',
+                'value'         => is_callable( array( $movie_object, 'get_movie_is_affiliate_link' ) ) ? masvideos_bool_to_string( $movie_object->get_movie_is_affiliate_link() ) : '',
+                'label'         => __( 'Is Affiliate URL ?', 'masvideos' ),
                 'wrapper_class' => 'show_if_movie_url hide',
             )
         );
@@ -78,6 +87,24 @@ if ( ! defined( 'ABSPATH' ) ) {
                 'value'         => is_callable( array( $movie_object, 'get_movie_censor_rating' ) ) ? $movie_object->get_movie_censor_rating( 'edit' ) : '',
                 'label'         => __( 'Movie Censore Rating', 'masvideos' ),
                 'description'   => __( 'Enter the movie censore rating.', 'masvideos' ),
+            )
+        );
+
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_imdb_id',
+                'value'         => is_callable( array( $movie_object, 'get_imdb_id' ) ) ? $movie_object->get_imdb_id( 'edit' ) : '',
+                'label'         => __( 'IMDB ID', 'masvideos' ),
+                'description'   => __( 'Enter IMDB ID of the movie.', 'masvideos' ),
+            )
+        );
+
+        masvideos_wp_text_input(
+            array(
+                'id'            => '_tmdb_id',
+                'value'         => is_callable( array( $movie_object, 'get_tmdb_id' ) ) ? $movie_object->get_tmdb_id( 'edit' ) : '',
+                'label'         => __( 'TMDB ID', 'masvideos' ),
+                'description'   => __( 'Enter TMDB ID of the movie.', 'masvideos' ),
             )
         );
 

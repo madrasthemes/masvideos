@@ -26,7 +26,7 @@ jQuery( function( $ ) {
     });
 
     // Type box.
-    $( '.type_box' ).appendTo( '#masvideos-tv-show-data .hndle span' );
+    $( '.type_box' ).appendTo( '#masvideos-tv-show-data .handle span' );
 
     // Date picker fields.
     function date_picker_select( datepicker ) {
@@ -49,6 +49,272 @@ jQuery( function( $ ) {
             }
         });
         $( this ).find( 'input' ).each( function() { date_picker_select( $( this ) ); } );
+    });
+
+    // Cast Person Tables.
+
+    // Initial order.
+    var masvideos_person_items = $( '.tv_show_cast_persons' ).find( '.masvideos_cast_person' ).get();
+
+    masvideos_person_items.sort( function( a, b ) {
+       var compA = parseInt( $( a ).attr( 'rel' ), 10 );
+       var compB = parseInt( $( b ).attr( 'rel' ), 10 );
+       return ( compA < compB ) ? -1 : ( compA > compB ) ? 1 : 0;
+    });
+    $( masvideos_person_items ).each( function( index, el ) {
+        $( '.tv_show_cast_persons' ).append( el );
+    });
+
+    function tv_show_cast_person_row_indexes() {
+        $( '.tv_show_cast_persons .masvideos_cast_person' ).each( function( index, el ) {
+            $( '.person_position', el ).val( parseInt( $( el ).index( '.tv_show_cast_persons .masvideos_cast_person' ), 10 ) );
+        });
+    }
+
+    $( '.tv_show_cast_persons .masvideos_cast_person' ).each( function( index, el ) {
+        if ( $( el ).css( 'display' ) !== 'none' ) {
+            var exclude_ids = $( '#tv_show_cast_persons select.person_id' ).data( 'exclude' ) || [];
+            exclude_ids.push( $( el ).data( 'person_id' ) );
+            $( '#tv_show_cast_persons select.person_id' ).data( 'exclude', exclude_ids );
+        }
+    });
+
+    // Add rows.
+    $( 'button.add_person_tv_show_cast' ).on( 'click', function() {
+        var size         = $( '.tv_show_cast_persons .masvideos_cast_person' ).length;
+        var person_id    = $( '#tv_show_cast_persons select.person_id' ).val();
+        var $wrapper     = $( this ).closest( '#tv_show_cast_persons' );
+        var $persons     = $wrapper.find( '.tv_show_cast_persons' );
+        var data         = {
+            action:   'masvideos_add_person_tv_show_cast',
+            person_id: person_id,
+            i:        size,
+            security: masvideos_admin_meta_boxes.add_person_tv_show_nonce
+        };
+
+        $wrapper.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
+            $persons.append( response );
+
+            $( document.body ).trigger( 'masvideos-enhanced-select-init' );
+            tv_show_cast_person_row_indexes();
+            $wrapper.unblock();
+
+            $( document.body ).trigger( 'masvideos_added_person_tv_show_cast' );
+        });
+
+        if ( person_id ) {
+            var exclude_ids = $( '#tv_show_cast_persons select.person_id' ).data( 'exclude' ) || [];
+            exclude_ids.push( person_id );
+            $( '#tv_show_cast_persons select.person_id' ).data( 'exclude', exclude_ids );
+            $( '#tv_show_cast_persons select.person_id' ).val( '' ).trigger( 'change' );
+        }
+
+        return false;
+    });
+
+    $( '.tv_show_cast_persons' ).on( 'blur', 'input.person_id', function() {
+        $( this ).closest( '.masvideos_cast_person' ).find( 'strong.person_id' ).text( $( this ).val() );
+    });
+
+    $( '.tv_show_cast_persons' ).on( 'click', '.remove_row', function() {
+        if ( window.confirm( masvideos_admin_meta_boxes.remove_person ) ) {
+            var $parent = $( this ).parent().parent();
+
+            $parent.find( 'select, input[type=text], input[type=hidden]' ).val( '' );
+            $parent.hide();
+            var exclude_ids = $( '#tv_show_cast_persons select.person_id' ).data( 'exclude' ) || [];
+            exclude_ids.splice( $.inArray( $parent.data( 'person_id' ), exclude_ids ), 1 );
+            $( '#tv_show_cast_persons select.person_id' ).data( 'exclude', exclude_ids );
+            tv_show_cast_person_row_indexes();
+        }
+        return false;
+    });
+
+    // Person ordering.
+    $( '.tv_show_cast_persons' ).sortable({
+        items: '.masvideos_cast_person',
+        cursor: 'move',
+        axis: 'y',
+        handle: 'h3',
+        scrollSensitivity: 40,
+        forcePlaceholderSize: true,
+        helper: 'clone',
+        opacity: 0.65,
+        placeholder: 'masvideos-metabox-sortable-placeholder',
+        start: function( event, ui ) {
+            ui.item.css( 'background-color', '#f6f6f6' );
+        },
+        stop: function( event, ui ) {
+            ui.item.removeAttr( 'style' );
+            tv_show_cast_person_row_indexes();
+        }
+    });
+
+    // Save persons and update variations.
+    $( '.save_persons_tv_show_cast' ).on( 'click', function() {
+
+        $( '#masvideos-tv-show-data' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        var data = {
+            post_id     : masvideos_admin_meta_boxes.post_id,
+            data        : $( '.tv_show_cast_persons' ).find( 'input, select, textarea' ).serialize(),
+            action      : 'masvideos_save_persons_tv_show_cast',
+            security    : masvideos_admin_meta_boxes.save_persons_tv_show_nonce
+        };
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function() {
+            // Reload variations panel.
+            var this_page = window.location.toString();
+            this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+            $( '#masvideos-tv-show-data' ).unblock();
+        });
+    });
+
+    // Crew Person Tables.
+
+    // Initial order.
+    var masvideos_person_items = $( '.tv_show_crew_persons' ).find( '.masvideos_crew_person' ).get();
+
+    masvideos_person_items.sort( function( a, b ) {
+       var compA = parseInt( $( a ).attr( 'rel' ), 10 );
+       var compB = parseInt( $( b ).attr( 'rel' ), 10 );
+       return ( compA < compB ) ? -1 : ( compA > compB ) ? 1 : 0;
+    });
+    $( masvideos_person_items ).each( function( index, el ) {
+        $( '.tv_show_crew_persons' ).append( el );
+    });
+
+    function tv_show_crew_person_row_indexes() {
+        $( '.tv_show_crew_persons .masvideos_crew_person' ).each( function( index, el ) {
+            $( '.person_position', el ).val( parseInt( $( el ).index( '.tv_show_crew_persons .masvideos_crew_person' ), 10 ) );
+        });
+    }
+
+    $( '.tv_show_crew_persons .masvideos_crew_person' ).each( function( index, el ) {
+        if ( $( el ).css( 'display' ) !== 'none' ) {
+            var exclude_ids = $( '#tv_show_crew_persons select.person_id' ).data( 'exclude' ) || [];
+            // exclude_ids.push( $( el ).data( 'person_id' ) );
+            $( '#tv_show_crew_persons select.person_id' ).data( 'exclude', exclude_ids );
+        }
+    });
+
+    // Add rows.
+    $( 'button.add_person_tv_show_crew' ).on( 'click', function() {
+        var size         = $( '.tv_show_crew_persons .masvideos_crew_person' ).length;
+        var person_id    = $( '#tv_show_crew_persons select.person_id' ).val();
+        var $wrapper     = $( this ).closest( '#tv_show_crew_persons' );
+        var $persons     = $wrapper.find( '.tv_show_crew_persons' );
+        var data         = {
+            action:   'masvideos_add_person_tv_show_crew',
+            person_id: person_id,
+            i:        size,
+            security: masvideos_admin_meta_boxes.add_person_tv_show_nonce
+        };
+
+        $wrapper.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function( response ) {
+            $persons.append( response );
+
+            $( document.body ).trigger( 'masvideos-enhanced-select-init' );
+            tv_show_crew_person_row_indexes();
+            $wrapper.unblock();
+
+            $( document.body ).trigger( 'masvideos_added_person_tv_show_crew' );
+        });
+
+        if ( person_id ) {
+            var exclude_ids = $( '#tv_show_crew_persons select.person_id' ).data( 'exclude' ) || [];
+            // exclude_ids.push( person_id );
+            $( '#tv_show_crew_persons select.person_id' ).data( 'exclude', exclude_ids );
+            $( '#tv_show_crew_persons select.person_id' ).val( '' ).trigger( 'change' );
+        }
+
+        return false;
+    });
+
+    $( '.tv_show_crew_persons' ).on( 'blur', 'input.person_id', function() {
+        $( this ).closest( '.masvideos_crew_person' ).find( 'strong.person_id' ).text( $( this ).val() );
+    });
+
+    $( '.tv_show_crew_persons' ).on( 'click', '.remove_row', function() {
+        if ( window.confirm( masvideos_admin_meta_boxes.remove_person ) ) {
+            var $parent = $( this ).parent().parent();
+
+            $parent.find( 'select, input[type=text], input[type=hidden]' ).val( '' );
+            $parent.hide();
+            var exclude_ids = $( '#tv_show_crew_persons select.person_id' ).data( 'exclude' ) || [];
+            // exclude_ids.splice( $.inArray( $parent.data( 'person_id' ), exclude_ids ), 1 );
+            $( '#tv_show_crew_persons select.person_id' ).data( 'exclude', exclude_ids );
+            tv_show_crew_person_row_indexes();
+        }
+        return false;
+    });
+
+    // Person ordering.
+    $( '.tv_show_crew_persons' ).sortable({
+        items: '.masvideos_crew_person',
+        cursor: 'move',
+        axis: 'y',
+        handle: 'h3',
+        scrollSensitivity: 40,
+        forcePlaceholderSize: true,
+        helper: 'clone',
+        opacity: 0.65,
+        placeholder: 'masvideos-metabox-sortable-placeholder',
+        start: function( event, ui ) {
+            ui.item.css( 'background-color', '#f6f6f6' );
+        },
+        stop: function( event, ui ) {
+            ui.item.removeAttr( 'style' );
+            tv_show_crew_person_row_indexes();
+        }
+    });
+
+    // Save persons and update variations.
+    $( '.save_persons_tv_show_crew' ).on( 'click', function() {
+
+        $( '#masvideos-tv-show-data' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        var data = {
+            post_id     : masvideos_admin_meta_boxes.post_id,
+            data        : $( '.tv_show_crew_persons' ).find( 'input, select, textarea' ).serialize(),
+            action      : 'masvideos_save_persons_tv_show_crew',
+            security    : masvideos_admin_meta_boxes.save_persons_tv_show_nonce
+        };
+
+        $.post( masvideos_admin_meta_boxes.ajax_url, data, function() {
+            // Reload variations panel.
+            var this_page = window.location.toString();
+            this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + masvideos_admin_meta_boxes.post_id + '&action=edit&' );
+            $( '#masvideos-tv-show-data' ).unblock();
+        });
     });
 
     // Season Tables.

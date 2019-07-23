@@ -57,6 +57,8 @@ class MasVideos_Movie extends MasVideos_Data {
         'short_description'     => '',
         'parent_id'             => 0,
         'reviews_allowed'       => true,
+        'cast'                  => array(),
+        'crew'                  => array(),
         'attributes'            => array(),
         'default_attributes'    => array(),
         'sources'               => array(),
@@ -68,6 +70,7 @@ class MasVideos_Movie extends MasVideos_Data {
         'movie_attachment_id'   => '',
         'movie_embed_content'   => '',
         'movie_url_link'        => '',
+        'movie_is_affiliate_link'=> '',
         'gallery_image_ids'     => array(),
         'rating_counts'         => array(),
         'average_rating'        => 0,
@@ -76,6 +79,9 @@ class MasVideos_Movie extends MasVideos_Data {
         'movie_run_time'        => '',
         'movie_censor_rating'   => '',
         'recommended_movie_ids' => array(),
+        'related_video_ids'     => array(),
+        'imdb_id'               => '',
+        'tmdb_id'               => '',
     );
 
     /**
@@ -240,6 +246,26 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
+     * Returns movie cast.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_cast( $context = 'view' ) {
+        return $this->get_prop( 'cast', $context );
+    }
+
+    /**
+     * Returns movie crew.
+     *
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_crew( $context = 'view' ) {
+        return $this->get_prop( 'crew', $context );
+    }
+
+    /**
      * Returns movie attributes.
      *
      * @param  string $context What the value is for. Valid values are view and edit.
@@ -370,6 +396,17 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
+     * If the movie url link is affiliate.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return bool|string
+     */
+    public function get_movie_is_affiliate_link( $context = 'view' ) {
+        return $this->get_prop( 'movie_is_affiliate_link', $context );
+    }
+
+    /**
      * Get rating count.
      *
      * @param  string $context What the value is for. Valid values are view and edit.
@@ -441,6 +478,39 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function get_recommended_movie_ids( $context = 'view' ) {
         return $this->get_prop( 'recommended_movie_ids', $context );
+    }
+
+    /**
+     * Get Related Video IDs.
+     *
+     * @since 3.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return array
+     */
+    public function get_related_video_ids( $context = 'view' ) {
+        return $this->get_prop( 'related_video_ids', $context );
+    }
+
+    /**
+     * Get main movie imdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_imdb_id( $context = 'view' ) {
+        return $this->get_prop( 'imdb_id', $context );
+    }
+
+    /**
+     * Get main movie tmdb id.
+     *
+     * @since 1.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_tmdb_id( $context = 'view' ) {
+        return $this->get_prop( 'tmdb_id', $context );
     }
 
     /*
@@ -569,6 +639,32 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
+     * Set cast. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $cast List of cast.
+     */
+    public function set_cast( $cast ) {
+        if ( ! empty( $cast ) && is_array( $cast ) ) {
+            array_multisort( array_column( $cast, 'position' ), SORT_ASC, $cast );
+        }
+        $this->set_prop( 'cast', $cast );
+    }
+
+    /**
+     * Set crew. These will be saved as strings and should map to source values.
+     *
+     * @since 1.0.0
+     * @param array $crew List of crew.
+     */
+    public function set_crew( $crew ) {
+        if ( ! empty( $crew ) && is_array( $crew ) ) {
+            array_multisort( array_column( $crew, 'position' ), SORT_ASC, $crew );
+        }
+        $this->set_prop( 'crew', $crew );
+    }
+
+    /**
      * Set movie attributes.
      *
      * Attributes are made up of:
@@ -612,6 +708,9 @@ class MasVideos_Movie extends MasVideos_Data {
      * @param array $sources List of sources.
      */
     public function set_sources( $sources ) {
+        if ( ! empty( $sources ) && is_array( $sources ) ) {
+            array_multisort( array_column( $sources, 'position' ), SORT_ASC, $sources );
+        }
         $this->set_prop( 'sources', $sources );
     }
 
@@ -712,6 +811,16 @@ class MasVideos_Movie extends MasVideos_Data {
     }
 
     /**
+     * Set if the movie url link is affiliate.
+     *
+     * @since 1.0.0
+     * @param bool|string $movie_is_affiliate_link.
+     */
+    public function set_movie_is_affiliate_link( $movie_is_affiliate_link = '' ) {
+        $this->set_prop( 'movie_is_affiliate_link', $movie_is_affiliate_link );
+    }
+
+    /**
      * Set rating counts. Read only.
      *
      * @param array $counts Movie rating counts.
@@ -776,6 +885,48 @@ class MasVideos_Movie extends MasVideos_Data {
      */
     public function set_recommended_movie_ids( $recommended_movie_ids ) {
         $this->set_prop( 'recommended_movie_ids', array_filter( (array) $recommended_movie_ids ) );
+    }
+
+    /**
+     * Set Related Video IDs.
+     *
+     * @since 3.0.0
+     * @param array $related_video_ids from the recommended movies.
+     */
+    public function set_related_video_ids( $related_video_ids ) {
+        $this->set_prop( 'related_video_ids', array_filter( (array) $related_video_ids ) );
+    }
+
+    /**
+     * Set main movie imdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $imdb_id Movie imdb id.
+     */
+    public function set_imdb_id( $imdb_id = '' ) {
+        $imdb_id = (string) $imdb_id;
+        if ( $this->get_object_read() && ! empty( $imdb_id ) && ! masvideos_movie_has_unique_imdb_id( $this->get_id(), $imdb_id ) ) {
+            $imdb_id_found = masvideos_get_movie_id_by_imdb_id( $imdb_id );
+
+            $this->error( 'movie_invalid_imdb_id', __( 'Invalid or duplicated IMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $imdb_id_found ) );
+        }
+        $this->set_prop( 'imdb_id', $imdb_id );
+    }
+
+    /**
+     * Set main movie tmdb id content.
+     *
+     * @since 1.0.0
+     * @param int|string $tmdb_id Movie tmdb id.
+     */
+    public function set_tmdb_id( $tmdb_id = '' ) {
+        $tmdb_id = (string) $tmdb_id;
+        if ( $this->get_object_read() && ! empty( $tmdb_id ) && ! masvideos_movie_has_unique_tmdb_id( $this->get_id(), $tmdb_id ) ) {
+            $tmdb_id_found = masvideos_get_movie_id_by_tmdb_id( $tmdb_id );
+
+            $this->error( 'movie_invalid_tmdb_id', __( 'Invalid or duplicated TMDB Id.', 'masvideos' ), 400, array( 'resource_id' => $tmdb_id_found ) );
+        }
+        $this->set_prop( 'tmdb_id', $tmdb_id );
     }
 
     /*

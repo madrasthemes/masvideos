@@ -25,6 +25,8 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
     protected $internal_meta_keys = array(
         '_visibility',
         '_default_attributes',
+        '_cast',
+        '_crew',
         '_sources',
         '_movie_attributes',
         '_featured',
@@ -36,6 +38,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         '_movie_attachment_id',
         '_movie_embed_content',
         '_movie_url_link',
+        '_movie_is_affiliate_link',
         '_file_paths',
         '_movie_image_gallery',
         '_movie_version',
@@ -46,6 +49,9 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         '_movie_run_time',
         '_movie_censor_rating',
         '_recommended_movie_ids',
+        '_related_video_ids',
+        '_imdb_id',
+        '_tmdb_id',
     );
 
     /**
@@ -299,6 +305,8 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $movie->set_props(
             array(
+                'cast'                  => get_post_meta( $id, '_cast', true ),
+                'crew'                  => get_post_meta( $id, '_crew', true ),
                 'default_attributes'    => get_post_meta( $id, '_default_attributes', true ),
                 'sources'               => get_post_meta( $id, '_sources', true ),
                 'genre_ids'             => $this->get_term_ids( $movie, 'movie_genre' ),
@@ -309,10 +317,14 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
                 'movie_attachment_id'   => get_post_meta( $id, '_movie_attachment_id', true ),
                 'movie_embed_content'   => get_post_meta( $id, '_movie_embed_content', true ),
                 'movie_url_link'        => get_post_meta( $id, '_movie_url_link', true ),
+                'movie_is_affiliate_link' => get_post_meta( $id, '_movie_is_affiliate_link', true ),
                 'movie_release_date'    => get_post_meta( $id, '_movie_release_date', true ),
                 'movie_run_time'        => get_post_meta( $id, '_movie_run_time', true ),
                 'movie_censor_rating'   => get_post_meta( $id, '_movie_censor_rating', true ),
                 'recommended_movie_ids' => get_post_meta( $id, '_recommended_movie_ids', true ),
+                'related_video_ids'     => get_post_meta( $id, '_related_video_ids', true ),
+                'imdb_id'               => get_post_meta( $id, '_imdb_id', true ),
+                'tmdb_id'               => get_post_meta( $id, '_tmdb_id', true ),
             )
         );
     }
@@ -418,6 +430,8 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
      */
     protected function update_post_meta( &$movie, $force = false ) {
         $meta_key_to_props = array(
+            '_cast'                         => 'cast',
+            '_crew'                         => 'crew',
             '_default_attributes'           => 'default_attributes',
             '_sources'                      => 'sources',
             '_movie_image_gallery'          => 'gallery_image_ids',
@@ -426,6 +440,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             '_movie_attachment_id'          => 'movie_attachment_id',
             '_movie_embed_content'          => 'movie_embed_content',
             '_movie_url_link'               => 'movie_url_link',
+            '_movie_is_affiliate_link'      => 'movie_is_affiliate_link',
             '_masvideos_average_rating'     => 'average_rating',
             '_masvideos_rating_count'       => 'rating_counts',
             '_masvideos_review_count'       => 'review_count',
@@ -433,6 +448,9 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
             '_movie_run_time'               => 'movie_run_time',
             '_movie_censor_rating'          => 'movie_censor_rating',
             '_recommended_movie_ids'        => 'recommended_movie_ids',
+            '_related_video_ids'            => 'related_video_ids',
+            '_imdb_id'                      => 'imdb_id',
+            '_tmdb_id'                      => 'tmdb_id',
         );
 
         // Make sure to take extra data (like movie url or text for external movies) into account.
@@ -671,6 +689,132 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 				'fields'         => 'id=>parent',
 			)
 		);
+    }
+
+    /**
+     * Check if movie imdb_id is found for any other movie IDs.
+     *
+     * @since 3.0.0
+     * @param int    $movie_id Movie ID.
+     * @param string $imdb_id Will be slashed to work around https://core.trac.wordpress.org/ticket/27421.
+     * @return bool
+     */
+    public function is_existing_imdb_id( $movie_id, $imdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'movie' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_imdb_id'
+                AND pmeta.meta_value = %s
+                AND pmeta.post_id <> %d
+                LIMIT 1
+                ",
+                wp_slash( $imdb_id ),
+                $movie_id
+            )
+        );
+    }
+
+    /**
+     * Return movie ID based on IMDB Id.
+     *
+     * @since 3.0.0
+     * @param string $imdb_id Movie IMDB Id.
+     * @return int
+     */
+    public function get_movie_id_by_imdb_id( $imdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        $id = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'movie' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_imdb_id'
+                AND pmeta.meta_value = %s
+                LIMIT 1
+                ",
+                $imdb_id
+            )
+        );
+
+        return (int) apply_filters( 'masvideos_get_movie_id_by_imdb_id', $id, $imdb_id );
+    }
+
+    /**
+     * Check if movie tmdb_id is found for any other movie IDs.
+     *
+     * @since 3.0.0
+     * @param int    $movie_id Movie ID.
+     * @param string $tmdb_id Will be slashed to work around https://core.trac.wordpress.org/ticket/27421.
+     * @return bool
+     */
+    public function is_existing_tmdb_id( $movie_id, $tmdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'movie' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_tmdb_id'
+                AND pmeta.meta_value = %s
+                AND pmeta.post_id <> %d
+                LIMIT 1
+                ",
+                wp_slash( $tmdb_id ),
+                $movie_id
+            )
+        );
+    }
+
+    /**
+     * Return movie ID based on TMDB Id.
+     *
+     * @since 3.0.0
+     * @param string $tmdb_id Movie TMDB Id.
+     * @return int
+     */
+    public function get_movie_id_by_tmdb_id( $tmdb_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery
+        $id = $wpdb->get_var(
+            $wpdb->prepare(
+                "
+                SELECT posts.ID
+                FROM {$wpdb->posts} as posts
+                INNER JOIN {$wpdb->postmeta} AS pmeta ON posts.ID = pmeta.post_id
+                WHERE
+                posts.post_type IN ( 'movie' )
+                AND posts.post_status != 'trash'
+                AND pmeta.meta_key = '_tmdb_id'
+                AND pmeta.meta_value = %s
+                LIMIT 1
+                ",
+                $tmdb_id
+            )
+        );
+
+        return (int) apply_filters( 'masvideos_get_movie_id_by_tmdb_id', $id, $tmdb_id );
     }
 
     /**
