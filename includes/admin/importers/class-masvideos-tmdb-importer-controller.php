@@ -723,7 +723,7 @@ class MasVideos_TMDB_Importer_Controller {
             }
         }
 
-        return $movie;
+        return apply_filters( 'masvideos_tmdb_importer_handle_movie_data', $movie, $tmdb, $data );
     }
 
     /**
@@ -766,7 +766,8 @@ class MasVideos_TMDB_Importer_Controller {
         $episode['type'] = 'episode';
         $episode['Parent TV Show'] = $parent_tv_show;
         $episode['Parent Season'] = $parent_season;
-        return $episode;
+        
+        return apply_filters( 'masvideos_tmdb_importer_handle_episode_data', $episode, $tmdb, $data, $parent_tv_show, $parent_season );
     }
 
     /**
@@ -862,7 +863,8 @@ class MasVideos_TMDB_Importer_Controller {
 
         $tv_show['episodes'] = $episodes;
         $tv_show['type'] = 'tv_show';
-        return $tv_show;
+
+        return apply_filters( 'masvideos_tmdb_importer_handle_tv_show_data', $tv_show, $tmdb, $data );
     }
 
     /**
