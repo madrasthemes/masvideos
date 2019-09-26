@@ -416,6 +416,7 @@ if ( ! function_exists( 'masvideos_videos_catalog_ordering' ) ) {
                 <?php endforeach; ?>
             </select>
             <input type="hidden" name="paged" value="1" />
+            <?php masvideos_query_string_form_fields( null, array( 'orderby', 'submit', 'paged', 'video-page' ) ); ?>
         </form>
         <?php
     }
