@@ -5,6 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $person_object = masvideos_get_person( $person['id'] );
 
+if ( ! is_object( $person_object ) ) {
+    return;
+}
+
 ?>
 <div data-person_id="<?php echo esc_attr( $person['id'] ); ?>" class="masvideos_cast_person masvideos-metabox closed <?php echo esc_attr( implode( ' ', $metabox_class ) ); ?>" rel="<?php echo esc_attr( $person['position'] ); ?>">
     <h3>
