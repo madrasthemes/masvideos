@@ -228,12 +228,10 @@
     });
 
     // Upload Video Choice
-    $( '.masvideos-edit-video-fields__field-wrapper .masvideos-select2' ).on( 'change', function() {
+    $( '.edit-video-form #video_choice' ).on( 'change', function() {
         
         var shortcode_select = $(this).val(), 
-            $masvideos_wp_shortcode = $(this).parents( '.masvideos-edit-video-fields' );
-
-            console.log(shortcode_select);
+            $masvideos_wp_shortcode = $(this).parents( '.edit-video-form' );
 
         $masvideos_wp_shortcode.find( '.form-field' ).hide();
         $masvideos_wp_shortcode.find( '.show_if_' + shortcode_select ).show();
