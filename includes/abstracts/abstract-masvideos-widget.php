@@ -340,6 +340,11 @@ abstract class MasVideos_Widget extends WP_Widget {
         // Post Type Arg.
         if ( isset( $_GET['post_type'] ) ) {
             $link = add_query_arg( 'post_type', masvideos_clean( wp_unslash( $_GET['post_type'] ) ), $link );
+
+            // Prevent post type and page id when pretty permalinks are disabled.
+            if ( is_episodes() || is_tv_shows() || is_videos() || is_movies() ) {
+                $link = remove_query_arg( 'page_id', $link );
+            }
         }
 
         // Year Arg.
