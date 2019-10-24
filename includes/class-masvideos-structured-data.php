@@ -341,7 +341,7 @@ class MasVideos_Structured_Data {
 		$markup['datePublished'] = get_comment_date( 'c', $comment->comment_ID );
 		$markup['description']   = get_comment_text( $comment->comment_ID );
 		$markup['itemReviewed']  = array(
-			'@type' => 'Video',
+			'@type' => 'MediaObject',
 			'name'  => get_the_title( $comment->comment_post_ID ),
 		);
 
@@ -350,8 +350,10 @@ class MasVideos_Structured_Data {
 
 		if ( $rating ) {
 			$markup['reviewRating'] = array(
-				'@type'       => 'rating',
-				'ratingValue' => $rating,
+				'@type'         => 'rating',
+				'ratingValue'   => $rating,
+				'bestRating'    => 10,
+				'worstRating'   => 1
 			);
 		} elseif ( $comment->comment_parent ) {
 			return;
