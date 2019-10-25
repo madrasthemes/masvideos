@@ -51,7 +51,7 @@ class MasVideos_Movies_Widget extends MasVideos_Widget {
                 'std'   => '',
                 'label' => __( 'Id&#8217;s ( separated by comma&#8217;s )', 'masvideos' ),
             ),
-            'category'      => array(
+            'genre'         => array(
                 'type'  => 'text',
                 'std'   => '',
                 'label' => __( 'Genere&#8217;s ( separated by comma&#8217;s )', 'masvideos' ),
@@ -78,7 +78,7 @@ class MasVideos_Movies_Widget extends MasVideos_Widget {
         $orderby = isset( $instance['orderby'] ) ? $instance['orderby'] : $this->settings['orderby']['std'];
         $order = isset( $instance['order'] ) ? $instance['order'] : $this->settings['order']['std'];
         $ids = isset( $instance['ids'] ) ? $instance['ids'] : $this->settings['ids']['std'];
-        $category = isset( $instance['category'] ) ? $instance['category'] : $this->settings['category']['std'];
+        $genre = isset( $instance['genre'] ) ? $instance['genre'] : $this->settings['genre']['std'];
         $featured = isset( $instance['featured'] ) ? $instance['featured'] : $this->settings['featured']['std'];
         $top_rated = isset( $instance['top_rated'] ) ? $instance['top_rated'] : $this->settings['top_rated']['std'];
 
@@ -88,7 +88,7 @@ class MasVideos_Movies_Widget extends MasVideos_Widget {
             'orderby'   => $orderby,
             'order'     => $order,
             'ids'       => $ids,
-            'category'  => $category,
+            'genre'     => $genre,
             'featured'  => $featured,
             'top_rated' => $top_rated,
         );
