@@ -535,19 +535,40 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
 
             if ( $tv_show_obj ) {
                 $tv_show = masvideos_get_tv_show( $tv_show_obj );
-
-                $seasons = $tv_show->get_seasons( 'edit' );
-                if( ! empty( $seasons ) ) {
-                    $season_key = array_search( $data['parent_season'], array_column( $seasons, 'name' ) );
-                    $seasons[$season_key]['episodes'][] = $episode->get_id();
-
-                    $tv_show->set_seasons( $seasons );
-                    $tv_show->save();
-                }
-
-                $episode->set_tv_show_id( $tv_show->get_id() );
-                $episode->set_tv_show_season_id( $season_key );
+            } else {
+                $tv_show = new MasVideos_TV_Show( 0 );
+                $tv_show->set_name( $data['parent_tv_show'] );
+                $tv_show->save();
             }
+
+            $seasons = $tv_show->get_seasons( 'edit' );
+
+            if( ! empty( $seasons ) ) {
+                $season_key = array_search( $data['parent_season'], array_column( $seasons, 'name' ) );
+
+                if( ! ( false === $season_key ) ) {
+                    $seasons[$season_key]['episodes'][] = $episode->get_id();
+                }
+            } 
+
+            if( ! isset( $season_key ) || ( isset( $season_key ) && false === $season_key ) ) {
+                $season = array(
+                    'name'          => $data['parent_season'],
+                    'image_id'      => 0,
+                    'episodes'      => array( $episode->get_id() ),
+                    'year'          => '',
+                    'description'   => '',
+                    'position'      => 0,
+                );
+                $seasons[] = $season;
+                $season_key = array_search( $data['parent_season'], array_column( $seasons, 'name' ) );
+            }
+
+            $tv_show->set_seasons( $seasons );
+            $tv_show->save();
+
+            $episode->set_tv_show_id( $tv_show->get_id() );
+            $episode->set_tv_show_season_id( $season_key );
         }
     }
 
