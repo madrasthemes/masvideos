@@ -549,7 +549,9 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
                 if( ! ( false === $season_key ) ) {
                     $seasons[$season_key]['episodes'][] = $episode->get_id();
                 }
-            } 
+            } else {
+                $seasons = array();
+            }
 
             if( ! isset( $season_key ) || ( isset( $season_key ) && false === $season_key ) ) {
                 $season = array(
