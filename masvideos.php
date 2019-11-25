@@ -6,9 +6,6 @@
  * Version: 1.1.3
  * Author: MadrasThemes
  * Author URI: https://madrasthemes.com/
- * Requires at least: 5.0
- * Tested up to: 5.2.4
- *
  * Text Domain: masvideos
  * Domain Path: /languages/
  *
