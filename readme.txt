@@ -86,6 +86,8 @@ All of our online documentation can be found on [our documentation site](https:/
 
 = 1.1.4 - 2019-11-25 =
 * Fix – Movies genre filter widget issue fixed
+* Fix – Videos block Top rated option removed
+* Fix – TV Show importer issue fixed
 
 = 1.1.3 - 2019-10-25 =
 * Fix – Filter widgets default permalink issue fixed
