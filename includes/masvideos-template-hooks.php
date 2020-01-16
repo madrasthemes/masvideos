@@ -73,7 +73,7 @@ add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person
 add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_title', 50 );
 add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_short_desc', 60 );
 add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_credits_tabs', 70 );
-add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_description', 80 );
+add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_tabs', 80 );
 add_action( 'masvideos_single_person_summary', 'masvideos_template_single_person_content_body_close', 200 );
 
 add_action( 'masvideos_template_single_person_content_sidebar', 'masvideos_template_single_person_poster', 10 );
