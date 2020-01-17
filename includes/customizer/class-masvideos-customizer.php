@@ -737,8 +737,8 @@ class MasVideos_Customizer {
                 array(
                     'label'       => esc_html__( 'Rows per page', 'masvideos' ),
                     'description' => esc_html__( 'How many rows of persons should be shown per page?', 'masvideos' ),
-                    'section'     => 'masvideos_videos',
-                    'settings'    => 'masvideos_video_rows',
+                    'section'     => 'masvideos_persons',
+                    'settings'    => 'masvideos_person_rows',
                     'type'        => 'number',
                     'input_attrs' => array(
                         'min'  => masvideos_get_theme_support( 'person_grid::min_rows', 1 ),
