@@ -1,14 +1,14 @@
-# Copyright (C) 2019 MadrasThemes
+# Copyright (C) 2020 MadrasThemes
 # This file is distributed under the same license as the MAS Videos package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MAS Videos 1.1.4\n"
+"Project-Id-Version: MAS Videos 1.1.5\n"
 "Report-Msgid-Bugs-To: https://github.com/madrasthemes/masvideos/issues\n"
-"POT-Creation-Date: 2019-11-25 15:11:16+00:00\n"
+"POT-Creation-Date: 2020-01-17 12:30:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
@@ -837,6 +837,7 @@ msgstr ""
 #: includes/masvideos-account-functions.php:242
 #: includes/masvideos-episode-template-functions.php:733
 #: includes/masvideos-movie-template-functions.php:991
+#: includes/masvideos-person-template-functions.php:1079
 #: includes/masvideos-tv-show-template-functions.php:1047
 msgid "Description"
 msgstr ""
@@ -3913,7 +3914,7 @@ msgstr ""
 
 #: includes/import/abstract-masvideos-movie-importer.php:624
 #: includes/import/abstract-masvideos-person-importer.php:432
-#: includes/import/abstract-masvideos-tv-show-importer.php:825
+#: includes/import/abstract-masvideos-tv-show-importer.php:827
 #: includes/import/abstract-masvideos-video-importer.php:414
 #. translators: %s: image URL
 msgid "Not able to attach \"%s\"."
@@ -3921,7 +3922,7 @@ msgstr ""
 
 #: includes/import/abstract-masvideos-movie-importer.php:633
 #: includes/import/abstract-masvideos-person-importer.php:441
-#: includes/import/abstract-masvideos-tv-show-importer.php:834
+#: includes/import/abstract-masvideos-tv-show-importer.php:836
 #: includes/import/abstract-masvideos-video-importer.php:423
 #. translators: %s: image URL
 msgid "Unable to use image \"%s\"."
@@ -4323,6 +4324,11 @@ msgstr ""
 msgid "Also Known As"
 msgstr ""
 
+#: includes/masvideos-person-template-functions.php:1088
+#: includes/masvideos-tv-show-template-functions.php:1056
+msgid "Additional information"
+msgstr ""
+
 #: includes/masvideos-rest-functions.php:74
 #. translators: %s: image URL
 msgid "Invalid URL %s."
@@ -4423,10 +4429,6 @@ msgstr ""
 
 #: includes/masvideos-tv-show-template-functions.php:1020
 msgid "Related TV Shows"
-msgstr ""
-
-#: includes/masvideos-tv-show-template-functions.php:1056
-msgid "Additional information"
 msgstr ""
 
 #: includes/masvideos-tv-show-template-functions.php:1114
