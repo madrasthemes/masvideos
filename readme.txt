@@ -2,8 +2,9 @@
 Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 5.2.4
-Stable tag: 1.1.3
+Tested up to: 5.3
+Requires PHP: 5.6
+Stable tag: 1.1.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +83,11 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.1.4 - 2019-11-25 =
+* Fix – Movies genre filter widget issue fixed
+* Fix – Videos block Top rated option removed
+* Fix – TV Show importer issue fixed
 
 = 1.1.3 - 2019-10-25 =
 * Fix – Filter widgets default permalink issue fixed

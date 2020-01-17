@@ -1062,3 +1062,55 @@ if ( ! function_exists( 'masvideos_template_single_person_also_known_as' ) ) {
         endif;
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_person_tabs' ) ) {
+
+    /**
+     * Movie tabs in the person single.
+     */
+    function masvideos_template_single_person_tabs() {
+        global $person, $post;
+
+        $tabs = array();
+        
+        // Description tab - shows person content.
+        if ( $post->post_content ) {
+            $tabs['description'] = array(
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_person_description',
+                'priority'  => 10
+            );
+        }
+
+        // Additional information tab - shows attributes.
+        if ( $person->has_attributes() ) {
+            $tabs['additional_information'] = array(
+                'title'     => esc_html__( 'Additional information', 'masvideos' ),
+                'callback'  => 'masvideos_display_person_attributes',
+                'priority'  => 20
+            );
+        }
+
+        $tabs = apply_filters( 'masvideos_template_single_person_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'person-tabs' ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_display_person_attributes' ) ) {
+    /**
+     * Outputs a list of person attributes for a person.
+     *
+     * @since  1.0.0
+     * @param  Mas_Videos $person Person Object.
+     */
+    function masvideos_display_person_attributes() {
+        global $person;
+        masvideos_get_template( 'single-person/person-attributes.php', array(
+            'person'        => $person,
+            'attributes'    => array_filter( $person->get_attributes(), 'masvideos_attributes_person_array_filter_visible' ),
+        ) );
+    }
+}
