@@ -210,8 +210,8 @@ class MasVideos_TMDB_Importer_Controller {
         // Configuration
         $cnf = array(
             'apikey'    => $api_key,
-            'lang'      => 'ta',
-            'timezone'  => 'Asia/Kolkata',
+            'lang'      => 'en',
+            'timezone'  => 'Europe/London',
             'adult'     => false,
             'debug'     => false
         );
