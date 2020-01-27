@@ -22,6 +22,7 @@ function masvideos_get_account_menu_items() {
         'movie-playlists'   => get_option( 'masvideos_myaccount_movie_playlists_endpoint', 'movie-playlists' ),
         'video-playlists'   => get_option( 'masvideos_myaccount_video_playlists_endpoint', 'video-playlists' ),
         'tv-show-playlists' => get_option( 'masvideos_myaccount_tv_show_playlists_endpoint', 'tv-show-playlists' ),
+        'edit-account'      => get_option( 'masvideos_myaccount_edit_account_endpoint', 'edit-account' ),
         'user-logout'       => get_option( 'masvideos_logout_endpoint', 'user-logout' ),
     );
 
@@ -31,6 +32,7 @@ function masvideos_get_account_menu_items() {
         'movie-playlists'   => esc_html__( 'Movie playlists', 'masvideos' ),
         'video-playlists'   => esc_html__( 'Video playlists', 'masvideos' ),
         'tv-show-playlists' => esc_html__( 'TV Show playlists', 'masvideos' ),
+        'edit-account'      => esc_html__( 'Account details', 'masvideos' ),
         'user-logout'       => esc_html__( 'Logout', 'masvideos' ),
     );
 
@@ -42,6 +44,17 @@ function masvideos_get_account_menu_items() {
     }
 
     return apply_filters( 'masvideos_account_menu_items', $items, $endpoints );
+}
+
+/**
+ * Get the link to the edit account details page.
+ *
+ * @return string
+ */
+function masvideos_customer_edit_account_url() {
+    $edit_account_url = masvideos_get_endpoint_url( 'edit-account', '', masvideos_get_page_permalink( 'myaccount' ) );
+
+    return apply_filters( 'masvideos_customer_edit_account_url', $edit_account_url );
 }
 
 /**

@@ -499,6 +499,23 @@ if ( ! function_exists( 'is_video_upload_page' ) ) {
     }
 }
 
+if ( ! function_exists( 'is_edit_account_page' ) ) {
+
+    /**
+     * Check for edit account page.
+     * Returns true when viewing the edit account page.
+     *
+     * @return bool
+     */
+    function is_edit_account_page() {
+        global $wp;
+
+        $page_id = masvideos_get_page_id( 'myaccount' );
+
+        return ( $page_id && is_page( $page_id ) && isset( $wp->query_vars['edit-account'] ) );
+    }
+}
+
 if ( ! function_exists( 'is_masvideos_endpoint_url' ) ) {
 
     /**

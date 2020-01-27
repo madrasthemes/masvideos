@@ -822,6 +822,17 @@ if ( ! function_exists( 'masvideos_account_tv_show_playlists' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_account_edit_account' ) ) {
+
+    /**
+     * My Account > Edit account template.
+     */
+    function masvideos_account_edit_account() {
+        MasVideos_Shortcode_My_Account::edit_account();
+    }
+}
+
+
 /**
  * Get HTML for a gallery image.
  *

@@ -55,6 +55,7 @@ class MasVideos_Query {
             'movie-playlists'           => get_option( 'masvideos_myaccount_movie_playlists_endpoint', 'movie-playlists' ),
             'video-playlists'           => get_option( 'masvideos_myaccount_video_playlists_endpoint', 'video-playlists' ),
             'tv-show-playlists'         => get_option( 'masvideos_myaccount_tv_show_playlists_endpoint', 'tv-show-playlists' ),
+            'edit-account'              => get_option( 'masvideos_myaccount_edit_account_endpoint', 'edit-account' ),
             'user-logout'               => get_option( 'masvideos_logout_endpoint', 'user-logout' ),
         );
     }
@@ -85,6 +86,9 @@ class MasVideos_Query {
                 break;
             case 'tv-show-playlists':
                 $title = esc_html__( 'TV Show playlists', 'masvideos' );
+                break;
+            case 'edit-account':
+                $title = esc_html__( 'Account details', 'masvideos' );
                 break;
             case 'user-logout':
                 $title = esc_html__( 'Logout', 'masvideos' );

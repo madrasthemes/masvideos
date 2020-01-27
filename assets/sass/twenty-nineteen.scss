@@ -814,7 +814,9 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 			display: block;
 		}
 
-		input[type="text"], 
+		input[type="text"],
+		input[type="email"],
+		input[type="password"],
 		select {
 			border-radius: 0;
 			width: 100%;

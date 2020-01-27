@@ -29,6 +29,13 @@ class MasVideos_Shortcode_My_Account {
     }
 
     /**
+     * Edit account details page.
+     */
+    public static function edit_account() {
+        masvideos_get_template( 'myaccount/form-edit-account.php', array( 'user' => get_user_by( 'id', get_current_user_id() ) ) );
+    }
+
+    /**
      * Output the shortcode.
      *
      * @param array $atts Shortcode attributes.

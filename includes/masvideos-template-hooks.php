@@ -45,6 +45,9 @@ add_action( 'masvideos_account_videos_endpoint', 'masvideos_account_videos' );
 add_action( 'masvideos_account_movie-playlists_endpoint', 'masvideos_account_movie_playlists' );
 add_action( 'masvideos_account_video-playlists_endpoint', 'masvideos_account_video_playlists' );
 add_action( 'masvideos_account_tv-show-playlists_endpoint', 'masvideos_account_tv_show_playlists' );
+add_action( 'masvideos_account_edit-account_endpoint', 'masvideos_account_edit_account' );
+
+add_action( 'masvideos_before_edit_account_form', 'masvideos_print_notices' );
 
 /**
  * Persons Loop.
