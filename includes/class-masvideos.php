@@ -288,8 +288,11 @@ if ( ! class_exists( 'MasVideos' ) ) {
          * @since 3.3.0
          */
         private function theme_support_includes() {
-            if ( masvideos_is_active_theme( array( 'twentynineteen' ) ) ) {
+            if ( masvideos_is_active_theme( array( 'twentytwenty', 'twentynineteen' ) ) ) {
                 switch ( get_template() ) {
+                    case 'twentytwenty':
+                        include_once MASVIDEOS_ABSPATH . 'includes/theme-support/class-masvideos-twenty-twenty.php';
+                        break;
                     case 'twentynineteen':
                         include_once MASVIDEOS_ABSPATH . 'includes/theme-support/class-masvideos-twenty-nineteen.php';
                         break;
