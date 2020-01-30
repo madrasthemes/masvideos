@@ -195,11 +195,31 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 	background: $highlights-color;
 }
 
-#reviews.masvideos-Reviews .star-rating {
-	width: auto;
+#reviews.masvideos-Reviews {
+	.star-rating {
+		width: auto;
 
-	&:before {
-		content: none;
+		&:before {
+			content: none;
+		}
+	}
+
+	.comment-respond p {
+		margin-left: 0;
+		margin-right: 0;
+
+		&.comment-form-email {
+			margin-left: 1.5rem;
+		}
+	}
+
+	.comment-reply-title {
+		font-family: $headings;
+		font-size: 1em;
+		font-weight: bold;
+		margin: 0 0 2rem;
+		display: block;
+		text-align: left;
 	}
 }
 
@@ -214,7 +234,7 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 		list-style: none;
 
 		li {
-			margin-right: 1rem;
+			margin: 0 1rem 0 0;
 			display: inline-block;
 
 			a {
@@ -255,8 +275,9 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 		font-family: $headings;
 		font-size: 1em;
 		font-weight: bold;
-		margin: 0 0 0.75rem;
+		margin: 0 0 2rem;
 		display: block;
+		text-align: left;
 	}
 
 	#reviews {
@@ -307,6 +328,27 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 .masvideos-tabs,
 .movie__recommended{
 	margin-bottom: 40px;
+
+	.comment-respond p {
+		margin-left: 0;
+		margin-right: 0;
+
+		&.comment-form-email {
+			margin-left: 1.5rem;
+		}
+	}
+
+	.comment-respond p.comment-notes,
+	.comment-respond p.logged-in-as {
+		text-align: left;
+		margin: 0 0 20px;
+	}
+
+	.comment-form-cookies-consent {
+		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+	}
 }
 
 .single-tv_show .masvideos-tabs,
@@ -548,6 +590,8 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 	position: relative;
 
 	.dropdown-menu {
+		font-size: 1.5rem;
+		
 		a {
 			display: block;
 		    width: 100%;
@@ -697,6 +741,12 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 	.masvideos-Reviews,
 	.masvideos-tabs {
 		clear: both;
+	}
+
+	.episode__head {
+		.episode__player--prev-episode {
+			margin-bottom: 20px;
+		}
 	}
 }
 
@@ -1085,7 +1135,6 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 		            }
 		        }
 		    }
-
 		}
 	}
 }
