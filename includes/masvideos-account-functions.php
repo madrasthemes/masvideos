@@ -51,10 +51,10 @@ function masvideos_get_account_menu_items() {
  *
  * @return string
  */
-function masvideos_customer_edit_account_url() {
+function masvideos_user_edit_account_url() {
     $edit_account_url = masvideos_get_endpoint_url( 'edit-account', '', masvideos_get_page_permalink( 'myaccount' ) );
 
-    return apply_filters( 'masvideos_customer_edit_account_url', $edit_account_url );
+    return apply_filters( 'masvideos_user_edit_account_url', $edit_account_url );
 }
 
 /**
