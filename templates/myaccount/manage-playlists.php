@@ -50,7 +50,16 @@ do_action( 'masvideos_before_manage_playlists' ); ?>
                             <a class="view" href="<?php echo get_permalink( $obj->ID ) ?>"><?php echo get_the_title( $obj->ID ); ?></a>
                         </td>
                         <td>
-                            <?php echo get_post_status( $obj->ID ); ?>
+                            <?php
+                                $post_status = get_post_status( $obj->ID );
+                                $get_visibility_options_func_name = 'masvideos_get_' . $post_type . '_visibility_options';
+                                $visibility_options = function_exists( $get_visibility_options_func_name ) ? $get_visibility_options_func_name() : false;
+                                if( is_array( $visibility_options ) && isset( $visibility_options[$post_status] ) ) {
+                                    echo esc_html( $visibility_options[$post_status] );
+                                } else {
+                                    echo esc_html( $post_status );
+                                }
+                            ?>
                         </td>
                         <td>
                             <?php
