@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MAS Videos package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MAS Videos 1.1.5\n"
+"Project-Id-Version: MAS Videos 1.1.6\n"
 "Report-Msgid-Bugs-To: https://github.com/madrasthemes/masvideos/issues\n"
-"POT-Creation-Date: 2020-01-17 12:30:41+00:00\n"
+"POT-Creation-Date: 2020-02-06 08:15:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -273,8 +273,8 @@ msgstr ""
 #: includes/class-masvideos-post-types.php:374
 #: includes/class-masvideos-post-types.php:428
 #: includes/class-masvideos-post-types.php:493
-#: includes/masvideos-account-functions.php:117
-#: includes/masvideos-account-functions.php:155
+#: includes/masvideos-account-functions.php:130
+#: includes/masvideos-account-functions.php:168
 msgid "Edit"
 msgstr ""
 
@@ -283,8 +283,8 @@ msgstr ""
 #: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:55
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-account-functions.php:121
-#: includes/masvideos-account-functions.php:159
+#: includes/masvideos-account-functions.php:134
+#: includes/masvideos-account-functions.php:172
 #: includes/masvideos-template-functions.php:511
 #: includes/masvideos-template-functions.php:523
 msgid "Delete"
@@ -630,7 +630,7 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-taxonomies.php:155
 #: includes/admin/class-masvideos-admin-taxonomies.php:260
 #: includes/admin/masvideos-meta-box-functions.php:429
-#: includes/masvideos-account-functions.php:317
+#: includes/masvideos-account-functions.php:330
 #: includes/masvideos-template-functions.php:474
 msgid "Image"
 msgstr ""
@@ -834,7 +834,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:502
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:630
 #: includes/admin/meta-boxes/views/html-tv-show-season.php:70
-#: includes/masvideos-account-functions.php:242
+#: includes/masvideos-account-functions.php:255
 #: includes/masvideos-episode-template-functions.php:733
 #: includes/masvideos-movie-template-functions.php:991
 #: includes/masvideos-person-template-functions.php:1079
@@ -870,7 +870,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-tv-show-csv-importer-controller.php:705
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:505
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:632
-#: includes/masvideos-account-functions.php:258
+#: includes/masvideos-account-functions.php:271
 msgid "Tags"
 msgstr ""
 
@@ -1387,7 +1387,7 @@ msgstr ""
 #: includes/admin/importers/class-masvideos-video-csv-importer-controller.php:631
 #: includes/class-masvideos-post-types.php:762
 #: includes/class-masvideos-post-types.php:950
-#: includes/masvideos-account-functions.php:250
+#: includes/masvideos-account-functions.php:263
 msgid "Categories"
 msgstr ""
 
@@ -1616,8 +1616,8 @@ msgid "Video Link"
 msgstr ""
 
 #: includes/admin/importers/mappings/generic.php:21
-#: includes/masvideos-account-functions.php:87
-#: includes/masvideos-account-functions.php:235
+#: includes/masvideos-account-functions.php:100
+#: includes/masvideos-account-functions.php:248
 #: includes/widgets/class-masvideos-movies-genres-filter-widgets.php:80
 #: includes/widgets/class-masvideos-movies-tags-filter-widgets.php:78
 #: includes/widgets/class-masvideos-movies-widget.php:19
@@ -1708,8 +1708,8 @@ msgid "Reason for failure"
 msgstr ""
 
 #: includes/admin/importers/views/html-csv-import-done.php:94
-#: includes/masvideos-account-functions.php:113
-#: includes/masvideos-account-functions.php:151
+#: includes/masvideos-account-functions.php:126
+#: includes/masvideos-account-functions.php:164
 msgid "View"
 msgstr ""
 
@@ -2446,21 +2446,21 @@ msgstr ""
 
 #: includes/admin/meta-boxes/views/html-video-data-general.php:16
 #: includes/admin/meta-boxes/views/html-video-data-general.php:28
-#: includes/masvideos-account-functions.php:285
+#: includes/masvideos-account-functions.php:298
 msgid "Upload Video"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-video-data-general.php:17
 #: includes/admin/meta-boxes/views/html-video-data-general.php:39
-#: includes/masvideos-account-functions.php:286
-#: includes/masvideos-account-functions.php:303
+#: includes/masvideos-account-functions.php:299
+#: includes/masvideos-account-functions.php:316
 msgid "Embed Video"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-video-data-general.php:18
 #: includes/admin/meta-boxes/views/html-video-data-general.php:49
-#: includes/masvideos-account-functions.php:287
-#: includes/masvideos-account-functions.php:310
+#: includes/masvideos-account-functions.php:300
+#: includes/masvideos-account-functions.php:323
 msgid "Video URL"
 msgstr ""
 
@@ -2565,30 +2565,89 @@ msgstr ""
 msgid "Invalid data store."
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:48
-#: includes/class-masvideos-form-handler.php:52
-#: includes/class-masvideos-form-handler.php:133
-#: includes/class-masvideos-form-handler.php:278
-#: includes/class-masvideos-form-handler.php:324
-#: includes/class-masvideos-form-handler.php:344
-#: includes/class-masvideos-form-handler.php:391
-msgid "Error:"
+#: includes/class-masvideos-form-handler.php:75
+msgid "Display name cannot be changed to email address due to privacy concern."
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:52
-msgid "Username is required."
+#: includes/class-masvideos-form-handler.php:82
+#: templates/myaccount/form-edit-account.php:26
+msgid "First name"
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:179
+#: includes/class-masvideos-form-handler.php:83
+#: templates/myaccount/form-edit-account.php:30
+msgid "Last name"
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:84
+#: templates/myaccount/form-edit-account.php:36
+msgid "Display name"
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:85
+#: templates/myaccount/form-edit-account.php:42
+#: templates/myaccount/form-register.php:44
+msgid "Email address"
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:92
+#: includes/class-masvideos-form-handler.php:300
 #. translators: %s: Field name.
 msgid "%s is a required field."
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:220
+#: includes/class-masvideos-form-handler.php:99
+#: includes/masvideos-user-functions.php:29
+msgid "Please provide a valid email address."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:101
+msgid "This email address is already registered."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:107
+msgid "Please fill out all password fields."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:110
+msgid "Please enter your current password."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:113
+msgid "Please re-enter your password."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:116
+msgid "New passwords do not match."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:119
+msgid "Your current password is incorrect."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:140
+msgid "Account details changed successfully."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:169
+#: includes/class-masvideos-form-handler.php:173
+#: includes/class-masvideos-form-handler.php:254
+#: includes/class-masvideos-form-handler.php:399
+#: includes/class-masvideos-form-handler.php:445
+#: includes/class-masvideos-form-handler.php:465
+#: includes/class-masvideos-form-handler.php:512
+msgid "Error:"
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:173
+msgid "Username is required."
+msgstr ""
+
+#: includes/class-masvideos-form-handler.php:341
 msgid "Video uploaded successfully."
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:324
+#: includes/class-masvideos-form-handler.php:445
 msgid "Posttype is not valid."
 msgstr ""
 
@@ -2885,16 +2944,16 @@ msgid "This is where you can add new tv show playlists to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:249
-#: includes/class-masvideos-query.php:77
+#: includes/class-masvideos-query.php:78
 #: includes/customizer/class-masvideos-customizer.php:353
-#: includes/masvideos-account-functions.php:30
+#: includes/masvideos-account-functions.php:31
 msgid "Videos"
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:250
 #: includes/data-stores/class-masvideos-video-data-store-cpt.php:82
 #: includes/data-stores/class-masvideos-video-playlist-data-store-cpt.php:71
-#: includes/masvideos-account-functions.php:296
+#: includes/masvideos-account-functions.php:309
 #: includes/widgets/class-masvideos-widget-search.php:37
 msgid "Video"
 msgstr ""
@@ -3640,28 +3699,33 @@ msgstr ""
 msgid "No &quot;%s&quot; found"
 msgstr ""
 
-#: includes/class-masvideos-query.php:75
+#: includes/class-masvideos-query.php:76
 #. translators: %s: page
 msgid "Videos (page %d)"
 msgstr ""
 
-#: includes/class-masvideos-query.php:81
-#: includes/masvideos-account-functions.php:31
+#: includes/class-masvideos-query.php:82
+#: includes/masvideos-account-functions.php:32
 msgid "Movie playlists"
 msgstr ""
 
-#: includes/class-masvideos-query.php:84
-#: includes/masvideos-account-functions.php:32
+#: includes/class-masvideos-query.php:85
+#: includes/masvideos-account-functions.php:33
 msgid "Video playlists"
 msgstr ""
 
-#: includes/class-masvideos-query.php:87
-#: includes/masvideos-account-functions.php:33
+#: includes/class-masvideos-query.php:88
+#: includes/masvideos-account-functions.php:34
 msgid "TV Show playlists"
 msgstr ""
 
-#: includes/class-masvideos-query.php:90
-#: includes/masvideos-account-functions.php:34
+#: includes/class-masvideos-query.php:91
+#: includes/masvideos-account-functions.php:35
+msgid "Account details"
+msgstr ""
+
+#: includes/class-masvideos-query.php:94
+#: includes/masvideos-account-functions.php:36
 msgid "Logout"
 msgstr ""
 
@@ -3990,54 +4054,54 @@ msgstr ""
 msgid "Unable to read configuration, verify that the API key is valid"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:29
+#: includes/masvideos-account-functions.php:30
 msgid "Dashboard"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:88
+#: includes/masvideos-account-functions.php:101
 #: includes/widgets/class-masvideos-movies-widget.php:35
 #: includes/widgets/class-masvideos-tv-shows-widget.php:35
 #: includes/widgets/class-masvideos-videos-widget.php:35
 msgid "Date"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:89
+#: includes/masvideos-account-functions.php:102
 msgid "Status"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:90
+#: includes/masvideos-account-functions.php:103
 #: templates/myaccount/manage-playlists.php:43
 msgid "Actions"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:266
+#: includes/masvideos-account-functions.php:279
 msgid "Pending"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:267
+#: includes/masvideos-account-functions.php:280
 msgid "Draft"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:268
+#: includes/masvideos-account-functions.php:281
 #: includes/masvideos-movie-playlist-functions.php:319
 #: includes/masvideos-tv-show-playlist-functions.php:319
 #: includes/masvideos-video-playlist-functions.php:319
 msgid "Private"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:270
+#: includes/masvideos-account-functions.php:283
 msgid "Privacy"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:277
+#: includes/masvideos-account-functions.php:290
 msgid "Enable Video Comments"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:289
+#: includes/masvideos-account-functions.php:302
 msgid "Video Method"
 msgstr ""
 
-#: includes/masvideos-account-functions.php:324
+#: includes/masvideos-account-functions.php:337
 msgid "Gallery Image"
 msgstr ""
 
@@ -4435,10 +4499,6 @@ msgstr ""
 msgid "Sign in to add this tv show to a playlist."
 msgstr ""
 
-#: includes/masvideos-user-functions.php:29
-msgid "Please provide a valid email address."
-msgstr ""
-
 #: includes/masvideos-user-functions.php:33
 msgid "An account is already registered with your email address. Please log in."
 msgstr ""
@@ -4483,23 +4543,23 @@ msgstr ""
 msgid "Sign in to add this video to a playlist."
 msgstr ""
 
-#: includes/shortcodes/class-masvideos-shortcode-my-account.php:40
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:47
 msgid "Upload video"
 msgstr ""
 
-#: includes/shortcodes/class-masvideos-shortcode-my-account.php:41
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:48
 msgid "Submit video"
 msgstr ""
 
-#: includes/shortcodes/class-masvideos-shortcode-my-account.php:42
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:49
 msgid "Save as Draft"
 msgstr ""
 
-#: includes/shortcodes/class-masvideos-shortcode-my-account.php:59
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:66
 msgid "Edit video"
 msgstr ""
 
-#: includes/shortcodes/class-masvideos-shortcode-my-account.php:60
+#: includes/shortcodes/class-masvideos-shortcode-my-account.php:67
 msgid "Save video"
 msgstr ""
 
@@ -5014,6 +5074,32 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
+#: templates/myaccount/form-edit-account.php:37
+msgid ""
+"This will be how your name will be displayed in the account section and in "
+"reviews"
+msgstr ""
+
+#: templates/myaccount/form-edit-account.php:47
+msgid "Password change"
+msgstr ""
+
+#: templates/myaccount/form-edit-account.php:50
+msgid "Current password (leave blank to leave unchanged)"
+msgstr ""
+
+#: templates/myaccount/form-edit-account.php:54
+msgid "New password (leave blank to leave unchanged)"
+msgstr ""
+
+#: templates/myaccount/form-edit-account.php:58
+msgid "Confirm new password"
+msgstr ""
+
+#: templates/myaccount/form-edit-account.php:68
+msgid "Save changes"
+msgstr ""
+
 #: templates/myaccount/form-login.php:26
 msgid "Login"
 msgstr ""
@@ -5046,10 +5132,6 @@ msgstr ""
 
 #: templates/myaccount/form-register.php:37
 msgid "Username"
-msgstr ""
-
-#: templates/myaccount/form-register.php:44
-msgid "Email address"
 msgstr ""
 
 #: templates/myaccount/manage-playlists.php:29
