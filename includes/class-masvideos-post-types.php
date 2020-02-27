@@ -47,7 +47,7 @@ class MasVideos_Post_Types {
         $permalinks = masvideos_get_permalink_structure();
 
         // For Episodes
-        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $supports   = array( 'title', 'editor', 'author', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $episodes_page_id = masvideos_get_page_id( 'episodes' );
 
         if ( masvideos_is_episode_archive() && current_theme_supports( 'masvideos' ) ) {
@@ -112,7 +112,7 @@ class MasVideos_Post_Types {
         );
 
         // For TV Shows
-        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $supports   = array( 'title', 'editor', 'author', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $tv_shows_page_id = masvideos_get_page_id( 'tv_shows' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
@@ -231,7 +231,7 @@ class MasVideos_Post_Types {
         );
 
         // For Videos
-        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $supports   = array( 'title', 'editor', 'author', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $videos_page_id = masvideos_get_page_id( 'videos' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
@@ -350,7 +350,7 @@ class MasVideos_Post_Types {
         );
 
         // For Movies
-        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $supports   = array( 'title', 'editor', 'author', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $movies_page_id = masvideos_get_page_id( 'movies' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
@@ -469,7 +469,7 @@ class MasVideos_Post_Types {
         );
 
         // For Persons
-        $supports   = array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
+        $supports   = array( 'title', 'editor', 'author', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' );
         $persons_page_id = masvideos_get_page_id( 'persons' );
 
         if ( current_theme_supports( 'masvideos' ) ) {
