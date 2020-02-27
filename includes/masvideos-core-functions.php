@@ -638,7 +638,7 @@ function masvideos_array_get_adjascent_key( $key, $hash = array(), $increment ) 
     }
     $newindex = $found_index+$increment;
     // returns false if no result found
-    return ( $newindex > 0 && $newindex < sizeof( $hash ) ) ? $keys[$newindex] : false;
+    return ( $newindex >= 0 && $newindex < sizeof( $hash ) ) ? $keys[$newindex] : false;
 }
 
 if ( ! function_exists( 'masvideos_sort_priority_callback' ) ) {

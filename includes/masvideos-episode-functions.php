@@ -391,8 +391,8 @@ if ( ! function_exists( 'masvideos_get_single_episode_prev_next_ids' ) ) {
             $current_key = array_search( $episode_id, $episodes );
             $prev_key = masvideos_array_get_adjascent_key( $current_key, $episodes, -1 );
             $next_key = masvideos_array_get_adjascent_key( $current_key, $episodes, +1 );
-            $prev = ( $prev_key > 0 && $prev_key < sizeof( $episodes ) ) ? $episodes[$prev_key] : false;
-            $next = ( $next_key > 0 && $next_key < sizeof( $episodes ) ) ? $episodes[$next_key] : false;
+            $prev = ( $prev_key !== false && $prev_key >= 0 && $prev_key < sizeof( $episodes ) ) ? $episodes[$prev_key] : false;
+            $next = ( $next_key !== false && $next_key >= 0 && $next_key < sizeof( $episodes ) ) ? $episodes[$next_key] : false;
         }
 
         return array( 'prev' => $prev, 'next' => $next );
