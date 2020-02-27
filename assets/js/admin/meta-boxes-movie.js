@@ -369,6 +369,16 @@ jQuery( function( $ ) {
         return false;
     });
 
+    $( document ).on( 'masvideos_added_source_movie', function() {
+        $( '.show_hide_select' ).on( 'change', function() {
+            var shortcode_select = $(this).val(), 
+                $masvideos_wp_shortcode = $(this).parents( '.options_group' );
+
+            $masvideos_wp_shortcode.find( '.hide' ).hide();
+            $masvideos_wp_shortcode.find( '.show_if_' + shortcode_select ).show();
+        }).change();
+    });
+
     $( '.movie_sources' ).on( 'blur', 'input.source_name', function() {
         $( this ).closest( '.masvideos_source' ).find( 'strong.source_name' ).text( $( this ).val() );
     });
