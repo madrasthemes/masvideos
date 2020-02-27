@@ -243,6 +243,17 @@ function masvideos_get_account_endpoint_url( $endpoint ) {
  * @return  array
  */
 function masvideos_get_edit_video_fields() {
+    $status_options = array(
+        'publish'   => __( 'Publish', 'masvideos' ),
+        'pending'   => __( 'Pending', 'masvideos' ),
+        'draft'     => __( 'Draft', 'masvideos' ),
+        'private'   => __( 'Private', 'masvideos' ),
+    );
+
+    if( ! apply_filters( 'masvideos_allow_users_to_publish_video', false ) ) {
+        unset( $status_options['publish'] );
+    }
+
     $fields = array(
         'title'         => array(
             'label'        => __( 'Title', 'masvideos' ),
@@ -275,11 +286,7 @@ function masvideos_get_edit_video_fields() {
         ),
         'status'  => array(
             'type'         => 'select',
-            'options'      => array(
-                'pending'   => __( 'Pending', 'masvideos' ),
-                'draft'     => __( 'Draft', 'masvideos' ),
-                'private'   => __( 'Private', 'masvideos' ),
-            ),
+            'options'      => $status_options,
             'label'        => __( 'Privacy', 'masvideos' ),
             'required'     => true,
             'class'        => array( 'form-row-status' ),
