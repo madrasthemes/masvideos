@@ -4,7 +4,7 @@ Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,12 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.1.7 - 2020-02-28 =
+* Tweak – CPTs author support added
+* Tweak – Submit video form updated
+* Fix – Episode navigation issue fixed
+* Fix – Sources field show/hide issues fixed
 
 = 1.1.6 - 2020-02-06 =
 * Enhancement – My account profile edit page added
