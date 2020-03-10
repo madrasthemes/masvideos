@@ -64,6 +64,9 @@ class MasVideos_Twenty_Nineteen {
             ),
         ) );
 
+        add_theme_support( 'masvideos-movie-gallery-lightbox' );
+        add_theme_support( 'masvideos-video-gallery-lightbox' );
+
         // Tweak Twenty Nineteen features.
         add_action( 'wp', array( __CLASS__, 'tweak_theme_features' ) );
 

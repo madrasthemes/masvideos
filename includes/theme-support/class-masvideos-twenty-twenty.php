@@ -67,6 +67,9 @@ class MasVideos_Twenty_Twenty {
             ),
         ) );
 
+        add_theme_support( 'masvideos-movie-gallery-lightbox' );
+        add_theme_support( 'masvideos-video-gallery-lightbox' );
+
         // Background color change.
         add_action( 'after_setup_theme', array( __CLASS__, 'set_white_background' ), 10 );
 
