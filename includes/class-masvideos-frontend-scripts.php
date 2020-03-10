@@ -329,7 +329,7 @@ class MasVideos_Frontend_Scripts {
             self::enqueue_script( 'masvideos-edit-video' );
         }
 
-        if ( current_theme_supports( 'masvideos-movie-gallery-lightbox' ) ) {
+        if ( current_theme_supports( 'masvideos-movie-gallery-lightbox' ) || current_theme_supports( 'masvideos-video-gallery-lightbox' ) ) {
             self::enqueue_script( 'photoswipe-ui-default' );
             self::enqueue_style( 'photoswipe-default-skin' );
             add_action( 'wp_footer', 'masvideos_photoswipe' );
@@ -404,6 +404,17 @@ class MasVideos_Frontend_Scripts {
                 $params = array(
                     'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'masvideos' ),
                     'review_rating_required'    => get_option( 'masvideos_video_review_rating_required' ),
+                    'photoswipe_enabled'        => apply_filters( 'masvideos_single_video_photoswipe_enabled', get_theme_support( 'masvideos-video-gallery-lightbox' ) ),
+                    'photoswipe_options'        => apply_filters(
+                        'masvideos_single_video_photoswipe_options',
+                        array(
+                            'shareEl'               => false,
+                            'closeOnScroll'         => false,
+                            'history'               => false,
+                            'hideAnimationDuration' => 0,
+                            'showAnimationDuration' => 0,
+                        )
+                    ),
                 );
                 break;
             case 'masvideos-single-movie':
