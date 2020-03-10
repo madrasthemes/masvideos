@@ -325,7 +325,8 @@ add_action( 'masvideos_before_single_video_summary', 'masvideos_template_single_
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_title', 5 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_meta', 10 );
 add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_actions_bar', 15 );
-add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_description', 20 );
+add_action( 'masvideos_single_video_summary', 'masvideos_template_single_video_short_desc', 20 );
+add_action( 'masvideos_after_single_video_summary', 'masvideos_template_single_video_tabs', 30 );
 add_action( 'masvideos_after_single_video_summary', 'masvideos_template_single_video_gallery', 40 );
 add_action( 'masvideos_after_single_video_summary', 'masvideos_related_videos', 50 );
 add_action( 'masvideos_after_single_video_summary', 'masvideos_template_single_video_related_playlist_videos', 55 );
@@ -333,6 +334,10 @@ add_action( 'masvideos_after_single_video_summary', 'comments_template', 60 );
 
 // Set current user's watched history to playlist.
 add_action( 'masvideos_after_single_video', 'masvideos_set_watched_video_history_to_playlist', 999 );
+
+add_action( 'masvideos_single_video_description_tab', 'masvideos_template_single_video_description', 30 );
+add_action( 'masvideos_single_video_description_tab', 'masvideos_display_video_attributes', 50 );
+add_action( 'masvideos_single_video_description_tab', 'masvideos_template_single_video_tags', 80 );
 
 /**
  * Video Reviews

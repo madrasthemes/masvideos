@@ -355,7 +355,7 @@ if ( ! function_exists( 'masvideos_video_page_title' ) ) {
 
 if ( ! function_exists( 'masvideos_display_video_page_title' ) ) {
     /**
-     * Outputs Mas Movies Title
+     * Outputs Mas Videos Title
      */
     function masvideos_display_video_page_title() {
 
@@ -623,32 +623,6 @@ if ( ! function_exists( 'masvideos_template_loop_video_short_desc' ) ) {
     }
 }
 
-if ( ! function_exists( 'masvideos_template_single_video_actions_bar' ) ) {
-    /**
-     * Single video actions
-     */
-    function masvideos_template_single_video_actions_bar() {
-        ?>
-        <div class="single-video__actions-bar">
-            <?php masvideos_template_button_video_playlist(); ?>
-        </div>
-        <?php
-    }
-}
-
-if ( ! function_exists( 'masvideos_template_single_video_description' ) ) {
-    /**
-     * Single video description
-     */
-    function masvideos_template_single_video_description() {
-        ?>
-        <div class="single-video__description">
-            <div><?php the_content(); ?></div>
-        </div>
-        <?php
-    }
-}
-
 if ( ! function_exists( 'masvideos_template_loop_video_actions' ) ) {
 
     /**
@@ -776,6 +750,22 @@ if ( ! function_exists( 'masvideos_template_single_video_title' ) ) {
     }
 }
 
+if ( ! function_exists( 'masvideos_template_single_video_tags' ) ) {
+
+    /**
+     * Video tags in the video single.
+     */
+    function masvideos_template_single_video_tags() {
+        global $video;
+
+        $tags = get_the_term_list( $video->get_id(), 'video_tag', '', ', ' );
+
+        if( ! empty ( $tags ) ) {
+            echo sprintf( '<span class="video__tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
+        }
+    }
+}
+
 if ( ! function_exists( 'masvideos_template_single_video_meta' ) ) {
 
     /**
@@ -812,6 +802,53 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
         if( ! empty( $date ) ) {
             echo sprintf( '<span class="video_posted_on">%s %s</span>', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date );
         }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_actions_bar' ) ) {
+    /**
+     * Single video actions
+     */
+    function masvideos_template_single_video_actions_bar() {
+        ?>
+        <div class="single-video__actions-bar">
+            <?php masvideos_template_button_video_playlist(); ?>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_description' ) ) {
+    /**
+     * Single video description
+     */
+    function masvideos_template_single_video_description() {
+        ?>
+        <div class="single-video__description">
+            <div><?php the_content(); ?></div>
+        </div>
+        <?php
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_short_desc' ) ) {
+    /**
+     * Single video short description
+     */
+    function masvideos_template_single_video_short_desc() {
+        global $post;
+
+        $short_description = apply_filters( 'masvideos_template_single_video_short_desc', $post->post_excerpt );
+
+        if ( ! $short_description ) {
+            return;
+        }
+
+        ?>
+        <div class="video__short-description">
+            <?php echo '<p>' . $short_description . '</p>'; ?>
+        </div>
+        <?php
     }
 }
 
@@ -969,6 +1006,79 @@ if ( ! function_exists( 'masvideos_video_comments' ) ) {
             'comment' => $comment,
             'args'    => $args,
             'depth'   => $depth,
+        ) );
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_tabs' ) ) {
+
+    /**
+     * Video tabs in the video single.
+     */
+    function masvideos_template_single_video_tabs() {
+        global $video, $post;
+
+        $tabs = array();
+        
+        // Description tab - shows video content.
+        if ( $post->post_content ) {
+            $tabs['description'] = array(
+                'title'     => esc_html__( 'Description', 'masvideos' ),
+                'callback'  => 'masvideos_template_single_video_description_tab',
+                'priority'  => 10
+            );
+        }
+
+        // // Sources tab - shows link sources.
+        // if ( $video && ( $video->has_sources() ) ) {
+        //     $tabs['sources'] = array(
+        //         'title'     => esc_html__( 'Additional Information', 'masvideos' ),
+        //         'callback'  => 'masvideos_template_single_video_sources',
+        //         'priority'  => 20
+        //     );
+        // }
+
+        // Comments tab - shows comments.
+        if ( comments_open() ) {
+            $tabs['reviews'] = array(
+                'title'     => esc_html__( 'Comments', 'masvideos' ),
+                'callback'  => 'comments_template',
+                'priority'  => 30
+            );
+        }
+
+        $tabs = apply_filters( 'masvideos_template_single_video_tabs', $tabs );
+
+        if( ! empty( $tabs ) ) {
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'video-tabs' ) );
+        }
+    }
+}
+
+if ( ! function_exists( 'masvideos_template_single_video_description_tab' ) ) {
+    /**
+     * Single video description tab
+     */
+    function masvideos_template_single_video_description_tab() {
+        global $video;
+        echo '<div id="video__description-tab" class="video__description-tab">';
+            do_action( 'masvideos_single_video_description_tab', $video );
+        echo '</div>';
+    }
+}
+
+if ( ! function_exists( 'masvideos_display_video_attributes' ) ) {
+    /**
+     * Outputs a list of video attributes for a video.
+     *
+     * @since  1.0.0
+     * @param  Mas_Videos $video Video Object.
+     */
+    function masvideos_display_video_attributes() {
+        global $video;
+        masvideos_get_template( 'single-video/video-attributes.php', array(
+            'video'         => $video,
+            'attributes'    => array_filter( $video->get_attributes(), 'masvideos_attributes_video_array_filter_visible' ),
         ) );
     }
 }
