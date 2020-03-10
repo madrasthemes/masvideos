@@ -16,7 +16,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     </header>
     <section>
         <div class="options_group">
-            <p class=" form-field masvideos-tmdb-type_field">
+            <p class="form-field masvideos-tmdb-language_field">
+                <label for="masvideos-tmdb-language"><?php esc_html_e( 'Language:', 'masvideos' ); ?></label>
+                <?php wp_dropdown_languages( array(
+                    'id' => 'masvideos-tmdb-language',
+                    'name' => 'masvideos-tmdb-language',
+                    'selected' => get_locale()
+                ) ); ?>
+            </p>
+            <p class="form-field masvideos-tmdb-type_field">
                 <label for="masvideos-tmdb-type"><?php esc_html_e( 'Type:', 'masvideos' ); ?></label>
                 <?php if( ! empty( $type_options ) )
                     ?><select id="masvideos-tmdb-type" name="masvideos-tmdb-type" class="show_hide_select"><?php
