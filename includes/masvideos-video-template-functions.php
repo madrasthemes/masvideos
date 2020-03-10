@@ -1087,3 +1087,34 @@ if ( ! function_exists( 'masvideos_template_single_video_player_wrap_close' ) ) 
         <?php
     }
 }
+
+if ( ! function_exists( 'masvideos_template_single_video_gallery' ) ) {
+    function masvideos_template_single_video_gallery() {
+        global $video;
+
+        $columns           = apply_filters( 'masvideos_video_gallery_thumbnails_columns', 8 );
+        $attachment_ids    = $video->get_gallery_image_ids();
+        $wrapper_classes   = apply_filters( 'masvideos_single_video_image_gallery_classes', array(
+            'masvideos-video-gallery',
+            'masvideos-video-gallery--' . ( $video->get_image_id() ? 'with-images' : 'without-images' ),
+            'masvideos-video-gallery--columns-' . absint( $columns ),
+            'images',
+        ) );
+        $title = apply_filters( 'masvideos_template_single_video_gallery_title', esc_html__( 'Gallery', 'masvideos' ));
+
+        if ( $attachment_ids && $video->get_image_id() ) {
+            ?>
+            <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>">
+                <?php echo sprintf( '<h2 class="masvideos-video-gallery__title">%s</h2>', $title ); ?>
+                <div class="masvideos-video-gallery__inner">
+                    <?php
+                    foreach ( $attachment_ids as $attachment_id ) {
+                        echo apply_filters( 'masvideos_single_video_image_thumbnail_html', masvideos_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+                    }
+                ?>
+                </div>
+            </div>
+            <?php
+        }
+    }
+}
