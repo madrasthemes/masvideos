@@ -459,7 +459,9 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 
 .masvideos {
 	.summary {
-		.movie__short-description {
+		.movie__short-description,
+		.video__short-description,
+		.tv-show__short-description {
 			display: block;
 		}
 	}
