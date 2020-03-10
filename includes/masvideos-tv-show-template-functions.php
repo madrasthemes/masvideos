@@ -966,6 +966,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tabs' ) ) {
         $seasons = $tv_show->get_seasons();
         if( ! empty( $seasons ) ) {
             $tabs = array();
+            $season_position = 0;
             foreach ( $seasons as $key => $season ) {
                 if( ! empty( $season['name'] ) && ! empty( $season['episodes'] ) ) {
                     $episode_ids = implode( ",", $season['episodes'] );
@@ -987,7 +988,13 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_seasons_tabs' ) ) {
                 }
             }
 
-            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs ) );
+            if( intval( get_query_var('season-position') ) ) {
+                $season_position = intval( get_query_var('season-position') );
+            } elseif ( isset( $_GET['season-position'] ) && ! empty( intval( $_GET['season-position'] ) ) ) {
+                $season_position = intval( $_GET['season-position'] );
+            }
+
+            masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'default_active_tab' => $season_position ) );
         }
     }
 }

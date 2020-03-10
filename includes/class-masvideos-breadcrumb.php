@@ -205,7 +205,7 @@ class MasVideos_Breadcrumb {
 				$season_id = $episode->get_tv_show_season_id();
 				$seasons = $tv_show->get_seasons();
 				if( ! empty( $seasons ) && isset( $seasons[$season_id]['name'] ) ) {
-					$this->add_crumb( $seasons[$season_id]['name'], get_permalink( $tv_show_id ) );
+					$this->add_crumb( $seasons[$season_id]['name'], get_permalink( $tv_show_id ) . '?season-position=' . $seasons[$season_id]['position'] );
 				}
 			}
 		} elseif ( 'tv_show' === get_post_type( $post ) ) {
