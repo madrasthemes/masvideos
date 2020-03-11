@@ -1113,8 +1113,6 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 	}
 }
 
-.tv-show-casts,
-.movie-casts,
 .single-person .person {
 	display: flex;
 }
@@ -1142,4 +1140,25 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 			flex: 0 0 100%;
 		}
 	}
+}
+
+.movie-casts,
+.tv-show-casts {
+	display: flex;
+	flex-wrap: wrap;
+    .movie-cast {
+        @include make-col(6);
+        padding-right: 6px;
+        padding-left: 6px;
+
+        @media only screen and (min-width: 768px) {
+            @include make-col(4);
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        @media only screen and (min-width: 992px) {
+            @include make-col(2);
+        }
+    }
 }

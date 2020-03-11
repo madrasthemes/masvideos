@@ -2338,8 +2338,6 @@ p.stars {
 .single-video .masvideos-video-gallery--columns-10 .masvideos-video-gallery__inner {
   display: flex; }
 
-.tv-show-casts,
-.movie-casts,
 .single-person .person {
   display: flex; }
 
@@ -2367,5 +2365,28 @@ p.stars {
   .movie-cast-crew-tabs .movie-crews .movie-crews-category-title {
     margin: 0;
     flex: 0 0 100%; }
+
+.movie-casts,
+.tv-show-casts {
+  display: flex;
+  flex-wrap: wrap; }
+  .movie-casts .movie-cast,
+  .tv-show-casts .movie-cast {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-right: 6px;
+    padding-left: 6px; }
+    @media only screen and (min-width: 768px) {
+      .movie-casts .movie-cast,
+      .tv-show-casts .movie-cast {
+        flex: 0 0 33.3333333333%;
+        max-width: 33.3333333333%;
+        padding-right: 15px;
+        padding-left: 15px; } }
+    @media only screen and (min-width: 992px) {
+      .movie-casts .movie-cast,
+      .tv-show-casts .movie-cast {
+        flex: 0 0 16.6666666667%;
+        max-width: 16.6666666667%; } }
 
 /*# sourceMappingURL=../../none */
