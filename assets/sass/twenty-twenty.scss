@@ -1141,3 +1141,40 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
 		}
 	}
 }
+.single-movie,
+.single-video {
+	.masvideos-movie-gallery,
+	.masvideos-video-gallery {
+		&--columns-1,
+		&--columns-2,
+		&--columns-3,
+		&--columns-4,
+		&--columns-5,
+		&--columns-6,
+		&--columns-7,
+		&--columns-8,
+		&--columns-9,
+		&--columns-10 {
+			.masvideos-movie-gallery__inner,
+			.masvideos-video-gallery__inner {
+				display: flex;
+			}
+		}
+	}
+}
+
+.tv-show-casts,
+.movie-casts,
+.single-person .person {
+	display: flex;
+}
+
+.single-person__content-sidebar {
+    flex: 0 0 26.6666666667%;
+    max-width: 26.6666666667%;
+}
+
+.single-person__content-body {
+    flex: 0 0 73.3333333333%;
+    max-width: 73.3333333333%;
+}

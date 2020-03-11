@@ -1,1 +1,66 @@
-div.masvideos-message{overflow:hidden;position:relative;border-left-color:#cc99c2!important}div.masvideos-message p{max-width:700px}div.masvideos-message p:last-child{max-width:inherit}.masvideos-message .button-primary,p.masvideos-actions .button-primary{background:#bb77ae;border-color:#a36597;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 1px 0 #a36597;color:#fff;text-shadow:0 -1px 1px #a36597,1px 0 1px #a36597,0 1px 1px #a36597,-1px 0 1px #a36597}.masvideos-message .button-primary:active,.masvideos-message .button-primary:focus,.masvideos-message .button-primary:hover,p.masvideos-actions .button-primary:active,p.masvideos-actions .button-primary:focus,p.masvideos-actions .button-primary:hover{background:#a36597;border-color:#a36597;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 1px 0 #a36597}.masvideos-message a.masvideos-message-close,p.masvideos-actions a.masvideos-message-close{position:static;float:right;top:0;right:0;padding:0 15px 10px 28px;margin-top:-10px;font-size:13px;line-height:1.23076923;text-decoration:none}.masvideos-message a.masvideos-message-close::before,p.masvideos-actions a.masvideos-message-close::before{position:relative;top:18px;left:-20px;transition:all .1s ease-in-out}.masvideos-message .button-primary,.masvideos-message .button-secondary,p.masvideos-actions .button-primary,p.masvideos-actions .button-secondary{text-decoration:none!important}.masvideos-message .twitter-share-button,p.masvideos-actions .twitter-share-button{margin-top:-3px;margin-left:3px;vertical-align:middle}.masvideos-about-text,p.masvideos-actions{margin-bottom:1em!important}
+/**
+ * activation.scss
+ * Styles applied to elements displayed on activation
+ */
+/**
+ * Styling begins
+ */
+div.masvideos-message {
+  overflow: hidden;
+  position: relative;
+  border-left-color: #cc99c2 !important; }
+  div.masvideos-message p {
+    max-width: 700px; }
+  div.masvideos-message p:last-child {
+    max-width: inherit; }
+
+p.masvideos-actions .button-primary,
+.masvideos-message .button-primary {
+  background: #bb77ae;
+  border-color: #a36597;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 0 #a36597;
+  color: #fff;
+  text-shadow: 0 -1px 1px #a36597, 1px 0 1px #a36597, 0 1px 1px #a36597, -1px 0 1px #a36597; }
+  p.masvideos-actions .button-primary:hover, p.masvideos-actions .button-primary:focus, p.masvideos-actions .button-primary:active,
+  .masvideos-message .button-primary:hover,
+  .masvideos-message .button-primary:focus,
+  .masvideos-message .button-primary:active {
+    background: #a36597;
+    border-color: #a36597;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 0 #a36597; }
+
+p.masvideos-actions a.masvideos-message-close,
+.masvideos-message a.masvideos-message-close {
+  position: static;
+  float: right;
+  top: 0;
+  right: 0;
+  padding: 0px 15px 10px 28px;
+  margin-top: -10px;
+  font-size: 13px;
+  line-height: 1.23076923;
+  text-decoration: none; }
+  p.masvideos-actions a.masvideos-message-close::before,
+  .masvideos-message a.masvideos-message-close::before {
+    position: relative;
+    top: 18px;
+    left: -20px;
+    transition: all 0.1s ease-in-out; }
+
+p.masvideos-actions .button-primary,
+p.masvideos-actions .button-secondary,
+.masvideos-message .button-primary,
+.masvideos-message .button-secondary {
+  text-decoration: none !important; }
+
+p.masvideos-actions .twitter-share-button,
+.masvideos-message .twitter-share-button {
+  margin-top: -3px;
+  margin-left: 3px;
+  vertical-align: middle; }
+
+p.masvideos-actions,
+.masvideos-about-text {
+  margin-bottom: 1em !important; }
+
+/*# sourceMappingURL=../../none */
