@@ -1178,3 +1178,18 @@ $font__size-xs:    1em / (1.25 * $font__size-ratio);
     flex: 0 0 73.3333333333%;
     max-width: 73.3333333333%;
 }
+
+.tv-show-cast-crew-tabs,
+.movie-cast-crew-tabs {
+	.tv-show-crews,
+	.movie-crews {
+	    display: flex;
+		flex-wrap: wrap;
+
+		.tv-show-crews-category-title,
+		.movie-crews-category-title {
+		    margin: 0;
+			flex: 0 0 100%;
+		}
+	}
+}

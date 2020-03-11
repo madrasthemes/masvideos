@@ -2396,4 +2396,21 @@ p.stars {
   flex: 0 0 73.3333333333%;
   max-width: 73.3333333333%; }
 
+.tv-show-cast-crew-tabs .tv-show-crews,
+.tv-show-cast-crew-tabs .movie-crews,
+.movie-cast-crew-tabs .tv-show-crews,
+.movie-cast-crew-tabs .movie-crews {
+  display: flex;
+  flex-wrap: wrap; }
+  .tv-show-cast-crew-tabs .tv-show-crews .tv-show-crews-category-title,
+  .tv-show-cast-crew-tabs .tv-show-crews .movie-crews-category-title,
+  .tv-show-cast-crew-tabs .movie-crews .tv-show-crews-category-title,
+  .tv-show-cast-crew-tabs .movie-crews .movie-crews-category-title,
+  .movie-cast-crew-tabs .tv-show-crews .tv-show-crews-category-title,
+  .movie-cast-crew-tabs .tv-show-crews .movie-crews-category-title,
+  .movie-cast-crew-tabs .movie-crews .tv-show-crews-category-title,
+  .movie-cast-crew-tabs .movie-crews .movie-crews-category-title {
+    margin: 0;
+    flex: 0 0 100%; }
+
 /*# sourceMappingURL=../../none */
