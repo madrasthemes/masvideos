@@ -282,6 +282,31 @@ class MasVideos_Admin_Permalink_Settings {
 			</tbody>
 		</table>
 		<?php
+		echo '<h2>' . esc_html__( 'Movie Playlist Permalink Settings', 'masvideos' ) . '</h2>';
+		/* translators: %s: Home URL */
+		echo wp_kses_post( wpautop( sprintf( __( 'If you like, you may enter custom structures for your movie-playlist URLs here. For example, using <code>movie-playlist</code> would make your movie-playlist links like <code>%smovie-playlist/sample-movie-playlist/</code>. This setting affects movie-playlist URLs only, not things such as movie-playlist categories.', 'masvideos' ), esc_url( home_url( '/' ) ) ) ) );
+
+		$movie_playlist_page_id = masvideos_get_page_id( 'movie-playlist' );
+		$movie_playlist_base_slug    = urldecode( ( $movie_playlist_page_id > 0 && get_post( $movie_playlist_page_id ) ) ? get_page_uri( $movie_playlist_page_id ) : _x( 'movie-playlist', 'default-slug', 'masvideos' ) );
+		$movie_playlist_base = _x( 'movie-playlist', 'default-slug', 'masvideos' );
+
+		$structures = array(
+			0 => '',
+			1 => '/' . trailingslashit( $movie_playlist_base_slug ),
+			2 => '/' . trailingslashit( $movie_playlist_base_slug ) . trailingslashit( '%movie_playlist_cat%' ),
+		);
+		?>
+		<table class="form-table masvideos-permalink-structure">
+			<tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Movie Playlist base', 'masvideos' ); ?></th>
+					<td>
+						<input name="movie_playlist_permalink_structure" id="masvideos_permalink_structure" type="text" value="<?php echo esc_attr( $this->permalinks['movie_playlist_base'] ? trailingslashit( $this->permalinks['movie_playlist_base'] ) : '' ); ?>" class="regular-text code"> <span class="description"><?php esc_html_e( 'Enter a custom base to use. A base must be set or WordPress will use default instead.', 'masvideos' ); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php
 		echo '<h2>' . esc_html__( 'Videos Permalink Settings', 'masvideos' ) . '</h2>';
 		/* translators: %s: Home URL */
 		echo wp_kses_post( wpautop( sprintf( __( 'If you like, you may enter custom structures for your video URLs here. For example, using <code>video</code> would make your video links like <code>%svideo/sample-video/</code>. This setting affects video URLs only, not things such as video categories.', 'masvideos' ), esc_url( home_url( '/' ) ) ) ) );
@@ -322,9 +347,34 @@ class MasVideos_Admin_Permalink_Settings {
 			</tbody>
 		</table>
 		<?php
+		echo '<h2>' . esc_html__( 'Video Playlist Permalink Settings', 'masvideos' ) . '</h2>';
+		/* translators: %s: Home URL */
+		echo wp_kses_post( wpautop( sprintf( __( 'If you like, you may enter custom structures for your video-playlist URLs here. For example, using <code>video-playlist</code> would make your video-playlist links like <code>%svideo-playlist/sample-video-playlist/</code>. This setting affects video-playlist URLs only, not things such as video-playlist categories.', 'masvideos' ), esc_url( home_url( '/' ) ) ) ) );
+
+		$video_playlist_page_id = masvideos_get_page_id( 'video-playlist' );
+		$video_playlist_base_slug    = urldecode( ( $video_playlist_page_id > 0 && get_post( $video_playlist_page_id ) ) ? get_page_uri( $video_playlist_page_id ) : _x( 'video-playlist', 'default-slug', 'masvideos' ) );
+		$video_playlist_base = _x( 'video-playlist', 'default-slug', 'masvideos' );
+
+		$structures = array(
+			0 => '',
+			1 => '/' . trailingslashit( $video_playlist_base_slug ),
+			2 => '/' . trailingslashit( $video_playlist_base_slug ) . trailingslashit( '%video_playlist_cat%' ),
+		);
+		?>
+		<table class="form-table masvideos-permalink-structure">
+			<tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Video Playlist base', 'masvideos' ); ?></th>
+					<td>
+						<input name="video_playlist_permalink_structure" id="masvideos_permalink_structure" type="text" value="<?php echo esc_attr( $this->permalinks['video_playlist_base'] ? trailingslashit( $this->permalinks['video_playlist_base'] ) : '' ); ?>" class="regular-text code"> <span class="description"><?php esc_html_e( 'Enter a custom base to use. A base must be set or WordPress will use default instead.', 'masvideos' ); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php
 		echo '<h2>' . esc_html__( 'TV Shows Permalink Settings', 'masvideos' ) . '</h2>';
 		/* translators: %s: Home URL */
-		echo wp_kses_post( wpautop( sprintf( __( 'If you like, you may enter custom structures for your product URLs here. For example, using <code>tv-show</code> would make your product links like <code>%stv-show/sample-product/</code>. This setting affects tv_show URLs only, not things such as tv_show categories.', 'masvideos' ), esc_url( home_url( '/' ) ) ) ) );
+		echo wp_kses_post( wpautop( sprintf( __( 'If you like, you may enter custom structures for your tv-show URLs here. For example, using <code>tv-show</code> would make your tv-show links like <code>%stv-show/sample-tv-show/</code>. This setting affects tv_show URLs only, not things such as tv_show categories.', 'masvideos' ), esc_url( home_url( '/' ) ) ) ) );
 
 		$tv_show_page_id = masvideos_get_page_id( 'tv_show' );
 		$tv_show_base_slug    = urldecode( ( $tv_show_page_id > 0 && get_post( $tv_show_page_id ) ) ? get_page_uri( $tv_show_page_id ) : _x( 'tv-show', 'default-slug', 'masvideos' ) );
@@ -357,6 +407,31 @@ class MasVideos_Admin_Permalink_Settings {
 						<?php esc_html_e( 'Custom base', 'masvideos' ); ?></label></th>
 					<td>
 						<input name="tv_show_permalink_structure" id="masvideos_permalink_structure" type="text" value="<?php echo esc_attr( $this->permalinks['tv_show_base'] ? trailingslashit( $this->permalinks['tv_show_base'] ) : '' ); ?>" class="regular-text code"> <span class="description"><?php esc_html_e( 'Enter a custom base to use. A base must be set or WordPress will use default instead.', 'masvideos' ); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php
+		echo '<h2>' . esc_html__( 'TV Show Playlist Permalink Settings', 'masvideos' ) . '</h2>';
+		/* translators: %s: Home URL */
+		echo wp_kses_post( wpautop( sprintf( __( 'If you like, you may enter custom structures for your tv-show-playlist URLs here. For example, using <code>tv-show-playlist</code> would make your tv-show-playlist links like <code>%stv-show-playlist/sample-tv-show-playlist/</code>. This setting affects tv-show-playlist URLs only, not things such as tv-show-playlist categories.', 'masvideos' ), esc_url( home_url( '/' ) ) ) ) );
+
+		$tv_show_playlist_page_id = masvideos_get_page_id( 'tv-show-playlist' );
+		$tv_show_playlist_base_slug    = urldecode( ( $tv_show_playlist_page_id > 0 && get_post( $tv_show_playlist_page_id ) ) ? get_page_uri( $tv_show_playlist_page_id ) : _x( 'tv-show-playlist', 'default-slug', 'masvideos' ) );
+		$tv_show_playlist_base = _x( 'tv-show-playlist', 'default-slug', 'masvideos' );
+
+		$structures = array(
+			0 => '',
+			1 => '/' . trailingslashit( $tv_show_playlist_base_slug ),
+			2 => '/' . trailingslashit( $tv_show_playlist_base_slug ) . trailingslashit( '%tv_show_playlist_cat%' ),
+		);
+		?>
+		<table class="form-table masvideos-permalink-structure">
+			<tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'TV Show Playlist base', 'masvideos' ); ?></th>
+					<td>
+						<input name="tv_show_playlist_permalink_structure" id="masvideos_permalink_structure" type="text" value="<?php echo esc_attr( $this->permalinks['tv_show_playlist_base'] ? trailingslashit( $this->permalinks['tv_show_playlist_base'] ) : '' ); ?>" class="regular-text code"> <span class="description"><?php esc_html_e( 'Enter a custom base to use. A base must be set or WordPress will use default instead.', 'masvideos' ); ?></span>
 					</td>
 				</tr>
 			</tbody>
@@ -498,6 +573,25 @@ class MasVideos_Admin_Permalink_Settings {
 		}
 
 		// We need to save the options ourselves; settings api does not trigger save for the permalinks page.
+		if ( isset( $_POST['permalink_structure'], $_POST['masvideos-permalinks-nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['masvideos-permalinks-nonce'] ), 'masvideos-permalinks' ) ) { // WPCS: input var ok, sanitization ok.
+			masvideos_switch_to_site_locale();
+
+			$permalinks                   = (array) get_option( 'masvideos_permalinks', array() );
+
+			// Generate movie-playlist base.
+			$movie_playlist_base = isset( $_POST['movie_playlist_permalink_structure'] ) ? masvideos_clean( wp_unslash( $_POST['movie_playlist_permalink_structure'] ) ) : _x( 'movie-playlist', 'slug', 'masvideos' ); // WPCS: input var ok, sanitization ok.
+
+			$permalinks['movie_playlist_base'] = masvideos_sanitize_permalink( $movie_playlist_base );
+
+			// Movie Playlist base may require verbose page rules if nesting pages.
+			$movie_playlist_page_id   = masvideos_get_page_id( 'movie-playlist' );
+			$movie_playlist_permalink = ( $movie_playlist_page_id > 0 && get_post( $movie_playlist_page_id ) ) ? get_page_uri( $movie_playlist_page_id ) : _x( 'movie-playlist', 'default-slug', 'masvideos' );
+
+			update_option( 'masvideos_permalinks', $permalinks );
+			masvideos_restore_locale();
+		}
+
+		// We need to save the options ourselves; settings api does not trigger save for the permalinks page.
 		if ( isset( $_POST['permalink_structure'], $_POST['masvideos-permalinks-nonce'], $_POST['masvideos_video_category_slug'], $_POST['masvideos_video_tag_slug'], $_POST['masvideos_video_attribute_slug'] ) && wp_verify_nonce( wp_unslash( $_POST['masvideos-permalinks-nonce'] ), 'masvideos-permalinks' ) ) { // WPCS: input var ok, sanitization ok.
 			masvideos_switch_to_site_locale();
 
@@ -535,6 +629,25 @@ class MasVideos_Admin_Permalink_Settings {
 		}
 
 		// We need to save the options ourselves; settings api does not trigger save for the permalinks page.
+		if ( isset( $_POST['permalink_structure'], $_POST['masvideos-permalinks-nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['masvideos-permalinks-nonce'] ), 'masvideos-permalinks' ) ) { // WPCS: input var ok, sanitization ok.
+			masvideos_switch_to_site_locale();
+
+			$permalinks                   = (array) get_option( 'masvideos_permalinks', array() );
+
+			// Generate video-playlist base.
+			$video_playlist_base = isset( $_POST['video_playlist_permalink_structure'] ) ? masvideos_clean( wp_unslash( $_POST['video_playlist_permalink_structure'] ) ) : _x( 'video-playlist', 'slug', 'masvideos' ); // WPCS: input var ok, sanitization ok.
+
+			$permalinks['video_playlist_base'] = masvideos_sanitize_permalink( $video_playlist_base );
+
+			// Video Playlist base may require verbose page rules if nesting pages.
+			$video_playlist_page_id   = masvideos_get_page_id( 'video-playlist' );
+			$video_playlist_permalink = ( $video_playlist_page_id > 0 && get_post( $video_playlist_page_id ) ) ? get_page_uri( $video_playlist_page_id ) : _x( 'video-playlist', 'default-slug', 'masvideos' );
+
+			update_option( 'masvideos_permalinks', $permalinks );
+			masvideos_restore_locale();
+		}
+
+		// We need to save the options ourselves; settings api does not trigger save for the permalinks page.
 		if ( isset( $_POST['permalink_structure'], $_POST['masvideos-permalinks-nonce'], $_POST['masvideos_tv_show_genre_slug'], $_POST['masvideos_tv_show_tag_slug'], $_POST['masvideos_tv_show_attribute_slug'] ) && wp_verify_nonce( wp_unslash( $_POST['masvideos-permalinks-nonce'] ), 'masvideos-permalinks' ) ) { // WPCS: input var ok, sanitization ok.
 			masvideos_switch_to_site_locale();
 
@@ -566,6 +679,25 @@ class MasVideos_Admin_Permalink_Settings {
 			// TV Show base may require verbose page rules if nesting pages.
 			$tv_show_page_id   = masvideos_get_page_id( 'tv_show' );
 			$tv_show_permalink = ( $tv_show_page_id > 0 && get_post( $tv_show_page_id ) ) ? get_page_uri( $tv_show_page_id ) : _x( 'tv-show', 'default-slug', 'masvideos' );
+
+			update_option( 'masvideos_permalinks', $permalinks );
+			masvideos_restore_locale();
+		}
+
+		// We need to save the options ourselves; settings api does not trigger save for the permalinks page.
+		if ( isset( $_POST['permalink_structure'], $_POST['masvideos-permalinks-nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['masvideos-permalinks-nonce'] ), 'masvideos-permalinks' ) ) { // WPCS: input var ok, sanitization ok.
+			masvideos_switch_to_site_locale();
+
+			$permalinks                   = (array) get_option( 'masvideos_permalinks', array() );
+
+			// Generate tv-show-playlist base.
+			$tv_show_playlist_base = isset( $_POST['tv_show_playlist_permalink_structure'] ) ? masvideos_clean( wp_unslash( $_POST['tv_show_playlist_permalink_structure'] ) ) : _x( 'tv-show-playlist', 'slug', 'masvideos' ); // WPCS: input var ok, sanitization ok.
+
+			$permalinks['tv_show_playlist_base'] = masvideos_sanitize_permalink( $tv_show_playlist_base );
+
+			// TV Show Playlist base may require verbose page rules if nesting pages.
+			$tv_show_playlist_page_id   = masvideos_get_page_id( 'tv-show-playlist' );
+			$tv_show_playlist_permalink = ( $tv_show_playlist_page_id > 0 && get_post( $tv_show_playlist_page_id ) ) ? get_page_uri( $tv_show_playlist_page_id ) : _x( 'tv-show-playlist', 'default-slug', 'masvideos' );
 
 			update_option( 'masvideos_permalinks', $permalinks );
 			masvideos_restore_locale();
