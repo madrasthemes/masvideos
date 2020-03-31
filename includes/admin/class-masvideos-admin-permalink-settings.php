@@ -105,6 +105,27 @@ class MasVideos_Admin_Permalink_Settings {
 			'permalink',
 			'optional'
 		);
+		add_settings_field(
+			'masvideos_person_category_slug',
+			__( 'Person category base', 'masvideos' ),
+			array( $this, 'person_category_slug_input' ),
+			'permalink',
+			'optional'
+		);
+		add_settings_field(
+			'masvideos_person_tag_slug',
+			__( 'Person tag base', 'masvideos' ),
+			array( $this, 'person_tag_slug_input' ),
+			'permalink',
+			'optional'
+		);
+		add_settings_field(
+			'masvideos_person_attribute_slug',
+			__( 'Person attribute base', 'masvideos' ),
+			array( $this, 'person_attribute_slug_input' ),
+			'permalink',
+			'optional'
+		);
 
 		$this->permalinks = masvideos_get_permalink_structure();
 	}
@@ -187,6 +208,33 @@ class MasVideos_Admin_Permalink_Settings {
 	public function tv_show_attribute_slug_input() {
 		?>
 		<input name="masvideos_tv_show_attribute_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['tv_show_attribute_base'] ); ?>" /><code>/attribute-name/attribute/</code>
+		<?php
+	}
+
+	/**
+	 * Show a slug input box.
+	 */
+	public function person_category_slug_input() {
+		?>
+		<input name="masvideos_person_category_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['person_category_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'person-category', 'slug', 'masvideos' ); ?>" />
+		<?php
+	}
+
+	/**
+	 * Show a slug input box.
+	 */
+	public function person_tag_slug_input() {
+		?>
+		<input name="masvideos_person_tag_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['person_tag_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'person-tag', 'slug', 'masvideos' ); ?>" />
+		<?php
+	}
+
+	/**
+	 * Show a slug input box.
+	 */
+	public function person_attribute_slug_input() {
+		?>
+		<input name="masvideos_person_attribute_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['person_attribute_base'] ); ?>" /><code>/attribute-name/attribute/</code>
 		<?php
 	}
 
@@ -334,6 +382,46 @@ class MasVideos_Admin_Permalink_Settings {
 					<th scope="row"><?php esc_html_e( 'Episode base', 'masvideos' ); ?></th>
 					<td>
 						<input name="episode_permalink_structure" id="masvideos_permalink_structure" type="text" value="<?php echo esc_attr( $this->permalinks['episode_base'] ? trailingslashit( $this->permalinks['episode_base'] ) : '' ); ?>" class="regular-text code"> <span class="description"><?php esc_html_e( 'Enter a custom base to use. A base must be set or WordPress will use default instead.', 'masvideos' ); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php
+		echo '<h2>' . esc_html__( 'Persons Permalink Settings', 'masvideos' ) . '</h2>';
+		/* translators: %s: Home URL */
+		echo wp_kses_post( wpautop( sprintf( __( 'If you like, you may enter custom structures for your person URLs here. For example, using <code>person</code> would make your person links like <code>%sperson/sample-person/</code>. This setting affects person URLs only, not things such as person categories.', 'masvideos' ), esc_url( home_url( '/' ) ) ) ) );
+
+		$person_page_id = masvideos_get_page_id( 'person' );
+		$person_base_slug    = urldecode( ( $person_page_id > 0 && get_post( $person_page_id ) ) ? get_page_uri( $person_page_id ) : _x( 'person', 'default-slug', 'masvideos' ) );
+		$person_base = _x( 'person', 'default-slug', 'masvideos' );
+
+		$structures = array(
+			0 => '',
+			1 => '/' . trailingslashit( $person_base_slug ),
+			2 => '/' . trailingslashit( $person_base_slug ) . trailingslashit( '%person_cat%' ),
+		);
+		?>
+		<table class="form-table masvideos-permalink-structure">
+			<tbody>
+				<tr>
+					<th><label><input name="person_permalink" type="radio" value="<?php echo esc_attr( $structures[0] ); ?>" class="masvideostog" <?php checked( $structures[0], $this->permalinks['person_base'] ); ?> /> <?php esc_html_e( 'Default', 'masvideos' ); ?></label></th>
+					<td><code class="default-example"><?php echo esc_html( home_url() ); ?>/?person=sample-person</code> <code class="non-default-example"><?php echo esc_html( home_url() ); ?>/<?php echo esc_html( $person_base ); ?>/sample-person/</code></td>
+				</tr>
+				<?php if ( $person_page_id ) : ?>
+					<tr>
+						<th><label><input name="person_permalink" type="radio" value="<?php echo esc_attr( $structures[1] ); ?>" class="masvideostog" <?php checked( $structures[1], $this->permalinks['person_base'] ); ?> /> <?php esc_html_e( 'Person base', 'masvideos' ); ?></label></th>
+						<td><code><?php echo esc_html( home_url() ); ?>/<?php echo esc_html( $person_base_slug ); ?>/sample-person/</code></td>
+					</tr>
+					<tr>
+						<th><label><input name="person_permalink" type="radio" value="<?php echo esc_attr( $structures[2] ); ?>" class="masvideostog" <?php checked( $structures[2], $this->permalinks['person_base'] ); ?> /> <?php esc_html_e( 'Person base with category', 'masvideos' ); ?></label></th>
+						<td><code><?php echo esc_html( home_url() ); ?>/<?php echo esc_html( $person_base_slug ); ?>/person-category/sample-person/</code></td>
+					</tr>
+				<?php endif; ?>
+				<tr>
+					<th><label><input name="person_permalink" id="masvideos_custom_selection" type="radio" value="custom" class="tog" <?php checked( in_array( $this->permalinks['person_base'], $structures, true ), false ); ?> />
+						<?php esc_html_e( 'Custom base', 'masvideos' ); ?></label></th>
+					<td>
+						<input name="person_permalink_structure" id="masvideos_permalink_structure" type="text" value="<?php echo esc_attr( $this->permalinks['person_base'] ? trailingslashit( $this->permalinks['person_base'] ) : '' ); ?>" class="regular-text code"> <span class="description"><?php esc_html_e( 'Enter a custom base to use. A base must be set or WordPress will use default instead.', 'masvideos' ); ?></span>
 					</td>
 				</tr>
 			</tbody>
@@ -497,6 +585,43 @@ class MasVideos_Admin_Permalink_Settings {
 			// Episode base may require verbose page rules if nesting pages.
 			$episode_page_id   = masvideos_get_page_id( 'episode' );
 			$episode_permalink = ( $episode_page_id > 0 && get_post( $episode_page_id ) ) ? get_page_uri( $episode_page_id ) : _x( 'episode', 'default-slug', 'masvideos' );
+
+			update_option( 'masvideos_permalinks', $permalinks );
+			masvideos_restore_locale();
+		}
+
+		// We need to save the options ourselves; settings api does not trigger save for the permalinks page.
+		if ( isset( $_POST['permalink_structure'], $_POST['masvideos-permalinks-nonce'], $_POST['masvideos_person_category_slug'], $_POST['masvideos_person_tag_slug'], $_POST['masvideos_person_attribute_slug'] ) && wp_verify_nonce( wp_unslash( $_POST['masvideos-permalinks-nonce'] ), 'masvideos-permalinks' ) ) { // WPCS: input var ok, sanitization ok.
+			masvideos_switch_to_site_locale();
+
+			$permalinks                   = (array) get_option( 'masvideos_permalinks', array() );
+			$permalinks['person_category_base']  = masvideos_sanitize_permalink( wp_unslash( $_POST['masvideos_person_category_slug'] ) ); // WPCS: input var ok, sanitization ok.
+			$permalinks['person_tag_base']       = masvideos_sanitize_permalink( wp_unslash( $_POST['masvideos_person_tag_slug'] ) ); // WPCS: input var ok, sanitization ok.
+			$permalinks['person_attribute_base'] = masvideos_sanitize_permalink( wp_unslash( $_POST['masvideos_person_attribute_slug'] ) ); // WPCS: input var ok, sanitization ok.
+
+			// Generate person base.
+			$person_base = isset( $_POST['person_permalink'] ) ? masvideos_clean( wp_unslash( $_POST['person_permalink'] ) ) : ''; // WPCS: input var ok, sanitization ok.
+
+			if ( 'custom' === $person_base ) {
+				if ( isset( $_POST['person_permalink_structure'] ) ) { // WPCS: input var ok.
+					$person_base = preg_replace( '#/+#', '/', '/' . str_replace( '#', '', trim( wp_unslash( $_POST['person_permalink_structure'] ) ) ) ); // WPCS: input var ok, sanitization ok.
+				} else {
+					$person_base = '/';
+				}
+
+				// This is an invalid base structure and breaks pages.
+				if ( '/%person_genre%/' === trailingslashit( $person_base ) ) {
+					$person_base = '/' . _x( 'person', 'slug', 'masvideos' ) . $person_base;
+				}
+			} elseif ( empty( $person_base ) ) {
+				$person_base = _x( 'person', 'slug', 'masvideos' );
+			}
+
+			$permalinks['person_base'] = masvideos_sanitize_permalink( $person_base );
+
+			// Person base may require verbose page rules if nesting pages.
+			$person_page_id   = masvideos_get_page_id( 'person' );
+			$person_permalink = ( $person_page_id > 0 && get_post( $person_page_id ) ) ? get_page_uri( $person_page_id ) : _x( 'person', 'default-slug', 'masvideos' );
 
 			update_option( 'masvideos_permalinks', $permalinks );
 			masvideos_restore_locale();
