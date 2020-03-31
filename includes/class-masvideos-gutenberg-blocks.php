@@ -140,7 +140,9 @@ class MasVideos_Gutenberg_Blocks {
 
             $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
             foreach ( $blocks as $block => $args ) {
-                wp_register_script( $args['editor_script'], MasVideos()->plugin_url() . '/assets/js/blocks/' . $block . $suffix . '.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ) );
+                wp_register_script( $args['editor_script'], MasVideos()->plugin_url() . '/assets/js/blocks/' . $block . $suffix . '.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-util', 'wp-plugins', 'wp-edit-post', 'wp-i18n' ) );
+                // Add translations.
+                wp_set_script_translations( $args['editor_script'], 'masvideos' );
                 register_block_type( 'masvideos/' . $block, $args );
             }
 
