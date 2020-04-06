@@ -195,7 +195,7 @@ function masvideos_body_class( $classes ) {
             $classes[] = 'masvideos-archive';
         }
 
-    } elseif ( is_account_page() ) {
+    } elseif ( masvideos_is_account_page() ) {
 
         $classes[] = 'masvideos-account';
         $classes[] = 'masvideos-page';

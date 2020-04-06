@@ -471,35 +471,35 @@ function masvideos_post_content_has_shortcode( $tag = '' ) {
     return is_singular() && is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, $tag );
 }
 
-if ( ! function_exists( 'is_account_page' ) ) {
+if ( ! function_exists( 'masvideos_is_account_page' ) ) {
 
     /**
-     * Is_account_page - Returns true when viewing an account page.
+     * Returns true when viewing an account page.
      *
      * @return bool
      */
-    function is_account_page() {
+    function masvideos_is_account_page() {
         $page_id = masvideos_get_page_id( 'myaccount' );
 
         return ( $page_id && is_page( $page_id ) ) || masvideos_post_content_has_shortcode( 'mas_my_account' ) || apply_filters( 'masvideos_is_account_page', false );
     }
 }
 
-if ( ! function_exists( 'is_video_upload_page' ) ) {
+if ( ! function_exists( 'masvideos_is_video_upload_page' ) ) {
 
     /**
-     * is_video_upload_page - Returns true when viewing an Video Upload page.
+     * Returns true when viewing an Video Upload page.
      *
      * @return bool
      */
-    function is_video_upload_page() {
+    function masvideos_is_video_upload_page() {
         $page_id = masvideos_get_page_id( 'upload_video' );
 
         return ( $page_id && is_page( $page_id ) ) || masvideos_post_content_has_shortcode( 'mas_upload_video' ) || apply_filters( 'masvideos_is_video_upload_page', false );
     }
 }
 
-if ( ! function_exists( 'is_edit_account_page' ) ) {
+if ( ! function_exists( 'masvideos_is_edit_account_page' ) ) {
 
     /**
      * Check for edit account page.
@@ -507,7 +507,7 @@ if ( ! function_exists( 'is_edit_account_page' ) ) {
      *
      * @return bool
      */
-    function is_edit_account_page() {
+    function masvideos_is_edit_account_page() {
         global $wp;
 
         $page_id = masvideos_get_page_id( 'myaccount' );

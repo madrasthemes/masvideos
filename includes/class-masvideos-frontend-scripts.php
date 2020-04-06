@@ -322,7 +322,7 @@ class MasVideos_Frontend_Scripts {
             self::enqueue_script( 'masvideos-gallery-flip' );
         }
 
-        if( function_exists( 'is_video_upload_page' ) && is_video_upload_page() ) {
+        if( function_exists( 'masvideos_is_video_upload_page' ) && masvideos_is_video_upload_page() ) {
             wp_enqueue_media();
             self::enqueue_script( 'selectWoo' );
             self::enqueue_style( 'select2' );
