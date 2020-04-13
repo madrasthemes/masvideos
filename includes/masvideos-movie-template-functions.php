@@ -660,7 +660,8 @@ if ( ! function_exists( 'masvideos_template_loop_movie_actions' ) ) {
         global $movie;
         echo '<div class="movie__actions">';
             $link = apply_filters( 'masvideos_loop_movie_link', get_the_permalink(), $movie );
-            echo '<a href="' . esc_url( $link ) . '" class="movie-actions--link_watch">' . esc_html__( 'Watch Now', 'masvideos' ) . '</a>';
+            $text = apply_filters( 'masvideos_loop_movie_action_button_text', esc_html__( 'Watch Now', 'masvideos' ), $movie );
+            echo '<a href="' . esc_url( $link ) . '" class="movie-actions--link_watch">' . esc_html( $text ) . '</a>';
             masvideos_template_button_movie_playlist();
         echo '</div>';
     }
