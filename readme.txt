@@ -4,7 +4,7 @@ Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,12 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.1.9 - 2020-04-13 =
+* Enhancement – Person & Playlist permalink settings added
+* Tweak – Account functions updated
+* Tweak – More filters added
+* Fix – Blocks translation added
 
 = 1.1.8 - 2020-03-12 =
 * Enhancement – TMDB import language option added
