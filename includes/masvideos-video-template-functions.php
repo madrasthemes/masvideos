@@ -929,10 +929,10 @@ if ( ! function_exists( 'masvideos_template_single_video_related_playlist_videos
 
         if( $video_playlist_id > 0 ) {
             $videos_ids = masvideos_single_video_playlist_videos( $video_playlist_id );
-            $title = apply_filters( 'masvideos_template_single_video_videos_playlist_title', get_the_title( $video_playlist_id ), $video_playlist_id );
-            $count_info = apply_filters( 'masvideos_template_single_video_videos_playlist_count', count( $videos_ids ) . esc_html__( ' videos', 'masvideos' ), $video_playlist_id );
 
             if( ! empty( $videos_ids ) ) {
+                $title = apply_filters( 'masvideos_template_single_video_videos_playlist_title', get_the_title( $video_playlist_id ), $video_playlist_id );
+                $count_info = apply_filters( 'masvideos_template_single_video_videos_playlist_count', count( $videos_ids ) . esc_html__( ' videos', 'masvideos' ), $video_playlist_id );
                 $filtered_videos_ids = $videos_ids;
 
                 if ( ( $current_video_key = array_search( $video_id, $filtered_videos_ids ) ) !== false ) {
