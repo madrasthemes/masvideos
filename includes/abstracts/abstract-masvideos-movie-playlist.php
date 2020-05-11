@@ -325,7 +325,9 @@ class MasVideos_Movie_Playlist extends MasVideos_Data {
      * @param array $movie_ids List of movies IDs.
      */
     public function set_movie_ids( $movie_ids ) {
-        $this->set_prop( 'movie_ids', array_unique( array_map( 'intval', $movie_ids ) ) );
+        if( is_array( $movie_ids ) ) {
+            $this->set_prop( 'movie_ids', array_unique( array_map( 'intval', $movie_ids ) ) );
+        }
     }
 
     /*

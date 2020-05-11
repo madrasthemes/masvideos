@@ -325,7 +325,9 @@ class MasVideos_TV_Show_Playlist extends MasVideos_Data {
      * @param array $tv_show_ids List of tv shows IDs.
      */
     public function set_tv_show_ids( $tv_show_ids ) {
-        $this->set_prop( 'tv_show_ids', array_unique( array_map( 'intval', $tv_show_ids ) ) );
+        if( is_array( $tv_show_ids ) ) {
+            $this->set_prop( 'tv_show_ids', array_unique( array_map( 'intval', $tv_show_ids ) ) );
+        }
     }
 
     /*
