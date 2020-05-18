@@ -321,9 +321,9 @@ class MasVideos_Shortcode_Movie_Playlists {
 
             do_action( "masvideos_shortcode_before_{$this->type}_loop", $this->attributes );
 
-            // Fire standard shop loop hooks when paginating results so we can show result counts and so on.
+            // Fire standard movie_playlist loop hooks when paginating results so we can show result counts and so on.
             if ( masvideos_string_to_bool( $this->attributes['paginate'] ) ) {
-                do_action( 'masvideos_before_shop_loop' );
+                do_action( 'masvideos_before_movie_playlists_loop' );
             }
 
             masvideos_movie_playlist_loop_start();
@@ -351,9 +351,9 @@ class MasVideos_Shortcode_Movie_Playlists {
             $GLOBALS['post'] = $original_post; // WPCS: override ok.
             masvideos_movie_playlist_loop_end();
 
-            // Fire standard shop loop hooks when paginating results so we can show result counts and so on.
+            // Fire standard movie_playlist loop hooks when paginating results so we can show result counts and so on.
             if ( masvideos_string_to_bool( $this->attributes['paginate'] ) ) {
-                do_action( 'masvideos_after_shop_loop' );
+                do_action( 'masvideos_after_movie_playlists_loop' );
             }
 
             do_action( "masvideos_shortcode_after_{$this->type}_loop", $this->attributes );
