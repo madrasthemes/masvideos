@@ -217,6 +217,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-video-playlist.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie-playlist.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-settings-api.php';
 
             /**
              * Core classes.
@@ -227,6 +228,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-install.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-post-data.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-ajax.php';
+            include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-emails.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-comments.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-query.php';
             include_once MASVIDEOS_ABSPATH . 'includes/class-masvideos-person-factory.php';
@@ -328,6 +330,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
             add_action( 'init', array( $this, 'init' ), 0 );
             add_action( 'init', array( 'MasVideos_Shortcodes', 'init' ) );
             add_action( 'init', array( 'MasVideos_Gutenberg_Blocks', 'init' ) );
+            add_action( 'init', array( 'MasVideos_Emails', 'init_transactional_emails' ) );
             add_action( 'init', array( $this, 'add_image_sizes' ) );
         }
 
