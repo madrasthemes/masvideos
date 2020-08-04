@@ -58,7 +58,7 @@ if ( ! class_exists( 'MasVideos_Email_User_New_Account', false ) ) :
 			$this->id             = 'user_new_account';
 			$this->user_email = true;
 			$this->title          = __( 'New account', 'masvideos' );
-			$this->description    = __( 'User "new account" emails are sent to the user when a user signs up via checkout or account pages.', 'masvideos' );
+			$this->description    = __( 'User "new account" emails are sent to the user when a user signs up via account page.', 'masvideos' );
 			$this->template_html  = 'emails/user-new-account.php';
 			$this->template_plain = 'emails/plain/user-new-account.php';
 
@@ -119,7 +119,7 @@ if ( ! class_exists( 'MasVideos_Email_User_New_Account', false ) ) :
 		 * @return string
 		 */
 		public function get_content_html() {
-			return wc_get_template_html(
+			return masvideos_get_template_html(
 				$this->template_html,
 				array(
 					'email_heading'      => $this->get_heading(),
@@ -141,7 +141,7 @@ if ( ! class_exists( 'MasVideos_Email_User_New_Account', false ) ) :
 		 * @return string
 		 */
 		public function get_content_plain() {
-			return wc_get_template_html(
+			return masvideos_get_template_html(
 				$this->template_plain,
 				array(
 					'email_heading'      => $this->get_heading(),

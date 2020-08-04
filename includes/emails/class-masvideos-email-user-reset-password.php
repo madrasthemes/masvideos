@@ -123,7 +123,7 @@ if ( ! class_exists( 'MasVideos_Email_User_Reset_Password', false ) ) :
 		 * @return string
 		 */
 		public function get_content_html() {
-			return wc_get_template_html(
+			return masvideos_get_template_html(
 				$this->template_html,
 				array(
 					'email_heading'      => $this->get_heading(),
@@ -145,7 +145,7 @@ if ( ! class_exists( 'MasVideos_Email_User_Reset_Password', false ) ) :
 		 * @return string
 		 */
 		public function get_content_plain() {
-			return wc_get_template_html(
+			return masvideos_get_template_html(
 				$this->template_plain,
 				array(
 					'email_heading'      => $this->get_heading(),
