@@ -122,7 +122,8 @@ class MasVideos_Shortcode_Videos {
                 'attribute'      => '',        // Single attribute slug.
                 'terms'          => '',        // Comma separated term slugs or ids.
                 'terms_operator' => 'IN',      // Operator to compare terms. Possible values are 'IN', 'NOT IN', 'AND'.
-                'tag'            => '',        // Comma separated tag slugs.
+                'tag'            => '',        // Comma separated tag slugs or ids.
+                'tag_operator'   => 'IN',      // Operator to compare tags. Possible values are 'IN', 'NOT IN', 'AND'.
                 'visibility'     => 'visible', // Possible values are 'visible', 'catalog', 'search', 'hidden', 'featured'.
                 'status'         => 'publish', // Possible values are 'publish', 'future'.
                 'class'          => '',        // HTML class.
@@ -321,11 +322,26 @@ class MasVideos_Shortcode_Videos {
      */
     protected function set_tags_query_args( &$query_args ) {
         if ( ! empty( $this->attributes['tag'] ) ) {
+            $tags       = array_map( 'sanitize_title', explode( ',', $this->attributes['tag'] ) );
+            $field      = 'slug';
+
+            if ( is_numeric( $tags[0] ) ) {
+                $field = 'term_id';
+                $tags = array_map( 'absint', $tags );
+                // Check numeric slugs.
+                foreach ( $tags as $tag ) {
+                    $the_tag = get_term_by( 'slug', $tag, 'video_tag' );
+                    if ( false !== $the_tag ) {
+                        $tags[] = $the_tag->term_id;
+                    }
+                }
+            }
+
             $query_args['tax_query'][] = array(
-                'taxonomy' => 'video_tag',
-                'terms'    => array_map( 'sanitize_title', explode( ',', $this->attributes['tag'] ) ),
-                'field'    => 'slug',
-                'operator' => 'IN',
+                'taxonomy'         => 'video_tag',
+                'terms'            => $tags,
+                'field'            => $field,
+                'operator'         => $this->attributes['tag_operator'],
             );
         }
     }
