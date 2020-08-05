@@ -287,7 +287,7 @@ export class PostSelector extends Component {
         return (
             <div className="components-base-control components-post-selector">
                 <div className="components-base-control__field--selected">
-                    <h2>{__('Search Post', 'vodi')}</h2>
+                    <h2>{__('Search Post', 'masvideos')}</h2>
                     <ItemList
                         items={ [...this.state.selectedPosts] }
                         loading={this.state.initialLoading}
@@ -303,7 +303,7 @@ export class PostSelector extends Component {
                         className="components-text-control__input"
                         id={searchinputuniqueId}
                         type="search"
-                        placeholder={__('Please enter your search query...', 'vodi')}
+                        placeholder={__('Please enter your search query...', 'masvideos')}
                         value={this.state.filter}
                         onChange={this.handleInputFilterChange}
                     />
