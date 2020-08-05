@@ -30,6 +30,7 @@ registerBlockType( 'masvideos/tv-shows', {
                         <ShortcodeAtts
                             postType = 'tv_show'
                             catTaxonomy = 'tv_show_genre'
+                            tagTaxonomy = 'tv_show_tag'
                             attributes = { { ...attributes } }
                             updateShortcodeAtts = { onChangeShortcodeAtts }
                         />

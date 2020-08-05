@@ -4,6 +4,7 @@ import { TermSelector } from './TermSelector';
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { RangeControl, SelectControl, CheckboxControl } = wp.components;
+const { applyFilters } = wp.hooks;
 
 /**
  * ShortcodeAtts Component
@@ -25,6 +26,7 @@ export class ShortcodeAtts extends Component {
         this.onChangeIds = this.onChangeIds.bind(this);
         this.onChangeCategory = this.onChangeCategory.bind(this);
         this.onChangeGenre = this.onChangeGenre.bind(this);
+        this.onChangeTag = this.onChangeTag.bind(this);
         this.onChangeFeatured = this.onChangeFeatured.bind(this);
         this.onChangeTopRated = this.onChangeTopRated.bind(this);
     }
@@ -71,6 +73,12 @@ export class ShortcodeAtts extends Component {
         });
     }
 
+    onChangeTag( newTag ) {
+        this.props.updateShortcodeAtts({
+            tag: newTag.join(',')
+        });
+    }
+
     onChangeFeatured( newFeatured ) {
         this.props.updateShortcodeAtts({
             featured: newFeatured
@@ -87,50 +95,50 @@ export class ShortcodeAtts extends Component {
      * Renders the ShortcodeAtts component.
      */
     render() {
-        const { attributes, postType, catTaxonomy, hideFields } = this.props;
-        const { limit, columns, orderby, order, ids, category, genre, featured, top_rated } = attributes;
+        const { attributes, postType, catTaxonomy, tagTaxonomy, minLimit = 1, maxLimit = 20, minColumns = 1, maxColumns = 6, hideFields } = this.props;
+        const { limit, columns, orderby, order, ids, category, genre, tag, featured, top_rated } = attributes;
 
         return (
             <div>
                 { !( hideFields && hideFields.includes('limit') ) ? (
                 <RangeControl
-                    label={__('Limit', 'vodi')}
+                    label={__('Limit', 'masvideos')}
                     value={ limit }
                     onChange={ this.onChangeLimit }
-                    min={ 1 }
-                    max={ 50 }
+                    min={ applyFilters( 'masvideos.component.shortcodeAtts.limit.min', minLimit ) }
+                    max={ applyFilters( 'masvideos.component.shortcodeAtts.limit.max', maxLimit ) }
                 />
                 ) : '' }
                 { !( hideFields && hideFields.includes('columns') ) ? (
                 <RangeControl
-                    label={__('Columns', 'vodi')}
+                    label={__('Columns', 'masvideos')}
                     value={ columns }
                     onChange={ this.onChangeColumns }
-                    min={ 1 }
-                    max={ 6 }
+                    min={ applyFilters( 'masvideos.component.shortcodeAtts.columns.min', minColumns ) }
+                    max={ applyFilters( 'masvideos.component.shortcodeAtts.columns.max', maxColumns ) }
                 />
                 ) : '' }
                 { !( hideFields && hideFields.includes('orderby') ) ? (
                 <SelectControl
-                    label={__('Orderby', 'vodi')}
+                    label={__('Orderby', 'masvideos')}
                     value={ orderby }
-                    options={ [
-                        { label: __('Title', 'vodi'), value: 'title' },
-                        { label: __('Date', 'vodi'), value: ( postType === 'movie' ? 'release_date' : 'date' ) },
-                        { label: __('ID', 'vodi'), value: 'id' },
-                        { label: __('Random', 'vodi'), value: 'rand' },
-                    ] }
+                    options={ applyFilters( 'masvideos.component.shortcodeAtts.orderby.options', [
+                        { label: __('Title', 'masvideos'), value: 'title' },
+                        { label: __('Date', 'masvideos'), value: ( postType === 'movie' ? 'release_date' : 'date' ) },
+                        { label: __('ID', 'masvideos'), value: 'id' },
+                        { label: __('Random', 'masvideos'), value: 'rand' },
+                    ], this.props ) }
                     onChange={ this.onChangeOrderby }
                 />
                 ) : '' }
                 { !( hideFields && hideFields.includes('order') ) ? (
                 <SelectControl
-                    label={__('Order', 'vodi')}
+                    label={__('Order', 'masvideos')}
                     value={ order }
-                    options={ [
-                        { label: __('ASC', 'vodi'), value: 'ASC' },
-                        { label: __('DESC', 'vodi'), value: 'DESC' },
-                    ] }
+                    options={ applyFilters( 'masvideos.component.shortcodeAtts.order.options', [
+                        { label: __('ASC', 'masvideos'), value: 'ASC' },
+                        { label: __('DESC', 'masvideos'), value: 'DESC' },
+                    ], this.props ) }
                     onChange={ this.onChangeOrder }
                 />
                 ) : '' }
@@ -141,34 +149,44 @@ export class ShortcodeAtts extends Component {
                     updateSelectedPostIds={ this.onChangeIds }
                 />
                 ) : '' }
-                { ( postType === 'video' ) && !( hideFields && hideFields.includes('category') ) ? (
+                { ( postType === 'video' ) && catTaxonomy && !( hideFields && hideFields.includes('category') ) ? (
                 <TermSelector
                     postType = { postType }
                     taxonomy = { catTaxonomy }
+                    title = { __('Search Category', 'masvideos') }
                     selectedTermIds={ category ? category.split(',').map(Number) : [] }
                     updateSelectedTermIds={ this.onChangeCategory }
                 />
-                ) : (
-                !( hideFields && hideFields.includes('genre') ) ? (
+                ) : ( catTaxonomy && !( hideFields && hideFields.includes('genre') ) ? (
                 <TermSelector
                     postType = { postType }
                     taxonomy = { catTaxonomy }
+                    title = { __('Search Genre', 'masvideos') }
                     selectedTermIds={ genre ? genre.split(',').map(Number) : [] }
                     updateSelectedTermIds={ this.onChangeGenre }
                 />
                 ) : '' ) }
+                { !( hideFields && hideFields.includes('tag') ) ? (
+                <TermSelector
+                    postType = { postType }
+                    taxonomy = { tagTaxonomy }
+                    title = { __('Search Tag', 'masvideos') }
+                    selectedTermIds={ tag ? tag.split(',').map(Number) : [] }
+                    updateSelectedTermIds={ this.onChangeTag }
+                />
+                ) : '' }
                 { !( hideFields && hideFields.includes('featured') ) ? (
                 <CheckboxControl
-                    label={__('Featured', 'vodi')}
-                    help={__('Check to select featured posts.', 'vodi')}
+                    label={__('Featured', 'masvideos')}
+                    help={__('Check to select featured posts.', 'masvideos')}
                     checked={ featured }
                     onChange={ this.onChangeFeatured }
                 />
                 ) : '' }
                 { !( hideFields && hideFields.includes('top_rated') ) ? (
                 <CheckboxControl
-                    label={__('Top Rated', 'vodi')}
-                    help={__('Check to select top rated posts.', 'vodi')}
+                    label={__('Top Rated', 'masvideos')}
+                    help={__('Check to select top rated posts.', 'masvideos')}
                     checked={ top_rated }
                     onChange={ this.onChangeTopRated }
                 />

@@ -30,6 +30,7 @@ registerBlockType( 'masvideos/videos', {
                         <ShortcodeAtts
                             postType = 'video'
                             catTaxonomy = 'video_cat'
+                            tagTaxonomy = 'video_tag'
                             hideFields = { ['top_rated'] }
                             attributes = { { ...attributes } }
                             updateShortcodeAtts = { onChangeShortcodeAtts }
