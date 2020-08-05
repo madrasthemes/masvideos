@@ -477,7 +477,8 @@ class MasVideos_Email extends MasVideos_Settings_API {
 	 * @return string
 	 */
 	public function get_option( $key, $empty_value = null ) {
-		$value = parent::get_option( $key, $empty_value );
+		$option_name = "masvideos_{$this->id}_{$key}";
+		$value = get_option( $option_name, $empty_value );
 		return apply_filters( 'masvideos_email_get_option', $value, $this, $value, $key, $empty_value );
 	}
 

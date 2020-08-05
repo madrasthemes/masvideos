@@ -35,6 +35,7 @@ class MasVideos_Customizer {
 
         $this->add_general_section( $wp_customize );
         $this->add_myaccount_section( $wp_customize );
+        $this->add_email_section( $wp_customize );
         $this->add_movies_section( $wp_customize );
         $this->add_videos_section( $wp_customize );
         $this->add_tv_shows_section( $wp_customize );
@@ -193,6 +194,291 @@ class MasVideos_Customizer {
                 'section'  => 'masvideos_myaccount',
                 'settings' => 'masvideos_registration_generate_password',
                 'type'     => 'checkbox',
+            )
+        );
+    }
+
+    /**
+     * Email Section.
+     *
+     * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+     * @since 1.0.0
+     */
+    public function add_email_section( $wp_customize ) {
+        $wp_customize->add_section(
+            'masvideos_email',
+            array(
+                'title'    => esc_html__( 'Email', 'masvideos' ),
+                'priority' => 30,
+                'panel'    => 'masvideos',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_email_from_name',
+            array(
+                'default'       => esc_attr( get_bloginfo( 'name', 'display' ) ),
+                'type'          => 'text',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_email_from_name',
+            array(
+                'label'       => esc_html__( '"From" Name', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'masvideos_email_from_name',
+                'type'        => 'text',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_email_from_address',
+            array(
+                'default'       => get_option( 'admin_email' ),
+                'type'          => 'email',
+                'capability'    => 'manage_masvideos',
+                'sanitize_callback'    => 'sanitize_email',
+                'sanitize_js_callback' => 'sanitize_email',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_email_from_address',
+            array(
+                'label'       => esc_html__( '"From" Address', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'masvideos_email_from_address',
+                'type'        => 'email',
+                'input_attrs' => array(
+                    'type'        => 'email',
+                ),
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_email_header_image',
+            array(
+                'default'       => '',
+                'type'          => 'url',
+                'capability'    => 'manage_masvideos',
+                'sanitize_callback' => 'sanitize_url',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_email_header_image',
+            array(
+                'label'       => esc_html__( 'Header image', 'masvideos' ),
+                'description' => esc_html__( 'URL to an image you want to show in the email header. Upload images using the media uploader (Admin > Media).', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'masvideos_email_header_image',
+                'type'        => 'url',
+                'input_attrs' => array(
+                    'type'        => 'url',
+                    'placeholder' => esc_html__( 'N/A', 'masvideos' ),
+                ),
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_email_footer_text',
+            array(
+                'default'       => esc_html__( '{site_title} &mdash; Built with {MasVideos}', 'masvideos' ),
+                'type'          => 'textarea',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_email_footer_text',
+            array(
+                'label'       => esc_html__( 'Footer text', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'masvideos_email_footer_text',
+                'type'        => 'textarea',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_email_base_color', array(
+                'default'           => '#24baef',
+                'sanitize_callback' => 'sanitize_hex_color',
+            )
+        );
+
+        $wp_customize->add_control(
+            new WP_Customize_Color_Control(
+                $wp_customize, 'masvideos_email_base_color', 
+                array(
+                    'label'    => __( 'Base color', 'masvideos' ),
+                    'section'  => 'masvideos_email',
+                    'settings' => 'masvideos_email_base_color',
+                )
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_email_background_color', array(
+                'default'           => '#f7f7f7',
+                'sanitize_callback' => 'sanitize_hex_color',
+            )
+        );
+
+        $wp_customize->add_control(
+            new WP_Customize_Color_Control(
+                $wp_customize, 'masvideos_email_background_color', 
+                array(
+                    'label'    => __( 'Background color', 'masvideos' ),
+                    'section'  => 'masvideos_email',
+                    'settings' => 'masvideos_email_background_color',
+                )
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_email_body_background_color', array(
+                'default'           => '#ffffff',
+                'sanitize_callback' => 'sanitize_hex_color',
+            )
+        );
+
+        $wp_customize->add_control(
+            new WP_Customize_Color_Control(
+                $wp_customize, 'masvideos_email_body_background_color', 
+                array(
+                    'label'    => __( 'Body background color', 'masvideos' ),
+                    'section'  => 'masvideos_email',
+                    'settings' => 'masvideos_email_body_background_color',
+                )
+            )
+        );
+
+        $wp_customize->add_setting(
+            'woocommerce_email_text_color', array(
+                'default'           => '#3c3c3c',
+                'sanitize_callback' => 'sanitize_hex_color',
+            )
+        );
+
+        $wp_customize->add_control(
+            new WP_Customize_Color_Control(
+                $wp_customize, 'woocommerce_email_text_color', 
+                array(
+                    'label'    => __( 'Body text color', 'masvideos' ),
+                    'section'  => 'masvideos_email',
+                    'settings' => 'woocommerce_email_text_color',
+                )
+            )
+        );
+
+        // New Account
+        $wp_customize->add_setting(
+            'masvideos_user_new_account_enabled',
+            array(
+                'default'              => 'yes',
+                'type'                 => 'option',
+                'capability'           => 'manage_masvideos',
+                'sanitize_callback'    => 'masvideos_bool_to_string',
+                'sanitize_js_callback' => 'masvideos_string_to_bool',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_user_new_account_enabled',
+            array(
+                'label'       => esc_html__( 'Enable New Account Email?', 'masvideos' ),
+                'section'  => 'masvideos_email',
+                'settings' => 'masvideos_user_new_account_enabled',
+                'type'     => 'checkbox',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_user_new_account_subject',
+            array(
+                'default'       => '',
+                'type'          => 'text',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_user_new_account_subject',
+            array(
+                'label'       => esc_html__( 'New Account Subject', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'masvideos_user_new_account_subject',
+                'type'        => 'text',
+                'input_attrs' => array(
+                    'placeholder' => esc_html__( 'Your {site_title} account has been created!', 'masvideos' ),
+                ),
+            )
+        );
+
+        $wp_customize->add_setting(
+            'woocommerce_user_new_account_heading',
+            array(
+                'default'       => '',
+                'type'          => 'text',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'woocommerce_user_new_account_heading',
+            array(
+                'label'       => esc_html__( 'New Account Email Heading', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'woocommerce_user_new_account_heading',
+                'type'        => 'text',
+                'input_attrs' => array(
+                    'placeholder' => esc_html__( 'Welcome to {site_title}', 'masvideos' ),
+                ),
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_user_new_account_additional_content',
+            array(
+                'default'       => esc_html__( 'We look forward to seeing you soon.', 'masvideos' ),
+                'type'          => 'textarea',
+                'capability'    => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_user_new_account_additional_content',
+            array(
+                'label'       => esc_html__( 'New Account Additional Content', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'masvideos_user_new_account_additional_content',
+                'type'        => 'textarea',
+            )
+        );
+
+        $wp_customize->add_setting(
+            'masvideos_user_new_account_type',
+            array(
+                'default'           => 'html',
+                'type'              => 'option',
+                'capability'        => 'manage_masvideos',
+            )
+        );
+
+        $wp_customize->add_control(
+            'masvideos_user_new_account_type',
+            array(
+                'label'       => esc_html__( 'New Account Email Type', 'masvideos' ),
+                'section'     => 'masvideos_email',
+                'settings'    => 'masvideos_user_new_account_type',
+                'type'        => 'select',
+                'choices'     => apply_filters( 'masvideos_user_new_account_type_options', array(
+                    'plain'     => esc_html__( 'Plain', 'masvideos' ),
+                    'html'      => esc_html__( 'HTML', 'masvideos' ),
+                    'multipart' => esc_html__( 'Multipart', 'masvideos' ),
+                ) ),
             )
         );
     }
