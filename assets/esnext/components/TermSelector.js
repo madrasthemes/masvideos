@@ -223,6 +223,7 @@ export class TermSelector extends Component {
      * Renders the TermSelector component.
      */
     render() {
+        const { title = __('Search Term', 'masvideos') } = this.props;
         const isFiltered = this.state.filtering;
         const termList = isFiltered && !this.state.filterLoading ? this.state.filterTerms : [];
         const SelectedTermList  = this.getSelectedTerms();
@@ -235,7 +236,7 @@ export class TermSelector extends Component {
         return (
             <div className="components-base-control components-term-selector">
                 <div className="components-base-control__field--selected">
-                    <h2>{__('Search Term', 'vodi')}</h2>
+                    <h2>{ title }</h2>
                     <ItemList
                         items={SelectedTermList}
                         loading={this.state.initialLoading}
@@ -251,7 +252,7 @@ export class TermSelector extends Component {
                         className="components-text-control__input"
                         id={searchinputuniqueId}
                         type="search"
-                        placeholder={__('Please enter your search query...', 'vodi')}
+                        placeholder={__('Please enter your search query...', 'masvideos')}
                         value={this.state.filter}
                         onChange={this.handleInputFilterChange}
                     />
