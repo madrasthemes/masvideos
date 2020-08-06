@@ -474,11 +474,7 @@ class MasVideos_Customizer {
                 'section'     => 'masvideos_email',
                 'settings'    => 'masvideos_user_new_account_type',
                 'type'        => 'select',
-                'choices'     => apply_filters( 'masvideos_user_new_account_type_options', array(
-                    'plain'     => esc_html__( 'Plain', 'masvideos' ),
-                    'html'      => esc_html__( 'HTML', 'masvideos' ),
-                    'multipart' => esc_html__( 'Multipart', 'masvideos' ),
-                ) ),
+                'choices'     => $this->get_email_type_options(),
             )
         );
     }
@@ -1056,6 +1052,22 @@ class MasVideos_Customizer {
         $page_choices = array( '' => esc_html__( 'No page set', 'masvideos' ) ) + array_combine( array_map( 'strval', wp_list_pluck( $pages, 'ID' ) ), wp_list_pluck( $pages, 'post_title' ) );
 
         return $page_choices;
+    }
+
+    /**
+     * Email type options.
+     *
+     * @return array
+     */
+    public function get_email_type_options() {
+        $types = array( 'plain' => __( 'Plain text', 'masvideos' ) );
+
+        if ( class_exists( 'DOMDocument' ) ) {
+            $types['html']      = __( 'HTML', 'masvideos' );
+            $types['multipart'] = __( 'Multipart', 'masvideos' );
+        }
+
+        return $types;
     }
 
 }

@@ -23,7 +23,7 @@ if ( class_exists( 'MasVideos_Email', false ) ) {
  * @package     MasVideos/Classes/Emails
  * @extends     MasVideos_Settings_API
  */
-class MasVideos_Email extends MasVideos_Settings_API {
+class MasVideos_Email {
 
 	/**
 	 * Email method ID.
@@ -650,22 +650,6 @@ class MasVideos_Email extends MasVideos_Settings_API {
 		remove_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
 
 		return $return;
-	}
-
-	/**
-	 * Email type options.
-	 *
-	 * @return array
-	 */
-	public function get_email_type_options() {
-		$types = array( 'plain' => __( 'Plain text', 'masvideos' ) );
-
-		if ( class_exists( 'DOMDocument' ) ) {
-			$types['html']      = __( 'HTML', 'masvideos' );
-			$types['multipart'] = __( 'Multipart', 'masvideos' );
-		}
-
-		return $types;
 	}
 
 	/**
