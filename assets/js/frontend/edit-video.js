@@ -6,6 +6,7 @@
         /*  MasVideos Select2
         /*===================================================================================*/
         $( '.masvideos-select2' ).selectWoo();
+        $( '.masvideos-select2-tags' ).selectWoo( { tags: true } )
     } );
 
     // Uploading Image

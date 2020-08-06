@@ -283,6 +283,23 @@ class MasVideos_Form_Handler {
                 // Get Value.
                 if ( 'checkbox' === $field['type'] ) {
                     $value = (int) isset( $_POST[ $key ] );
+                } elseif ( 'tag-multiselect' === $field['type'] ) {
+                    $value     = array();
+                    $raw_tags = isset( $_POST[ $key ] ) ? masvideos_clean( wp_unslash( $_POST[ $key ] ) ) : array();
+                    $raw_tags = array_filter( array_map( 'sanitize_text_field', $raw_tags ) );
+                    $taxonomy = isset( $_POST['taxonomy'] ) ? $_POST['taxonomy'] : 'video_tag';
+                    if ( ! empty( $raw_tags ) ) {
+                        foreach ( $raw_tags as $tag ) {
+                            if ( $term = get_term_by( 'name', $tag, $taxonomy ) ) {
+                                $value[] = $term->term_id;
+                            } else {
+                                $term = wp_insert_term( $tag, $taxonomy );
+                                if ( ! is_wp_error( $term ) ) {
+                                    $value[] = $term['term_id'];
+                                }
+                            }
+                        }
+                    }
                 } elseif ( 'term-multiselect' === $field['type'] ) {
                     $value = isset( $_POST[ $key ] ) ? masvideos_clean( wp_unslash( $_POST[ $key ] ) ) : array();
                 } elseif ( 'video_embed_content' === $key ) {

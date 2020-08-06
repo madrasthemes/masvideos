@@ -424,6 +424,32 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                 }
 
                 break;
+            case 'tag-multiselect':
+                ob_start();
+                ?>
+                <select multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select tags', 'masvideos' ); ?>" class="masvideos-select2-tags" name="<?php echo esc_attr( $key ); ?>[]">
+                    <?php
+                    $all_terms = get_terms( $args['taxonomy'], apply_filters( 'masvideos_term_multiselect', array( 'orderby' => 'name', 'hide_empty' => 0, ) ) );
+                    if ( $all_terms ) {
+                        foreach ( $all_terms as $term ) {
+                            $options = array();
+                            if( ! empty( $value ) && is_array( $value ) ) {
+                                foreach ( $value as $term_id ) {
+                                    $selected_term = get_term_by( 'id', $term_id, $args['taxonomy'] );
+                                    if ( ! is_wp_error( $selected_term ) ) {
+                                        $options[] = $selected_term->name;
+                                    }
+                                }
+                            }
+                            echo '<option value="' . esc_attr( $term->name ) . '"' . masvideos_selected( $term->name, $options ) . '>' . esc_attr( apply_filters( 'masvideos_term_name', $term->name, $term ) ) . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+                <?php
+                $field = ob_get_clean();
+
+                break;
             case 'term-multiselect':
                 ob_start();
                 ?>

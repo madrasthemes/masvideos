@@ -277,7 +277,7 @@ function masvideos_get_edit_video_fields() {
             'priority'     => 30,
         ),
         'tag_ids'  => array(
-            'type'         => 'term-multiselect',
+            'type'         => apply_filters( 'masvideos_allow_users_to_create_tag', false ) ? 'tag-multiselect' : 'term-multiselect',
             'taxonomy'     => 'video_tag',
             'label'        => __( 'Tags', 'masvideos' ),
             'required'     => false,
