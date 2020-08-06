@@ -19,11 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Load colors.
-$bg        = get_option( 'masvideos_email_background_color' );
-$body      = get_option( 'masvideos_email_body_background_color' );
-$base      = get_option( 'masvideos_email_base_color' );
+$bg        = get_option( 'masvideos_email_background_color', '#f7f7f7' );
+$body      = get_option( 'masvideos_email_body_background_color', '#ffffff' );
+$base      = get_option( 'masvideos_email_base_color',  '#24baef' );
 $base_text = masvideos_light_or_dark( $base, '#202020', '#ffffff' );
-$text      = get_option( 'masvideos_email_text_color' );
+$text      = get_option( 'masvideos_email_text_color', '#3c3c3c' );
 
 // Pick a contrasting color for links.
 $link_color = masvideos_hex_is_light( $base ) ? $base : $base_text;

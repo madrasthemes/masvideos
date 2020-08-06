@@ -218,8 +218,9 @@ class MasVideos_Customizer {
             'masvideos_email_from_name',
             array(
                 'default'       => esc_attr( get_bloginfo( 'name', 'display' ) ),
-                'type'          => 'text',
+                'type'          => 'option',
                 'capability'    => 'manage_masvideos',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -237,10 +238,11 @@ class MasVideos_Customizer {
             'masvideos_email_from_address',
             array(
                 'default'       => get_option( 'admin_email' ),
-                'type'          => 'email',
+                'type'          => 'option',
                 'capability'    => 'manage_masvideos',
                 'sanitize_callback'    => 'sanitize_email',
                 'sanitize_js_callback' => 'sanitize_email',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -261,9 +263,10 @@ class MasVideos_Customizer {
             'masvideos_email_header_image',
             array(
                 'default'       => '',
-                'type'          => 'url',
+                'type'          => 'option',
                 'capability'    => 'manage_masvideos',
                 'sanitize_callback' => 'sanitize_url',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -286,8 +289,9 @@ class MasVideos_Customizer {
             'masvideos_email_footer_text',
             array(
                 'default'       => esc_html__( '{site_title} &mdash; Built with {MasVideos}', 'masvideos' ),
-                'type'          => 'textarea',
+                'type'          => 'option',
                 'capability'    => 'manage_masvideos',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -305,6 +309,8 @@ class MasVideos_Customizer {
             'masvideos_email_base_color', array(
                 'default'           => '#24baef',
                 'sanitize_callback' => 'sanitize_hex_color',
+                'type'          => 'option',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -323,6 +329,8 @@ class MasVideos_Customizer {
             'masvideos_email_background_color', array(
                 'default'           => '#f7f7f7',
                 'sanitize_callback' => 'sanitize_hex_color',
+                'type'          => 'option',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -341,6 +349,8 @@ class MasVideos_Customizer {
             'masvideos_email_body_background_color', array(
                 'default'           => '#ffffff',
                 'sanitize_callback' => 'sanitize_hex_color',
+                'type'          => 'option',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -356,19 +366,21 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
-            'woocommerce_email_text_color', array(
+            'masvideos_email_text_color', array(
                 'default'           => '#3c3c3c',
                 'sanitize_callback' => 'sanitize_hex_color',
+                'type'          => 'option',
+                'transport'     => 'postMessage',
             )
         );
 
         $wp_customize->add_control(
             new WP_Customize_Color_Control(
-                $wp_customize, 'woocommerce_email_text_color', 
+                $wp_customize, 'masvideos_email_text_color', 
                 array(
                     'label'    => __( 'Body text color', 'masvideos' ),
                     'section'  => 'masvideos_email',
-                    'settings' => 'woocommerce_email_text_color',
+                    'settings' => 'masvideos_email_text_color',
                 )
             )
         );
@@ -382,6 +394,7 @@ class MasVideos_Customizer {
                 'capability'           => 'manage_masvideos',
                 'sanitize_callback'    => 'masvideos_bool_to_string',
                 'sanitize_js_callback' => 'masvideos_string_to_bool',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -399,8 +412,9 @@ class MasVideos_Customizer {
             'masvideos_user_new_account_subject',
             array(
                 'default'       => '',
-                'type'          => 'text',
+                'type'          => 'option',
                 'capability'    => 'manage_masvideos',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -418,20 +432,21 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
-            'woocommerce_user_new_account_heading',
+            'masvideos_user_new_account_heading',
             array(
                 'default'       => '',
-                'type'          => 'text',
+                'type'          => 'option',
                 'capability'    => 'manage_masvideos',
+                'transport'     => 'postMessage',
             )
         );
 
         $wp_customize->add_control(
-            'woocommerce_user_new_account_heading',
+            'masvideos_user_new_account_heading',
             array(
                 'label'       => esc_html__( 'New Account Email Heading', 'masvideos' ),
                 'section'     => 'masvideos_email',
-                'settings'    => 'woocommerce_user_new_account_heading',
+                'settings'    => 'masvideos_user_new_account_heading',
                 'type'        => 'text',
                 'input_attrs' => array(
                     'placeholder' => esc_html__( 'Welcome to {site_title}', 'masvideos' ),
@@ -443,8 +458,9 @@ class MasVideos_Customizer {
             'masvideos_user_new_account_additional_content',
             array(
                 'default'       => esc_html__( 'We look forward to seeing you soon.', 'masvideos' ),
-                'type'          => 'textarea',
+                'type'          => 'option',
                 'capability'    => 'manage_masvideos',
+                'transport'     => 'postMessage',
             )
         );
 
@@ -459,20 +475,21 @@ class MasVideos_Customizer {
         );
 
         $wp_customize->add_setting(
-            'masvideos_user_new_account_type',
+            'masvideos_user_new_account_email_type',
             array(
-                'default'           => 'html',
-                'type'              => 'option',
-                'capability'        => 'manage_masvideos',
+                'default'       => 'html',
+                'type'          => 'option',
+                'capability'    => 'manage_masvideos',
+                'transport'     => 'postMessage',
             )
         );
 
         $wp_customize->add_control(
-            'masvideos_user_new_account_type',
+            'masvideos_user_new_account_email_type',
             array(
                 'label'       => esc_html__( 'New Account Email Type', 'masvideos' ),
                 'section'     => 'masvideos_email',
-                'settings'    => 'masvideos_user_new_account_type',
+                'settings'    => 'masvideos_user_new_account_email_type',
                 'type'        => 'select',
                 'choices'     => $this->get_email_type_options(),
             )
