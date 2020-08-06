@@ -140,7 +140,7 @@ class MasVideos_Meta_Box_Person_Data {
                 $attribute_id   = 0;
                 $attribute_name = masvideos_clean( $attribute_names[ $i ] );
 
-                if ( $post_type . '_' === substr( $attribute_name, 0, 6 ) ) {
+                if ( $post_type . '_' === substr( $attribute_name, 0, 7 ) ) {
                     $attribute_id = masvideos_attribute_taxonomy_id_by_name( $post_type, $attribute_name );
                 }
 
