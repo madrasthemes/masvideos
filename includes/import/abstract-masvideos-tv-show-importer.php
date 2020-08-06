@@ -571,6 +571,7 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
 
             $episode->set_tv_show_id( $tv_show->get_id() );
             $episode->set_tv_show_season_id( $season_key );
+            $episode->save();
         }
     }
 

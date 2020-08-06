@@ -783,6 +783,9 @@ class MasVideos_TMDB_Importer_Controller {
                     case 'name' :
                         $tv_show['Title'] = $values;
                         break;
+                    case 'overview' :
+                        $tv_show['Description'] = $values;
+                        break;
                     case 'status' :
                         $tv_show['tv_show_status'] = $values;
                         break;
