@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MAS Videos package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MAS Videos 1.1.9\n"
+"Project-Id-Version: MAS Videos 1.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/madrasthemes/masvideos/issues\n"
-"POT-Creation-Date: 2020-04-13 11:58:35+00:00\n"
+"POT-Creation-Date: 2020-08-07 13:20:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,16 +29,16 @@ msgid "Invalid catalog visibility option."
 msgstr ""
 
 #: includes/abstracts/abstract-masvideos-episode.php:841
-#: includes/abstracts/abstract-masvideos-movie.php:911
+#: includes/abstracts/abstract-masvideos-movie.php:963
 #: includes/abstracts/abstract-masvideos-person.php:708
-#: includes/abstracts/abstract-masvideos-tv-show.php:724
+#: includes/abstracts/abstract-masvideos-tv-show.php:776
 msgid "Invalid or duplicated IMDB Id."
 msgstr ""
 
 #: includes/abstracts/abstract-masvideos-episode.php:857
-#: includes/abstracts/abstract-masvideos-movie.php:927
+#: includes/abstracts/abstract-masvideos-movie.php:979
 #: includes/abstracts/abstract-masvideos-person.php:724
-#: includes/abstracts/abstract-masvideos-tv-show.php:740
+#: includes/abstracts/abstract-masvideos-tv-show.php:792
 msgid "Invalid or duplicated TMDB Id."
 msgstr ""
 
@@ -285,8 +285,8 @@ msgstr ""
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
 #: includes/masvideos-account-functions.php:134
 #: includes/masvideos-account-functions.php:172
-#: includes/masvideos-template-functions.php:511
-#: includes/masvideos-template-functions.php:523
+#: includes/masvideos-template-functions.php:537
+#: includes/masvideos-template-functions.php:549
 msgid "Delete"
 msgstr ""
 
@@ -441,8 +441,8 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-meta-boxes.php:145
 #: includes/admin/class-masvideos-admin-meta-boxes.php:155
 #: includes/admin/class-masvideos-admin-meta-boxes.php:165
-#: includes/customizer/class-masvideos-customizer.php:257
-#: includes/customizer/class-masvideos-customizer.php:523
+#: includes/customizer/class-masvideos-customizer.php:556
+#: includes/customizer/class-masvideos-customizer.php:822
 #: includes/masvideos-movie-template-functions.php:396
 #: includes/masvideos-tv-show-template-functions.php:397
 #: includes/masvideos-video-template-functions.php:395
@@ -725,7 +725,7 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-taxonomies.php:260
 #: includes/admin/masvideos-meta-box-functions.php:429
 #: includes/masvideos-account-functions.php:337
-#: includes/masvideos-template-functions.php:474
+#: includes/masvideos-template-functions.php:500
 msgid "Image"
 msgstr ""
 
@@ -760,7 +760,7 @@ msgstr ""
 #: includes/admin/class-masvideos-admin-taxonomies.php:198
 #: includes/admin/class-masvideos-admin-taxonomies.php:225
 #: includes/admin/masvideos-meta-box-functions.php:432
-#: includes/masvideos-template-functions.php:479
+#: includes/masvideos-template-functions.php:505
 msgid "Upload/Add image"
 msgstr ""
 
@@ -1579,7 +1579,7 @@ msgstr ""
 msgid "Discover TV Shows"
 msgstr ""
 
-#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:882
+#: includes/admin/importers/class-masvideos-tmdb-importer-controller.php:885
 msgid "Couldn't create the file to store the CSV, or the path is invalid."
 msgstr ""
 
@@ -1938,18 +1938,18 @@ msgid "TV Shows found."
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:294
-#: includes/masvideos-template-functions.php:455
+#: includes/masvideos-template-functions.php:481
 msgid "Upload/Add video"
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:295
-#: includes/masvideos-template-functions.php:456
+#: includes/masvideos-template-functions.php:482
 msgid "Remove this video"
 msgstr ""
 
 #: includes/admin/masvideos-meta-box-functions.php:433
 #: includes/admin/meta-boxes/views/html-tv-show-season.php:35
-#: includes/masvideos-template-functions.php:480
+#: includes/masvideos-template-functions.php:506
 msgid "Remove this image"
 msgstr ""
 
@@ -1958,7 +1958,7 @@ msgstr ""
 #: includes/admin/meta-boxes/class-masvideos-meta-box-person-data.php:56
 #: includes/admin/meta-boxes/class-masvideos-meta-box-tv-show-data.php:59
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-data.php:56
-#: includes/customizer/class-masvideos-customizer.php:53
+#: includes/customizer/class-masvideos-customizer.php:54
 msgid "General"
 msgstr ""
 
@@ -1974,8 +1974,8 @@ msgstr ""
 #: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:55
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:511
-#: includes/masvideos-template-functions.php:523
+#: includes/masvideos-template-functions.php:537
+#: includes/masvideos-template-functions.php:549
 msgid "Delete image"
 msgstr ""
 
@@ -1985,7 +1985,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-movie-images.php:75
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:523
+#: includes/masvideos-template-functions.php:549
 msgid "Add to gallery"
 msgstr ""
 
@@ -1998,12 +1998,12 @@ msgid "Seasons & Episodes"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:523
+#: includes/masvideos-template-functions.php:549
 msgid "Add images to video gallery"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-masvideos-meta-box-video-images.php:75
-#: includes/masvideos-template-functions.php:523
+#: includes/masvideos-template-functions.php:549
 msgid "Add video gallery images"
 msgstr ""
 
@@ -2012,7 +2012,7 @@ msgstr ""
 #: includes/admin/meta-boxes/views/html-person-attribute.php:40
 #: includes/admin/meta-boxes/views/html-tv-show-attribute.php:40
 #: includes/admin/meta-boxes/views/html-video-attribute.php:40
-#: includes/masvideos-template-functions.php:430
+#: includes/masvideos-template-functions.php:456
 msgid "Select terms"
 msgstr ""
 
@@ -2664,6 +2664,14 @@ msgstr ""
 msgid "Invalid data store."
 msgstr ""
 
+#: includes/class-masvideos-emails.php:62
+msgid "Cloning is forbidden."
+msgstr ""
+
+#: includes/class-masvideos-emails.php:71
+msgid "Unserializing instances of this class is forbidden."
+msgstr ""
+
 #: includes/class-masvideos-form-handler.php:75
 msgid "Display name cannot be changed to email address due to privacy concern."
 msgstr ""
@@ -2690,7 +2698,7 @@ msgid "Email address"
 msgstr ""
 
 #: includes/class-masvideos-form-handler.php:92
-#: includes/class-masvideos-form-handler.php:300
+#: includes/class-masvideos-form-handler.php:317
 #. translators: %s: Field name.
 msgid "%s is a required field."
 msgstr ""
@@ -2731,10 +2739,10 @@ msgstr ""
 #: includes/class-masvideos-form-handler.php:169
 #: includes/class-masvideos-form-handler.php:173
 #: includes/class-masvideos-form-handler.php:254
-#: includes/class-masvideos-form-handler.php:399
-#: includes/class-masvideos-form-handler.php:445
-#: includes/class-masvideos-form-handler.php:465
-#: includes/class-masvideos-form-handler.php:512
+#: includes/class-masvideos-form-handler.php:416
+#: includes/class-masvideos-form-handler.php:462
+#: includes/class-masvideos-form-handler.php:482
+#: includes/class-masvideos-form-handler.php:529
 msgid "Error:"
 msgstr ""
 
@@ -2742,11 +2750,11 @@ msgstr ""
 msgid "Username is required."
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:341
+#: includes/class-masvideos-form-handler.php:358
 msgid "Video uploaded successfully."
 msgstr ""
 
-#: includes/class-masvideos-form-handler.php:445
+#: includes/class-masvideos-form-handler.php:462
 msgid "Posttype is not valid."
 msgstr ""
 
@@ -2757,7 +2765,7 @@ msgstr ""
 msgid "Please select a rating"
 msgstr ""
 
-#: includes/class-masvideos-gutenberg-blocks.php:159
+#: includes/class-masvideos-gutenberg-blocks.php:168
 msgid "MAS Videos Blocks"
 msgstr ""
 
@@ -2867,7 +2875,7 @@ msgid "This is where you can add new episodes to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:130
-#: includes/customizer/class-masvideos-customizer.php:475
+#: includes/customizer/class-masvideos-customizer.php:774
 #: includes/masvideos-person-template-functions.php:683
 msgid "TV Shows"
 msgstr ""
@@ -3044,7 +3052,7 @@ msgstr ""
 
 #: includes/class-masvideos-post-types.php:249
 #: includes/class-masvideos-query.php:78
-#: includes/customizer/class-masvideos-customizer.php:353
+#: includes/customizer/class-masvideos-customizer.php:652
 #: includes/masvideos-account-functions.php:31
 msgid "Videos"
 msgstr ""
@@ -3226,7 +3234,7 @@ msgid "This is where you can add new video playlists to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:368
-#: includes/customizer/class-masvideos-customizer.php:209
+#: includes/customizer/class-masvideos-customizer.php:508
 #: includes/masvideos-person-template-functions.php:674
 msgid "Movies"
 msgstr ""
@@ -3408,7 +3416,7 @@ msgid "This is where you can add new movie playlists to your site."
 msgstr ""
 
 #: includes/class-masvideos-post-types.php:487
-#: includes/customizer/class-masvideos-customizer.php:640
+#: includes/customizer/class-masvideos-customizer.php:939
 msgid "Persons"
 msgstr ""
 
@@ -3836,54 +3844,143 @@ msgstr ""
 msgid "MAS Videos"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:72
+#: includes/customizer/class-masvideos-customizer.php:73
 msgid "TMDB API Key"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:73
+#: includes/customizer/class-masvideos-customizer.php:74
 msgid "Add TMDB API Key to integrate with TMDB."
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:90
+#: includes/customizer/class-masvideos-customizer.php:91
 msgid "My Account"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:108
+#: includes/customizer/class-masvideos-customizer.php:109
 msgid "My Account Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:128
+#: includes/customizer/class-masvideos-customizer.php:129
 msgid "Upload Video Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:150
+#: includes/customizer/class-masvideos-customizer.php:151
 msgid "Account Creation"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:171
+#: includes/customizer/class-masvideos-customizer.php:172
 msgid "Generate Username"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:192
+#: includes/customizer/class-masvideos-customizer.php:193
 msgid "Generate Password"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:227
+#: includes/customizer/class-masvideos-customizer.php:211
+#: templates/single-episode-reviews.php:43
+#: templates/single-movie-reviews.php:43
+#: templates/single-tv-show-reviews.php:43
+#: templates/single-video-reviews.php:42
+msgid "Email"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:230
+msgid "\"From\" Name"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:252
+msgid "\"From\" Address"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:276
+msgid "Header image"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:277
+msgid ""
+"URL to an image you want to show in the email header. Upload images using "
+"the media uploader (Admin > Media)."
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:283
+msgid "N/A"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:291
+msgid "{site_title} &mdash; Built with {MasVideos}"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:301
+msgid "Footer text"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:321
+msgid "Base color"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:341
+msgid "Background color"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:361
+msgid "Body background color"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:381
+msgid "Body text color"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:404
+msgid "Enable New Account Email?"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:424
+msgid "New Account Subject"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:429
+#: includes/emails/class-masvideos-email-user-new-account.php:76
+msgid "Your {site_title} account has been created!"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:447
+msgid "New Account Email Heading"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:452
+#: includes/emails/class-masvideos-email-user-new-account.php:86
+msgid "Welcome to {site_title}"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:460
+#: includes/emails/class-masvideos-email-user-new-account.php:167
+msgid "We look forward to seeing you soon."
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:470
+msgid "New Account Additional Content"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:490
+msgid "New Account Email Type"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:526
 msgid "Movies Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:247
+#: includes/customizer/class-masvideos-customizer.php:546
 msgid "Default movie sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:248
+#: includes/customizer/class-masvideos-customizer.php:547
 msgid "How should movies be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:253
-#: includes/customizer/class-masvideos-customizer.php:397
-#: includes/customizer/class-masvideos-customizer.php:519
-#: includes/customizer/class-masvideos-customizer.php:684
+#: includes/customizer/class-masvideos-customizer.php:552
+#: includes/customizer/class-masvideos-customizer.php:696
+#: includes/customizer/class-masvideos-customizer.php:818
+#: includes/customizer/class-masvideos-customizer.php:983
 #: includes/masvideos-movie-template-functions.php:392
 #: includes/masvideos-person-template-functions.php:392
 #: includes/masvideos-tv-show-template-functions.php:393
@@ -3891,10 +3988,10 @@ msgstr ""
 msgid "Name: Ascending"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:254
-#: includes/customizer/class-masvideos-customizer.php:398
-#: includes/customizer/class-masvideos-customizer.php:520
-#: includes/customizer/class-masvideos-customizer.php:685
+#: includes/customizer/class-masvideos-customizer.php:553
+#: includes/customizer/class-masvideos-customizer.php:697
+#: includes/customizer/class-masvideos-customizer.php:819
+#: includes/customizer/class-masvideos-customizer.php:984
 #: includes/masvideos-movie-template-functions.php:393
 #: includes/masvideos-person-template-functions.php:393
 #: includes/masvideos-tv-show-template-functions.php:394
@@ -3902,10 +3999,10 @@ msgstr ""
 msgid "Name: Descending"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:255
-#: includes/customizer/class-masvideos-customizer.php:399
-#: includes/customizer/class-masvideos-customizer.php:521
-#: includes/customizer/class-masvideos-customizer.php:686
+#: includes/customizer/class-masvideos-customizer.php:554
+#: includes/customizer/class-masvideos-customizer.php:698
+#: includes/customizer/class-masvideos-customizer.php:820
+#: includes/customizer/class-masvideos-customizer.php:985
 #: includes/masvideos-movie-template-functions.php:394
 #: includes/masvideos-person-template-functions.php:394
 #: includes/masvideos-tv-show-template-functions.php:395
@@ -3913,10 +4010,10 @@ msgstr ""
 msgid "Latest"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:256
-#: includes/customizer/class-masvideos-customizer.php:400
-#: includes/customizer/class-masvideos-customizer.php:522
-#: includes/customizer/class-masvideos-customizer.php:687
+#: includes/customizer/class-masvideos-customizer.php:555
+#: includes/customizer/class-masvideos-customizer.php:699
+#: includes/customizer/class-masvideos-customizer.php:821
+#: includes/customizer/class-masvideos-customizer.php:986
 #: includes/masvideos-movie-template-functions.php:395
 #: includes/masvideos-person-template-functions.php:395
 #: includes/masvideos-tv-show-template-functions.php:396
@@ -3924,111 +4021,123 @@ msgstr ""
 msgid "Menu Order"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:278
+#: includes/customizer/class-masvideos-customizer.php:577
 msgid "Movies per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:279
+#: includes/customizer/class-masvideos-customizer.php:578
 msgid "How many movies should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:308
-#: includes/customizer/class-masvideos-customizer.php:451
-#: includes/customizer/class-masvideos-customizer.php:574
-#: includes/customizer/class-masvideos-customizer.php:738
+#: includes/customizer/class-masvideos-customizer.php:607
+#: includes/customizer/class-masvideos-customizer.php:750
+#: includes/customizer/class-masvideos-customizer.php:873
+#: includes/customizer/class-masvideos-customizer.php:1037
 msgid "Rows per page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:309
+#: includes/customizer/class-masvideos-customizer.php:608
 msgid "How many rows of movies should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:336
+#: includes/customizer/class-masvideos-customizer.php:635
 msgid "Enable Movies Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:371
+#: includes/customizer/class-masvideos-customizer.php:670
 msgid "Videos Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:391
+#: includes/customizer/class-masvideos-customizer.php:690
 msgid "Default video sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:392
+#: includes/customizer/class-masvideos-customizer.php:691
 msgid "How should videos be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:421
+#: includes/customizer/class-masvideos-customizer.php:720
 msgid "Videos per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:422
+#: includes/customizer/class-masvideos-customizer.php:721
 msgid "How many videos should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:452
+#: includes/customizer/class-masvideos-customizer.php:751
 msgid "How many rows of videos should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:493
+#: includes/customizer/class-masvideos-customizer.php:792
 msgid "TV Shows Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:513
+#: includes/customizer/class-masvideos-customizer.php:812
 msgid "Default tv show sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:514
+#: includes/customizer/class-masvideos-customizer.php:813
 msgid "How should tv shows be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:544
+#: includes/customizer/class-masvideos-customizer.php:843
 msgid "TV Shows per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:545
+#: includes/customizer/class-masvideos-customizer.php:844
 msgid "How many tv shows should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:575
+#: includes/customizer/class-masvideos-customizer.php:874
 msgid "How many rows of tv shows should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:602
+#: includes/customizer/class-masvideos-customizer.php:901
 msgid "Enable TV Shows Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:623
+#: includes/customizer/class-masvideos-customizer.php:922
 msgid "Enable Episodes Review"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:658
+#: includes/customizer/class-masvideos-customizer.php:957
 msgid "Persons Page"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:678
+#: includes/customizer/class-masvideos-customizer.php:977
 msgid "Default person sorting"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:679
+#: includes/customizer/class-masvideos-customizer.php:978
 msgid "How should persons be sorted in the catalog by default?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:708
+#: includes/customizer/class-masvideos-customizer.php:1007
 msgid "Persons per row"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:709
+#: includes/customizer/class-masvideos-customizer.php:1008
 msgid "How many persons should be shown per row?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:739
+#: includes/customizer/class-masvideos-customizer.php:1038
 msgid "How many rows of persons should be shown per page?"
 msgstr ""
 
-#: includes/customizer/class-masvideos-customizer.php:770
+#: includes/customizer/class-masvideos-customizer.php:1069
 msgid "No page set"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:1080
+msgid "Plain text"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:1083
+msgid "HTML"
+msgstr ""
+
+#: includes/customizer/class-masvideos-customizer.php:1084
+msgid "Multipart"
 msgstr ""
 
 #: includes/data-stores/class-masvideos-episode-data-store-cpt.php:133
@@ -4063,6 +4172,48 @@ msgstr ""
 msgid "Invalid video playlist."
 msgstr ""
 
+#: includes/emails/class-masvideos-email-user-new-account.php:60
+msgid "New account"
+msgstr ""
+
+#: includes/emails/class-masvideos-email-user-new-account.php:61
+msgid ""
+"User \"new account\" emails are sent to the user when a user signs up via "
+"account page."
+msgstr ""
+
+#: includes/emails/class-masvideos-email-user-reset-password.php:62
+msgid "Reset password"
+msgstr ""
+
+#: includes/emails/class-masvideos-email-user-reset-password.php:63
+msgid "User \"reset password\" emails are sent when users reset their passwords."
+msgstr ""
+
+#: includes/emails/class-masvideos-email-user-reset-password.php:82
+msgid "Password Reset Request for {site_title}"
+msgstr ""
+
+#: includes/emails/class-masvideos-email-user-reset-password.php:92
+msgid "Password Reset Request"
+msgstr ""
+
+#: includes/emails/class-masvideos-email-user-reset-password.php:171
+msgid "Thanks for reading."
+msgstr ""
+
+#: includes/emails/class-masvideos-email.php:696
+msgid "Could not write to template file."
+msgstr ""
+
+#: includes/emails/class-masvideos-email.php:743
+msgid "Template file copied to theme."
+msgstr ""
+
+#: includes/emails/class-masvideos-email.php:774
+msgid "Template file deleted from theme."
+msgstr ""
+
 #: includes/import/abstract-masvideos-movie-importer.php:192
 #: includes/import/abstract-masvideos-person-importer.php:174
 #: includes/import/abstract-masvideos-tv-show-importer.php:192
@@ -4077,7 +4228,7 @@ msgstr ""
 
 #: includes/import/abstract-masvideos-movie-importer.php:624
 #: includes/import/abstract-masvideos-person-importer.php:432
-#: includes/import/abstract-masvideos-tv-show-importer.php:827
+#: includes/import/abstract-masvideos-tv-show-importer.php:828
 #: includes/import/abstract-masvideos-video-importer.php:414
 #. translators: %s: image URL
 msgid "Not able to attach \"%s\"."
@@ -4085,7 +4236,7 @@ msgstr ""
 
 #: includes/import/abstract-masvideos-movie-importer.php:633
 #: includes/import/abstract-masvideos-person-importer.php:441
-#: includes/import/abstract-masvideos-tv-show-importer.php:836
+#: includes/import/abstract-masvideos-tv-show-importer.php:837
 #: includes/import/abstract-masvideos-video-importer.php:423
 #. translators: %s: image URL
 msgid "Unable to use image \"%s\"."
@@ -4547,14 +4698,18 @@ msgstr ""
 msgid "Choose an option"
 msgstr ""
 
-#: includes/masvideos-template-functions.php:605
+#: includes/masvideos-template-functions.php:430
+msgid "Select tags"
+msgstr ""
+
+#: includes/masvideos-template-functions.php:631
 #. translators: 1: The rating, 2: The number of ratings
 msgid "%1$s rating based on %2$s rating"
 msgid_plural "%1$s rating based on %2$s ratings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/masvideos-template-functions.php:609
+#: includes/masvideos-template-functions.php:635
 #. translators: 1: The rating
 msgid "%s rating"
 msgstr ""
@@ -4640,7 +4795,7 @@ msgstr ""
 msgid "ago"
 msgstr ""
 
-#: includes/masvideos-video-template-functions.php:933
+#: includes/masvideos-video-template-functions.php:935
 msgid " videos"
 msgstr ""
 
@@ -5130,6 +5285,59 @@ msgstr ""
 msgid "MAS Videos Filter Videos by Rating"
 msgstr ""
 
+#: templates/emails/plain/user-new-account.php:24
+#: templates/emails/plain/user-reset-password.php:24
+#: templates/emails/user-new-account.php:22
+#: templates/emails/user-reset-password.php:26
+#. translators: %s: User username
+#. translators: %s: Customer username
+#. translators: %s: Customer username
+msgid "Hi %s,"
+msgstr ""
+
+#: templates/emails/plain/user-new-account.php:26
+#: templates/emails/user-new-account.php:24
+#. translators: %1$s: Site title, %2$s: Username, %3$s: My account link
+msgid ""
+"Thanks for creating an account on %1$s. Your username is %2$s. You can "
+"access your account area to view orders, change your password, and more at: "
+"%3$s"
+msgstr ""
+
+#: templates/emails/plain/user-new-account.php:30
+#. translators: %s: Auto generated password
+msgid "Your password has been automatically generated: %s."
+msgstr ""
+
+#: templates/emails/plain/user-reset-password.php:26
+#: templates/emails/user-reset-password.php:28
+#. translators: %s: Store name
+msgid "Someone has requested a new password for the following account on %s:"
+msgstr ""
+
+#: templates/emails/plain/user-reset-password.php:28
+#: templates/emails/user-reset-password.php:30
+#. translators: %s: User username
+#. translators: %s: Customer username
+msgid "Username: %s"
+msgstr ""
+
+#: templates/emails/plain/user-reset-password.php:29
+#: templates/emails/user-reset-password.php:31
+msgid ""
+"If you didn't make this request, just ignore this email. If you'd like to "
+"proceed:"
+msgstr ""
+
+#: templates/emails/user-new-account.php:27
+#. translators: %s: Auto generated password
+msgid "Your password has been automatically generated: %s"
+msgstr ""
+
+#: templates/emails/user-reset-password.php:34
+msgid "Click here to reset your password"
+msgstr ""
+
 #: templates/global/photoswipe.php:33
 msgid "Close (Esc)"
 msgstr ""
@@ -5301,13 +5509,6 @@ msgstr ""
 #: templates/single-tv-show-reviews.php:36
 #: templates/single-video-reviews.php:35
 msgid "Leave a Reply to %s"
-msgstr ""
-
-#: templates/single-episode-reviews.php:43
-#: templates/single-movie-reviews.php:43
-#: templates/single-tv-show-reviews.php:43
-#: templates/single-video-reviews.php:42
-msgid "Email"
 msgstr ""
 
 #: templates/single-episode-reviews.php:46
@@ -5761,7 +5962,7 @@ msgid_plural "Showing %1$d&ndash;%2$d of %3$d results"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/masvideos-template-functions.php:662
+#: includes/masvideos-template-functions.php:688
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
