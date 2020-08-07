@@ -561,6 +561,32 @@ class MasVideos_TV_Show extends MasVideos_Data {
         if ( ! empty( $cast ) && is_array( $cast ) ) {
             array_multisort( array_column( $cast, 'position' ), SORT_ASC, $cast );
         }
+
+        $previous_cast = $this->get_cast( 'edit' );
+        if( ! empty( $previous_cast ) ) {
+            $previous_cast_ids = $current_cast_ids = array();
+            foreach( $previous_cast as $prev_cast ){
+                $previous_cast_ids[] = $prev_cast['id'];
+            }
+            foreach( $cast as $current_cast ){
+                $current_cast_ids[] = $current_cast['id'];
+            }
+            $differs = array_diff( $previous_cast_ids, $current_cast_ids );
+            if( ! empty( $differs ) && is_array( $differs ) ) {
+                foreach ( $differs as $diff ) {
+                    $person = masvideos_get_person( $diff );
+                    if( $person && is_a( $person, 'MasVideos_Person' ) ) {
+                        $tv_show_cast = $person->get_tv_show_cast( 'edit' );
+                        $pos = array_search( $this->get_id(), $tv_show_cast );
+                        if( $pos !== false ) {
+                            unset( $tv_show_cast[$pos] );
+                            $person->set_tv_show_cast( $tv_show_cast );
+                            $person->save();
+                        }
+                    }
+                }
+            }
+        }
         $this->set_prop( 'cast', $cast );
     }
 
@@ -573,6 +599,32 @@ class MasVideos_TV_Show extends MasVideos_Data {
     public function set_crew( $crew ) {
         if ( ! empty( $crew ) && is_array( $crew ) ) {
             array_multisort( array_column( $crew, 'position' ), SORT_ASC, $crew );
+        }
+
+        $previous_crew = $this->get_crew( 'edit' );
+        if( ! empty( $previous_crew ) ) {
+            $previous_crew_ids = $current_crew_ids = array();
+            foreach( $previous_crew as $prev_crew ){
+                $previous_crew_ids[] = $prev_crew['id'];
+            }
+            foreach( $crew as $current_crew ){
+                $current_crew_ids[] = $current_crew['id'];
+            }
+            $differs = array_diff( $previous_crew_ids, $current_crew_ids );
+            if( ! empty( $differs ) && is_array( $differs ) ) {
+                foreach ( $differs as $diff ) {
+                    $person = masvideos_get_person( $diff );
+                    if( $person && is_a( $person, 'MasVideos_Person' ) ) {
+                        $tv_show_crew = $person->get_tv_show_crew( 'edit' );
+                        $pos = array_search( $this->get_id(), $tv_show_crew );
+                        if( $pos !== false ) {
+                            unset( $tv_show_crew[$pos] );
+                            $person->set_tv_show_crew( $tv_show_crew );
+                            $person->save();
+                        }
+                    }
+                }
+            }
         }
         $this->set_prop( 'crew', $crew );
     }
