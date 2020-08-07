@@ -217,7 +217,6 @@ if ( ! class_exists( 'MasVideos' ) ) {
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-video-playlist.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie.php';
             include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-movie-playlist.php';
-            include_once MASVIDEOS_ABSPATH . 'includes/abstracts/abstract-masvideos-settings-api.php';
 
             /**
              * Core classes.
