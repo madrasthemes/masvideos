@@ -17,7 +17,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
          *
          * @var string
          */
-        public $version = '1.1.9';
+        public $version = '1.2.0';
 
         /**
          * The single instance of the class.

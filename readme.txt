@@ -2,9 +2,9 @@
 Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 1.1.9
+Stable tag: 1.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,18 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.2.0 - 2020-08-07 =
+* Enhancement – Video upload form enable user create new tags
+* Enhancement – Send Email for new user registration
+* Enhancement – Blocks tag filter added
+* Tweak – Shortcode tag filter updated
+* Fix – Person attributes term issue fixed
+* Fix – Person movies assign issue fixed
+* Fix – Shortcode pagination issue fixed
+* Fix – TMDB TV Show import issues fixed
+* Fix – PHP warning issue fixed
+* Fix – Textdomain issues fixed
 
 = 1.1.9 - 2020-04-13 =
 * Enhancement – Person & Playlist permalink settings added
