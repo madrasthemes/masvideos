@@ -132,33 +132,3 @@ function masvideos_deprecated_argument( $argument, $version, $message = null ) {
 		_deprecated_argument( $argument, $version, $message );
 	}
 }
-
-/**
- * @deprecated 1.1.9
- */
-if ( ! function_exists( 'is_account_page' ) ) {
-    function is_account_page() {
-        masvideos_deprecated_function( 'is_account_page', '1.1.9', 'masvideos_is_account_page' );
-        return masvideos_is_account_page();
-    }
-}
-
-/**
- * @deprecated 1.1.9
- */
-if ( ! function_exists( 'is_video_upload_page' ) ) {
-    function is_video_upload_page() {
-        masvideos_deprecated_function( 'is_video_upload_page', '1.1.9', 'masvideos_is_video_upload_page' );
-        return masvideos_is_video_upload_page();
-    }
-}
-
-/**
- * @deprecated 1.1.9
- */
-if ( ! function_exists( 'is_edit_account_page' ) ) {
-    function is_edit_account_page() {
-        masvideos_deprecated_function( 'is_edit_account_page', '1.1.9', 'masvideos_is_edit_account_page' );
-        return masvideos_is_edit_account_page();
-    }
-}
