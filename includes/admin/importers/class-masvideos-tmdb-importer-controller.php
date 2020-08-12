@@ -196,7 +196,7 @@ class MasVideos_TMDB_Importer_Controller {
 
         // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification -- Nonce already verified in MasVideos_Movie_CSV_Importer_Controller::upload_form_handler()
         $api_key = get_option( 'masvideos_tmdb_api', '' );
-        $language = isset( $_POST['masvideos-tmdb-language'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-language'] ) ) : 'en';
+        $language = isset( $_POST['masvideos-tmdb-language'] ) ? str_replace( '_', '-', masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-language'] ) ) ) : 'en';
         $type = isset( $_POST['masvideos-tmdb-type'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-type'] ) ) : '';
         $page = isset( $_POST['masvideos-tmdb-page-number'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-page-number'] ) ) : 1;
         $tmdb_id = isset( $_POST['masvideos-tmdb-id'] ) ? masvideos_clean( wp_unslash( $_POST['masvideos-tmdb-id'] ) ) : 1;
