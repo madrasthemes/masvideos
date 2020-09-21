@@ -431,8 +431,15 @@ if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
      */
     function masvideos_template_loop_episode_title() {
         global $episode;
+
+        $tv_show_id = $episode->get_tv_show_id();
         $episode_number = $episode->get_episode_number();
-        if( ! empty( $episode_number ) ) {
+
+        if( apply_filters( 'masvideos_template_loop_episode_display_tv_show_name_before_title', false ) && ! empty( $tv_show_id ) ) {
+            echo '<span class="masvideos-loop-episode__tv-show-name episode__tv-show-name">' . get_the_title( $tv_show_id ) . '</span>';
+        }
+
+        if( apply_filters( 'masvideos_template_loop_episode_display_episode_number_before_title', true ) && ! empty( $episode_number ) ) {
             echo '<span class="masvideos-loop-episode__number episode__number">' . $episode_number . '</span>';
         }
 
