@@ -648,21 +648,23 @@ if ( ! function_exists( 'masvideos_template_single_episode_seasons_tabs' ) ) {
                         unset( $episode_ids[$current_episode_key] );
                     }
                     $episode_ids = implode( ",", $episode_ids );
-                    $shortcode_atts = apply_filters( 'masvideos_template_single_episode_seasons_tab_shortcode_atts', array(
-                        'orderby'   => 'post__in',
-                        'order'     => 'DESC',
-                        'limit'     => '-1',
-                        'columns'   => '6',
-                        'ids'       => $episode_ids,
-                    ), $season, $key );
+                    if( ! empty( $episode_ids ) ) {
+                        $shortcode_atts = apply_filters( 'masvideos_template_single_episode_seasons_tab_shortcode_atts', array(
+                            'orderby'   => 'post__in',
+                            'order'     => 'DESC',
+                            'limit'     => '-1',
+                            'columns'   => '6',
+                            'ids'       => $episode_ids,
+                        ), $season, $key );
 
-                    $tab = array(
-                        'title'     => $season['name'],
-                        'content'   => MasVideos_Shortcodes::episodes( $shortcode_atts ),
-                        'priority'  => $key
-                    );
+                        $tab = array(
+                            'title'     => $season['name'],
+                            'content'   => MasVideos_Shortcodes::episodes( $shortcode_atts ),
+                            'priority'  => $key
+                        );
 
-                    $tabs[] = $tab;
+                        $tabs[] = $tab;
+                    }
                 }
             }
 
