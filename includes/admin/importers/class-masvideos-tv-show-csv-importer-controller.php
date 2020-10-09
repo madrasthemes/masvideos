@@ -355,6 +355,12 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
             }
 
             return ABSPATH . $file_url;
+        } elseif ( isset( $_SERVER['DOCUMENT_ROOT'] ) && file_exists( $_SERVER['DOCUMENT_ROOT'] . '/' . $file_url ) ) {
+            if ( ! self::is_file_valid_csv( $_SERVER['DOCUMENT_ROOT'] . '/' . $file_url ) ) {
+                return new WP_Error( 'masvideos_tv_show_csv_importer_upload_file_invalid', __( 'Invalid file type. The importer supports CSV and TXT file formats.', 'masvideos' ) );
+            }
+
+            return $_SERVER['DOCUMENT_ROOT'] . '/' . $file_url;
         }
         // phpcs:enable
 

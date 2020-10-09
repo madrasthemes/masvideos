@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</th>
 					<td>
 						<label for="masvideos-importer-file-url" class="masvideos-importer-file-url-field-wrapper">
-							<code><?php echo esc_html( ABSPATH ) . ' '; ?></code><input type="text" id="masvideos-importer-file-url" name="file_url" />
+							<code><?php echo esc_html( ABSPATH ) . ' (or) ' . esc_html( $_SERVER['DOCUMENT_ROOT'] . '/ ' ) ; ?></code><input type="text" id="masvideos-importer-file-url" name="file_url" />
 						</label>
 					</td>
 				</tr>

@@ -921,6 +921,9 @@ class MasVideos_TMDB_Importer_Controller {
     protected function import_form() {
         $action = admin_url( 'edit.php?post_type=' . $this->type . '&page=' . $this->type . '_importer' );
         $file_url = str_replace( ABSPATH, '', $this->file );
+        if( isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
+            $file_url = str_replace( $_SERVER['DOCUMENT_ROOT'] . '/', '', $this->file );
+        }
         include dirname( __FILE__ ) . '/views/html-tmdb-import-form.php';
     }
 }
