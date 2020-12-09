@@ -1013,12 +1013,13 @@ if ( ! function_exists( 'masvideos_template_single_person_birthday' ) ) {
         global $person;
         $birthday = $person->get_birthday();
         if( ! empty( $birthday ) ) :
+            $date = $birthday->getOffsetTimestamp();
             $title = apply_filters( 'masvideos_template_single_person_birthday_title_text', __( 'Birthday', 'masvideos' ) );
             $format = apply_filters( 'masvideos_template_single_person_birthday_format', 'd-m-Y' );
             ?>
             <div class="single-person__birthday">
                 <h4 class="single-person__sidebar-title birthday-title"><?php echo esc_html( $title ); ?></h4>
-                <?php echo date( $format, strtotime( $birthday ) ); ?>
+                <?php echo date_i18n( $format, $date ); ?>
             </div>
             <?php
         endif;
