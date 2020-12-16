@@ -84,7 +84,7 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Changelog ==
 
-= 1.2.3 - 2020-12-09 =
+= 1.2.3 - 2020-12-16 =
 * Tweak – CSV importer file handler functions updated
 * Fix – TV Show with single episode seasons tab issue fixed
 * Fix – Person Birth Date issue fixed
