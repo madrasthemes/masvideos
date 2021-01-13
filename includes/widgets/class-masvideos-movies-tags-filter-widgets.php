@@ -120,7 +120,6 @@ class MasVideos_Movies_Tags_Filter_Widget extends MasVideos_Widget {
         $query_type         = isset( $instance['query_type'] ) ? $instance['query_type'] : $this->settings['query_type']['std'];
         $limit              = isset( $instance['limit'] ) ? $instance['limit'] : $this->settings['limit']['std'];
         $slugs              = isset( $instance['slugs'] ) ? $instance['slugs'] : $this->settings['slugs']['std'];
-        $display_type       = isset( $instance['display_type'] ) ? $instance['display_type'] : $this->settings['display_type']['std'];
 
         if ( ! taxonomy_exists( $taxonomy ) ) {
             return;
