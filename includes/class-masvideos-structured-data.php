@@ -126,7 +126,7 @@ class MasVideos_Structured_Data {
 	 */
 	protected function get_data_type_for_page() {
 		$types   = array();
-		$types[] = is_masvideos() ? 'video' : '';
+		$types[] = is_masvideos() ? strtolower('VideoObject') : '';
 		$types[] = ( is_tv_shows() || is_episodes() || is_movies() || is_videos() ) && is_front_page() ? 'website' : '';
 		$types[] = ( is_tv_show() || is_episode() || is_movie() || is_video() ) ? 'review' : '';
 		$types[] = ! ( is_tv_shows() || is_episodes() || is_movies() || is_videos() ) ? 'breadcrumblist' : '';
