@@ -857,8 +857,8 @@ class MasVideos_Video extends MasVideos_Data {
 
         if ( isset( $attributes[ $attribute ] ) ) {
             $attribute_object = $attributes[ $attribute ];
-        } elseif ( isset( $attributes[ 'pa_' . $attribute ] ) ) {
-            $attribute_object = $attributes[ 'pa_' . $attribute ];
+        } elseif ( isset( $attributes[ 'video_' . $attribute ] ) ) {
+            $attribute_object = $attributes[ 'video_' . $attribute ];
         } else {
             return '';
         }

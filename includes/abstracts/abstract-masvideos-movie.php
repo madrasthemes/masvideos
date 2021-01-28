@@ -1199,8 +1199,8 @@ class MasVideos_Movie extends MasVideos_Data {
 
         if ( isset( $attributes[ $attribute ] ) ) {
             $attribute_object = $attributes[ $attribute ];
-        } elseif ( isset( $attributes[ 'pa_' . $attribute ] ) ) {
-            $attribute_object = $attributes[ 'pa_' . $attribute ];
+        } elseif ( isset( $attributes[ 'movie_' . $attribute ] ) ) {
+            $attribute_object = $attributes[ 'movie_' . $attribute ];
         } else {
             return '';
         }

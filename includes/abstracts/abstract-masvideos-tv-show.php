@@ -986,8 +986,8 @@ class MasVideos_TV_Show extends MasVideos_Data {
 
         if ( isset( $attributes[ $attribute ] ) ) {
             $attribute_object = $attributes[ $attribute ];
-        } elseif ( isset( $attributes[ 'pa_' . $attribute ] ) ) {
-            $attribute_object = $attributes[ 'pa_' . $attribute ];
+        } elseif ( isset( $attributes[ 'tv_show_' . $attribute ] ) ) {
+            $attribute_object = $attributes[ 'tv_show_' . $attribute ];
         } else {
             return '';
         }
