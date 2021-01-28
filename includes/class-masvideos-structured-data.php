@@ -190,7 +190,7 @@ class MasVideos_Structured_Data {
 			'name' 			=> $episode->get_name(),
 			'description'	=> wpautop( do_shortcode( $episode->get_short_description() ? $episode->get_short_description() : $episode->get_description() ) ),
 			'thumbnailUrl'	=> array( wp_get_attachment_url( $episode->get_image_id() ) ),
-			'uploadDate'	=> $episode->get_date_created()
+			'uploadDate'	=> $episode->get_date_created()->date( 'c' ),
 		);
 
 		if( ! empty( $episode->get_episode_run_time() ) ) {
@@ -235,7 +235,7 @@ class MasVideos_Structured_Data {
             'name'          => $tv_show->get_name(),
             'description'   => wpautop( do_shortcode( $tv_show->get_short_description() ? $tv_show->get_short_description() : $tv_show->get_description() ) ),
             'thumbnailUrl'  => array( wp_get_attachment_url( $tv_show->get_image_id() ) ),
-            'uploadDate'    => $tv_show->get_date_created()
+            'uploadDate'    => $tv_show->get_date_created()->date( 'c' ),
         );
 
         $this->set_data( apply_filters( 'masvideos_structured_data_tv_show', $markup, $tv_show ) );
@@ -263,7 +263,7 @@ class MasVideos_Structured_Data {
 			'name' 			=> $movie->get_name(),
 			'description'	=> wpautop( do_shortcode( $movie->get_short_description() ? $movie->get_short_description() : $movie->get_description() ) ),
 			'thumbnailUrl'	=> array( wp_get_attachment_url( $movie->get_image_id() ) ),
-			'uploadDate'	=> $movie->get_date_created()
+			'uploadDate'	=> $movie->get_date_created()->date( 'c' ),
 		);
 
 		if( ! empty( $movie->get_movie_run_time() ) ) {
@@ -308,7 +308,7 @@ class MasVideos_Structured_Data {
             'name'          => $video->get_name(),
             'description'   => wpautop( do_shortcode( $video->get_short_description() ? $video->get_short_description() : $video->get_description() ) ),
             'thumbnailUrl'  => array( wp_get_attachment_url( $video->get_image_id() ) ),
-            'uploadDate'    => $video->get_date_created()
+            'uploadDate'    => $video->get_date_created()->date( 'c' ),
         );
 
         $video_choice = $video->get_video_choice();
