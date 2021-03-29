@@ -1,10 +1,10 @@
 === MAS Videos ===
-Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood
+Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood, nilofer07
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 5.6
-Requires PHP: 5.6
-Stable tag: 1.2.5
+Tested up to: 5.7
+Requires PHP: 5.7
+Stable tag: 1.2.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -30,7 +30,7 @@ MAS Videos is free and has many advanced features to suit your needs.
 
 = Minimum Requirements =
 
-* PHP version 5.6 or greater (PHP 7.0 or greater is recommended)
+* PHP version 5.7 or greater (PHP 7.0 or greater is recommended)
 
 = Automatic installation =
 
@@ -83,6 +83,9 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.2.6 - 2020-03-29 =
+* Tested upto PHP version 5.7
 
 = 1.2.5 - 2020-01-29 =
 * Tweak – Attribute functions updated
