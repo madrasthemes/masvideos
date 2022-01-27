@@ -1377,7 +1377,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_cast_crew_tabs' ) ) {
         $tabs = apply_filters( 'masvideos_template_single_tv_show_cast_crew_tabs', $tabs );
 
         if( ! empty( $tabs ) ) {
-            ?><h2 class="crew-casts-title"><?php echo apply_filters( 'masvideos_template_single_tv_show_cast_crew_section_title', esc_html__( 'Crew & Casts', 'masvideos' ) ); ?></h2><?php
+            ?><h2 class="crew-casts-title"><?php echo apply_filters( 'masvideos_template_single_tv_show_cast_crew_section_title', esc_html__( 'Cast & Crew', 'masvideos' ) ); ?></h2><?php
             masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'tv-show-cast-crew-tabs' ) );
         }
     }

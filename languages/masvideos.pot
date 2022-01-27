@@ -4594,7 +4594,7 @@ msgstr ""
 
 #: includes/masvideos-movie-template-functions.php:1356
 #: includes/masvideos-tv-show-template-functions.php:1380
-msgid "Crew & Casts"
+msgid "Cast & Crew"
 msgstr ""
 
 #: includes/masvideos-movie-template-functions.php:1424
