@@ -4,7 +4,7 @@ Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 5.7
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,11 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+
+= 1.2.7 - 2022-01-31 =
+* Corrected text issues
+* Tested upto 5.9
 
 = 1.2.6 - 2020-03-29 =
 * Tested upto PHP version 5.7
