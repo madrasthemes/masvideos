@@ -2,7 +2,7 @@
 Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood, nilofer07
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.9
 Requires PHP: 5.7
 Stable tag: 1.2.7
 License: GPLv3
