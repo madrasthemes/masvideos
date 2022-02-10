@@ -33,7 +33,7 @@
     "grunt-sass": "^3.0.2",
     "grunt-stylelint": "^0.10.1",
     "grunt-wp-i18n": "^1.0.3",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "stylelint": "^9.10.1"
   },
   "engines": {
