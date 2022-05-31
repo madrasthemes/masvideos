@@ -2,8 +2,8 @@
 Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood, nilofer07
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 5.9
-Requires PHP: 5.7
+Tested up to: 6.0
+Requires PHP: 7.4
 Stable tag: 1.2.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
