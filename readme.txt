@@ -2,9 +2,9 @@
 Contributors: madrasthemes, farookibrahim, yousufansa, akther80, jmabbas, ibndawood, nilofer07
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.2
 Requires PHP: 7.4
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -84,6 +84,9 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Changelog ==
 
+= 1.2.8 - 2023-04-01 =
+* Fix – Editor issues
+* Tested upto 6.2
 
 = 1.2.7 - 2022-01-31 =
 * Corrected text issues
