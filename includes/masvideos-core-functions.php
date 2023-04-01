@@ -631,7 +631,7 @@ function masvideos_get_term_ids( $post_id, $taxonomy ) {
     return ( empty( $terms ) || is_wp_error( $terms ) ) ? array() : wp_list_pluck( $terms, 'term_id' );
 }
 
-function masvideos_array_get_adjascent_key( $key, $hash = array(), $increment ) {
+function masvideos_array_get_adjascent_key( $key, $hash = array(), $increment = 0 ) {
     $keys = array_keys( $hash );    
     $found_index = array_search( $key, $keys );
     if ( $found_index === false ) {

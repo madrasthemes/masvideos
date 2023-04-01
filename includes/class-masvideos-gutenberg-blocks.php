@@ -155,7 +155,7 @@ class MasVideos_Gutenberg_Blocks {
                 register_block_type( 'masvideos/' . $block, $args );
             }
 
-            add_filter( 'block_categories', array( __CLASS__, 'block_categories' ), 10, 2 );
+            add_filter( 'block_categories_all', array( __CLASS__, 'block_categories' ), 10, 2 );
         }
     }
 

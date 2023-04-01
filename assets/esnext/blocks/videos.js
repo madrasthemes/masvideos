@@ -2,9 +2,10 @@ import { ShortcodeAtts } from '../components/ShortcodeAtts';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { InspectorControls } = wp.editor;
+const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { ServerSideRender, Disabled, PanelBody } = wp.components;
+const { Disabled, PanelBody } = wp.components;
+const { serverSideRender: ServerSideRender } = wp;
 
 registerBlockType( 'masvideos/videos', {
     title: __('Videos Block', 'masvideos'),
