@@ -245,6 +245,7 @@ class MasVideos_Attribute implements ArrayAccess {
      * @param string $offset Offset.
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet( $offset ) {
         switch ( $offset ) {
             case 'is_visible':
@@ -268,6 +269,7 @@ class MasVideos_Attribute implements ArrayAccess {
      * @param string $offset Offset.
      * @param mixed  $value  Value.
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet( $offset, $value ) {
         switch ( $offset ) {
             case 'is_visible':
@@ -289,6 +291,7 @@ class MasVideos_Attribute implements ArrayAccess {
      *
      * @param string $offset Offset.
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset( $offset ) {}
 
     /**
@@ -297,6 +300,7 @@ class MasVideos_Attribute implements ArrayAccess {
      * @param string $offset Offset.
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists( $offset ) {
         return in_array( $offset, array_merge( array( 'is_visible', 'is_taxonomy', 'value' ), array_keys( $this->data ) ), true );
     }
