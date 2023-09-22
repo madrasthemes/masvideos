@@ -58,5 +58,6 @@ uasort( $tabs, 'masvideos_sort_priority_callback' );
                 ?>
             </div>
         <?php endforeach; ?>
+        <?php do_action('masvideos_after_suggested_episodes'); ?>
     </div>
 </div>
