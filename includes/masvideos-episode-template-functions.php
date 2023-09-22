@@ -868,6 +868,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_info_body_close' ) ) 
      */
     function masvideos_template_single_episode_info_body_close() {
         ?></div><?php
+        do_action('after_masvideos_template_single_episode_info_body_close');
     }
 }
 
