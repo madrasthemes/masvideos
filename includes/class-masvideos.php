@@ -132,6 +132,13 @@ if ( ! class_exists( 'MasVideos' ) ) {
         public $movie_playlist_factory = null;
 
         /**
+         * 
+         * Structured data instance.
+         */
+
+         public $structured_data;
+
+        /**
          * Main MasVideos Instance.
          *
          * Ensures only one instance of MasVideos is loaded or can be loaded.

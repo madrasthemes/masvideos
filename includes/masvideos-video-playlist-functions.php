@@ -110,7 +110,7 @@ function masvideos_delete_video_playlist_transients( $post_id = 0 ) {
  * @param  array $args Playlist arguments.
  * @return int|WP_Error
  */
-function masvideos_update_video_playlist( $id = 0, $args ) {
+function masvideos_update_video_playlist( $args, $id = 0) {
     $video_playlist = masvideos_get_video_playlist( $id );
 
     if ( ! $video_playlist ) {
