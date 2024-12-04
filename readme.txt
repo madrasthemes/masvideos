@@ -4,7 +4,7 @@ Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.2.9
+Stable tag: 1.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -84,9 +84,13 @@ All of our online documentation can be found on [our documentation site](https:/
 
 == Changelog ==
 
+= 1.3.0 - 2024-12-04 =
+* Compatible with php 8.x for MAS Videos and MAS Videos
+
 = 1.2.9 - 2024-09-14 =
 * Feature - WordPress 6.6 compatible
 * Fix - Add attributes to class methods
+
 
 = 1.2.8 - 2023-04-01 =
 * Fix – Editor issues
