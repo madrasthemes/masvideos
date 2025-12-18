@@ -13,149 +13,98 @@ class MasVideos_TMDB_Configuration {
     // Class Variables
     //------------------------------------------------------------------------------
 
-    private $apikey = '';
-    private $lang = 'en';
+    private $apikey   = '';
+    private $lang     = 'en';
     private $timezone = 'Europe/London';
-    private $adult = false;
-    private $debug = false;
-    private $appender;
+    private $adult    = false;
+    private $debug    = false;
+    private $appender = array();
 
     //------------------------------------------------------------------------------
     // Constructor
     //------------------------------------------------------------------------------
 
     /**
-     *  Construct Class
+     * Construct Class
      *
-     *  @param array $cnf An array with the configuration data
+     * @param array $cnf Configuration array
      */
-    public function __construct( $cnf ) {
+    public function __construct( $cnf = array() ) {
 
-        $this->setAPIKey( $cnf['apikey'] );
-        $this->setLang( $cnf['lang'] );
-        $this->setTimeZone( 'timezone' );
-        $this->setAdult( $cnf['adult'] );
-        $this->setDebug( $cnf['debug'] );
+        $cnf = is_array( $cnf ) ? $cnf : array();
 
-        foreach( $cnf['appender'] as $type => $appender ) {
-            $this->setAppender( $appender, $type );
+        $this->setAPIKey( $cnf['apikey']   ?? '' );
+        $this->setLang(   $cnf['lang']     ?? 'en' );
+        $this->setTimeZone( $cnf['timezone'] ?? 'Europe/London' );
+        $this->setAdult(  $cnf['adult']    ?? false );
+        $this->setDebug(  $cnf['debug']    ?? false );
+
+        if ( ! empty( $cnf['appender'] ) && is_array( $cnf['appender'] ) ) {
+            foreach ( $cnf['appender'] as $type => $appender ) {
+                if ( is_array( $appender ) ) {
+                    $this->setAppender( $appender, $type );
+                }
+            }
         }
     }
 
     //------------------------------------------------------------------------------
-    // Set Variables
+    // Setters
     //------------------------------------------------------------------------------
 
-    /**
-     *  Set the API Key
-     *
-     *  @param string $apikey
-     */
     public function setAPIKey( $apikey ) {
-        $this->apikey = $apikey;
+        $this->apikey = (string) $apikey;
     }
 
-    /**
-     *  Set the language code
-     *
-     *  @param string $lang
-     */
     public function setLang( $lang ) {
-        $this->lang = $lang;
+        $this->lang = (string) $lang;
     }
 
-    /**
-     *  Set the timezone
-     *
-     *  @param string $timezone
-     */
     public function setTimeZone( $timezone ) {
-        $this->timezone = $timezone;
+        $this->timezone = (string) $timezone;
     }
 
-    /**
-     *  Set the adult flag
-     *
-     *  @param boolean $adult
-     */
     public function setAdult( $adult ) {
-        $this->adult = $adult;
+        $this->adult = (bool) $adult;
     }
 
-    /**
-     *  Set the debug flag
-     *
-     *  @param boolean $debug
-     */
     public function setDebug( $debug ) {
-        $this->debug = $debug;
+        $this->debug = (bool) $debug;
     }
 
-    /**
-     *  Set an appender for a special type
-     *
-     *  @param array $appender
-     *  @param string $type
-     */
     public function setAppender( $appender, $type ) {
-        $this->appender[$type] = $appender;
+        if ( ! is_array( $this->appender ) ) {
+            $this->appender = array();
+        }
+
+        $this->appender[ $type ] = $appender;
     }
 
     //------------------------------------------------------------------------------
-    // Get Variables
+    // Getters
     //------------------------------------------------------------------------------
 
-    /**
-     *  Get the API Key
-     *
-     *  @return string
-     */
     public function getAPIKey() {
         return $this->apikey;
     }
 
-    /**
-     *  Get the language code
-     *
-     *  @return string
-     */
     public function getLang() {
         return $this->lang;
     }
 
-    /**
-     *  Get the timezone
-     *
-     *  @return string
-     */
     public function getTimeZone() {
         return $this->timezone;
     }
 
-    /**
-     *  Get the adult string
-     *
-     *  @return string
-     */
     public function getAdult() {
-        return ($this->adult) ? 'true' : 'false';
+        return $this->adult ? 'true' : 'false';
     }
 
-    /**
-     *  Get the debug flag
-     *
-     *  @return boolean
-     */
     public function getDebug() {
         return $this->debug;
     }
 
-    /**
-     *  Get the appender array for a type
-     *
-     *  @return array
-     */
     public function getAppender( $type ) {
-        return $this->appender[$type];
+        return $this->appender[ $type ] ?? array();
     }
 }

@@ -70,7 +70,16 @@ class MasVideos_Movie_CSV_Importer extends MasVideos_Movie_Importer {
 		$handle = fopen( $this->file, 'r' ); // @codingStandardsIgnoreLine.
 
 		if ( false !== $handle ) {
-			$this->raw_keys = version_compare( PHP_VERSION, '5.3', '>=' ) ? array_map( 'trim', fgetcsv( $handle, 0, $this->params['delimiter'], $this->params['enclosure'], $this->params['escape'] ) ) : array_map( 'trim', fgetcsv( $handle, 0, $this->params['delimiter'], $this->params['enclosure'] ) ); // @codingStandardsIgnoreLine
+			$raw_keys = version_compare( PHP_VERSION, '5.3', '>=' )
+				? fgetcsv( $handle, 0, $this->params['delimiter'], $this->params['enclosure'], $this->params['escape'] )
+				: fgetcsv( $handle, 0, $this->params['delimiter'], $this->params['enclosure'] );
+
+			$this->raw_keys = array_map(
+				static function ( $value ) {
+					return is_string( $value ) ? trim( $value ) : '';
+				},
+				is_array( $raw_keys ) ? $raw_keys : array()
+			);
 
 			// Remove BOM signature from the first item.
 			if ( isset( $this->raw_keys[0] ) ) {
