@@ -4,7 +4,7 @@ Tags: videos, movies, tv shows, tmdb
 Requires at least: 6.4
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,9 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.3.4 - 2026-02-09 =
+* Fix : Issues in readme.txt file
 
 = 1.3.3 - 2026-02-09 =
 * Feature : Missing access control for Playlist
