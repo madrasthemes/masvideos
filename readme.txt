@@ -1,6 +1,6 @@
 === MAS Videos ===
 Contributors: madrasthemes
-Tags: video, videos, movie, movies, television series, tv show, tv
+Tags: videos, movies, tv shows, tmdb
 Requires at least: 6.4
 Tested up to: 6.9.1
 Requires PHP: 7.4
