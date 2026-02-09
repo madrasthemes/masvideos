@@ -1502,9 +1502,38 @@ class MasVideos_AJAX {
     public static function toggle_tv_show_playlist() {
         ob_start();
 
+        if ( ! is_user_logged_in() ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You must be logged in to modify playlists.', 'masvideos' ),
+                )
+            );
+        }
+
         $playlist_id        = absint( $_POST['playlist_id'] );
         $tv_show_id         = absint( $_POST['tv_show_id'] );
         $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
+
+        if ( ! $playlist_id ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'Invalid playlist.', 'masvideos' ),
+                )
+            );
+        }
+
+        $playlist_author_id = (int) get_post_field( 'post_author', $playlist_id );
+
+        if ( ! $playlist_author_id || get_current_user_id() !== $playlist_author_id ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You are not allowed to modify this playlist.', 'masvideos' ),
+                )
+            );
+        }
 
         if( $delete ) {
             $tv_show_playlist = masvideos_remove_tv_show_from_playlist( $playlist_id, $tv_show_id );
@@ -1532,9 +1561,38 @@ class MasVideos_AJAX {
     public static function toggle_video_playlist() {
         ob_start();
 
+        if ( ! is_user_logged_in() ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You must be logged in to modify playlists.', 'masvideos' ),
+                )
+            );
+        }
+
         $playlist_id        = absint( $_POST['playlist_id'] );
         $video_id           = absint( $_POST['video_id'] );
         $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
+
+        if ( ! $playlist_id ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'Invalid playlist.', 'masvideos' ),
+                )
+            );
+        }
+
+        $playlist_author_id = (int) get_post_field( 'post_author', $playlist_id );
+
+        if ( ! $playlist_author_id || get_current_user_id() !== $playlist_author_id ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You are not allowed to modify this playlist.', 'masvideos' ),
+                )
+            );
+        }
 
         if( $delete ) {
             $video_playlist = masvideos_remove_video_from_playlist( $playlist_id, $video_id );
@@ -1562,9 +1620,38 @@ class MasVideos_AJAX {
     public static function toggle_movie_playlist() {
         ob_start();
 
+        if ( ! is_user_logged_in() ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You must be logged in to modify playlists.', 'masvideos' ),
+                )
+            );
+        }
+
         $playlist_id        = absint( $_POST['playlist_id'] );
         $movie_id           = absint( $_POST['movie_id'] );
         $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
+
+        if ( ! $playlist_id ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'Invalid playlist.', 'masvideos' ),
+                )
+            );
+        }
+
+        $playlist_author_id = (int) get_post_field( 'post_author', $playlist_id );
+
+        if ( ! $playlist_author_id || get_current_user_id() !== $playlist_author_id ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You are not allowed to modify this playlist.', 'masvideos' ),
+                )
+            );
+        }
 
         if( $delete ) {
             $movie_playlist = masvideos_remove_movie_from_playlist( $playlist_id, $movie_id );
