@@ -230,6 +230,36 @@ class MasVideos_TMDB_Importer_Controller {
             return is_array( $data ) ? $data : array();
         };
 
+        /**
+         * Helper: push TV show + episodes into CSV buffers.
+         */
+        $append_tv_show_rows = function ( $tv_data, array &$episode_keys ) {
+            if ( ! is_array( $tv_data ) ) {
+                return;
+            }
+
+            $episodes = array();
+            if ( ! empty( $tv_data['episodes'] ) && is_array( $tv_data['episodes'] ) ) {
+                $episodes = $tv_data['episodes'];
+                unset( $tv_data['episodes'] );
+            }
+
+            $this->results_csv_data[] = $tv_data;
+
+            foreach ( $episodes as $episode ) {
+                if ( is_array( $episode ) ) {
+                    $this->results_csv_data[] = $episode;
+                    if ( count( $episode_keys ) < count( $episode ) ) {
+                        $episode_keys = array_keys( $episode );
+                    }
+                }
+            }
+
+            if ( count( $this->results_csv_data_key ) < count( $tv_data ) ) {
+                $this->results_csv_data_key = array_keys( $tv_data );
+            }
+        };
+
         switch ( $type ) {
 
             /* ================= MOVIES ================= */
@@ -322,20 +352,73 @@ class MasVideos_TMDB_Importer_Controller {
 
             /* ================= TV SHOWS ================= */
 
+            case 'search-tv-show':
+
+                $this->type    = 'tv_show';
+                $this->results = $normalize_results( $tmdb->searchTVShow( $keyword ) );
+
+                $episode_keys = array();
+
+                foreach ( $this->results as $tv_show ) {
+                    if ( empty( $tv_show['id'] ) ) {
+                        continue;
+                    }
+
+                    $tv_data = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                    $append_tv_show_rows( $tv_data, $episode_keys );
+                }
+
+                $this->results_csv_data_key = array_unique(
+                    array_merge( $this->results_csv_data_key, $episode_keys )
+                );
+
+                break;
+
+            case 'tv-show-by-id':
+
+                $this->type = 'tv_show';
+
+                if ( $tmdb_id ) {
+                    $episode_keys = array();
+                    $tv_data      = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tmdb_id ) );
+                    $append_tv_show_rows( $tv_data, $episode_keys );
+
+                    $this->results_csv_data_key = array_unique(
+                        array_merge( $this->results_csv_data_key, $episode_keys )
+                    );
+                }
+                break;
+
+            case 'latest-tv-show':
+
+                $this->type  = 'tv_show';
+                $tv_show     = $tmdb->getLatestTVShow();
+                $episode_keys = array();
+
+                if ( is_array( $tv_show ) && ! empty( $tv_show['id'] ) ) {
+                    $tv_data = $this->handle_tv_show_data( $tmdb, $tmdb->getTVShow( $tv_show['id'] ) );
+                    $append_tv_show_rows( $tv_data, $episode_keys );
+
+                    $this->results_csv_data_key = array_unique(
+                        array_merge( $this->results_csv_data_key, $episode_keys )
+                    );
+                }
+                break;
+
             case 'on-air-tv-shows':
             case 'on-air-today-tv-shows':
             case 'popular-tv-shows':
-            case 'top-rated-tv-showss':
+            case 'top-rated-tv-shows':
             case 'discover-tv-shows':
 
                 $this->type = 'tv_show';
 
                 $method_map = array(
-                    'on-air-tv-shows'        => 'getOnTheAirTVShows',
-                    'on-air-today-tv-shows' => 'getAiringTodayTVShows',
-                    'popular-tv-shows'      => 'getAiringTodayTVShows',
-                    'top-rated-tv-showss'   => 'getTopRatedTVShows',
-                    'discover-tv-shows'     => 'getDiscoverTVShows',
+                    'on-air-tv-shows'         => 'getOnTheAirTVShows',
+                    'on-air-today-tv-shows'   => 'getAiringTodayTVShows',
+                    'popular-tv-shows'        => 'getPopularTVShows',
+                    'top-rated-tv-shows'      => 'getTopRatedTVShows',
+                    'discover-tv-shows'       => 'getDiscoverTVShows',
                 );
 
                 $method        = $method_map[ $type ];
