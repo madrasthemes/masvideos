@@ -2,9 +2,9 @@
 Contributors: madrasthemes
 Tags: video, videos, movie, movies, television series, tv show, tv
 Requires at least: 6.4
-Tested up to: 6.6
+Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,13 @@ All of our online documentation can be found on [our documentation site](https:/
 15. Episode data panel.
 
 == Changelog ==
+
+= 1.3.3 - 2026-02-09 =
+* Feature : Missing access control for Playlist
+* Fix     : Import issues in TMDB TV shows importer
+
+= 1.3.2 - 2025-12-09 =
+* Fix : TMDB Importer PHP comparability
 
 = 1.3.1 - 2025-3-06 =
 * Fix : Playlist title update issue
