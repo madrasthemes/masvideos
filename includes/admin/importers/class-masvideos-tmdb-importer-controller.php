@@ -221,6 +221,15 @@ class MasVideos_TMDB_Importer_Controller {
             'timezone' => 'Europe/London',
             'adult'    => false,
             'debug'    => false,
+            'appender' => array(
+                'movie'      => array( 'account_states', 'alternative_titles', 'credits', 'images', 'keywords', 'release_dates', 'videos', 'translations', 'similar', 'reviews', 'lists', 'changes', 'rating' ),
+                'tvshow'     => array( 'account_states', 'alternative_titles', 'changes', 'content_rating', 'credits', 'external_ids', 'images', 'keywords', 'rating', 'similar', 'translations', 'videos' ),
+                'season'     => array( 'changes', 'account_states', 'credits', 'external_ids', 'images', 'videos' ),
+                'episode'    => array( 'changes', 'account_states', 'credits', 'external_ids', 'images', 'rating', 'videos' ),
+                'person'     => array( 'movie_credits', 'tv_credits', 'combined_credits', 'external_ids', 'images', 'tagged_images', 'changes' ),
+                'collection' => array( 'images' ),
+                'company'    => array( 'movies' ),
+            ),
         ) );
 
         /**
