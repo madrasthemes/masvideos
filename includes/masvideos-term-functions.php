@@ -126,7 +126,7 @@ function masvideos_get_episode_terms( $episode_id, $taxonomy, $args = array() ) 
 
             // Ensure slugs is valid for get_terms - slugs isn't supported.
             $args['fields'] = ( 'slugs' === $args['fields'] ) ? 'id=>slug' : $args['fields'];
-            $terms          = get_terms( $taxonomy, $args );
+            $terms          = get_terms( array_merge( wp_parse_args( $args ), array( 'taxonomy' => $taxonomy ) ) );
         }
     } else {
         $terms = _masvideos_get_cached_episode_terms( $episode_id, $taxonomy, $args );
@@ -338,7 +338,7 @@ function masvideos_get_tv_show_terms( $tv_show_id, $taxonomy, $args = array() ) 
 
             // Ensure slugs is valid for get_terms - slugs isn't supported.
             $args['fields'] = ( 'slugs' === $args['fields'] ) ? 'id=>slug' : $args['fields'];
-            $terms          = get_terms( $taxonomy, $args );
+            $terms          = get_terms( array_merge( wp_parse_args( $args ), array( 'taxonomy' => $taxonomy ) ) );
         }
     } else {
         $terms = _masvideos_get_cached_tv_show_terms( $tv_show_id, $taxonomy, $args );
@@ -580,7 +580,7 @@ function masvideos_get_movie_terms( $movie_id, $taxonomy, $args = array() ) {
 
 			// Ensure slugs is valid for get_terms - slugs isn't supported.
 			$args['fields'] = ( 'slugs' === $args['fields'] ) ? 'id=>slug' : $args['fields'];
-			$terms          = get_terms( $taxonomy, $args );
+			$terms          = get_terms( array_merge( wp_parse_args( $args ), array( 'taxonomy' => $taxonomy ) ) );
 		}
 	} else {
 		$terms = _masvideos_get_cached_movie_terms( $movie_id, $taxonomy, $args );
@@ -792,7 +792,7 @@ function masvideos_get_person_terms( $person_id, $taxonomy, $args = array() ) {
 
             // Ensure slugs is valid for get_terms - slugs isn't supported.
             $args['fields'] = ( 'slugs' === $args['fields'] ) ? 'id=>slug' : $args['fields'];
-            $terms          = get_terms( $taxonomy, $args );
+            $terms          = get_terms( array_merge( wp_parse_args( $args ), array( 'taxonomy' => $taxonomy ) ) );
         }
     } else {
         $terms = _masvideos_get_cached_person_terms( $person_id, $taxonomy, $args );
@@ -994,7 +994,7 @@ function masvideos_get_video_terms( $video_id, $taxonomy, $args = array() ) {
 
             // Ensure slugs is valid for get_terms - slugs isn't supported.
             $args['fields'] = ( 'slugs' === $args['fields'] ) ? 'id=>slug' : $args['fields'];
-            $terms          = get_terms( $taxonomy, $args );
+            $terms          = get_terms( array_merge( wp_parse_args( $args ), array( 'taxonomy' => $taxonomy ) ) );
         }
     } else {
         $terms = _masvideos_get_cached_video_terms( $video_id, $taxonomy, $args );

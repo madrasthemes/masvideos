@@ -155,8 +155,8 @@ class MasVideos_Meta_Box_Movie_Data {
                 }
 
                 $person = array(
-                    'id'            => $person_ids[ $i ],
-                    'character'     => isset( $person_characters[ $i ] ) ? $person_characters[ $i ] : '',
+                    'id'            => absint( $person_ids[ $i ] ),
+                    'character'     => isset( $person_characters[ $i ] ) ? masvideos_clean( $person_characters[ $i ] ) : '',
                     'position'      => isset( $person_position[ $i ] ) ? absint( $person_position[ $i ] ) : 0
                 );
 
@@ -193,9 +193,9 @@ class MasVideos_Meta_Box_Movie_Data {
                 }
 
                 $person = array(
-                    'id'            => $person_ids[ $i ],
-                    'category'      => isset( $person_categories[ $i ] ) ? $person_categories[ $i ] : '',
-                    'job'           => isset( $person_jobs[ $i ] ) ? $person_jobs[ $i ] : '',
+                    'id'            => absint( $person_ids[ $i ] ),
+                    'category'      => isset( $person_categories[ $i ] ) ? masvideos_clean( $person_categories[ $i ] ) : '',
+                    'job'           => isset( $person_jobs[ $i ] ) ? masvideos_clean( $person_jobs[ $i ] ) : '',
                     'position'      => isset( $person_position[ $i ] ) ? absint( $person_position[ $i ] ) : 0
                 );
 

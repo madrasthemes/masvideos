@@ -52,7 +52,7 @@ function masvideos_get_tv_shows( $args ) {
 function masvideos_get_tv_show( $the_tv_show = false ) {
     if ( ! did_action( 'masvideos_init' ) ) {
         /* translators: 1: masvideos_get_tv_show 2: masvideos_init */
-        _doing_it_wrong( __FUNCTION__, sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_tv_show', 'masvideos_init' ), '1.0.0' );
+        _doing_it_wrong( __FUNCTION__, esc_html( sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_tv_show', 'masvideos_init' ) ), '1.0.0' );
         return false;
     }
     return MasVideos()->tv_show_factory->get_tv_show( $the_tv_show );

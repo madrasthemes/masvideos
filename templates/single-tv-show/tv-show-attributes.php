@@ -29,7 +29,7 @@ if( empty( $attributes ) ) {
 
     <?php foreach ( $attributes as $attribute ) : ?>
         <tr>
-            <th><?php echo masvideos_tv_show_attribute_label( $attribute->get_name() ); ?></th>
+            <th><?php echo esc_html( masvideos_tv_show_attribute_label( $attribute->get_name() ) ); ?></th>
             <td><?php
                 $values = array();
 
@@ -54,7 +54,7 @@ if( empty( $attributes ) ) {
                     }
                 }
 
-                echo apply_filters( 'masvideos_tv_show_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );
+                echo apply_filters( 'masvideos_tv_show_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Attribute values escaped at source (esc_html/esc_url/make_clickable); filtered output of an already-escaped list.
             ?></td>
         </tr>
     <?php endforeach; ?>

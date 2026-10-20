@@ -128,6 +128,355 @@ function masvideos_sanitize_textarea_iframe( $var ) {
 }
 
 /**
+ * Hostnames allowed as <iframe> embed sources for user-supplied video metadata.
+ *
+ * Embeds whose iframe `src` host is not in this list are removed when rendered. This
+ * intentionally restricts the formerly unlimited "Embed Video" field to known video
+ * providers; a site can extend the list via the filter.
+ *
+ * @since 1.3.5
+ * @return string[] Lower-cased hostnames.
+ */
+function masvideos_get_allowed_video_embed_providers() {
+    // Map of EXACT iframe host => list of allowed path prefixes (empty list = any path on that host).
+    // These are dedicated player endpoints only, not providers' general web hosts.
+    $providers = array(
+        'www.youtube.com'          => array( '/embed/' ),
+        'youtube.com'              => array( '/embed/' ),
+        'www.youtube-nocookie.com' => array( '/embed/' ),
+        'youtube-nocookie.com'     => array( '/embed/' ),
+        'player.vimeo.com'         => array( '/video/' ),
+        'www.dailymotion.com'      => array( '/embed/' ),
+        'geo.dailymotion.com'      => array( '/player' ),
+        'player.twitch.tv'         => array( '/' ),
+        'clips.twitch.tv'          => array( '/embed' ),
+        'w.soundcloud.com'         => array( '/player' ),
+        'archive.org'              => array( '/embed/' ),
+    );
+
+    /**
+     * Filter the video embed iframe providers. Keys are EXACT hostnames; values are arrays of
+     * allowed URL path prefixes (an empty array allows any path on that host). This is the
+     * server-side extension point for site owners who need additional trusted providers;
+     * untrusted content cannot reach it.
+     *
+     * @since 1.3.5
+     * @param array $providers host => string[] path prefixes.
+     */
+    $providers = (array) apply_filters( 'masvideos_allowed_video_embed_providers', $providers );
+
+    // Normalise host keys to lower-case.
+    $normalised = array();
+    foreach ( $providers as $host => $prefixes ) {
+        $normalised[ strtolower( (string) $host ) ] = (array) $prefixes;
+    }
+
+    return $normalised;
+}
+
+/**
+ * Back-compat accessor: the list of allowed embed hostnames (derived from the provider map).
+ *
+ * @since 1.3.5
+ * @return string[] Lower-cased hostnames.
+ */
+function masvideos_get_allowed_video_embed_hosts() {
+    return array_keys( masvideos_get_allowed_video_embed_providers() );
+}
+
+/**
+ * Validate a single iframe `src` URL against the provider allowlist and URL-safety rules.
+ *
+ * Requires: https scheme; no userinfo (user:pass@); default port only; an EXACT host match in
+ * the provider map (no subdomain/suffix matching); and a path matching one of that host's
+ * allowed prefixes. Malformed URLs are rejected.
+ *
+ * @since 1.3.5
+ * @param string $src Iframe source URL.
+ * @return bool
+ */
+function masvideos_is_allowed_embed_iframe_src( $src ) {
+    $src = (string) $src;
+
+    if ( '' === $src ) {
+        return false;
+    }
+
+    $parts = wp_parse_url( $src );
+
+    if ( ! is_array( $parts ) || empty( $parts['scheme'] ) || empty( $parts['host'] ) ) {
+        return false;
+    }
+
+    if ( 'https' !== strtolower( $parts['scheme'] ) ) {
+        return false;
+    }
+
+    // Reject embedded credentials.
+    if ( ! empty( $parts['user'] ) || ! empty( $parts['pass'] ) ) {
+        return false;
+    }
+
+    // Reject non-default ports.
+    if ( isset( $parts['port'] ) && 443 !== (int) $parts['port'] ) {
+        return false;
+    }
+
+    $host      = strtolower( $parts['host'] );
+    $path      = ( isset( $parts['path'] ) && '' !== $parts['path'] ) ? $parts['path'] : '/';
+    $providers = masvideos_get_allowed_video_embed_providers();
+
+    if ( ! isset( $providers[ $host ] ) ) {
+        return false;
+    }
+
+    $prefixes = $providers[ $host ];
+
+    if ( empty( $prefixes ) ) {
+        return true;
+    }
+
+    foreach ( $prefixes as $prefix ) {
+        if ( 0 === strpos( $path, (string) $prefix ) ) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Remove <iframe> elements whose `src` is not an allowed, well-formed provider player URL.
+ *
+ * @since 1.3.5
+ * @param string $html Already-KSES'd HTML.
+ * @return string
+ */
+function masvideos_restrict_iframe_src_hosts( $html ) {
+    $html = (string) $html;
+
+    if ( '' === trim( $html ) || false === stripos( $html, '<iframe' ) ) {
+        return $html;
+    }
+
+    if ( ! class_exists( 'DOMDocument' ) ) {
+        // Cannot verify hosts reliably; fail closed by removing all iframes.
+        $html = preg_replace( '#<iframe\b[^>]*>.*?</iframe>#is', '', $html );
+        return (string) preg_replace( '#<iframe\b[^>]*/?>#i', '', (string) $html );
+    }
+
+    $dom             = new DOMDocument();
+    $libxml_previous = libxml_use_internal_errors( true );
+    $dom->loadHTML( '<?xml encoding="utf-8"?><div data-masvideos-embed-root="1">' . $html . '</div>', LIBXML_NOERROR | LIBXML_NOWARNING );
+    libxml_clear_errors();
+    libxml_use_internal_errors( $libxml_previous );
+
+    foreach ( iterator_to_array( $dom->getElementsByTagName( 'iframe' ) ) as $iframe ) {
+        if ( ! masvideos_is_allowed_embed_iframe_src( (string) $iframe->getAttribute( 'src' ) ) && $iframe->parentNode ) {
+            $iframe->parentNode->removeChild( $iframe );
+        }
+    }
+
+    $root = $dom->getElementsByTagName( 'div' )->item( 0 );
+
+    if ( ! $root ) {
+        return '';
+    }
+
+    $out = '';
+    foreach ( $root->childNodes as $child ) {
+        $out .= $dom->saveHTML( $child );
+    }
+
+    return $out;
+}
+
+/**
+ * KSES a user-supplied video embed to a safe, script-free iframe/player policy, then enforce
+ * the iframe host allowlist. No shortcodes, blocks, scripts or event handlers survive.
+ *
+ * @since 1.3.5
+ * @param string $html Embed markup.
+ * @return string
+ */
+function masvideos_kses_video_embed( $html ) {
+    $allowed = array(
+        'iframe' => array(
+            'src'             => true,
+            'width'           => true,
+            'height'          => true,
+            'frameborder'     => true,
+            'allow'           => true,
+            'allowfullscreen' => true,
+            'title'           => true,
+            'loading'         => true,
+            'referrerpolicy'  => true,
+            'sandbox'         => true,
+            'class'           => true,
+            // NOTE: 'style' and 'name' are intentionally omitted — 'style' enables CSS-based
+            // overlay/clickjacking and 'name' enables frame-targeting, neither of which a
+            // legitimate provider embed needs.
+        ),
+        'video'  => array(
+            'src'         => true,
+            'width'       => true,
+            'height'      => true,
+            'controls'    => true,
+            'poster'      => true,
+            'preload'     => true,
+            'loop'        => true,
+            'muted'       => true,
+            'autoplay'    => true,
+            'playsinline' => true,
+            'class'       => true,
+            'style'       => true,
+        ),
+        'source' => array(
+            'src'  => true,
+            'type' => true,
+        ),
+        'a'      => array(
+            'href'   => true,
+            'target' => true,
+            'rel'    => true,
+            'class'  => true,
+            'title'  => true,
+        ),
+        'img'    => array(
+            'src'     => true,
+            'alt'     => true,
+            'width'   => true,
+            'height'  => true,
+            'class'   => true,
+            'style'   => true,
+            'loading' => true,
+        ),
+        'p'      => array( 'class' => true ),
+        'br'     => array(),
+        'span'   => array(
+            'class' => true,
+            'style' => true,
+        ),
+        'div'    => array(
+            'class' => true,
+            'style' => true,
+        ),
+    );
+
+    /**
+     * Filter the allowed HTML for user-supplied video embeds (wp_kses format).
+     *
+     * @since 1.3.5
+     * @param array $allowed Allowed tags/attributes.
+     */
+    $allowed = apply_filters( 'masvideos_video_embed_allowed_html', $allowed );
+
+    $clean = wp_kses( (string) $html, $allowed, array( 'http', 'https' ) );
+
+    return masvideos_restrict_iframe_src_hosts( $clean );
+}
+
+/**
+ * Get safe oEmbed HTML for a provider URL, with remote discovery disabled.
+ *
+ * Only WordPress's registered oEmbed providers (YouTube, Vimeo, …) are used; discovery is
+ * disabled so no HTTP request is made to an arbitrary, user-supplied URL.
+ *
+ * @since 1.3.5
+ * @param string $url URL.
+ * @return string Embed HTML, or '' when the provider is unsupported.
+ */
+function masvideos_get_safe_oembed_html( $url ) {
+    $url = esc_url_raw( (string) $url );
+
+    if ( '' === $url ) {
+        return '';
+    }
+
+    $html = wp_oembed_get( $url, array( 'discover' => false ) );
+
+    if ( ! is_string( $html ) || '' === $html ) {
+        return '';
+    }
+
+    // The provider response is still externally-controlled markup: never return it raw. Run it
+    // through the same embed sanitiser (script/handler stripping + iframe provider validation),
+    // so a malformed or malicious provider response cannot inject executable markup.
+    return masvideos_kses_video_embed( $html );
+}
+
+/**
+ * Safely render a user-supplied video source (direct file URL, embed markup, or provider URL)
+ * WITHOUT running the_content / do_shortcode / do_blocks on untrusted metadata.
+ *
+ * @since 1.3.5
+ * @param string $choice Source type; only its suffix (_file | _embed | _url) is significant.
+ * @param string $src    Stored source value.
+ * @return string Safe HTML.
+ */
+function masvideos_render_video_source( $choice, $src ) {
+    $choice = (string) $choice;
+    $src    = (string) $src;
+
+    if ( '' === trim( $src ) ) {
+        return '';
+    }
+
+    $suffix = strrchr( $choice, '_' ); // "_file" | "_embed" | "_url".
+
+    if ( '_file' === $suffix ) {
+        return wp_video_shortcode( array( 'src' => esc_url( $src ) ) );
+    }
+
+    if ( '_embed' === $suffix ) {
+        return masvideos_kses_video_embed( $src );
+    }
+
+    if ( '_url' === $suffix ) {
+        $url = esc_url_raw( trim( $src ) );
+
+        if ( '' === $url ) {
+            return '';
+        }
+
+        // Only http(s) URLs may be rendered (reject ftp/data/javascript/etc. media URLs).
+        $scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+        if ( ! in_array( $scheme, array( 'http', 'https' ), true ) ) {
+            return '';
+        }
+
+        // Prefer oEmbed for supported providers (YouTube, Vimeo, …), discovery disabled.
+        $oembed = masvideos_get_safe_oembed_html( $url );
+        if ( $oembed ) {
+            return $oembed;
+        }
+
+        // Native player for a direct media file.
+        $filetype = wp_check_filetype( strtok( $url, '?' ) );
+        if ( ! empty( $filetype['ext'] ) && in_array( $filetype['ext'], wp_get_video_extensions(), true ) ) {
+            return wp_video_shortcode( array( 'src' => esc_url( $url ) ) );
+        }
+
+        // Otherwise a safe, escaped link (no raw HTML, no shortcode execution).
+        return sprintf( '<a href="%1$s" rel="nofollow noopener noreferrer" target="_blank">%2$s</a>', esc_url( $url ), esc_html( $url ) );
+    }
+
+    return '';
+}
+
+/**
+ * Reduce user-supplied text to plain, safe text for structured data: strip shortcodes (so
+ * they are never executed) and all HTML tags.
+ *
+ * @since 1.3.5
+ * @param string $text Text.
+ * @return string
+ */
+function masvideos_safe_structured_data_text( $text ) {
+    return wp_strip_all_tags( strip_shortcodes( (string) $text ) );
+}
+
+/**
  * Sanitize a string destined to be a tooltip.
  *
  * @since  1.0.0 Tooltips are encoded with htmlspecialchars to prevent XSS. Should not be used in conjunction with esc_attr()
@@ -280,7 +629,10 @@ function masvideos_timezone_string() {
     // Last try, guess timezone string manually.
     foreach ( timezone_abbreviations_list() as $abbr ) {
         foreach ( $abbr as $city ) {
-            if ( (bool) date( 'I' ) === (bool) $city['dst'] && $city['timezone_id'] && intval( $city['offset'] ) === $utc_offset ) {
+            // WordPress forces the PHP default timezone to UTC, so date( 'I' ) and gmdate( 'I' ) are
+            // equivalent here (both report UTC's DST flag); gmdate() is used to satisfy the sniff
+            // without changing this fallback's result.
+            if ( (bool) gmdate( 'I' ) === (bool) $city['dst'] && $city['timezone_id'] && intval( $city['offset'] ) === $utc_offset ) {
                 return $city['timezone_id'];
             }
         }
@@ -511,7 +863,7 @@ function masvideos_trim_string( $string, $chars = 200, $suffix = '...' ) {
  * @return string
  */
 function masvideos_sanitize_term_text_based( $term ) {
-    return trim( wp_unslash( strip_tags( $term ) ) );
+    return trim( wp_unslash( wp_strip_all_tags( $term ) ) );
 }
 
 /**

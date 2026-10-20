@@ -122,7 +122,7 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         $post_object = get_post( $video->get_id() );
 
         if ( ! $video->get_id() || ! $post_object || 'video' !== $post_object->post_type ) {
-            throw new Exception( __( 'Invalid video.', 'masvideos' ) );
+            throw new Exception( esc_html__( 'Invalid video.', 'masvideos' ) );
         }
 
         $video->set_props(
@@ -678,7 +678,11 @@ class MasVideos_Video_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $related_video_query = (array) apply_filters( 'masvideos_video_related_posts_query', $this->get_related_videos_query( $cats_array, $tags_array, $exclude_ids, $limit + 10 ), $video_id, $args );
 
-        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery, WordPress.WP.PreparedSQL.NotPrepared
+        // $related_video_query holds SQL fragments built by get_related_videos_query(): every
+        // interpolated value is an absint()-cast term ID, exclude ID or LIMIT, and all identifiers are
+        // trusted $wpdb table names. The fragments are then filtered and imploded, so the statement has
+        // no bindable placeholders and $wpdb->prepare() cannot be applied to the assembled string.
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared -- Pre-assembled, absint()-escaped fragment query; see note above.
         return $wpdb->get_col( implode( ' ', $related_video_query ) );
     }
 

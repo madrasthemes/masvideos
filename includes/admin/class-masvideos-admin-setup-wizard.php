@@ -30,15 +30,24 @@ class MasVideos_Admin_Setup_Wizard {
      * Show the setup wizard.
      */
     public function setup_wizard() {
-        if ( isset( $_GET['masvideos-setup'] ) && $_GET['masvideos-setup'] ) { // WPCS: CSRF ok, input var ok.
+        if ( isset( $_GET['masvideos-setup'] ) && $_GET['masvideos-setup'] ) {
+            // This entry point creates pages and writes options, so it must be protected against
+            // CSRF and re-checked for capability (MV-15). Both the nonce and the capability are
+            // required before any state change; a GET without a valid nonce does nothing.
+            if ( ! current_user_can( 'manage_masvideos' ) ) {
+                return;
+            }
+
+            check_admin_referer( 'masvideos-setup' );
+
             // We've made it! Don't prompt the user to run the wizard again.
             MasVideos_Admin_Notices::remove_notice( 'install' );
 
             // Install Pages
             MasVideos_Install::create_pages();
-            
+
             // Redirect to dashboard
-            wp_redirect( esc_url_raw( admin_url() ) );
+            wp_safe_redirect( esc_url_raw( admin_url() ) );
             exit;
         }
     }

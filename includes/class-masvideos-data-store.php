@@ -80,19 +80,19 @@ class MasVideos_Data_Store {
             $store = apply_filters( 'masvideos_' . $object_type . '_data_store', $this->stores[ $object_type ] );
             if ( is_object( $store ) ) {
                 if ( ! $store instanceof WC_Object_Data_Store_Interface ) {
-                    throw new Exception( __( 'Invalid data store.', 'masvideos' ) );
+                    throw new Exception( esc_html__( 'Invalid data store.', 'masvideos' ) );
                 }
                 $this->current_class_name = get_class( $store );
                 $this->instance           = $store;
             } else {
                 if ( ! class_exists( $store ) ) {
-                    throw new Exception( __( 'Invalid data store.', 'masvideos' ) );
+                    throw new Exception( esc_html__( 'Invalid data store.', 'masvideos' ) );
                 }
                 $this->current_class_name = $store;
                 $this->instance           = new $store();
             }
         } else {
-            throw new Exception( __( 'Invalid data store.', 'masvideos' ) );
+            throw new Exception( esc_html__( 'Invalid data store.', 'masvideos' ) );
         }
     }
 

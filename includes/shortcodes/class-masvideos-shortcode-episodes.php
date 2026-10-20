@@ -483,7 +483,7 @@ class MasVideos_Shortcode_Episodes {
 
         if ( 'rand' === $this->query_args['orderby'] ) {
             // When using rand, we'll cache a number of random queries and pull those to avoid querying rand on each page load.
-            $rand_index      = rand( 0, max( 1, absint( apply_filters( 'masvideos_episode_query_max_rand_cache_count', 5 ) ) ) );
+            $rand_index      = wp_rand( 0, max( 1, absint( apply_filters( 'masvideos_episode_query_max_rand_cache_count', 5 ) ) ) );
             $transient_name .= $rand_index;
         }
 

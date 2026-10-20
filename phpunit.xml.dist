@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	cacheResult="false"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	convertDeprecationsToExceptions="false"
+	beStrictAboutTestsThatDoNotTestAnything="false"
+	>
+	<testsuites>
+		<testsuite name="security">
+			<directory prefix="test-" suffix=".php">./tests/phpunit/security</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

@@ -1,0 +1,71 @@
+# Files and directories that must NOT be shipped to WordPress.org.
+# Used by 10up/action-wordpress-plugin-deploy (preferred over .gitattributes).
+# Everything NOT listed here is included in the distributed package.
+
+# Version control / CI
+/.git
+/.github
+.gitignore
+.gitattributes
+.gitmodules
+.distignore
+.DS_Store
+
+# Build tooling and dependencies (not needed at runtime)
+/node_modules
+/vendor
+/bin
+composer.json
+composer.lock
+package.json
+package-lock.json
+Gruntfile.js
+
+# Developer dotfiles / local environment
+.babelrc
+.browserslistrc
+.editorconfig
+.eslintrc
+.eslintrc.js
+.eslintignore
+.jshintrc
+.npmrc
+.nvmrc
+.prettierrc.json
+.stylelintrc
+.tx
+.wp-env.json
+
+# Tests and test configuration (development only)
+/tests
+phpunit.xml.dist
+phpunit-trash-disabled.xml.dist
+phpunit-multisite.xml.dist
+phpcs.xml.dist
+
+# Developer documentation (readme.txt ships; these do not)
+README.md
+CONTRIBUTING.md
+SECURITY.md
+
+# Confidential security remediation artifacts (never distribute)
+masvideos-phase1-security-audit.md
+masvideos-phase2a-report.md
+masvideos-phase2a-final-report.md
+masvideos-phase2b-report.md
+masvideos-phase2c-report.md
+masvideos-phase2d1-report.md
+masvideos-phase2d2-pass1-report.md
+masvideos-phase2d2-pass2-report.md
+masvideos-phase2d2-pass3-report.md
+masvideos-phase*-report.md
+masvideos-phase*-plugin-check*.json
+masvideos-phase2a-review.patch
+masvideos-phase2b-review.patch
+masvideos-phase2c-review.patch
+masvideos-phase2d1-review.patch
+*.patch
+
+# Local databases / scratch / logs
+*.sql
+*.log

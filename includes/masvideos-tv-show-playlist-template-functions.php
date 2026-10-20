@@ -150,7 +150,7 @@ if ( ! function_exists( 'masvideos_tv_show_playlist_loop_start' ) ) {
         $loop_start = apply_filters( 'masvideos_tv_show_playlist_loop_start', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_start; // WPCS: XSS ok.
+            echo $loop_start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_start;
         }
@@ -173,7 +173,7 @@ if ( ! function_exists( 'masvideos_tv_show_playlist_loop_end' ) ) {
         $loop_end = apply_filters( 'masvideos_tv_show_playlist_loop_end', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
+            echo $loop_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_end;
         }
@@ -221,7 +221,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_playlist_tv_shows' ) 
             $args = wp_parse_args( $args, $defaults );
 
             add_filter( 'masvideos_loop_tv_show_link', 'masvideos_loop_tv_show_link_for_tv_show_playlist', 99, 2 );
-            echo MasVideos_Shortcodes::tv_shows( $args );
+            echo MasVideos_Shortcodes::tv_shows( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode render API returns prepared markup.
             remove_filter( 'masvideos_loop_tv_show_link', 'masvideos_loop_tv_show_link_for_tv_show_playlist', 99, 2 );
         }
     }
@@ -239,7 +239,7 @@ if ( ! function_exists( 'masvideos_template_button_toggle_user_tv_show_playlist'
             foreach ( $tv_show_playlists as $key => $tv_show_playlist ) {
                 $playlist_id = $tv_show_playlist->ID;
                 $is_tv_show_added = masvideos_is_tv_show_added_to_playlist( $playlist_id, $tv_show_id );
-                ?><a class="toggle-playlist masvideos-ajax-toggle-tv-show-playlist<?php echo $is_tv_show_added ? ' added' : ''; ?>" href="<?php echo get_permalink( $playlist_id ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-tv_show_id=<?php echo esc_attr( $tv_show_id ); ?>><?php echo get_the_title( $playlist_id ); ?></a><?php
+                ?><a class="toggle-playlist masvideos-ajax-toggle-tv-show-playlist<?php echo $is_tv_show_added ? ' added' : ''; ?>" href="<?php echo esc_url( get_permalink( $playlist_id ) ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-tv_show_id=<?php echo esc_attr( $tv_show_id ); ?>><?php echo esc_html( get_the_title( $playlist_id ) ); ?></a><?php
             }
         }
     }
@@ -286,6 +286,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_poster' ) ) {
         if( $tv_show_ids ) {
             $recently_added_tv_show = masvideos_get_tv_show( end( $tv_show_ids ) );
             $image_size = apply_filters( 'masvideos_tv_show_playlist_thumbnail_size', 'masvideos_tv_show_medium' );
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_image() returns wp_get_attachment_image()-based markup, already escaped by core; kses would strip supported img attributes (srcset/sizes/data-*).
             echo is_object( $recently_added_tv_show ) ? $recently_added_tv_show->get_image( $image_size , array( 'class' => 'tv-show-playlist__poster--image' ) ) : '';
         }
     }
@@ -364,7 +365,8 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_playlist_tv_shows_count
             $tv_shows_count = count( masvideos_single_tv_show_playlist_tv_shows( get_the_ID() ) );
 
             if( $tv_shows_count > 0 ) {
-                printf( _n( '%s TV Show', '%s TV Shows', $tv_shows_count, 'masvideos' ), number_format_i18n( $tv_shows_count ) );
+                /* translators: %s: number of TV shows */
+                printf( esc_html( _n( '%s TV Show', '%s TV Shows', $tv_shows_count, 'masvideos' ) ), esc_html( number_format_i18n( $tv_shows_count ) ) );
             }
         ?></span><?php
     }

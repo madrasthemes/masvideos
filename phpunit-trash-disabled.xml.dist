@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+  Runs the deletion-boundary tests with WordPress Trash DISABLED (EMPTY_TRASH_DAYS = 0),
+  where wp_trash_post() permanently deletes. Invoke with:
+    MASVIDEOS_TEST_EMPTY_TRASH_DAYS=0 vendor/bin/phpunit -c phpunit-trash-disabled.xml.dist
+-->
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	cacheResult="false"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	convertDeprecationsToExceptions="false"
+	beStrictAboutTestsThatDoNotTestAnything="false"
+	>
+	<testsuites>
+		<testsuite name="trash-disabled">
+			<directory prefix="test-" suffix=".php">./tests/phpunit/trash-disabled</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

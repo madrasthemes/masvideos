@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
                     }
                 }
                 ?>
-            </select> <?php echo masvideos_help_tip( __( 'Linked Movies are movies which you recommend instead of the currently viewed movie, for example, movies that are better quality.', 'masvideos' ) ); // WPCS: XSS ok. ?>
+            </select> <?php echo masvideos_help_tip( __( 'Linked Movies are movies which you recommend instead of the currently viewed movie, for example, movies that are better quality.', 'masvideos' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_help_tip() returns a built HTML span and escapes its tip via esc_attr() internally. ?>
         </p>
     </div>
 

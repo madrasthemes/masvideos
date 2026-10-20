@@ -133,7 +133,7 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
         $post_object = get_post( $movie->get_id() );
 
         if ( ! $movie->get_id() || ! $post_object || 'movie' !== $post_object->post_type ) {
-            throw new Exception( __( 'Invalid movie.', 'masvideos' ) );
+            throw new Exception( esc_html__( 'Invalid movie.', 'masvideos' ) );
         }
 
         $movie->set_props(
@@ -840,7 +840,11 @@ class MasVideos_Movie_Data_Store_CPT extends MasVideos_Data_Store_WP implements 
 
         $related_movie_query = (array) apply_filters( 'masvideos_movie_related_posts_query', $this->get_related_movies_query( $cats_array, $tags_array, $exclude_ids, $limit + 10 ), $movie_id, $args );
 
-        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery, WordPress.WP.PreparedSQL.NotPrepared
+        // $related_movie_query holds SQL fragments built by get_related_movies_query(): every
+        // interpolated value is an absint()-cast term ID, exclude ID or LIMIT, and all identifiers are
+        // trusted $wpdb table names. The fragments are then filtered and imploded, so the statement has
+        // no bindable placeholders and $wpdb->prepare() cannot be applied to the assembled string.
+        // phpcs:ignore WordPress.VIP.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared -- Pre-assembled, absint()-escaped fragment query; see note above.
         return $wpdb->get_col( implode( ' ', $related_movie_query ) );
     }
 

@@ -52,7 +52,7 @@ function masvideos_get_videos( $args ) {
 function masvideos_get_video( $the_video = false ) {
     if ( ! did_action( 'masvideos_init' ) ) {
         /* translators: 1: masvideos_get_video 2: masvideos_init */
-        _doing_it_wrong( __FUNCTION__, sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_video', 'masvideos_init' ), '1.0.0' );
+        _doing_it_wrong( __FUNCTION__, esc_html( sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_video', 'masvideos_init' ) ), '1.0.0' );
         return false;
     }
     return MasVideos()->video_factory->get_video( $the_video );
@@ -318,7 +318,7 @@ function masvideos_get_related_videos( $video_id, $limit = 5, $exclude_ids = arr
 
 if ( ! function_exists ( 'masvideos_the_video' ) ) {
     function masvideos_the_video( $post = null ) {
-        echo masvideos_get_the_video( $post );
+        echo masvideos_get_the_video( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Player markup from the plugin's safe render pipeline (sanitised source/oEmbed/iframe allowlist).
     }
 }
 
@@ -345,7 +345,9 @@ if ( ! function_exists ( 'masvideos_get_the_video' ) ) {
             $video_src = $video->get_video_url_link();
         }
 
-        return apply_filters( 'the_content', $video_src );
+        // Render user-controlled video metadata through a safe pipeline instead of the_content
+        // (which would execute arbitrary shortcodes/blocks). See masvideos_render_video_source().
+        return apply_filters( 'masvideos_get_the_video', masvideos_render_video_source( $video_choice, $video_src ), $video, $video_choice );
     }
 }
 

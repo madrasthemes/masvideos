@@ -150,7 +150,7 @@ function masvideos_query_string_form_fields( $values = null, $exclude = array(),
         return $html;
     }
 
-    echo $html; // WPCS: XSS ok.
+    echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Hidden input markup; names/values escaped with esc_attr() at source. Contains form controls (not kses-able).
 }
 
 /**
@@ -429,7 +429,7 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                 ?>
                 <select multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select tags', 'masvideos' ); ?>" class="masvideos-select2-tags" name="<?php echo esc_attr( $key ); ?>[]">
                     <?php
-                    $all_terms = get_terms( $args['taxonomy'], apply_filters( 'masvideos_term_multiselect', array( 'orderby' => 'name', 'hide_empty' => 0, ) ) );
+                    $all_terms = get_terms( array_merge( wp_parse_args( apply_filters( 'masvideos_term_multiselect', array( 'orderby' => 'name', 'hide_empty' => 0, ) ) ), array( 'taxonomy' => $args['taxonomy'] ) ) );
                     if ( $all_terms ) {
                         foreach ( $all_terms as $term ) {
                             $options = array();
@@ -441,6 +441,7 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                                     }
                                 }
                             }
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Option built from esc_attr()'d value/label plus masvideos_selected() (trusted selected attribute).
                             echo '<option value="' . esc_attr( $term->name ) . '"' . masvideos_selected( $term->name, $options ) . '>' . esc_attr( apply_filters( 'masvideos_term_name', $term->name, $term ) ) . '</option>';
                         }
                     }
@@ -455,11 +456,12 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                 ?>
                 <select multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select terms', 'masvideos' ); ?>" class=" masvideos-select2" name="<?php echo esc_attr( $key ); ?>[]">
                     <?php
-                    $all_terms = get_terms( $args['taxonomy'], apply_filters( 'masvideos_term_multiselect', array( 'orderby'    => 'name', 'hide_empty' => 0, ) ) );
+                    $all_terms = get_terms( array_merge( wp_parse_args( apply_filters( 'masvideos_term_multiselect', array( 'orderby'    => 'name', 'hide_empty' => 0, ) ) ), array( 'taxonomy' => $args['taxonomy'] ) ) );
                     if ( $all_terms ) {
                         foreach ( $all_terms as $term ) {
                             $options = $value;
                             $options = ! empty( $options ) ? $options : array();
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Option built from esc_attr()'d value/label plus masvideos_selected() (trusted selected attribute).
                             echo '<option value="' . esc_attr( $term->term_id ) . '"' . masvideos_selected( $term->term_id, $options ) . '>' . esc_attr( apply_filters( 'masvideos_term_name', $term->name, $term ) ) . '</option>';
                         }
                     }
@@ -531,12 +533,10 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                                 continue;
                             }
 
-                            echo '<li class="image" data-attachment_id="' . esc_attr( $attachment_id ) . '">
-                                    ' . $attachment . '
-                                    <ul class="actions">
-                                        <li><a href="#" class="delete tips" data-tip="' . esc_attr__( 'Delete image', 'masvideos' ) . '">' . __( 'Delete', 'masvideos' ) . '</a></li>
-                                    </ul>
-                                </li>';
+                            $image_item  = '<li class="image" data-attachment_id="' . esc_attr( $attachment_id ) . '">';
+                            $image_item .= $attachment; // Attachment image from wp_get_attachment_image() (core-escaped).
+                            $image_item .= '<ul class="actions"><li><a href="#" class="delete tips" data-tip="' . esc_attr__( 'Delete image', 'masvideos' ) . '">' . esc_html__( 'Delete', 'masvideos' ) . '</a></li></ul></li>';
+                            echo $image_item; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Attachment image from wp_get_attachment_image() (core-escaped); other dynamic values escaped inline.
 
                             // rebuild ids to be saved.
                             $updated_gallery_ids[] = $attachment_id;
@@ -546,7 +546,7 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
                 </ul>
                 <input type="hidden" id="video_image_gallery" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( implode( ',', $updated_gallery_ids ) ); ?>" />
                 <p class="add_video_images hide-if-no-js">
-                    <a href="#" data-choose="<?php esc_attr_e( 'Add images to video gallery', 'masvideos' ); ?>" data-update="<?php esc_attr_e( 'Add to gallery', 'masvideos' ); ?>" data-delete="<?php esc_attr_e( 'Delete image', 'masvideos' ); ?>" data-text="<?php esc_attr_e( 'Delete', 'masvideos' ); ?>"><?php _e( 'Add video gallery images', 'masvideos' ); ?></a>
+                    <a href="#" data-choose="<?php esc_attr_e( 'Add images to video gallery', 'masvideos' ); ?>" data-update="<?php esc_attr_e( 'Add to gallery', 'masvideos' ); ?>" data-delete="<?php esc_attr_e( 'Delete image', 'masvideos' ); ?>" data-text="<?php esc_attr_e( 'Delete', 'masvideos' ); ?>"><?php esc_html_e( 'Add video gallery images', 'masvideos' ); ?></a>
                 </p>
                 <?php
                 $field = ob_get_clean();
@@ -589,7 +589,7 @@ if ( ! function_exists( 'masvideos_form_field' ) ) {
         if ( $args['return'] ) {
             return $field;
         } else {
-            echo $field; // WPCS: XSS ok.
+            echo $field; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built form-field markup (contains input controls, not kses-able); dynamic values escaped at source and description via wp_kses_post().
         }
     }
 }
@@ -636,16 +636,16 @@ if ( ! function_exists( 'masvideos_star_rating' ) ) {
         }
      
         $output = '<div class="star-rating">';
-        $output .= '<span class="screen-reader-text">' . $title . '</span>';
+        $output .= '<span class="screen-reader-text">' . esc_html( $title ) . '</span>';
         $output .= str_repeat( '<div class="star star-full" aria-hidden="true"></div>', $full_stars );
         $output .= str_repeat( '<div class="star star-half" aria-hidden="true"></div>', $half_stars );
         $output .= str_repeat( '<div class="star star-empty" aria-hidden="true"></div>', $empty_stars );
         $output .= '</div>';
      
         if ( $r['echo'] ) {
-            echo $output;
+            echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static star-rating markup; the only dynamic value ($title) is escaped at build.
         }
-     
+
         return $output;
     }
 }

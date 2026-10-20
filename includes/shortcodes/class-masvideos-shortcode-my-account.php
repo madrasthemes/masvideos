@@ -43,39 +43,55 @@ class MasVideos_Shortcode_My_Account {
     public static function edit_video() {
         if ( ! is_user_logged_in() ) {
             masvideos_get_template( 'myaccount/form-register-login.php' );
+            return;
+        }
+
+        $editing_id = 0;
+
+        if ( isset( $_GET['post'], $_GET['action'] ) && 'edit' === $_GET['action'] ) { // WPCS: input var ok, CSRF ok.
+            $editing_id = is_scalar( $_GET['post'] ) ? absint( wp_unslash( $_GET['post'] ) ) : 0; // WPCS: input var ok, CSRF ok.
+        }
+
+        // Only show the form to users who may edit this specific video, or who may create one.
+        // This mirrors the authorization enforced in MasVideos_Form_Handler::edit_video().
+        if ( $editing_id > 0 ) {
+            $can_manage = ( 'video' === get_post_type( $editing_id ) && current_user_can( 'edit_post', $editing_id ) );
         } else {
-            $title = apply_filters( 'masvideos_my_account_upload_video_title', esc_html__( 'Upload video', 'masvideos' ) );
-            $button_text = apply_filters( 'masvideos_my_account_upload_video_button_text', esc_html__( 'Submit video', 'masvideos' ) );
-            $button_draft_text = apply_filters( 'masvideos_my_account_upload_video_button_draft_text', esc_html__( 'Save as Draft', 'masvideos' ) );
-            $fields = masvideos_get_edit_video_fields();
-            $video = false;
+            $can_manage = current_user_can( apply_filters( 'masvideos_frontend_create_video_capability', 'edit_videos' ) );
+        }
 
-            if( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) {
-                $id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : absint( get_query_var( 'post', 0 ) ); // WPCS: sanitization ok, input var ok, CSRF ok.
+        if ( ! $can_manage ) {
+            echo '<div class="masvideos-message masvideos-message--info masvideos-Message masvideos-Message--info masvideos-info">' . esc_html__( 'You do not have permission to upload or edit videos.', 'masvideos' ) . '</div>';
+            return;
+        }
 
-                if( current_user_can( 'edit_post', $id ) && $video = masvideos_get_video( $id ) ) {
-                    foreach ( $fields as $key => $field ) {
-                        // Set prop in video object.
-                        if ( is_callable( array( $video, "get_$key" ) ) ) {
-                            $fields[ $key ]['value'] = $video->{"get_$key"}( 'edit' );
-                        } else {
-                            $fields[ $key ]['value'] = $video->get_meta( $key, true, 'edit' );
-                        }
-                    }
+        $title = apply_filters( 'masvideos_my_account_upload_video_title', esc_html__( 'Upload video', 'masvideos' ) );
+        $button_text = apply_filters( 'masvideos_my_account_upload_video_button_text', esc_html__( 'Submit video', 'masvideos' ) );
+        $button_draft_text = apply_filters( 'masvideos_my_account_upload_video_button_draft_text', esc_html__( 'Save as Draft', 'masvideos' ) );
+        $fields = masvideos_get_edit_video_fields();
+        $video = false;
 
-                    $title = apply_filters( 'masvideos_my_account_edit_video_title', esc_html__( 'Edit video', 'masvideos' ) );
-                    $button_text = apply_filters( 'masvideos_my_account_edit_video_button_text', esc_html__( 'Save video', 'masvideos' ) );
+        if ( $editing_id > 0 && ( $video = masvideos_get_video( $editing_id ) ) ) {
+            foreach ( $fields as $key => $field ) {
+                // Set prop in video object.
+                if ( is_callable( array( $video, "get_$key" ) ) ) {
+                    $fields[ $key ]['value'] = $video->{"get_$key"}( 'edit' );
+                } else {
+                    $fields[ $key ]['value'] = $video->get_meta( $key, true, 'edit' );
                 }
             }
 
-            masvideos_get_template( 'myaccount/edit-video.php', array(
-                'title'         => $title,
-                'button_text'   => $button_text,
-                'fields'        => $fields,
-                'video'         => $video,
-                'button_draft_text' => $button_draft_text,
-            ) );
+            $title = apply_filters( 'masvideos_my_account_edit_video_title', esc_html__( 'Edit video', 'masvideos' ) );
+            $button_text = apply_filters( 'masvideos_my_account_edit_video_button_text', esc_html__( 'Save video', 'masvideos' ) );
         }
+
+        masvideos_get_template( 'myaccount/edit-video.php', array(
+            'title'         => $title,
+            'button_text'   => $button_text,
+            'fields'        => $fields,
+            'video'         => $video,
+            'button_draft_text' => $button_draft_text,
+        ) );
     }
 
     /**

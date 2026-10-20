@@ -65,12 +65,12 @@ class MasVideos_Admin_Attributes {
      */
     private static function get_posted_attribute() {
         $attribute = array(
-            'attribute_label'   => isset( $_POST['attribute_label'] ) ? masvideos_clean( stripslashes( $_POST['attribute_label'] ) ) : '',
-            'attribute_name'    => isset( $_POST['attribute_name'] ) ? masvideos_sanitize_taxonomy_name( stripslashes( $_POST['attribute_name'] ) ) : '',
-            'attribute_type'    => isset( $_POST['attribute_type'] ) ? masvideos_clean( $_POST['attribute_type'] ) : 'select',
-            'attribute_orderby' => isset( $_POST['attribute_orderby'] ) ? masvideos_clean( $_POST['attribute_orderby'] ) : '',
+            'attribute_label'   => isset( $_POST['attribute_label'] ) ? masvideos_clean( wp_unslash( $_POST['attribute_label'] ) ) : '',
+            'attribute_name'    => isset( $_POST['attribute_name'] ) ? masvideos_sanitize_taxonomy_name( wp_unslash( $_POST['attribute_name'] ) ) : '',
+            'attribute_type'    => isset( $_POST['attribute_type'] ) ? masvideos_clean( wp_unslash( $_POST['attribute_type'] ) ) : 'select',
+            'attribute_orderby' => isset( $_POST['attribute_orderby'] ) ? masvideos_clean( wp_unslash( $_POST['attribute_orderby'] ) ) : '',
             'attribute_public'  => isset( $_POST['attribute_public'] ) ? 1 : 0,
-            'post_type'         => isset( $_POST['post_type'] ) ? masvideos_clean( $_POST['post_type'] ) : '',
+            'post_type'         => isset( $_POST['post_type'] ) ? masvideos_clean( wp_unslash( $_POST['post_type'] ) ) : '',
         );
 
         if ( empty( $attribute['attribute_type'] ) ) {
@@ -148,7 +148,7 @@ class MasVideos_Admin_Attributes {
             return $id;
         }
 
-        echo '<div class="updated"><p>' . __( 'Attribute updated successfully', 'masvideos' ) . '</p><p><a href="' . esc_url( admin_url( 'edit.php?post_type=' . $attribute['post_type'] . '&amp;page=' . $attribute['post_type'] . '_attributes' ) ) . '">' . __( 'Back to Attributes', 'masvideos' ) . '</a></p></div>';
+        echo '<div class="updated"><p>' . esc_html__( 'Attribute updated successfully', 'masvideos' ) . '</p><p><a href="' . esc_url( admin_url( 'edit.php?post_type=' . $attribute['post_type'] . '&amp;page=' . $attribute['post_type'] . '_attributes' ) ) . '">' . esc_html__( 'Back to Attributes', 'masvideos' ) . '</a></p></div>';
 
         return true;
     }
@@ -181,8 +181,19 @@ class MasVideos_Admin_Attributes {
 
         $edit = absint( $_GET['edit'] );
 
-        $post_type = $_GET['post_type'];
-        $attribute_to_edit = $wpdb->get_row( 'SELECT attribute_type, attribute_label, attribute_name, attribute_orderby, attribute_public FROM ' . $wpdb->prefix . "masvideos_attribute_taxonomies WHERE attribute_id = '$edit'" );
+        // Allowlist the post type and bind the id as a prepared value (MV-13).
+        $post_type = isset( $_GET['post_type'] ) ? masvideos_clean( wp_unslash( $_GET['post_type'] ) ) : '';
+
+        if ( ! in_array( $post_type, masvideos_get_attribute_taxonomy_post_types(), true ) ) {
+            return;
+        }
+
+        $attribute_to_edit = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT attribute_type, attribute_label, attribute_name, attribute_orderby, attribute_public FROM {$wpdb->prefix}masvideos_attribute_taxonomies WHERE attribute_id = %d",
+                $edit
+            )
+        );
 
         if ( current_user_can( "edit_{$post_type}_terms" ) ) {
             ?>
@@ -298,7 +309,11 @@ class MasVideos_Admin_Attributes {
      * Shows the interface for adding new attributes.
      */
     public static function add_attribute() {
-        $post_type = $_GET['post_type'];
+        $post_type = isset( $_GET['post_type'] ) ? masvideos_clean( wp_unslash( $_GET['post_type'] ) ) : '';
+
+        if ( ! in_array( $post_type, masvideos_get_attribute_taxonomy_post_types(), true ) ) {
+            return;
+        }
         ?>
         <div class="wrap masvideos">
             <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -365,9 +380,9 @@ class MasVideos_Admin_Attributes {
 
                                                     if ( taxonomy_exists( $taxonomy ) ) {
                                                         if ( 'menu_order' === masvideos_attribute_orderby( $tax->post_type, $taxonomy ) ) {
-                                                            $terms = get_terms( $taxonomy, 'hide_empty=0&menu_order=ASC' );
+                                                            $terms = get_terms( array_merge( wp_parse_args( 'hide_empty=0&menu_order=ASC' ), array( 'taxonomy' => $taxonomy ) ) );
                                                         } else {
-                                                            $terms = get_terms( $taxonomy, 'hide_empty=0&menu_order=false' );
+                                                            $terms = get_terms( array_merge( wp_parse_args( 'hide_empty=0&menu_order=false' ), array( 'taxonomy' => $taxonomy ) ) );
                                                         }
 
                                                         switch ( $tax->attribute_orderby ) {

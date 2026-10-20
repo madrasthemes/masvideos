@@ -59,7 +59,7 @@ class MasVideos_Emails {
 	 * @since 1.0.0
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cloning is forbidden.', 'masvideos' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cloning is forbidden.', 'masvideos' ), '1.0.0' );
 	}
 
 	/**
@@ -68,7 +68,7 @@ class MasVideos_Emails {
 	 * @since 1.0.0
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Unserializing instances of this class is forbidden.', 'masvideos' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Unserializing instances of this class is forbidden.', 'masvideos' ), '1.0.0' );
 	}
 
 	/**
@@ -152,7 +152,7 @@ class MasVideos_Emails {
 			// 	)
 			// );
 			if ( Constants::is_true( 'WP_DEBUG' ) ) {
-				trigger_error( $error, E_USER_WARNING ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped, WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+				trigger_error( esc_html( $error ), E_USER_WARNING ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 			}
 		}
 	}
@@ -277,7 +277,7 @@ class MasVideos_Emails {
 
 		do_action( 'masvideos_email_header', $email_heading, null );
 
-		echo wpautop( wptexturize( $message ) ); // WPCS: XSS ok.
+		echo wp_kses_post( wpautop( wptexturize( $message ) ) );
 
 		do_action( 'masvideos_email_footer', null );
 

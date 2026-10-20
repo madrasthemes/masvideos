@@ -106,7 +106,7 @@ class MasVideos_TV_Show_Playlist_Data_Store_CPT extends MasVideos_Data_Store_WP 
         $post_object = get_post( $tv_show_playlist->get_id() );
 
         if ( ! $tv_show_playlist->get_id() || ! $post_object || 'tv_show_playlist' !== $post_object->post_type ) {
-            throw new Exception( __( 'Invalid tv show playlist.', 'masvideos' ) );
+            throw new Exception( esc_html__( 'Invalid tv show playlist.', 'masvideos' ) );
         }
 
         $tv_show_playlist->set_props(

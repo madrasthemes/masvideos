@@ -2,10 +2,14 @@
 /**
  * Plugin Name: MAS Videos
  * Plugin URI: https://github.com/madrasthemes/masvideos
- * Description: This is a free plugin that allows you to to create and list movies, videos and TV shows.
- * Version: 1.3.4
+ * Description: A free plugin to create and list movies, videos and TV shows.
+ * Version: 1.3.5
  * Author: MadrasThemes
  * Author URI: https://madrasthemes.com/
+ * Requires at least: 6.4
+ * Requires PHP: 7.4
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: masvideos
  * Domain Path: /languages/
  *

@@ -138,6 +138,182 @@ class MasVideos_AJAX {
     }
 
     /**
+     * Resolve and authorize the post a "save" AJAX handler is about to modify.
+     *
+     * The admin metabox save endpoints (attributes, sources, cast/crew, seasons) historically
+     * trusted only a plural capability (e.g. `edit_videos`) and then instantiated the data object
+     * from `absint( $_POST['post_id'] )`. That allowed two problems addressed here (MV-07 / S-02):
+     *
+     *  1. Implicit creation: a missing/zero/invalid `post_id` became `new <Object>( 0 )` which,
+     *     on save, inserted a brand new (often published) post. A save endpoint must never create.
+     *  2. Missing object-level authorization: a user with the plural capability could modify any
+     *     object of that type — including other users' and published posts — and even cause type
+     *     confusion by posting an id of a different post type.
+     *
+     * This helper requires an existing post of the expected type that the current user may edit.
+     *
+     * @param string $expected_post_type Post type the handler manages (e.g. 'video').
+     * @return int Authorized post ID, or 0 when the request must be rejected.
+     */
+    private static function get_authorized_save_post_id( $expected_post_type ) {
+        $post_id = isset( $_POST['post_id'] ) && is_scalar( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+
+        if ( $post_id <= 0 ) {
+            return 0;
+        }
+
+        if ( get_post_type( $post_id ) !== $expected_post_type ) {
+            return 0;
+        }
+
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            return 0;
+        }
+
+        return $post_id;
+    }
+
+    /**
+     * Shared, hardened implementation of the `add_new_attribute_*` endpoints (MV-08).
+     *
+     * The previous implementation inserted a term into whatever `$_POST['taxonomy']` named, gated
+     * only by a plural `manage_*_terms` capability and `taxonomy_exists()`. That let an authorized
+     * user create terms in unrelated WordPress or third-party taxonomies (e.g. `category`). Here the
+     * taxonomy is restricted to the given content type's own registered attribute taxonomies and the
+     * request is authorized with that taxonomy's actual `edit_terms` capability mapping.
+     *
+     * @param string $post_type Content type whose attribute taxonomies are permitted (e.g. 'video').
+     */
+    private static function ajax_add_new_attribute( $post_type ) {
+        $taxonomy = isset( $_POST['taxonomy'] ) && is_scalar( $_POST['taxonomy'] ) ? sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) ) : '';
+        $term     = isset( $_POST['term'] ) && is_scalar( $_POST['term'] ) ? masvideos_clean( wp_unslash( $_POST['term'] ) ) : '';
+
+        // The taxonomy must be one of THIS content type's attribute taxonomies, never an arbitrary one.
+        if ( '' === $taxonomy || '' === $term || ! in_array( $taxonomy, masvideos_get_attribute_taxonomy_names( $post_type ), true ) ) {
+            wp_die( -1 );
+        }
+
+        $taxonomy_object = get_taxonomy( $taxonomy );
+
+        // Authorize with the taxonomy's real term-editing capability (not a blanket plural cap).
+        if ( ! $taxonomy_object || ! current_user_can( $taxonomy_object->cap->edit_terms ) ) {
+            wp_die( -1 );
+        }
+
+        $result = wp_insert_term( $term, $taxonomy );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json(
+                array(
+                    'error' => $result->get_error_message(),
+                )
+            );
+        }
+
+        $new_term = get_term_by( 'id', $result['term_id'], $taxonomy );
+
+        if ( ! $new_term ) {
+            wp_die( -1 );
+        }
+
+        wp_send_json(
+            array(
+                'term_id' => $new_term->term_id,
+                'name'    => $new_term->name,
+                'slug'    => $new_term->slug,
+            )
+        );
+    }
+
+    /**
+     * Shared validation for the three playlist-toggle endpoints (MV-12).
+     *
+     * These endpoints are reachable by any logged-in user and were protected by an ownership check
+     * alone. This adds CSRF protection (an action nonce), verifies that the playlist and the item
+     * are the expected post types, and verifies the current user may read the item — so a playlist
+     * cannot be used to pull another user's private/unpublished content into view. On any failure
+     * it emits a consistent JSON error and terminates the request (wp_send_json() calls wp_die()).
+     *
+     * @param string $playlist_post_type Expected playlist post type (e.g. 'video_playlist').
+     * @param string $item_post_type     Expected item post type (e.g. 'video').
+     * @param string $item_key           POST key carrying the item id (e.g. 'video_id').
+     * @return array Numeric array: array( int $playlist_id, int $item_id ).
+     */
+    private static function validate_playlist_toggle_request( $playlist_post_type, $item_post_type, $item_key ) {
+        if ( ! is_user_logged_in() ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You must be logged in to modify playlists.', 'masvideos' ),
+                )
+            );
+        }
+
+        if ( false === check_ajax_referer( 'masvideos-playlist', 'security', false ) ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'Your session has expired. Please refresh the page and try again.', 'masvideos' ),
+                )
+            );
+        }
+
+        $playlist_id = isset( $_POST['playlist_id'] ) && is_scalar( $_POST['playlist_id'] ) ? absint( wp_unslash( $_POST['playlist_id'] ) ) : 0;
+        $item_id     = isset( $_POST[ $item_key ] ) && is_scalar( $_POST[ $item_key ] ) ? absint( wp_unslash( $_POST[ $item_key ] ) ) : 0;
+
+        // Reject a playlist that is not the expected type, or that is in the Trash: a trashed
+        // playlist keeps its post type, so a stale AJAX request could otherwise still modify it.
+        if ( ! $playlist_id || get_post_type( $playlist_id ) !== $playlist_post_type || 'trash' === get_post_status( $playlist_id ) ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'Invalid playlist.', 'masvideos' ),
+                )
+            );
+        }
+
+        $playlist_author_id = (int) get_post_field( 'post_author', $playlist_id );
+
+        if ( ! $playlist_author_id || get_current_user_id() !== $playlist_author_id ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You are not allowed to modify this playlist.', 'masvideos' ),
+                )
+            );
+        }
+
+        if ( ! $item_id || get_post_type( $item_id ) !== $item_post_type ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'Invalid item.', 'masvideos' ),
+                )
+            );
+        }
+
+        // Only allow items the current user may actually read. current_user_can( 'read_post' )
+        // covers published public content and the user's own / otherwise-readable private content;
+        // a password-protected item is additionally refused unless the user can edit it, so the
+        // "published" status alone never exposes non-public content.
+        $item_post = get_post( $item_id );
+
+        if ( ! $item_post
+            || ! current_user_can( 'read_post', $item_id )
+            || ( '' !== $item_post->post_password && ! current_user_can( 'edit_post', $item_id ) )
+        ) {
+            wp_send_json(
+                array(
+                    'error'   => true,
+                    'message' => __( 'You are not allowed to add this item.', 'masvideos' ),
+                )
+            );
+        }
+
+        return array( $playlist_id, $item_id );
+    }
+
+    /**
      * Add an attribute row.
      */
     public static function add_attribute_person() {
@@ -171,34 +347,7 @@ class MasVideos_AJAX {
      */
     public static function add_new_attribute_person() {
         check_ajax_referer( 'add-attribute-person', 'security' );
-
-        if ( current_user_can( 'manage_person_terms' ) ) {
-            $taxonomy = esc_attr( $_POST['taxonomy'] );
-            $term     = masvideos_clean( $_POST['term'] );
-
-            if ( taxonomy_exists( $taxonomy ) ) {
-
-                $result = wp_insert_term( $term, $taxonomy );
-
-                if ( is_wp_error( $result ) ) {
-                    wp_send_json(
-                        array(
-                            'error' => $result->get_error_message(),
-                        )
-                    );
-                } else {
-                    $term = get_term_by( 'id', $result['term_id'], $taxonomy );
-                    wp_send_json(
-                        array(
-                            'term_id' => $term->term_id,
-                            'name'    => $term->name,
-                            'slug'    => $term->slug,
-                        )
-                    );
-                }
-            }
-        }
-        wp_die( -1 );
+        self::ajax_add_new_attribute( 'person' );
     }
 
     /**
@@ -211,11 +360,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $person_id = self::get_authorized_save_post_id( 'person' );
+
+        if ( ! $person_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $attributes   = MasVideos_Meta_Box_Person_Data::prepare_attributes( $data );
-            $person_id     = absint( $_POST['post_id'] );
             $classname    = MasVideos_Person_Factory::get_person_classname( $person_id );
             $person        = new $classname( $person_id );
 
@@ -274,6 +428,12 @@ class MasVideos_AJAX {
             $limit = absint( apply_filters( 'masvideos_json_search_limit', 30 ) );
         }
 
+        // Bound the requested limit so a crafted request cannot force an unbounded, expensive query (S-06).
+        $max_limit = absint( apply_filters( 'masvideos_json_search_max_limit', 100 ) );
+        if ( $max_limit > 0 ) {
+            $limit = min( $limit, $max_limit );
+        }
+
         $data_store = MasVideos_Data_Store::load( 'person' );
         $ids        = $data_store->search_persons( $term, false, $limit );
 
@@ -311,6 +471,7 @@ class MasVideos_AJAX {
         $i             = absint( $_POST['i'] );
         $metabox_class = array();
         $source        = array(
+            /* translators: %d: source number */
             'name'          => sprintf( __( 'Source %d', 'masvideos' ), $i+1 ),
             'choice'        => '',
             'embed_content' => '',
@@ -336,11 +497,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $episode_id = self::get_authorized_save_post_id( 'episode' );
+
+        if ( ! $episode_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $sources      = MasVideos_Meta_Box_Episode_Data::prepare_sources( $data );
-            $episode_id   = absint( $_POST['post_id'] );
             $classname    = MasVideos_Episode_Factory::get_episode_classname( $episode_id );
             $episode      = new $classname( $episode_id );
 
@@ -407,34 +573,7 @@ class MasVideos_AJAX {
      */
     public static function add_new_attribute_episode() {
         check_ajax_referer( 'add-attribute-episode', 'security' );
-
-        if ( current_user_can( 'manage_episode_terms' ) ) {
-            $taxonomy = esc_attr( $_POST['taxonomy'] );
-            $term     = masvideos_clean( $_POST['term'] );
-
-            if ( taxonomy_exists( $taxonomy ) ) {
-
-                $result = wp_insert_term( $term, $taxonomy );
-
-                if ( is_wp_error( $result ) ) {
-                    wp_send_json(
-                        array(
-                            'error' => $result->get_error_message(),
-                        )
-                    );
-                } else {
-                    $term = get_term_by( 'id', $result['term_id'], $taxonomy );
-                    wp_send_json(
-                        array(
-                            'term_id' => $term->term_id,
-                            'name'    => $term->name,
-                            'slug'    => $term->slug,
-                        )
-                    );
-                }
-            }
-        }
-        wp_die( -1 );
+        self::ajax_add_new_attribute( 'episode' );
     }
 
     /**
@@ -447,11 +586,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $episode_id = self::get_authorized_save_post_id( 'episode' );
+
+        if ( ! $episode_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $attributes   = MasVideos_Meta_Box_Episode_Data::prepare_attributes( $data );
-            $episode_id   = absint( $_POST['post_id'] );
             $classname    = MasVideos_Episode_Factory::get_episode_classname( $episode_id );
             $episode      = new $classname( $episode_id );
 
@@ -510,6 +654,12 @@ class MasVideos_AJAX {
             $limit = absint( apply_filters( 'masvideos_json_search_limit', 30 ) );
         }
 
+        // Bound the requested limit so a crafted request cannot force an unbounded, expensive query (S-06).
+        $max_limit = absint( apply_filters( 'masvideos_json_search_max_limit', 100 ) );
+        if ( $max_limit > 0 ) {
+            $limit = min( $limit, $max_limit );
+        }
+
         $data_store = MasVideos_Data_Store::load( 'episode' );
         $ids        = $data_store->search_episodes( $term, false, $limit );
 
@@ -566,11 +716,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $tv_show_id = self::get_authorized_save_post_id( 'tv_show' );
+
+        if ( ! $tv_show_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $cast           = MasVideos_Meta_Box_TV_Show_Data::prepare_cast( $data );
-            $tv_show_id     = absint( $_POST['post_id'] );
             $classname      = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
             $tv_show        = new $classname( $tv_show_id );
 
@@ -646,11 +801,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $tv_show_id = self::get_authorized_save_post_id( 'tv_show' );
+
+        if ( ! $tv_show_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $crew           = MasVideos_Meta_Box_TV_Show_Data::prepare_crew( $data );
-            $tv_show_id     = absint( $_POST['post_id'] );
             $classname      = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
             $tv_show        = new $classname( $tv_show_id );
 
@@ -725,34 +885,7 @@ class MasVideos_AJAX {
      */
     public static function add_new_attribute_tv_show() {
         check_ajax_referer( 'add-attribute-tv_show', 'security' );
-
-        if ( current_user_can( 'manage_tv_show_terms' ) ) {
-            $taxonomy = esc_attr( $_POST['taxonomy'] );
-            $term     = masvideos_clean( $_POST['term'] );
-
-            if ( taxonomy_exists( $taxonomy ) ) {
-
-                $result = wp_insert_term( $term, $taxonomy );
-
-                if ( is_wp_error( $result ) ) {
-                    wp_send_json(
-                        array(
-                            'error' => $result->get_error_message(),
-                        )
-                    );
-                } else {
-                    $term = get_term_by( 'id', $result['term_id'], $taxonomy );
-                    wp_send_json(
-                        array(
-                            'term_id' => $term->term_id,
-                            'name'    => $term->name,
-                            'slug'    => $term->slug,
-                        )
-                    );
-                }
-            }
-        }
-        wp_die( -1 );
+        self::ajax_add_new_attribute( 'tv_show' );
     }
 
     /**
@@ -765,11 +898,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $tv_show_id = self::get_authorized_save_post_id( 'tv_show' );
+
+        if ( ! $tv_show_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $attributes   = MasVideos_Meta_Box_TV_Show_Data::prepare_attributes( $data );
-            $tv_show_id   = absint( $_POST['post_id'] );
             $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
             $tv_show      = new $classname( $tv_show_id );
 
@@ -822,6 +960,7 @@ class MasVideos_AJAX {
         $i             = absint( $_POST['i'] );
         $metabox_class = array();
         $season        = array(
+            /* translators: %d: season number */
             'name'          => sprintf( __( 'Season %d', 'masvideos' ), $i+1 ),
             'image_id'      => 0,
             'episodes'      => array(),
@@ -844,11 +983,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $tv_show_id = self::get_authorized_save_post_id( 'tv_show' );
+
+        if ( ! $tv_show_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $seasons      = MasVideos_Meta_Box_TV_Show_Data::prepare_seasons( $data );
-            $tv_show_id   = absint( $_POST['post_id'] );
             $classname    = MasVideos_TV_Show_Factory::get_tv_show_classname( $tv_show_id );
             $tv_show      = new $classname( $tv_show_id );
 
@@ -915,6 +1059,12 @@ class MasVideos_AJAX {
             $limit = absint( apply_filters( 'masvideos_json_search_limit', 30 ) );
         }
 
+        // Bound the requested limit so a crafted request cannot force an unbounded, expensive query (S-06).
+        $max_limit = absint( apply_filters( 'masvideos_json_search_max_limit', 100 ) );
+        if ( $max_limit > 0 ) {
+            $limit = min( $limit, $max_limit );
+        }
+
         $data_store = MasVideos_Data_Store::load( 'tv_show' );
         $ids        = $data_store->search_tv_shows( $term, false, $limit );
 
@@ -971,11 +1121,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $movie_id = self::get_authorized_save_post_id( 'movie' );
+
+        if ( ! $movie_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $cast         = MasVideos_Meta_Box_Movie_Data::prepare_cast( $data );
-            $movie_id     = absint( $_POST['post_id'] );
             $classname    = MasVideos_Movie_Factory::get_movie_classname( $movie_id );
             $movie        = new $classname( $movie_id );
 
@@ -1053,11 +1208,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $movie_id = self::get_authorized_save_post_id( 'movie' );
+
+        if ( ! $movie_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $crew         = MasVideos_Meta_Box_Movie_Data::prepare_crew( $data );
-            $movie_id     = absint( $_POST['post_id'] );
             $classname    = MasVideos_Movie_Factory::get_movie_classname( $movie_id );
             $movie        = new $classname( $movie_id );
 
@@ -1115,6 +1275,7 @@ class MasVideos_AJAX {
         $i             = absint( $_POST['i'] );
         $metabox_class = array();
         $source        = array(
+            /* translators: %d: source number */
             'name'          => sprintf( __( 'Source %d', 'masvideos' ), $i+1 ),
             'choice'        => '',
             'embed_content' => '',
@@ -1141,11 +1302,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $movie_id = self::get_authorized_save_post_id( 'movie' );
+
+        if ( ! $movie_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $sources      = MasVideos_Meta_Box_Movie_Data::prepare_sources( $data );
-            $movie_id     = absint( $_POST['post_id'] );
             $classname    = MasVideos_Movie_Factory::get_movie_classname( $movie_id );
             $movie        = new $classname( $movie_id );
 
@@ -1212,34 +1378,7 @@ class MasVideos_AJAX {
      */
     public static function add_new_attribute_movie() {
         check_ajax_referer( 'add-attribute-movie', 'security' );
-
-        if ( current_user_can( 'manage_movie_terms' ) ) {
-            $taxonomy = esc_attr( $_POST['taxonomy'] );
-            $term     = masvideos_clean( $_POST['term'] );
-
-            if ( taxonomy_exists( $taxonomy ) ) {
-
-                $result = wp_insert_term( $term, $taxonomy );
-
-                if ( is_wp_error( $result ) ) {
-                    wp_send_json(
-                        array(
-                            'error' => $result->get_error_message(),
-                        )
-                    );
-                } else {
-                    $term = get_term_by( 'id', $result['term_id'], $taxonomy );
-                    wp_send_json(
-                        array(
-                            'term_id' => $term->term_id,
-                            'name'    => $term->name,
-                            'slug'    => $term->slug,
-                        )
-                    );
-                }
-            }
-        }
-        wp_die( -1 );
+        self::ajax_add_new_attribute( 'movie' );
     }
 
     /**
@@ -1252,11 +1391,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $movie_id = self::get_authorized_save_post_id( 'movie' );
+
+        if ( ! $movie_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $attributes   = MasVideos_Meta_Box_Movie_Data::prepare_attributes( $data );
-            $movie_id     = absint( $_POST['post_id'] );
             $classname    = MasVideos_Movie_Factory::get_movie_classname( $movie_id );
             $movie        = new $classname( $movie_id );
 
@@ -1315,6 +1459,12 @@ class MasVideos_AJAX {
             $limit = absint( apply_filters( 'masvideos_json_search_limit', 30 ) );
         }
 
+        // Bound the requested limit so a crafted request cannot force an unbounded, expensive query (S-06).
+        $max_limit = absint( apply_filters( 'masvideos_json_search_max_limit', 100 ) );
+        if ( $max_limit > 0 ) {
+            $limit = min( $limit, $max_limit );
+        }
+
         $data_store = MasVideos_Data_Store::load( 'movie' );
         $ids        = $data_store->search_movies( $term, false, $limit );
 
@@ -1371,34 +1521,7 @@ class MasVideos_AJAX {
      */
     public static function add_new_attribute_video() {
         check_ajax_referer( 'add-attribute-video', 'security' );
-
-        if ( current_user_can( 'manage_video_terms' ) ) {
-            $taxonomy = esc_attr( $_POST['taxonomy'] );
-            $term     = masvideos_clean( $_POST['term'] );
-
-            if ( taxonomy_exists( $taxonomy ) ) {
-
-                $result = wp_insert_term( $term, $taxonomy );
-
-                if ( is_wp_error( $result ) ) {
-                    wp_send_json(
-                        array(
-                            'error' => $result->get_error_message(),
-                        )
-                    );
-                } else {
-                    $term = get_term_by( 'id', $result['term_id'], $taxonomy );
-                    wp_send_json(
-                        array(
-                            'term_id' => $term->term_id,
-                            'name'    => $term->name,
-                            'slug'    => $term->slug,
-                        )
-                    );
-                }
-            }
-        }
-        wp_die( -1 );
+        self::ajax_add_new_attribute( 'video' );
     }
 
     /**
@@ -1411,11 +1534,16 @@ class MasVideos_AJAX {
             wp_die( -1 );
         }
 
+        $video_id = self::get_authorized_save_post_id( 'video' );
+
+        if ( ! $video_id ) {
+            wp_die( -1 );
+        }
+
         try {
-            parse_str( $_POST['data'], $data );
+            parse_str( wp_unslash( $_POST['data'] ), $data );
 
             $attributes   = MasVideos_Meta_Box_Video_Data::prepare_attributes( $data );
-            $video_id     = absint( $_POST['post_id'] );
             $classname    = MasVideos_Video_Factory::get_video_classname( $video_id );
             $video        = new $classname( $video_id );
 
@@ -1474,6 +1602,12 @@ class MasVideos_AJAX {
             $limit = absint( apply_filters( 'masvideos_json_search_limit', 30 ) );
         }
 
+        // Bound the requested limit so a crafted request cannot force an unbounded, expensive query (S-06).
+        $max_limit = absint( apply_filters( 'masvideos_json_search_max_limit', 100 ) );
+        if ( $max_limit > 0 ) {
+            $limit = min( $limit, $max_limit );
+        }
+
         $data_store = MasVideos_Data_Store::load( 'video' );
         $ids        = $data_store->search_videos( $term, false, $limit );
 
@@ -1502,38 +1636,9 @@ class MasVideos_AJAX {
     public static function toggle_tv_show_playlist() {
         ob_start();
 
-        if ( ! is_user_logged_in() ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'You must be logged in to modify playlists.', 'masvideos' ),
-                )
-            );
-        }
+        list( $playlist_id, $tv_show_id ) = self::validate_playlist_toggle_request( 'tv_show_playlist', 'tv_show', 'tv_show_id' );
 
-        $playlist_id        = absint( $_POST['playlist_id'] );
-        $tv_show_id         = absint( $_POST['tv_show_id'] );
-        $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
-
-        if ( ! $playlist_id ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'Invalid playlist.', 'masvideos' ),
-                )
-            );
-        }
-
-        $playlist_author_id = (int) get_post_field( 'post_author', $playlist_id );
-
-        if ( ! $playlist_author_id || get_current_user_id() !== $playlist_author_id ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'You are not allowed to modify this playlist.', 'masvideos' ),
-                )
-            );
-        }
+        $delete = isset( $_POST['delete'] ) && is_scalar( $_POST['delete'] ) ? masvideos_string_to_bool( wp_unslash( $_POST['delete'] ) ) : false;
 
         if( $delete ) {
             $tv_show_playlist = masvideos_remove_tv_show_from_playlist( $playlist_id, $tv_show_id );
@@ -1561,38 +1666,9 @@ class MasVideos_AJAX {
     public static function toggle_video_playlist() {
         ob_start();
 
-        if ( ! is_user_logged_in() ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'You must be logged in to modify playlists.', 'masvideos' ),
-                )
-            );
-        }
+        list( $playlist_id, $video_id ) = self::validate_playlist_toggle_request( 'video_playlist', 'video', 'video_id' );
 
-        $playlist_id        = absint( $_POST['playlist_id'] );
-        $video_id           = absint( $_POST['video_id'] );
-        $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
-
-        if ( ! $playlist_id ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'Invalid playlist.', 'masvideos' ),
-                )
-            );
-        }
-
-        $playlist_author_id = (int) get_post_field( 'post_author', $playlist_id );
-
-        if ( ! $playlist_author_id || get_current_user_id() !== $playlist_author_id ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'You are not allowed to modify this playlist.', 'masvideos' ),
-                )
-            );
-        }
+        $delete = isset( $_POST['delete'] ) && is_scalar( $_POST['delete'] ) ? masvideos_string_to_bool( wp_unslash( $_POST['delete'] ) ) : false;
 
         if( $delete ) {
             $video_playlist = masvideos_remove_video_from_playlist( $playlist_id, $video_id );
@@ -1620,38 +1696,9 @@ class MasVideos_AJAX {
     public static function toggle_movie_playlist() {
         ob_start();
 
-        if ( ! is_user_logged_in() ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'You must be logged in to modify playlists.', 'masvideos' ),
-                )
-            );
-        }
+        list( $playlist_id, $movie_id ) = self::validate_playlist_toggle_request( 'movie_playlist', 'movie', 'movie_id' );
 
-        $playlist_id        = absint( $_POST['playlist_id'] );
-        $movie_id           = absint( $_POST['movie_id'] );
-        $delete             = isset( $_POST['delete'] ) ? masvideos_string_to_bool( $_POST['delete'] ) : false;
-
-        if ( ! $playlist_id ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'Invalid playlist.', 'masvideos' ),
-                )
-            );
-        }
-
-        $playlist_author_id = (int) get_post_field( 'post_author', $playlist_id );
-
-        if ( ! $playlist_author_id || get_current_user_id() !== $playlist_author_id ) {
-            wp_send_json(
-                array(
-                    'error'   => true,
-                    'message' => __( 'You are not allowed to modify this playlist.', 'masvideos' ),
-                )
-            );
-        }
+        $delete = isset( $_POST['delete'] ) && is_scalar( $_POST['delete'] ) ? masvideos_string_to_bool( wp_unslash( $_POST['delete'] ) ) : false;
 
         if( $delete ) {
             $movie_playlist = masvideos_remove_movie_from_playlist( $playlist_id, $movie_id );

@@ -487,7 +487,7 @@ class MasVideos_TMDB_Importer_Controller {
 
         $this->file = $file;
 
-        wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
+        wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
         exit;
     }
 
@@ -878,21 +878,28 @@ class MasVideos_TMDB_Importer_Controller {
     protected function handle_upload() {
         $upload_dir = wp_upload_dir( null, false );
 
-        $file_name = 'masvideos-tmdb-csv-output' . date('U') . '.csv';
-        $file = $upload_dir['path'] . '/' . $file_name;
+        // Unique, non-guessable name so the (publicly reachable) uploads URL cannot be predicted;
+        // time() replaces date('U') (identical epoch value, timezone-independent).
+        $file_name = 'masvideos-tmdb-csv-output' . time() . '-' . wp_generate_password( 12, false ) . '.csv';
+        $file      = trailingslashit( $upload_dir['path'] ) . $file_name;
 
-        $f = fopen( $file, 'w+' );
-        if ( $f === false ) {
-            die( __( 'Couldn\'t create the file to store the CSV, or the path is invalid.', 'masvideos' ) );
-        }
-
-        fputcsv( $f, $this->results_csv_data_key );
+        // Build the CSV in an in-memory stream so fputcsv()'s exact quoting is preserved, then write the
+        // whole file once through WP_Filesystem rather than with direct fopen()/fwrite() to disk.
+        $buffer = fopen( 'php://temp', 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- in-memory PHP stream (not a filesystem write); used only to reuse fputcsv() CSV formatting.
+        fputcsv( $buffer, $this->results_csv_data_key );
         $lineKeys = array_fill_keys( $this->results_csv_data_key, '' );
         foreach ( $this->results_csv_data as $line ) {
             // Using array_merge is important to maintain the order of keys acording to the first element
-            fputcsv( $f, array_merge( $lineKeys, $line ) );
+            fputcsv( $buffer, array_merge( $lineKeys, $line ) );
         }
-        fclose( $f );
+        rewind( $buffer );
+        $csv = stream_get_contents( $buffer );
+        fclose( $buffer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- closing the in-memory stream above.
+
+        $wp_filesystem = masvideos_wp_filesystem();
+        if ( ! $wp_filesystem || false === $wp_filesystem->put_contents( $file, $csv, FS_CHMOD_FILE ) ) {
+            die( esc_html__( 'Couldn\'t create the file to store the CSV, or the path is invalid.', 'masvideos' ) );
+        }
 
         // Construct the object array.
         $object = array(

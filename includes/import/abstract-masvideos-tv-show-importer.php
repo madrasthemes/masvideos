@@ -531,7 +531,24 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
 
         // Check if parent exist.
         if ( isset( $data['parent_tv_show'] ) && isset( $data['parent_season'] ) ) {
-            $tv_show_obj = get_page_by_title( $data['parent_tv_show'], OBJECT, 'tv_show' );
+            // get_page_by_title() was deprecated in WP 6.2; look up the tv_show by exact title via
+            // WP_Query, preserving the original semantics (first match by title, object or null, no
+            // duplicate creation).
+            $tv_show_lookup = new WP_Query(
+                array(
+                    'post_type'              => 'tv_show',
+                    'title'                  => $data['parent_tv_show'],
+                    'post_status'            => 'any',
+                    'posts_per_page'         => 1,
+                    'orderby'                => 'post_date ID',
+                    'order'                  => 'ASC',
+                    'no_found_rows'          => true,
+                    'ignore_sticky_posts'    => true,
+                    'update_post_meta_cache' => false,
+                    'update_post_term_cache' => false,
+                )
+            );
+            $tv_show_obj = ! empty( $tv_show_lookup->posts ) ? $tv_show_lookup->posts[0] : null;
 
             if ( $tv_show_obj ) {
                 $tv_show = masvideos_get_tv_show( $tv_show_obj );
@@ -818,14 +835,14 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
             $upload = masvideos_rest_upload_image_from_url( $url );
 
             if ( is_wp_error( $upload ) ) {
-                throw new Exception( $upload->get_error_message(), 400 );
+                throw new Exception( esc_html( $upload->get_error_message() ), 400 );
             }
 
             $id = masvideos_rest_set_uploaded_image_as_attachment( $upload, $tv_show_id );
 
             if ( ! wp_attachment_is_image( $id ) ) {
                 /* translators: %s: image URL */
-                throw new Exception( sprintf( __( 'Not able to attach "%s".', 'masvideos' ), $url ), 400 );
+                throw new Exception( esc_html( sprintf( __( 'Not able to attach "%s".', 'masvideos' ), $url ) ), 400 );
             }
 
             // Save attachment source for future reference.
@@ -834,7 +851,7 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
 
         if ( ! $id ) {
             /* translators: %s: image URL */
-            throw new Exception( sprintf( __( 'Unable to use image "%s".', 'masvideos' ), $url ), 400 );
+            throw new Exception( esc_html( sprintf( __( 'Unable to use image "%s".', 'masvideos' ), $url ) ), 400 );
         }
 
         return $id;
@@ -877,7 +894,7 @@ abstract class MasVideos_TV_Show_Importer implements MasVideos_Importer_Interfac
         ) );
 
         if ( is_wp_error( $attribute_id ) ) {
-            throw new Exception( $attribute_id->get_error_message(), 400 );
+            throw new Exception( esc_html( $attribute_id->get_error_message() ), 400 );
         }
 
         // Register as taxonomy while importing.

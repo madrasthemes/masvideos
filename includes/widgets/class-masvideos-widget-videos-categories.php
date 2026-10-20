@@ -153,21 +153,25 @@ class MasVideos_Widget_Videos_Categories extends MasVideos_Widget {
 					$this->category_ancestors,
 					array( $this->current_category->term_id ),
 					get_terms(
-						'video_cat',
-						array(
-							'fields'       => 'ids',
-							'parent'       => 0,
-							'hierarchical' => true,
-							'hide_empty'   => false,
+						wp_parse_args(
+							array(
+								'fields'       => 'ids',
+								'parent'       => 0,
+								'hierarchical' => true,
+								'hide_empty'   => false,
+							),
+							array( 'taxonomy' => 'video_cat' )
 						)
 					),
 					get_terms(
-						'video_cat',
-						array(
-							'fields'       => 'ids',
-							'parent'       => $this->current_category->term_id,
-							'hierarchical' => true,
-							'hide_empty'   => false,
+						wp_parse_args(
+							array(
+								'fields'       => 'ids',
+								'parent'       => $this->current_category->term_id,
+								'hierarchical' => true,
+								'hide_empty'   => false,
+							),
+							array( 'taxonomy' => 'video_cat' )
 						)
 					)
 				);
@@ -176,12 +180,14 @@ class MasVideos_Widget_Videos_Categories extends MasVideos_Widget {
 					foreach ( $this->category_ancestors as $ancestor ) {
 						$include = array_merge(
 							$include, get_terms(
-								'video_cat',
-								array(
-									'fields'       => 'ids',
-									'parent'       => $ancestor,
-									'hierarchical' => false,
-									'hide_empty'   => false,
+								wp_parse_args(
+									array(
+										'fields'       => 'ids',
+										'parent'       => $ancestor,
+										'hierarchical' => false,
+										'hide_empty'   => false,
+									),
+									array( 'taxonomy' => 'video_cat' )
 								)
 							)
 						);
@@ -190,12 +196,14 @@ class MasVideos_Widget_Videos_Categories extends MasVideos_Widget {
 			} else {
 				// Direct children.
 				$include = get_terms(
-					'video_cat',
-					array(
-						'fields'       => 'ids',
-						'parent'       => $this->current_category->term_id,
-						'hierarchical' => true,
-						'hide_empty'   => false,
+					wp_parse_args(
+						array(
+							'fields'       => 'ids',
+							'parent'       => $this->current_category->term_id,
+							'hierarchical' => true,
+							'hide_empty'   => false,
+						),
+						array( 'taxonomy' => 'video_cat' )
 					)
 				);
 			}

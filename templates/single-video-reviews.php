@@ -31,7 +31,9 @@ if ( ! comments_open() ) {
                 $commenter = wp_get_current_commenter();
 
                 $comment_form = array(
+                    /* translators: %s: post title */
                     'title_reply'          => have_comments() ? __( 'Comments', 'masvideos' ) : sprintf( __( 'Be the first to comment &ldquo;%s&rdquo;', 'masvideos' ), get_the_title() ),
+                    /* translators: %s: name of the person being replied to */
                     'title_reply_to'       => __( 'Leave a Reply to %s', 'masvideos' ),
                     'title_reply_before'   => '<span id="reply-title" class="comment-reply-title">',
                     'title_reply_after'    => '</span>',
@@ -48,6 +50,7 @@ if ( ! comments_open() ) {
                 );
 
                 if ( $account_page_url = wp_login_url() ) {
+                    /* translators: %s: login URL */
                     $comment_form['must_log_in'] = '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%s">logged in</a> to post a comment.', 'masvideos' ), esc_url( $account_page_url ) ) . '</p>';
                 }
 
@@ -78,7 +81,7 @@ if ( ! comments_open() ) {
 
         <?php else : ?>
 
-            <p class="masvideos-noreviews"><?php _e( 'There are no comments yet.', 'masvideos' ); ?></p>
+            <p class="masvideos-noreviews"><?php esc_html_e( 'There are no comments yet.', 'masvideos' ); ?></p>
 
         <?php endif; ?>
     </div>

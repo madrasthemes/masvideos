@@ -235,7 +235,7 @@ if ( ! function_exists( 'masvideos_get_episode_search_form' ) ) {
             return $form;
         }
 
-        echo $form; // WPCS: XSS ok.
+        echo $form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Search form markup from template + apply_filters(); contains form controls (not kses-able), dynamic values escaped at source.
     }
 }
 
@@ -261,7 +261,7 @@ if ( ! function_exists( 'masvideos_episode_loop_start' ) ) {
         $loop_start = apply_filters( 'masvideos_episode_loop_start', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_start; // WPCS: XSS ok.
+            echo $loop_start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_start;
         }
@@ -284,7 +284,7 @@ if ( ! function_exists( 'masvideos_no_episodes_found' ) ) {
      * Handles the loop when no episodes were found/no episode exist.
      */
     function masvideos_no_episodes_found() {
-        ?><p class="masvideos-info"><?php _e( 'No episodes were found matching your selection.', 'masvideos' ); ?></p><?php
+        ?><p class="masvideos-info"><?php esc_html_e( 'No episodes were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
@@ -304,7 +304,7 @@ if ( ! function_exists( 'masvideos_episode_loop_end' ) ) {
         $loop_end = apply_filters( 'masvideos_episode_loop_end', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
+            echo $loop_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_end;
         }
@@ -347,7 +347,7 @@ if ( ! function_exists( 'masvideos_episode_page_title' ) ) {
         $page_title = apply_filters( 'masvideos_episode_page_title', $page_title );
 
         if ( $echo ) {
-            echo $page_title; // WPCS: XSS ok.
+            echo esc_html( $page_title );
         } else {
             return $page_title;
         }
@@ -381,7 +381,7 @@ if ( ! function_exists( 'masvideos_template_loop_episode_poster' ) ) {
      * episode poster in the loop.
      */
     function masvideos_template_loop_episode_poster() {
-        echo masvideos_get_episode_thumbnail( 'masvideos_episode_medium' );
+        echo masvideos_get_episode_thumbnail( 'masvideos_episode_medium' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_post_thumbnail()-based markup, already escaped by core; kses would strip supported img attributes (srcset/sizes/data-*).
     }
 }
 
@@ -436,11 +436,11 @@ if ( ! function_exists( 'masvideos_template_loop_episode_title' ) ) {
         $episode_number = $episode->get_episode_number();
 
         if( apply_filters( 'masvideos_template_loop_episode_display_tv_show_name_before_title', false ) && ! empty( $tv_show_id ) ) {
-            echo '<span class="masvideos-loop-episode__tv-show-name episode__tv-show-name">' . get_the_title( $tv_show_id ) . '</span>';
+            echo '<span class="masvideos-loop-episode__tv-show-name episode__tv-show-name">' . esc_html( get_the_title( $tv_show_id ) ) . '</span>';
         }
 
         if( apply_filters( 'masvideos_template_loop_episode_display_episode_number_before_title', true ) && ! empty( $episode_number ) ) {
-            echo '<span class="masvideos-loop-episode__number episode__number">' . $episode_number . '</span>';
+            echo '<span class="masvideos-loop-episode__number episode__number">' . esc_html( $episode_number ) . '</span>';
         }
 
         the_title( '<h3 class="masvideos-loop-episode__title  episode__title">', '</h3>' );
@@ -514,6 +514,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_genres' ) ) {
         }
 
         if( ! empty ( $genres ) ) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $genres from get_the_term_list() (term links escaped by core).
             echo sprintf( '<span class="episode__meta--genres">%s</span>', $genres );
         }
     }
@@ -535,6 +536,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_tags' ) ) {
         }
 
         if( ! empty ( $tags ) ) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped label + $tags from get_the_term_list() (term links escaped by core).
             echo sprintf( '<span class="episode__tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
         }
     }
@@ -551,11 +553,14 @@ if ( ! function_exists( 'masvideos_template_single_episode_release_date' ) ) {
         $release_date_formated = '';
         $release_date = $episode->get_episode_release_date();
         if( ! empty( $release_date ) ) {
-            $release_date_formated = date( 'd.m.Y', strtotime( $release_date ) );
+            // Date-only release value: strtotime() parses it at UTC midnight (WP forces the PHP
+            // default timezone to UTC), so gmdate() reproduces the stored calendar date exactly.
+            // wp_date() would shift a date-only value across the site offset and change the day.
+            $release_date_formated = gmdate( 'd.m.Y', strtotime( $release_date ) );
         }
 
         if( ! empty ( $release_date_formated ) ) {
-            echo sprintf( '<span class="episode__meta--release-date">%s %s</span>', esc_html__( 'Added:', 'masvideos' ), $release_date_formated );
+            echo sprintf( '<span class="episode__meta--release-date">%s %s</span>', esc_html__( 'Added:', 'masvideos' ), esc_html( $release_date_formated ) );
         }
     }
 }
@@ -571,7 +576,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_duration' ) ) {
         $duration = $episode->get_episode_run_time();
 
         if( ! empty ( $duration ) ) {
-            echo sprintf( '<span class="episode__meta--duration">%s</span>', $duration );
+            echo sprintf( '<span class="episode__meta--duration">%s</span>', esc_html( $duration ) );
         }
     }
 }
@@ -725,8 +730,8 @@ if ( ! function_exists( 'masvideos_related_episodes' ) ) {
 
         if( ! empty( $related_episode_ids ) ) {
             echo '<section class="episode__related">';
-                echo sprintf( '<h2 class="episode__related--title">%s</h2>', $title );
-                echo MasVideos_Shortcodes::episodes( $args );
+                echo wp_kses_post( sprintf( '<h2 class="episode__related--title">%s</h2>', $title ) );
+                echo MasVideos_Shortcodes::episodes( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode render API returns prepared markup.
             echo '</section>';
         }
     }
@@ -844,7 +849,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_avg_rating' ) ) {
                 <div class="avg-rating__inner">
                     <span class="avg-rating__number"> <?php echo number_format( $episode->get_average_rating(), 1, '.', '' ); ?></span>
                     <span class="avg-rating__text">
-                        <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $episode->get_review_count(), 'masvideos' ), $episode->get_review_count() ) ) ; ?>
+                        <?php /* translators: %s: number of votes */ echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $episode->get_review_count(), 'masvideos' ), $episode->get_review_count() ) ) ; ?>
                     </span>
                 </div>
             </a>
@@ -899,7 +904,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_short_desc' ) ) {
 
         ?>
         <div class="episode__short-description">
-            <?php echo '<p>' . $short_description . '</p>'; ?>
+            <?php echo '<p>' . wp_kses_post( $short_description ) . '</p>'; ?>
         </div>
         <?php
     }
@@ -969,7 +974,7 @@ if ( ! function_exists( 'masvideos_template_single_episode_play_source_link' ) )
             $source_content = apply_filters( 'the_content', $source['embed_content'] );
             ?>
             <a href="#" class="play-source episode-play-source" data-content="<?php echo esc_attr( htmlspecialchars( $source_content ) ); ?>">
-                <span><?php echo apply_filters( 'masvideos_episode_play_source_text', esc_html__( 'Play Now', 'masvideos' ) ); ?></span>
+                <span><?php echo esc_html( apply_filters( 'masvideos_episode_play_source_text', __( 'Play Now', 'masvideos' ) ) ); ?></span>
             </a>
             <?php
         }

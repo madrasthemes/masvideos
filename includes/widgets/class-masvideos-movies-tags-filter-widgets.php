@@ -149,7 +149,7 @@ class MasVideos_Movies_Tags_Filter_Widget extends MasVideos_Widget {
             $get_terms_args['orderby'] = 'slug__in';
         }
 
-        $terms = get_terms( $taxonomy, apply_filters( 'masvideos_movies_tags_filter_widget_terms_args', $get_terms_args ) );
+        $terms = get_terms( array_merge( wp_parse_args( apply_filters( 'masvideos_movies_tags_filter_widget_terms_args', $get_terms_args ) ), array( 'taxonomy' => $taxonomy ) ) );
 
         if ( 0 === count( $terms ) ) {
             return;

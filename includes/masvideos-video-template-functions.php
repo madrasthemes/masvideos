@@ -235,7 +235,7 @@ if ( ! function_exists( 'masvideos_get_video_search_form' ) ) {
             return $form;
         }
 
-        echo $form; // WPCS: XSS ok.
+        echo $form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Search form markup from template + apply_filters(); contains form controls (not kses-able), dynamic values escaped at source.
     }
 }
 
@@ -260,7 +260,7 @@ if ( ! function_exists( 'masvideos_video_loop_start' ) ) {
         $loop_start = apply_filters( 'masvideos_video_loop_start', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_start; // WPCS: XSS ok.
+            echo $loop_start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_start;
         }
@@ -283,7 +283,7 @@ if ( ! function_exists( 'masvideos_no_videos_found' ) ) {
      * Handles the loop when no videos were found/no video exist.
      */
     function masvideos_no_videos_found() {
-        ?><p class="masvideos-info"><?php _e( 'No videos were found matching your selection.', 'masvideos' ); ?></p><?php
+        ?><p class="masvideos-info"><?php esc_html_e( 'No videos were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
@@ -303,7 +303,7 @@ if ( ! function_exists( 'masvideos_video_loop_end' ) ) {
         $loop_end = apply_filters( 'masvideos_video_loop_end', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
+            echo $loop_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_end;
         }
@@ -346,7 +346,7 @@ if ( ! function_exists( 'masvideos_video_page_title' ) ) {
         $page_title = apply_filters( 'masvideos_video_page_title', $page_title );
 
         if ( $echo ) {
-            echo $page_title; // WPCS: XSS ok.
+            echo esc_html( $page_title );
         } else {
             return $page_title;
         }
@@ -442,12 +442,12 @@ if ( ! function_exists( 'masvideos_videos_count' ) ) {
             <?php
             if ( $args['total'] <= $args['per_page'] || -1 === $args['per_page'] ) {
                 /* translators: %d: total results */
-                printf( _n( 'Showing the single result', 'Showing all %d results', $args['total'], 'masvideos' ), $args['total'] );
+                printf( esc_html( _n( 'Showing %d result', 'Showing all %d results', $args['total'], 'masvideos' ) ), (int) $args['total'] );
             } else {
                 $first = ( $args['per_page'] * $args['current'] ) - $args['per_page'] + 1;
                 $last  = min( $args['total'], $args['per_page'] * $args['current'] );
                 /* translators: 1: first result 2: last result 3: total results */
-                printf( _nx( 'Showing the single result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), $first, $last, $args['total'] );
+                printf( _nx( 'Showing %1$d&ndash;%2$d of %3$d result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), (int) $first, (int) $last, (int) $args['total'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static translators string (contains an &ndash; entity that must not be re-encoded); only integer counts are interpolated.
             }
             ?>
         </p>
@@ -464,7 +464,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_feature_badge' ) ) {
 
         if ( $video->get_featured() ) {
             echo '<span class="video__badge">';
-            echo '<span class="video__badge--featured">' . esc_html__( apply_filters( 'masvideos_template_loop_video_feature_badge_text', 'Featured' ), 'masvideos' ) . '</span>';
+            echo '<span class="video__badge--featured">' . esc_html( apply_filters( 'masvideos_template_loop_video_feature_badge_text', __( 'Featured', 'masvideos' ) ) ) . '</span>';
             echo '</span>';
         }
     }
@@ -507,7 +507,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_poster' ) ) {
      * videos poster in the loop.
      */
     function masvideos_template_loop_video_poster() {
-        echo masvideos_get_video_thumbnail( 'masvideos_video_medium' );
+        echo masvideos_get_video_thumbnail( 'masvideos_video_medium' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_post_thumbnail()-based markup, already escaped by core; kses would strip supported img attributes (srcset/sizes/data-*).
     }
 }
 
@@ -585,7 +585,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_meta' ) ) {
      */
     function masvideos_template_loop_video_meta() {
         echo '<div class="video__meta">';
-            echo '<span class="video__meta--last-update">' . human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) . ' ' .  esc_html__( 'ago', 'masvideos' ) . '</span>';
+            echo '<span class="video__meta--last-update">' . esc_html( human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) ) . ' ' .  esc_html__( 'ago', 'masvideos' ) . '</span>';
         echo '</div>';
     }
 }
@@ -616,7 +616,7 @@ if ( ! function_exists( 'masvideos_template_loop_video_short_desc' ) ) {
 
         ?>
         <div class="video__short-description">
-            <?php echo '<div>' . $short_description . '</div>'; ?>
+            <?php echo '<div>' . wp_kses_post( $short_description ) . '</div>'; ?>
         </div>
 
         <?php
@@ -703,7 +703,7 @@ if ( ! function_exists( 'masvideos_template_loop_category_title' ) ) {
             echo esc_html( $category->name );
 
             if ( $category->count > 0 ) {
-                echo apply_filters( 'masvideos_subcategory_count_html', ' <mark class="count">(' . esc_html( $category->count ) . ')</mark>', $category ); // WPCS: XSS ok.
+                echo wp_kses_post( apply_filters( 'masvideos_subcategory_count_html', ' <mark class="count">(' . esc_html( $category->count ) . ')</mark>', $category ) );
             }
             ?>
         </h2>
@@ -721,7 +721,7 @@ if ( ! function_exists( 'masvideos_template_single_video_categories' ) ) {
         $categories = get_the_term_list( $video->get_id(), 'video_cat', '', ', ' );
 
         if( ! empty ( $categories ) ) {
-           echo '<span class="video__meta--category">' . $categories . '</span>';
+           echo '<span class="video__meta--category">' . $categories . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $categories is get_the_term_list() output: term links already escaped by core.
         }
     }
 }
@@ -762,6 +762,7 @@ if ( ! function_exists( 'masvideos_template_single_video_tags' ) ) {
         $tags = get_the_term_list( $video->get_id(), 'video_tag', '', ', ' );
 
         if( ! empty ( $tags ) ) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped label + $tags from get_the_term_list() (term links escaped by core).
             echo sprintf( '<span class="video__tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
         }
     }
@@ -788,7 +789,7 @@ if ( ! function_exists( 'masvideos_template_single_video_author' ) ) {
     function masvideos_template_single_video_author() {
         $author = get_the_author();
         if( ! empty( $author ) ) {
-            echo sprintf( '<span class="video_author">%s <strong>%s</strong></span>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author );
+            echo wp_kses_post( sprintf( '<span class="video_author">%s <strong>%s</strong></span>', apply_filters( 'masvideos_template_single_video_author', esc_html( 'by', 'masvideos' ) ), $author ) );
         }
     }
 }
@@ -801,7 +802,7 @@ if ( ! function_exists( 'masvideos_template_single_video_posted_on' ) ) {
     function masvideos_template_single_video_posted_on() {
         $date = get_the_date();
         if( ! empty( $date ) ) {
-            echo sprintf( '<span class="video_posted_on">%s %s</span>', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date );
+            echo wp_kses_post( sprintf( '<span class="video_posted_on">%s %s</span>', apply_filters( 'masvideos_template_single_video_posted_on', esc_html( 'published on', 'masvideos' ) ), $date ) );
         }
     }
 }
@@ -847,7 +848,7 @@ if ( ! function_exists( 'masvideos_template_single_video_short_desc' ) ) {
 
         ?>
         <div class="video__short-description">
-            <?php echo '<p>' . $short_description . '</p>'; ?>
+            <?php echo '<p>' . wp_kses_post( $short_description ) . '</p>'; ?>
         </div>
         <?php
     }
@@ -867,7 +868,7 @@ if ( ! function_exists( 'masvideos_template_single_video_avg_rating' ) ) {
                 <div class="avg-rating__inner">
                     <span class="avg-rating__number"> <?php echo number_format( $video->get_average_rating(), 1, '.', '' ); ?></span>
                     <span class="avg-rating__text">
-                        <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $video->get_review_count(), 'masvideos' ), $video->get_review_count() ) ) ; ?>
+                        <?php /* translators: %s: number of votes */ echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $video->get_review_count(), 'masvideos' ), $video->get_review_count() ) ) ; ?>
                     </span>
                 </div>
             </a>
@@ -908,8 +909,8 @@ if ( ! function_exists( 'masvideos_related_videos' ) ) {
 
         if( ! empty( $related_video_ids ) ) {
             echo '<section class="single-video__related">';
-                echo sprintf( '<h2 class="single-video__related--title">%s</h2>', $title );
-                echo MasVideos_Shortcodes::videos( $args );
+                echo wp_kses_post( sprintf( '<h2 class="single-video__related--title">%s</h2>', $title ) );
+                echo MasVideos_Shortcodes::videos( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode render API returns prepared markup.
             echo '</section>';
         }
     }
@@ -925,9 +926,11 @@ if ( ! function_exists( 'masvideos_template_single_video_related_playlist_videos
         global $video;
         $video_id = $video->get_id();
 
-        $video_playlist_id = isset( $_GET['video_playlist_id'] ) ? absint( $_GET['video_playlist_id'] ) : 0;
+        $video_playlist_id = isset( $_GET['video_playlist_id'] ) ? absint( wp_unslash( $_GET['video_playlist_id'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-        if( $video_playlist_id > 0 ) {
+        // Only disclose playlist title/count/items for a playlist the current viewer may read.
+        // A private playlist (incl. the automatic History playlist) must not leak to others.
+        if( $video_playlist_id > 0 && masvideos_current_user_can_read_playlist( $video_playlist_id, 'video_playlist' ) ) {
             $videos_ids = masvideos_single_video_playlist_videos( $video_playlist_id );
 
             if( ! empty( $videos_ids ) ) {
@@ -950,8 +953,8 @@ if ( ! function_exists( 'masvideos_template_single_video_related_playlist_videos
                 <div class="single-video__related-playlist-videos">
                     <div class="single-video__related-playlist-videos--flex-header">
                         <?php
-                            echo sprintf( '<h2 class="single-video__related-playlist-videos--title">%s</h2>', $title );
-                            echo sprintf( '<a href="%s" class="single-video__related-playlist-videos--count">%s</a>', get_permalink( $video_playlist_id ), $count_info );
+                            echo wp_kses_post( sprintf( '<h2 class="single-video__related-playlist-videos--title">%s</h2>', $title ) );
+                            echo sprintf( '<a href="%s" class="single-video__related-playlist-videos--count">%s</a>', esc_url( get_permalink( $video_playlist_id ) ), esc_html( $count_info ) );
                         ?>
                     </div>
                     <div class="single-video__related-playlist-videos--content">
@@ -975,7 +978,7 @@ if ( ! function_exists( 'masvideos_template_button_video_playlist' ) ) {
 
         ?>
         <div class="video-actions--link_add-to-playlist dropdown">
-            <a class="dropdown-toggle" href="<?php echo get_permalink( $video->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+            <a class="dropdown-toggle" href="<?php echo esc_url( get_permalink( $video->get_id() ) ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
             <div class="dropdown-menu">
                 <?php
                     $video_playlists_page_url = masvideos_get_endpoint_url( 'video-playlists', '', masvideos_get_page_permalink( 'myaccount' ) );
@@ -1159,7 +1162,8 @@ if ( ! function_exists( 'masvideos_videos_pagination' ) ) {
 
         <nav class="masvideos-pagination masvideos-videos-pagination">
             <?php
-                echo paginate_links( apply_filters( 'masvideos_videos_pagination_args', array( // WPCS: XSS ok.
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- paginate_links() returns markup already escaped by WordPress core.
+                echo paginate_links( apply_filters( 'masvideos_videos_pagination_args', array(
                     'base'         => $args['base'],
                     'format'       => $args['format'],
                     'add_args'     => false,
@@ -1216,11 +1220,12 @@ if ( ! function_exists( 'masvideos_template_single_video_gallery' ) ) {
         if ( $attachment_ids && $video->get_image_id() ) {
             ?>
             <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>">
-                <?php echo sprintf( '<h2 class="masvideos-video-gallery__title">%s</h2>', $title ); ?>
+                <?php echo wp_kses_post( sprintf( '<h2 class="masvideos-video-gallery__title">%s</h2>', $title ) ); ?>
                 <div class="masvideos-video-gallery__inner">
                     <?php
                     foreach ( $attachment_ids as $attachment_id ) {
-                        echo apply_filters( 'masvideos_single_video_image_thumbnail_html', masvideos_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Gallery image markup from masvideos_get_gallery_image_html() (attachment image + data-* gallery attributes escaped at source); kses would strip the required data-* attributes.
+                        echo apply_filters( 'masvideos_single_video_image_thumbnail_html', masvideos_get_gallery_image_html( $attachment_id ), $attachment_id );
                     }
                 ?>
                 </div>

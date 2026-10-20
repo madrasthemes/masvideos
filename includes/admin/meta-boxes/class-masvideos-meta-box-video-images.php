@@ -49,10 +49,10 @@ class MasVideos_Meta_Box_Video_Images {
                             continue;
                         }
 
-                        echo '<li class="image" data-attachment_id="' . esc_attr( $attachment_id ) . '">
-                                ' . $attachment . '
-                                <ul class="actions">
-                                    <li><a href="#" class="delete tips" data-tip="' . esc_attr__( 'Delete image', 'masvideos' ) . '">' . __( 'Delete', 'masvideos' ) . '</a></li>
+                        echo '<li class="image" data-attachment_id="' . esc_attr( $attachment_id ) . '">';
+                        echo $attachment; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image() returns trusted, safe <img> markup.
+                        echo '<ul class="actions">
+                                    <li><a href="#" class="delete tips" data-tip="' . esc_attr__( 'Delete image', 'masvideos' ) . '">' . esc_html__( 'Delete', 'masvideos' ) . '</a></li>
                                 </ul>
                             </li>';
 
@@ -72,7 +72,7 @@ class MasVideos_Meta_Box_Video_Images {
 
         </div>
         <p class="add_video_images hide-if-no-js">
-            <a href="#" data-choose="<?php esc_attr_e( 'Add images to video gallery', 'masvideos' ); ?>" data-update="<?php esc_attr_e( 'Add to gallery', 'masvideos' ); ?>" data-delete="<?php esc_attr_e( 'Delete image', 'masvideos' ); ?>" data-text="<?php esc_attr_e( 'Delete', 'masvideos' ); ?>"><?php _e( 'Add video gallery images', 'masvideos' ); ?></a>
+            <a href="#" data-choose="<?php esc_attr_e( 'Add images to video gallery', 'masvideos' ); ?>" data-update="<?php esc_attr_e( 'Add to gallery', 'masvideos' ); ?>" data-delete="<?php esc_attr_e( 'Delete image', 'masvideos' ); ?>" data-text="<?php esc_attr_e( 'Delete', 'masvideos' ); ?>"><?php esc_html_e( 'Add video gallery images', 'masvideos' ); ?></a>
         </p>
         <?php
     }
@@ -86,7 +86,7 @@ class MasVideos_Meta_Box_Video_Images {
     public static function save( $post_id, $post ) {
         $classname = MasVideos_Video_Factory::get_video_classname( $post_id );
         $video = new $classname( $post_id );
-        $attachment_ids = isset( $_POST['video_image_gallery'] ) ? array_filter( explode( ',', masvideos_clean( $_POST['video_image_gallery'] ) ) ) : array();
+        $attachment_ids = isset( $_POST['video_image_gallery'] ) ? array_filter( explode( ',', masvideos_clean( wp_unslash( $_POST['video_image_gallery'] ) ) ) ) : array();
 
         $video->set_gallery_image_ids( $attachment_ids );
         $video->save();

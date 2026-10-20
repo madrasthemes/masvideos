@@ -85,7 +85,7 @@ abstract class MasVideos_Widget extends WP_Widget {
         }
 
         if ( isset( $cache[ $this->get_widget_id_for_cache( $args['widget_id'] ) ] ) ) {
-            echo $cache[ $this->get_widget_id_for_cache( $args['widget_id'] ) ]; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+            echo $cache[ $this->get_widget_id_for_cache( $args['widget_id'] ) ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Cached widget HTML output; escaped when originally rendered.
             return true;
         }
 
@@ -129,10 +129,10 @@ abstract class MasVideos_Widget extends WP_Widget {
      * @param array $instance Instance.
      */
     public function widget_start( $args, $instance ) {
-        echo $args['before_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Theme-provided widget wrapper markup from register_sidebar().
 
         if ( $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base ) ) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found, WordPress.CodeAnalysis.AssignmentInCondition.Found
-            echo $args['before_title'] . $title . $args['after_title']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+            echo $args['before_title'] . $title . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Theme-provided title wrappers; title passed through core widget_title filter.
         }
     }
 
@@ -142,7 +142,7 @@ abstract class MasVideos_Widget extends WP_Widget {
      * @param  array $args Arguments.
      */
     public function widget_end( $args ) {
-        echo $args['after_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Theme-provided widget wrapper markup from register_sidebar().
     }
 
     /**
@@ -225,7 +225,7 @@ abstract class MasVideos_Widget extends WP_Widget {
                 case 'text':
                     ?>
                     <p>
-                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; ?></label><?php // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>
+                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; ?></label><?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Field label is a developer-defined translatable string that may contain intentional HTML entities; esc_html would double-encode. ?>
                         <input class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="text" value="<?php echo esc_attr( $value ); ?>" />
                     </p>
                     <?php
@@ -234,7 +234,7 @@ abstract class MasVideos_Widget extends WP_Widget {
                 case 'number':
                     ?>
                     <p>
-                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
+                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Field label is a developer-defined translatable string that may contain intentional HTML entities; esc_html would double-encode. */ ?></label>
                         <input class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="number" step="<?php echo esc_attr( $setting['step'] ); ?>" min="<?php echo esc_attr( $setting['min'] ); ?>" max="<?php echo esc_attr( $setting['max'] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
                     </p>
                     <?php
@@ -243,7 +243,7 @@ abstract class MasVideos_Widget extends WP_Widget {
                 case 'select':
                     ?>
                     <p>
-                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
+                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Field label is a developer-defined translatable string that may contain intentional HTML entities; esc_html would double-encode. */ ?></label>
                         <select class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>">
                             <?php foreach ( $setting['options'] as $option_key => $option_value ) : ?>
                                 <option value="<?php echo esc_attr( $option_key ); ?>" <?php selected( $option_key, $value ); ?>><?php echo esc_html( $option_value ); ?></option>
@@ -256,7 +256,7 @@ abstract class MasVideos_Widget extends WP_Widget {
                 case 'textarea':
                     ?>
                     <p>
-                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
+                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Field label is a developer-defined translatable string that may contain intentional HTML entities; esc_html would double-encode. */ ?></label>
                         <textarea class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" cols="20" rows="3"><?php echo esc_textarea( $value ); ?></textarea>
                         <?php if ( isset( $setting['desc'] ) ) : ?>
                             <small><?php echo esc_html( $setting['desc'] ); ?></small>
@@ -269,7 +269,7 @@ abstract class MasVideos_Widget extends WP_Widget {
                     ?>
                     <p>
                         <input class="checkbox <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="checkbox" value="1" <?php checked( $value, 1 ); ?> />
-                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
+                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Field label is a developer-defined translatable string that may contain intentional HTML entities; esc_html would double-encode. */ ?></label>
                     </p>
                     <?php
                     break;

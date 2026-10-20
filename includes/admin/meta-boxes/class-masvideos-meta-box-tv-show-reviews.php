@@ -27,7 +27,7 @@ class MasVideos_Meta_Box_TV_Show_Reviews {
         <select name="rating" id="rating">
             <?php
             for ( $rating = 1; $rating <= 10; $rating ++ ) {
-                printf( '<option value="%1$s"%2$s>%1$s</option>', $rating, selected( $current, $rating, false ) ); // WPCS: XSS ok.
+                printf( '<option value="%1$s"%2$s>%1$s</option>', absint( $rating ), selected( $current, $rating, false ) );
             }
             ?>
         </select>

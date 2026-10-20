@@ -46,6 +46,126 @@ function masvideos_maybe_define_constant( $name, $value ) {
 }
 
 /**
+ * Validate a MasVideos template slug/name for safe path construction.
+ *
+ * Rejects anything that could be used to escape the template directories: non-strings,
+ * empty values, null/control bytes, backslashes, stream wrappers (scheme://), absolute
+ * paths (POSIX or Windows), parent-directory traversal, empty/dot path segments, and any
+ * character outside a conservative allowlist. Forward-slash separated sub-directories are
+ * permitted (e.g. "myaccount/edit-video"), but the value may not begin or end with a slash.
+ *
+ * This is FORMAT validation only. Callers must still confirm the resolved file lives inside
+ * an allowed base directory — see masvideos_template_path_is_allowed(). Neither
+ * sanitize_file_name() nor sanitize_key() is relied upon here, as neither prevents traversal.
+ *
+ * @since 1.3.5
+ * @param string $name Template slug or name (with or without a trailing ".php").
+ * @return bool True when the name is safe to use for path construction.
+ */
+function masvideos_is_valid_template_name( $name ) {
+    if ( ! is_string( $name ) || '' === $name ) {
+        return false;
+    }
+
+    // Null bytes / control characters.
+    if ( preg_match( '/[\x00-\x1f\x7f]/', $name ) ) {
+        return false;
+    }
+
+    // Backslashes (Windows separators / UNC).
+    if ( false !== strpos( $name, '\\' ) ) {
+        return false;
+    }
+
+    // Stream wrappers such as php://, phar://, data://, http://.
+    if ( preg_match( '#^[a-z][a-z0-9+.\-]*://#i', $name ) ) {
+        return false;
+    }
+
+    // Absolute paths (POSIX "/..." or Windows "C:...").
+    if ( '/' === $name[0] || preg_match( '#^[a-z]:#i', $name ) ) {
+        return false;
+    }
+
+    // Conservative allowlist: must start alphanumeric/underscore; thereafter letters,
+    // digits, underscore, hyphen, dot and the "/" separator only.
+    if ( ! preg_match( '#^[A-Za-z0-9_][A-Za-z0-9/_.-]*$#', $name ) ) {
+        return false;
+    }
+
+    // Reject traversal, empty and current/parent-directory segments.
+    foreach ( explode( '/', $name ) as $segment ) {
+        if ( '' === $segment || '.' === $segment || '..' === $segment ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Determine whether a resolved template file path is inside an allowed template directory.
+ *
+ * Canonicalises the path with realpath() (which also resolves symlinks) and requires it to
+ * be, or to be a descendant of, one of the allowed base directories: the active (child)
+ * theme, the parent theme, the plugin's own templates directory, and any explicitly supplied
+ * trusted bases. The comparison is separator-aware, so a sibling directory whose name merely
+ * shares a prefix (e.g. ".../masvideos-evil" vs ".../masvideos") cannot pass, and a symlink
+ * that points outside the allowed bases is rejected.
+ *
+ * @since 1.3.5
+ * @param string $path        Candidate (already resolved) file path.
+ * @param array  $extra_bases Additional trusted base directories supplied by the caller.
+ * @return bool
+ */
+function masvideos_template_path_is_allowed( $path, $extra_bases = array() ) {
+    if ( ! is_string( $path ) || '' === $path ) {
+        return false;
+    }
+
+    $real = realpath( $path );
+
+    if ( false === $real || ! is_file( $real ) ) {
+        return false;
+    }
+
+    $bases = array_merge(
+        array(
+            get_stylesheet_directory(),
+            get_template_directory(),
+            MasVideos()->plugin_path() . '/templates',
+        ),
+        (array) $extra_bases
+    );
+
+    /**
+     * Filter the directories a MasVideos template may be loaded from.
+     *
+     * @since 1.3.5
+     * @param string[] $bases Absolute base directories.
+     */
+    $bases = apply_filters( 'masvideos_allowed_template_directories', $bases );
+
+    foreach ( $bases as $base ) {
+        if ( ! is_string( $base ) || '' === $base ) {
+            continue;
+        }
+
+        $base_real = realpath( $base );
+
+        if ( false === $base_real ) {
+            continue;
+        }
+
+        if ( $real === $base_real || 0 === strpos( $real, $base_real . DIRECTORY_SEPARATOR ) ) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * Get template part (for templates like the shop-loop).
  *
  * MASVIDEOS_TEMPLATE_DEBUG_MODE will prevent overrides in themes from taking priority.
@@ -55,6 +175,11 @@ function masvideos_maybe_define_constant( $name, $value ) {
  * @param string $name Template name (default: '').
  */
 function masvideos_get_template_part( $slug, $name = '' ) {
+    // Reject unsafe slugs/names before building any path (defence-in-depth layer 1).
+    if ( ! masvideos_is_valid_template_name( $slug ) || ( '' !== $name && ! masvideos_is_valid_template_name( (string) $name ) ) ) {
+        return;
+    }
+
     $template = '';
 
     // Look in yourtheme/slug-name.php and yourtheme/masvideos/slug-name.php.
@@ -80,7 +205,10 @@ function masvideos_get_template_part( $slug, $name = '' ) {
     // Allow 3rd party plugins to filter template file from their plugin.
     $template = apply_filters( 'masvideos_get_template_part', $template, $slug, $name );
 
-    if ( $template ) {
+    // Containment check (defence-in-depth layer 2): only load files inside an allowed base
+    // directory. This also covers a path injected by the filter above, rejects symlink
+    // escapes, and fails gracefully (no load) for a missing or disallowed file.
+    if ( $template && masvideos_template_path_is_allowed( $template ) ) {
         load_template( $template, false );
     }
 }
@@ -95,20 +223,36 @@ function masvideos_get_template_part( $slug, $name = '' ) {
  * @param string $default_path  Default path. (default: '').
  */
 function masvideos_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+    // Reject unsafe template names before building any path.
+    if ( ! masvideos_is_valid_template_name( $template_name ) ) {
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'Invalid template name.', 'masvideos' ), '1.3.5' );
+        return;
+    }
+
     if ( ! empty( $args ) && is_array( $args ) ) {
         extract( $args ); // @codingStandardsIgnoreLine
     }
 
     $located = masvideos_locate_template( $template_name, $template_path, $default_path );
 
-    if ( ! file_exists( $located ) ) {
-        /* translators: %s template */
-        _doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'masvideos' ), '<code>' . $located . '</code>' ), '1.0.0' );
+    // Any explicitly supplied (trusted, caller-hardcoded) paths are allowed bases too.
+    $extra_bases = array_filter( array( $template_path, $default_path ) );
+
+    // Containment check: the file must exist inside an allowed base directory. Fails
+    // gracefully — and without exposing the resolved filesystem path — otherwise.
+    if ( ! masvideos_template_path_is_allowed( $located, $extra_bases ) ) {
+        /* translators: %s template name */
+        _doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'masvideos' ), '<code>' . esc_html( $template_name ) . '</code>' ), '1.0.0' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Intentional <code> markup; the only dynamic value ($template_name) is escaped with esc_html().
         return;
     }
 
     // Allow 3rd party plugin filter template file from their plugin.
     $located = apply_filters( 'masvideos_get_template', $located, $template_name, $args, $template_path, $default_path );
+
+    // Re-validate containment after the filter, in case the path was changed.
+    if ( ! masvideos_template_path_is_allowed( $located, $extra_bases ) ) {
+        return;
+    }
 
     do_action( 'masvideos_before_template_part', $template_name, $template_path, $located, $args );
 
@@ -151,6 +295,11 @@ function masvideos_get_template_html( $template_name, $args = array(), $template
  * @return string
  */
 function masvideos_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+    // Reject unsafe template names up front so callers degrade gracefully.
+    if ( ! masvideos_is_valid_template_name( $template_name ) ) {
+        return '';
+    }
+
     if ( ! $template_path ) {
         $template_path = MasVideos()->template_path();
     }
@@ -174,6 +323,68 @@ function masvideos_locate_template( $template_name, $template_path = '', $defaul
 
     // Return what we found.
     return apply_filters( 'masvideos_locate_template', $template, $template_name, $template_path );
+}
+
+/**
+ * Whether the current user may read a given playlist referenced by an externally supplied ID.
+ *
+ * Used to gate rendering of playlist data (title, item count, items, permalink) that is
+ * requested via a request parameter rather than by viewing the playlist post directly.
+ *
+ * Rules:
+ * - The ID must resolve to a real post of the expected playlist post type.
+ * - A publicly-visible playlist (a "public" visibility status, i.e. 'publish') is readable
+ *   by anyone, including anonymous visitors.
+ * - Any other status (e.g. 'private') is readable only by the playlist's author or by a user
+ *   with the object-specific read capability (read_private_{type}s via map_meta_cap).
+ *
+ * @since 1.3.5
+ * @param int    $id            Playlist post ID (untrusted).
+ * @param string $expected_type One of movie_playlist|video_playlist|tv_show_playlist.
+ * @return bool
+ */
+function masvideos_current_user_can_read_playlist( $id, $expected_type ) {
+    $id = absint( $id );
+
+    if ( ! $id ) {
+        return false;
+    }
+
+    $post = get_post( $id );
+
+    if ( ! $post instanceof WP_Post || $post->post_type !== $expected_type ) {
+        return false;
+    }
+
+    /**
+     * Playlist statuses considered publicly readable.
+     *
+     * @since 1.3.5
+     * @param string[] $statuses      Public statuses.
+     * @param string   $expected_type Playlist post type.
+     */
+    $public_statuses = (array) apply_filters( 'masvideos_public_playlist_statuses', array( 'publish' ), $expected_type );
+
+    if ( in_array( $post->post_status, $public_statuses, true ) ) {
+        return true;
+    }
+
+    // Only 'private' playlists are privately readable. Any other non-public state — notably
+    // 'trash', but also draft/pending/future/auto-draft — is NEVER exposed through an
+    // externally supplied playlist ID, even to the owner or an administrator.
+    $private_statuses = (array) apply_filters( 'masvideos_private_playlist_statuses', array( 'private' ), $expected_type );
+
+    if ( ! in_array( $post->post_status, $private_statuses, true ) ) {
+        return false;
+    }
+
+    $user_id = get_current_user_id();
+
+    if ( $user_id && (int) $post->post_author === $user_id ) {
+        return true;
+    }
+
+    return current_user_can( 'read_post', $id );
 }
 
 /**
@@ -586,7 +797,7 @@ function masvideos_print_js() {
          * @since 2.6.0
          * @param string $js JavaScript code.
          */
-        echo apply_filters( 'masvideos_queued_js', $js ); // WPCS: XSS ok.
+        echo apply_filters( 'masvideos_queued_js', $js ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Inline JavaScript queued by the plugin for output inside a <script> block; escaping as HTML would corrupt the script.
 
         unset( $masvideos_queued_js );
     }
@@ -595,14 +806,32 @@ function masvideos_print_js() {
 /**
  * Set a cookie - wrapper for setcookie using WP constants.
  *
- * @param  string  $name   Name of the cookie being set.
- * @param  string  $value  Value of the cookie.
- * @param  integer $expire Expiry of the cookie.
- * @param  bool    $secure Whether the cookie should be served only over https.
+ * Defaults the Secure flag to is_ssl() and HttpOnly to true, and sets SameSite=Lax, so cookies set
+ * through this helper carry sensible security attributes (MV-20). Each is filterable. The
+ * options-array form of setcookie() (PHP 7.3+) is used so SameSite can be expressed on PHP 7.4.
+ *
+ * @param  string       $name     Name of the cookie being set.
+ * @param  string       $value    Value of the cookie.
+ * @param  integer      $expire   Expiry of the cookie.
+ * @param  bool|null    $secure   Whether the cookie should be served only over https. Null uses is_ssl().
+ * @param  bool         $httponly Whether the cookie should be served only over HTTP (not JS).
  */
-function masvideos_setcookie( $name, $value, $expire = 0, $secure = false ) {
+function masvideos_setcookie( $name, $value, $expire = 0, $secure = null, $httponly = true ) {
+    if ( is_null( $secure ) ) {
+        $secure = is_ssl();
+    }
+
     if ( ! headers_sent() ) {
-        setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure, apply_filters( 'masvideos_cookie_httponly', false, $name, $value, $expire, $secure ) );
+        $options = array(
+            'expires'  => (int) $expire,
+            'path'     => COOKIEPATH ? COOKIEPATH : '/',
+            'domain'   => COOKIE_DOMAIN,
+            'secure'   => (bool) $secure,
+            'httponly' => (bool) apply_filters( 'masvideos_cookie_httponly', $httponly, $name, $value, $expire, $secure ),
+            'samesite' => apply_filters( 'masvideos_cookie_samesite', 'Lax', $name, $value, $expire, $secure ),
+        );
+
+        setcookie( $name, $value, $options );
     } elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
         headers_sent( $file, $line );
         trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE ); // @codingStandardsIgnoreLine
@@ -668,5 +897,41 @@ if ( ! function_exists( 'masvideos_is_active_theme' ) ) {
      */
     function masvideos_is_active_theme( $theme ) {
         return is_array( $theme ) ? in_array( get_template(), $theme, true ) : get_template() === $theme;
+    }
+}
+
+if ( ! function_exists( 'masvideos_wp_filesystem' ) ) {
+    /**
+     * Initialise and return the WordPress filesystem abstraction for a non-interactive write.
+     *
+     * This never prompts for credentials: it passes no credentials to WP_Filesystem(), so it
+     * succeeds only when the 'direct' method is available (the file is owned/writable by the web
+     * process). On any credential-required method (FTP/SSH) it returns null and the caller must
+     * treat that as a write failure — exactly as the previous is_writeable()/fopen() checks did —
+     * rather than prompting or silently falling back to raw PHP file operations. It never changes
+     * the site-wide FS_METHOD.
+     *
+     * @since 1.3.5
+     * @return WP_Filesystem_Base|null The filesystem instance, or null when a direct write is unavailable.
+     */
+    function masvideos_wp_filesystem() {
+        global $wp_filesystem;
+
+        if ( ! function_exists( 'WP_Filesystem' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+
+        if ( ! ( $wp_filesystem instanceof WP_Filesystem_Base ) ) {
+            // No credentials are supplied, so this returns true only for the 'direct' method.
+            if ( ! WP_Filesystem() ) {
+                return null;
+            }
+        }
+
+        if ( ! ( $wp_filesystem instanceof WP_Filesystem_Base ) || 'direct' !== $wp_filesystem->method ) {
+            return null;
+        }
+
+        return $wp_filesystem;
     }
 }

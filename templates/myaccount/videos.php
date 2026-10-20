@@ -45,7 +45,7 @@ do_action( 'masvideos_before_account_videos', $has_videos ); ?>
 
                             <?php elseif ( 'video-title' === $column_id ) : ?>
                                 <a href="<?php echo esc_url( get_permalink( $video->get_id() ) ); ?>">
-                                    <?php echo $video->get_name(); ?>
+                                    <?php echo esc_html( $video->get_name() ); ?>
                                 </a>
 
                             <?php elseif ( 'video-date' === $column_id ) : ?>
@@ -77,11 +77,11 @@ do_action( 'masvideos_before_account_videos', $has_videos ); ?>
     <?php if ( 1 < $user_videos->max_num_pages ) : ?>
         <div class="masvideos-pagination masvideos-pagination--without-numbers masvideos-Pagination">
             <?php if ( 1 !== $current_page ) : ?>
-                <a class="masvideos-button masvideos-button--previous masvideos-Button masvideos-Button--previous button" href="<?php echo esc_url( masvideos_get_endpoint_url( 'videos', $current_page - 1 ) ); ?>"><?php _e( 'Previous', 'masvideos' ); ?></a>
+                <a class="masvideos-button masvideos-button--previous masvideos-Button masvideos-Button--previous button" href="<?php echo esc_url( masvideos_get_endpoint_url( 'videos', $current_page - 1 ) ); ?>"><?php esc_html_e( 'Previous', 'masvideos' ); ?></a>
             <?php endif; ?>
 
             <?php if ( intval( $user_videos->max_num_pages ) !== $current_page ) : ?>
-                <a class="masvideos-button masvideos-button--next masvideos-Button masvideos-Button--next button" href="<?php echo esc_url( masvideos_get_endpoint_url( 'videos', $current_page + 1 ) ); ?>"><?php _e( 'Next', 'masvideos' ); ?></a>
+                <a class="masvideos-button masvideos-button--next masvideos-Button masvideos-Button--next button" href="<?php echo esc_url( masvideos_get_endpoint_url( 'videos', $current_page + 1 ) ); ?>"><?php esc_html_e( 'Next', 'masvideos' ); ?></a>
             <?php endif; ?>
         </div>
     <?php endif; ?>
@@ -89,9 +89,9 @@ do_action( 'masvideos_before_account_videos', $has_videos ); ?>
 <?php else : ?>
     <div class="masvideos-message masvideos-message--info masvideos-Message masvideos-Message--info masvideos-info">
         <a class="masvideos-Button button" href="<?php echo esc_url( apply_filters( 'masvideos_account_videos_upload_redirect', masvideos_get_page_permalink( 'upload_video' ) ) ); ?>">
-            <?php _e( 'Upload videos', 'masvideos' ); ?>
+            <?php esc_html_e( 'Upload videos', 'masvideos' ); ?>
         </a>
-        <?php _e( 'No video has been made yet.', 'masvideos' ); ?>
+        <?php esc_html_e( 'No video has been made yet.', 'masvideos' ); ?>
     </div>
 <?php endif; ?>
 

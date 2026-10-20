@@ -52,7 +52,7 @@ function masvideos_get_movies( $args ) {
 function masvideos_get_movie( $the_movie = false ) {
     if ( ! did_action( 'masvideos_init' ) ) {
         /* translators: 1: masvideos_get_movie 2: masvideos_init */
-        _doing_it_wrong( __FUNCTION__, sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_movie', 'masvideos_init' ), '1.0.0' );
+        _doing_it_wrong( __FUNCTION__, esc_html( sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_movie', 'masvideos_init' ) ), '1.0.0' );
         return false;
     }
     return MasVideos()->movie_factory->get_movie( $the_movie );
@@ -318,7 +318,7 @@ function masvideos_get_related_movies( $movie_id, $limit = 5, $exclude_ids = arr
 
 if ( ! function_exists ( 'masvideos_the_movie' ) ) {
     function masvideos_the_movie( $post = null ) {
-        echo masvideos_get_the_movie( $post );
+        echo masvideos_get_the_movie( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Player markup from the plugin's safe render pipeline (sanitised source/oEmbed/iframe allowlist).
     }
 }
 
@@ -336,6 +336,7 @@ if ( ! function_exists ( 'masvideos_get_the_movie' ) ) {
 
         $movie_src = '';
         $movie_choice = $movie->get_movie_choice();
+        $is_affiliate_html = false;
 
         if ( $movie_choice == 'movie_file' ) {
             $movie_src =  wp_get_attachment_url( $movie->get_movie_attachment_id() );
@@ -347,13 +348,22 @@ if ( ! function_exists ( 'masvideos_get_the_movie' ) ) {
             if( $movie->get_movie_is_affiliate_link() ) {
                 ob_start();
                 ?><a href="<?php echo esc_url( $movie_src ); ?>" class="movie-affiliate-link" target="_blank">
-                    <?php echo masvideos_get_movie_thumbnail( 'full' ); ?>
+                    <?php echo masvideos_get_movie_thumbnail( 'full' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_post_thumbnail()-based markup, already escaped by core. ?>
                 </a><?php
                 $movie_src = ob_get_clean();
+                $is_affiliate_html = true;
             }
         }
 
-        return apply_filters( 'the_content', $movie_src );
+        // The affiliate branch builds its own safe markup (escaped link + thumbnail); everything
+        // else is user-controlled metadata rendered through the safe pipeline (no the_content).
+        if ( $is_affiliate_html ) {
+            $output = wp_kses_post( $movie_src );
+        } else {
+            $output = masvideos_render_video_source( $movie_choice, $movie_src );
+        }
+
+        return apply_filters( 'masvideos_get_the_movie', $output, $movie, $movie_choice );
     }
 }
 

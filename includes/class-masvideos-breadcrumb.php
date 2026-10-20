@@ -28,7 +28,7 @@ class MasVideos_Breadcrumb {
 	 */
 	public function add_crumb( $name, $link = '' ) {
 		$this->crumbs[] = array(
-			strip_tags( $name ),
+			wp_strip_all_tags( $name ),
 			$link,
 		);
 	}

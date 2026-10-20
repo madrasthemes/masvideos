@@ -14,11 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! empty( $breadcrumb ) ) {
 
-	echo $wrap_before;
+	echo $wrap_before; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Wrapper markup supplied by masvideos_breadcrumb() args/filters (trusted template markup).
 
 	foreach ( $breadcrumb as $key => $crumb ) {
 
-		echo $before;
+		echo $before; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Item-before markup supplied by masvideos_breadcrumb() args/filters (trusted template markup).
 
 		if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
 			echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
@@ -26,13 +26,13 @@ if ( ! empty( $breadcrumb ) ) {
 			echo esc_html( $crumb[0] );
 		}
 
-		echo $after;
+		echo $after; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Item-after markup supplied by masvideos_breadcrumb() args/filters (trusted template markup).
 
 		if ( sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo $delimiter;
+			echo $delimiter; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Delimiter markup supplied by masvideos_breadcrumb() args/filters (trusted template markup).
 		}
 	}
 
-	echo $wrap_after;
+	echo $wrap_after; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Wrapper markup supplied by masvideos_breadcrumb() args/filters (trusted template markup).
 
 }

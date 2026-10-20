@@ -37,10 +37,19 @@ class MasVideos_Query {
      * Get any errors from querystring.
      */
     public function get_errors() {
-        $error = ! empty( $_GET['masvideos_error'] ) ? sanitize_text_field( wp_unslash( $_GET['masvideos_error'] ) ) : ''; // WPCS: input var ok, CSRF ok.
+        // Treat the query value as an error CODE, not as message text. Only server-defined codes
+        // map to a fixed, translated message; anything else is ignored so an attacker cannot make
+        // the site display arbitrary text as a trusted plugin notice (MV-16). WPCS: input var ok, CSRF ok.
+        $error_code = ! empty( $_GET['masvideos_error'] ) ? sanitize_key( wp_unslash( $_GET['masvideos_error'] ) ) : '';
 
-        if ( $error && ! masvideos_has_notice( $error, 'error' ) ) {
-            masvideos_add_notice( $error, 'error' );
+        if ( ! $error_code ) {
+            return;
+        }
+
+        $messages = masvideos_get_notice_error_messages();
+
+        if ( isset( $messages[ $error_code ] ) && ! masvideos_has_notice( $messages[ $error_code ], 'error' ) ) {
+            masvideos_add_notice( $messages[ $error_code ], 'error' );
         }
     }
 

@@ -150,7 +150,7 @@ if ( ! function_exists( 'masvideos_movie_playlist_loop_start' ) ) {
         $loop_start = apply_filters( 'masvideos_movie_playlist_loop_start', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_start; // WPCS: XSS ok.
+            echo $loop_start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_start;
         }
@@ -173,7 +173,7 @@ if ( ! function_exists( 'masvideos_movie_playlist_loop_end' ) ) {
         $loop_end = apply_filters( 'masvideos_movie_playlist_loop_end', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
+            echo $loop_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_end;
         }
@@ -221,7 +221,7 @@ if ( ! function_exists( 'masvideos_template_single_movie_playlist_movies' ) ) {
             $args = wp_parse_args( $args, $defaults );
 
             add_filter( 'masvideos_loop_movie_link', 'masvideos_loop_movie_link_for_movie_playlist', 99, 2 );
-            echo MasVideos_Shortcodes::movies( $args );
+            echo MasVideos_Shortcodes::movies( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode render API returns prepared markup.
             remove_filter( 'masvideos_loop_movie_link', 'masvideos_loop_movie_link_for_movie_playlist', 99, 2 );
         }
     }
@@ -239,7 +239,7 @@ if ( ! function_exists( 'masvideos_template_button_toggle_user_movie_playlist' )
             foreach ( $movie_playlists as $key => $movie_playlist ) {
                 $playlist_id = $movie_playlist->ID;
                 $is_movie_added = masvideos_is_movie_added_to_playlist( $playlist_id, $movie_id );
-                ?><a class="toggle-playlist masvideos-ajax-toggle-movie-playlist<?php echo $is_movie_added ? ' added' : ''; ?>" href="<?php echo get_permalink( $playlist_id ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-movie_id=<?php echo esc_attr( $movie_id ); ?>><?php echo get_the_title( $playlist_id ); ?></a><?php
+                ?><a class="toggle-playlist masvideos-ajax-toggle-movie-playlist<?php echo $is_movie_added ? ' added' : ''; ?>" href="<?php echo esc_url( get_permalink( $playlist_id ) ); ?>" data-playlist_id=<?php echo esc_attr( $playlist_id ); ?> data-movie_id=<?php echo esc_attr( $movie_id ); ?>><?php echo esc_html( get_the_title( $playlist_id ) ); ?></a><?php
             }
         }
     }
@@ -286,6 +286,7 @@ if ( ! function_exists( 'masvideos_template_loop_movie_playlist_poster' ) ) {
         if( $movie_ids ) {
             $recently_added_movie = masvideos_get_movie( end( $movie_ids ) );
             $image_size = apply_filters( 'masvideos_movie_playlist_thumbnail_size', 'masvideos_movie_medium' );
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_image() returns wp_get_attachment_image()-based markup, already escaped by core; kses would strip supported img attributes (srcset/sizes/data-*).
             echo is_object( $recently_added_movie ) ? $recently_added_movie->get_image( $image_size , array( 'class' => 'movie-playlist__poster--image' ) ) : '';
         }
     }
@@ -363,7 +364,8 @@ if ( ! function_exists( 'masvideos_template_loop_movie_playlist_movies_count' ) 
             $movies_count = count( masvideos_single_movie_playlist_movies( get_the_ID() ) );
 
             if( $movies_count > 0 ) {
-                printf( _n( '%s Movie', '%s Movies', $movies_count, 'masvideos' ), number_format_i18n( $movies_count ) );
+                /* translators: %s: number of movies */
+                printf( esc_html( _n( '%s Movie', '%s Movies', $movies_count, 'masvideos' ) ), esc_html( number_format_i18n( $movies_count ) ) );
             }
         ?></span><?php
     }

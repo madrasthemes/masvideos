@@ -129,6 +129,7 @@ function masvideos_deprecated_argument( $argument, $version, $message = null ) {
 		do_action( 'deprecated_argument_run', $argument, $message, $version );
 		error_log( "The {$argument} argument is deprecated since version {$version}. {$message}" );
 	} else {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WordPress core deprecation handler; arguments are internal developer-supplied identifiers/strings and core renders the notice itself.
 		_deprecated_argument( $argument, $version, $message );
 	}
 }
