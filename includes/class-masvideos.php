@@ -17,7 +17,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
          *
          * @var string
          */
-        public $version = '1.3.2';
+        public $version = '1.3.5';
 
         /**
          * The single instance of the class.
@@ -157,6 +157,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
          * Cloning is forbidden.
          */
         public function __clone() {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static translatable string with an intentional HTML entity (&#8217;) that esc_html would double-encode.
             _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'masvideos' ), '1.0.0' );
         }
 
@@ -164,6 +165,7 @@ if ( ! class_exists( 'MasVideos' ) ) {
          * Unserializing instances of this class is forbidden.
          */
         public function __wakeup() {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static translatable string with an intentional HTML entity (&#8217;) that esc_html would double-encode.
             _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'masvideos' ), '1.0.0' );
         }
 

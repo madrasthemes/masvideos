@@ -236,7 +236,7 @@ if ( ! function_exists( 'masvideos_get_tv_show_search_form' ) ) {
             return $form;
         }
 
-        echo $form; // WPCS: XSS ok.
+        echo $form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Search form markup from template + apply_filters(); contains form controls (not kses-able), dynamic values escaped at source.
     }
 }
 
@@ -262,7 +262,7 @@ if ( ! function_exists( 'masvideos_tv_show_loop_start' ) ) {
         $loop_start = apply_filters( 'masvideos_tv_show_loop_start', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_start; // WPCS: XSS ok.
+            echo $loop_start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_start;
         }
@@ -285,7 +285,7 @@ if ( ! function_exists( 'masvideos_no_tv_shows_found' ) ) {
      * Handles the loop when no tv shows were found/no tv_show exist.
      */
     function masvideos_no_tv_shows_found() {
-        ?><p class="masvideos-info"><?php _e( 'No tv shows were found matching your selection.', 'masvideos' ); ?></p><?php
+        ?><p class="masvideos-info"><?php esc_html_e( 'No tv shows were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
@@ -305,7 +305,7 @@ if ( ! function_exists( 'masvideos_tv_show_loop_end' ) ) {
         $loop_end = apply_filters( 'masvideos_tv_show_loop_end', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
+            echo $loop_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_end;
         }
@@ -348,7 +348,7 @@ if ( ! function_exists( 'masvideos_tv_show_page_title' ) ) {
         $page_title = apply_filters( 'masvideos_tv_show_page_title', $page_title );
 
         if ( $echo ) {
-            echo $page_title; // WPCS: XSS ok.
+            echo esc_html( $page_title );
         } else {
             return $page_title;
         }
@@ -457,12 +457,12 @@ if ( ! function_exists( 'masvideos_tv_shows_count' ) ) {
             <?php
             if ( $args['total'] <= $args['per_page'] || -1 === $args['per_page'] ) {
                 /* translators: %d: total results */
-                printf( _n( 'Showing the single result', 'Showing all %d results', $args['total'], 'masvideos' ), $args['total'] );
+                printf( esc_html( _n( 'Showing %d result', 'Showing all %d results', $args['total'], 'masvideos' ) ), (int) $args['total'] );
             } else {
                 $first = ( $args['per_page'] * $args['current'] ) - $args['per_page'] + 1;
                 $last  = min( $args['total'], $args['per_page'] * $args['current'] );
                 /* translators: 1: first result 2: last result 3: total results */
-                printf( _nx( 'Showing the single result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), $first, $last, $args['total'] );
+                printf( _nx( 'Showing %1$d&ndash;%2$d of %3$d result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), (int) $first, (int) $last, (int) $args['total'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static translators string (contains an &ndash; entity that must not be re-encoded); only integer counts are interpolated.
             }
             ?>
         </p>
@@ -498,7 +498,8 @@ if ( ! function_exists( 'masvideos_tv_shows_pagination' ) ) {
 
         <nav class="masvideos-pagination masvideos-tv-shows-pagination">
             <?php
-                echo paginate_links( apply_filters( 'masvideos_tv_shows_pagination_args', array( // WPCS: XSS ok.
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- paginate_links() returns markup already escaped by WordPress core.
+                echo paginate_links( apply_filters( 'masvideos_tv_shows_pagination_args', array(
                     'base'         => $args['base'],
                     'format'       => $args['format'],
                     'add_args'     => false,
@@ -526,7 +527,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_feature_badge' ) ) {
 
         if ( $tv_show->get_featured() ) {
             echo '<span class="tv-show__badge">';
-            echo '<span class="tv-show__badge--featured">' . esc_html__( apply_filters( 'masvideos_template_loop_tv_show_feature_badge_text', 'Featured' ), 'masvideos' ) . '</span>';
+            echo '<span class="tv-show__badge--featured">' . esc_html( apply_filters( 'masvideos_template_loop_tv_show_feature_badge_text', __( 'Featured', 'masvideos' ) ) ) . '</span>';
             echo '</span>';
         }
     }
@@ -559,7 +560,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_poster' ) ) {
      * tv show poster in the loop.
      */
     function masvideos_template_loop_tv_show_poster() {
-        echo masvideos_get_tv_show_thumbnail( 'masvideos_tv_show_medium' );
+        echo masvideos_get_tv_show_thumbnail( 'masvideos_tv_show_medium' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_post_thumbnail()-based markup, already escaped by core; kses would strip supported img attributes (srcset/sizes/data-*).
     }
 }
 
@@ -647,7 +648,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_short_desc' ) ) {
 
         ?>
         <div class="tv-show__short-description">
-            <?php echo '<div>' . $short_description . '</div>'; ?>
+            <?php echo '<div>' . wp_kses_post( $short_description ) . '</div>'; ?>
         </div>
 
         <?php
@@ -738,7 +739,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_new_episode' ) ) {
                     $episode_title = $episode->get_title();
                 }
                 echo '<div class="tv-show__episode">'. esc_html__( 'Newest Episode: ', 'masvideos' );
-                echo '<a href="' . esc_url( $episode_url ) . '" class="tv-show__episode--link">' . $episode_title . '</a>';
+                echo '<a href="' . esc_url( $episode_url ) . '" class="tv-show__episode--link">' . esc_html( $episode_title ) . '</a>';
                 echo '</div>';
             }
         }
@@ -755,6 +756,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_new_episodes_count' ) )
         $count = count( $all_episodes );
 
         if( $count ) {
+            /* translators: %s: number of episodes */
             echo wp_kses_post( sprintf( _n( '<span>%s</span> Episode', '<span>%s</span> Episodes', $count, 'masvideos' ), $count ) ) ;
         }
     }
@@ -849,7 +851,7 @@ if ( ! function_exists( 'masvideos_template_loop_tv_show_seasons' ) ) {
         if( ! empty( $season_titles ) ) {
             echo '<div class="tv-show__seasons">'. esc_html__( 'Seasons #:  ', 'masvideos' );
             foreach ( $season_titles as $season_title ) {
-                echo '<a href="' . esc_url( get_permalink( $tv_show->get_ID() ) ) . '" class="tv-show__episode--link">' . $season_title . '</a>';
+                echo '<a href="' . esc_url( get_permalink( $tv_show->get_ID() ) ) . '" class="tv-show__episode--link">' . esc_html( $season_title ) . '</a>';
             }
             echo '</div>';
         }
@@ -866,7 +868,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_poster' ) ) {
      * Output the tv show poster.
      */
     function masvideos_template_single_tv_show_poster() {
-        echo masvideos_get_tv_show_thumbnail( 'masvideos_tv_show_large' );
+        echo masvideos_get_tv_show_thumbnail( 'masvideos_tv_show_large' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_post_thumbnail()-based markup, already escaped by core; kses would strip supported img attributes (srcset/sizes/data-*).
     }
 }
 
@@ -903,7 +905,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_genres' ) ) {
         $categories = get_the_term_list( $tv_show->get_id(), 'tv_show_genre', '', ', ' );
 
         if( ! empty ( $categories ) ) {
-           echo '<span class="tv-show__meta--genre">' . $categories . '</span>';
+           echo '<span class="tv-show__meta--genre">' . $categories . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $categories is get_the_term_list() output: term links already escaped by core.
         }
     }
 }
@@ -919,6 +921,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_tags' ) ) {
         $tags = get_the_term_list( $tv_show->get_id(), 'tv_show_tag', '', ', ' );
 
         if( ! empty ( $tags ) ) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped label + $tags from get_the_term_list() (term links escaped by core).
             echo sprintf( '<span class="tv-show__tags">%s %s</span>', esc_html__( 'Tags:', 'masvideos' ), $tags );
         }
     }
@@ -951,7 +954,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_release_year' ) ) {
         }
 
         if( ! empty ( $tv_show_year ) ) {
-            echo sprintf( '<span class="tv-show__meta--release-year">%s</span>', $tv_show_year );
+            echo sprintf( '<span class="tv-show__meta--release-year">%s</span>', esc_html( $tv_show_year ) );
         }
     }
 }
@@ -1032,8 +1035,8 @@ if ( ! function_exists( 'masvideos_related_tv_shows' ) ) {
 
         if( ! empty( $related_tv_show_ids ) ) {
             echo '<section class="tv-show__related">';
-                echo sprintf( '<h2 class="tv-show__related--title">%s</h2>', $title );
-                echo MasVideos_Shortcodes::tv_shows( $args );
+                echo wp_kses_post( sprintf( '<h2 class="tv-show__related--title">%s</h2>', $title ) );
+                echo MasVideos_Shortcodes::tv_shows( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode render API returns prepared markup.
             echo '</section>';
         }
     }
@@ -1111,7 +1114,7 @@ if ( ! function_exists( 'masvideos_template_button_tv_show_playlist' ) ) {
 
         ?>
         <div class="tv-show-actions--link_add-to-playlist dropdown">
-            <a class="dropdown-toggle" href="<?php echo get_permalink( $tv_show->get_id() ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
+            <a class="dropdown-toggle" href="<?php echo esc_url( get_permalink( $tv_show->get_id() ) ); ?>" data-toggle="dropdown"><?php echo esc_html__( '+ Playlist', 'masvideos' ) ?></a>
             <div class="dropdown-menu">
                 <?php
                     $tv_show_playlists_page_url = masvideos_get_endpoint_url( 'tv-show-playlists', '', masvideos_get_page_permalink( 'myaccount' ) );
@@ -1197,7 +1200,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_avg_rating' ) ) {
                 <div class="avg-rating__inner">
                     <span class="avg-rating__number"> <?php echo number_format( $tv_show->get_average_rating(), 1, '.', '' ); ?></span>
                     <span class="avg-rating__text">
-                        <?php echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $tv_show->get_review_count(), 'masvideos' ), $tv_show->get_review_count() ) ) ; ?>
+                        <?php /* translators: %s: number of votes */ echo wp_kses_post( sprintf( _n( '<span>%s</span> Vote', '<span>%s</span> votes', $tv_show->get_review_count(), 'masvideos' ), $tv_show->get_review_count() ) ) ; ?>
                     </span>
                 </div>
             </a>
@@ -1252,7 +1255,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_short_desc' ) ) {
 
         ?>
         <div class="tv-show__short-description">
-            <?php echo '<p>' . $short_description . '</p>'; ?>
+            <?php echo '<p>' . wp_kses_post( $short_description ) . '</p>'; ?>
         </div>
         <?php
     }
@@ -1377,7 +1380,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_cast_crew_tabs' ) ) {
         $tabs = apply_filters( 'masvideos_template_single_tv_show_cast_crew_tabs', $tabs );
 
         if( ! empty( $tabs ) ) {
-            ?><h2 class="crew-casts-title"><?php echo apply_filters( 'masvideos_template_single_tv_show_cast_crew_section_title', esc_html__( 'Cast & Crew', 'masvideos' ) ); ?></h2><?php
+            ?><h2 class="crew-casts-title"><?php echo esc_html( apply_filters( 'masvideos_template_single_tv_show_cast_crew_section_title', __( 'Cast & Crew', 'masvideos' ) ) ); ?></h2><?php
             masvideos_get_template( 'global/tabs.php', array( 'tabs' => $tabs, 'class' => 'tv-show-cast-crew-tabs' ) );
         }
     }
@@ -1399,7 +1402,7 @@ if ( ! function_exists( 'masvideos_template_single_tv_show_cast_tab' ) ) {
                         <div class="tv-show-cast">
                             <div class="person-image">
                                 <a href="<?php the_permalink( $person->get_ID() ); ?>">
-                                    <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); ?>
+                                    <?php echo masvideos_get_person_thumbnail( 'masvideos_movie_thumbnail', $person ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_post_thumbnail()-based markup, already escaped by core; kses would strip supported img attributes. ?>
                                 </a>
                             </div>
                             <a href="<?php the_permalink( $person->get_ID() ); ?>">

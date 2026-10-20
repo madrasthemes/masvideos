@@ -153,21 +153,25 @@ class MasVideos_Widget_Tv_Shows_Genres extends MasVideos_Widget {
 					$this->genre_ancestors,
 					array( $this->current_genre->term_id ),
 					get_terms(
-						'tv_show_genre',
-						array(
-							'fields'       => 'ids',
-							'parent'       => 0,
-							'hierarchical' => true,
-							'hide_empty'   => false,
+						wp_parse_args(
+							array(
+								'fields'       => 'ids',
+								'parent'       => 0,
+								'hierarchical' => true,
+								'hide_empty'   => false,
+							),
+							array( 'taxonomy' => 'tv_show_genre' )
 						)
 					),
 					get_terms(
-						'tv_show_genre',
-						array(
-							'fields'       => 'ids',
-							'parent'       => $this->current_genre->term_id,
-							'hierarchical' => true,
-							'hide_empty'   => false,
+						wp_parse_args(
+							array(
+								'fields'       => 'ids',
+								'parent'       => $this->current_genre->term_id,
+								'hierarchical' => true,
+								'hide_empty'   => false,
+							),
+							array( 'taxonomy' => 'tv_show_genre' )
 						)
 					)
 				);
@@ -176,12 +180,14 @@ class MasVideos_Widget_Tv_Shows_Genres extends MasVideos_Widget {
 					foreach ( $this->genre_ancestors as $ancestor ) {
 						$include = array_merge(
 							$include, get_terms(
-								'tv_show_genre',
-								array(
-									'fields'       => 'ids',
-									'parent'       => $ancestor,
-									'hierarchical' => false,
-									'hide_empty'   => false,
+								wp_parse_args(
+									array(
+										'fields'       => 'ids',
+										'parent'       => $ancestor,
+										'hierarchical' => false,
+										'hide_empty'   => false,
+									),
+									array( 'taxonomy' => 'tv_show_genre' )
 								)
 							)
 						);
@@ -190,12 +196,14 @@ class MasVideos_Widget_Tv_Shows_Genres extends MasVideos_Widget {
 			} else {
 				// Direct children.
 				$include = get_terms(
-					'tv_show_genre',
-					array(
-						'fields'       => 'ids',
-						'parent'       => $this->current_genre->term_id,
-						'hierarchical' => true,
-						'hide_empty'   => false,
+					wp_parse_args(
+						array(
+							'fields'       => 'ids',
+							'parent'       => $this->current_genre->term_id,
+							'hierarchical' => true,
+							'hide_empty'   => false,
+						),
+						array( 'taxonomy' => 'tv_show_genre' )
 					)
 				);
 			}

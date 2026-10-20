@@ -32,7 +32,9 @@ if ( ! comments_open() ) {
                 $commenter = wp_get_current_commenter();
 
                 $comment_form = array(
+                    /* translators: %s: post title */
                     'title_reply'          => have_comments() ? __( 'Add a review', 'masvideos' ) : sprintf( __( 'Be the first to review &ldquo;%s&rdquo;', 'masvideos' ), get_the_title() ),
+                    /* translators: %s: name of the person being replied to */
                     'title_reply_to'       => __( 'Leave a Reply to %s', 'masvideos' ),
                     'title_reply_before'   => '<span id="reply-title" class="comment-reply-title">',
                     'title_reply_after'    => '</span>',
@@ -49,6 +51,7 @@ if ( ! comments_open() ) {
                 );
 
                 if ( $account_page_url = wp_login_url() ) {
+                    /* translators: %s: login URL */
                     $comment_form['must_log_in'] = '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%s">logged in</a> to post a review.', 'masvideos' ), esc_url( $account_page_url ) ) . '</p>';
                 }
 
@@ -78,7 +81,7 @@ if ( ! comments_open() ) {
     <div id="comments">
         <?php if ( have_comments() ) : 
             $title = apply_filters( 'masvideos_reviews_title', esc_html__( 'Users Reviews', 'masvideos' ), $movie ); ?>
-            <?php echo sprintf( '<h2 class="masvideos-reviews__title">%s</h2>', $title ); ?>
+            <?php echo wp_kses_post( sprintf( '<h2 class="masvideos-reviews__title">%s</h2>', $title ) ); ?>
             <ol class="commentlist">
                 <?php wp_list_comments( apply_filters( 'masvideos_movie_review_list_args', array( 'callback' => 'masvideos_movie_comments' ) ) ); ?>
             </ol>
@@ -95,7 +98,7 @@ if ( ! comments_open() ) {
 
         <?php else : ?>
 
-            <p class="masvideos-noreviews"><?php _e( 'There are no reviews yet.', 'masvideos' ); ?></p>
+            <p class="masvideos-noreviews"><?php esc_html_e( 'There are no reviews yet.', 'masvideos' ); ?></p>
 
         <?php endif; ?>
     </div>

@@ -1040,8 +1040,8 @@ class MasVideos_Post_Types {
                         'hierarchical'          => false,
                         'update_count_callback' => '_update_post_term_count',
                         'labels'                => array(
-                            /* translators: %s: attribute name */
-                            'name'              => sprintf( __( '%s %s', 'masvideos' ), $post_type_object->labels->singular_name, $label ),
+                            /* translators: 1: post type singular name, 2: attribute label */
+                            'name'              => sprintf( __( '%1$s %2$s', 'masvideos' ), $post_type_object->labels->singular_name, $label ),
                             'singular_name'     => $label,
                             /* translators: %s: attribute name */
                             'search_items'      => sprintf( __( 'Search %s', 'masvideos' ), $label ),

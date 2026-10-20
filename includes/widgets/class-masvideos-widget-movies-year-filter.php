@@ -31,7 +31,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
                 'type'          => 'number',
                 'std'           => 2000,
                 'min'           => 1900,
-                'max'           => ( date("Y") - 1 ),
+                'max'           => ( (int) wp_date( 'Y' ) - 1 ),
                 'step'          => 1,
                 'label'         => __( 'Start Year', 'masvideos' ),
             ),
@@ -56,7 +56,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
         }
 
         $start_year = absint( isset( $instance['start_year'] ) ? $instance['start_year'] : $this->settings['start_year']['std'] );
-        $end_year   = date("Y");
+        $end_year   = (int) wp_date( 'Y' ); // Current year in the site's timezone (display value).
 
         ob_start();
 
@@ -84,7 +84,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
             $year_html   = $i;
             $count_html  = '';
 
-            printf( '<li class="%s"><a href="%s"><span>%s</span> %s</a></li>', esc_attr( $class ), esc_url( $link ), $year_html, $count_html ); // WPCS: XSS ok.
+            printf( '<li class="%s"><a href="%s"><span>%s</span> %s</a></li>', esc_attr( $class ), esc_url( $link ), esc_html( $year_html ), esc_html( $count_html ) );
         }
 
         echo '</ul>';
@@ -94,7 +94,7 @@ class MasVideos_Widget_Movies_Year_Filter extends MasVideos_Widget {
         if ( ! $found ) {
             ob_end_clean();
         } else {
-            echo ob_get_clean(); // WPCS: XSS ok.
+            echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Buffered widget HTML fragment; dynamic values escaped at source.
         }
     }
 }

@@ -438,18 +438,21 @@ class MasVideos_Frontend_Scripts {
                 $params = array(
                     'ajax_url'                  => MasVideos()->ajax_url(),
                     'masvideos_ajax_url'        => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
+                    'nonce'                     => wp_create_nonce( 'masvideos-playlist' ),
                 );
                 break;
             case 'masvideos-playlist-video':
                 $params = array(
                     'ajax_url'                  => MasVideos()->ajax_url(),
                     'masvideos_ajax_url'        => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
+                    'nonce'                     => wp_create_nonce( 'masvideos-playlist' ),
                 );
                 break;
             case 'masvideos-playlist-movie':
                 $params = array(
                     'ajax_url'                  => MasVideos()->ajax_url(),
                     'masvideos_ajax_url'        => MasVideos_AJAX::get_endpoint( '%%endpoint%%' ),
+                    'nonce'                     => wp_create_nonce( 'masvideos-playlist' ),
                 );
                 break;
             default:

@@ -119,8 +119,8 @@ function masvideos_rest_upload_image_from_url( $image_url ) {
         }
     }
 
-    // Upload the file.
-    $upload = wp_upload_bits( $file_name, '', wp_remote_retrieve_body( $response ) );
+    // Upload the file. The second parameter ($deprecated) must be null.
+    $upload = wp_upload_bits( $file_name, null, wp_remote_retrieve_body( $response ) );
 
     if ( $upload['error'] ) {
         return new WP_Error( 'masvideos_rest_image_upload_error', $upload['error'], array( 'status' => 400 ) );

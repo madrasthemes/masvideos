@@ -13,6 +13,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Allowlist of error codes that may be surfaced from the `masvideos_error` query string, each
+ * mapped to a fixed, translated message.
+ *
+ * Only codes present here are ever rendered, so a request cannot inject arbitrary notice text
+ * (MV-16). Integrations can register their own codes via the filter.
+ *
+ * @since 1.3.5
+ * @return array code => message
+ */
+function masvideos_get_notice_error_messages() {
+    return (array) apply_filters(
+        'masvideos_error_notice_messages',
+        array(
+            'template_file_not_writable' => __( 'Could not write to template file.', 'masvideos' ),
+        )
+    );
+}
+
+/**
  * Get the count of notices added, either for all notices (default) or for one.
  * particular notice type specified by $notice_type.
  *
@@ -22,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function masvideos_notice_count( $notice_type = '' ) {
     if ( ! did_action( 'masvideos_init' ) ) {
-        _doing_it_wrong( __FUNCTION__, __( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
         return;
     }
 
@@ -53,7 +72,7 @@ function masvideos_notice_count( $notice_type = '' ) {
  */
 function masvideos_has_notice( $message, $notice_type = 'success' ) {
     if ( ! did_action( 'masvideos_init' ) ) {
-        _doing_it_wrong( __FUNCTION__, __( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
         return false;
     }
 
@@ -71,7 +90,7 @@ function masvideos_has_notice( $message, $notice_type = 'success' ) {
  */
 function masvideos_add_notice( $message, $notice_type = 'success' ) {
     if ( ! did_action( 'masvideos_init' ) ) {
-        _doing_it_wrong( __FUNCTION__, __( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
         return;
     }
 
@@ -95,7 +114,7 @@ function masvideos_add_notice( $message, $notice_type = 'success' ) {
  */
 function masvideos_set_notices( $notices ) {
     if ( ! did_action( 'masvideos_init' ) ) {
-        _doing_it_wrong( __FUNCTION__, __( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.6' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.6' );
         return;
     }
     MasVideos()->session->set( 'masvideos_notices', $notices );
@@ -109,7 +128,7 @@ function masvideos_set_notices( $notices ) {
  */
 function masvideos_clear_notices() {
     if ( ! did_action( 'masvideos_init' ) ) {
-        _doing_it_wrong( __FUNCTION__, __( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
         return;
     }
     MasVideos()->session->set( 'masvideos_notices', null );
@@ -124,7 +143,7 @@ function masvideos_clear_notices() {
  */
 function masvideos_print_notices( $return = false ) {
     if ( ! did_action( 'masvideos_init' ) ) {
-        _doing_it_wrong( __FUNCTION__, __( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
         return;
     }
 
@@ -150,7 +169,7 @@ function masvideos_print_notices( $return = false ) {
         return $notices;
     }
 
-    echo $notices; // WPCS: XSS ok.
+    echo $notices; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Notice markup already sanitised via masvideos_kses_notice().
 }
 
 /**
@@ -179,7 +198,7 @@ function masvideos_print_notice( $message, $notice_type = 'success' ) {
  */
 function masvideos_get_notices( $notice_type = '' ) {
     if ( ! did_action( 'masvideos_init' ) ) {
-        _doing_it_wrong( __FUNCTION__, __( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'This function should not be called before masvideos_init.', 'masvideos' ), '2.3' );
         return;
     }
 

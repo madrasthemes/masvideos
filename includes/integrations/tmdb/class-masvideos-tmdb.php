@@ -13,7 +13,7 @@ include_once MASVIDEOS_ABSPATH . 'includes/integrations/tmdb/class-masvideos-tmd
 class MasVideos_TMDB {
 
     #@var string url of API TMDB
-    private $api_url = 'http://api.themoviedb.org/3/';
+    private $api_url = 'https://api.themoviedb.org/3/';
 
     #@var array of config parameters
     private $config;
@@ -33,7 +33,7 @@ class MasVideos_TMDB {
 
         // Load the API configuration
         if ( ! $this->_loadConfig() ) {
-            echo __( 'Unable to read configuration, verify that the API key is valid', 'masvideos' );
+            echo esc_html__( 'Unable to read configuration, verify that the API key is valid', 'masvideos' );
             exit;
         }
     }
@@ -201,7 +201,8 @@ class MasVideos_TMDB {
      *  @return string
      */
     public function getImageURL( $size = 'original' ) {
-        return $this->_apiconfiguration->getImageBaseURL().$size;
+        // Use the HTTPS image base so imported poster/backdrop/profile URLs are never cleartext (MV-14).
+        return $this->_apiconfiguration->getSecureImageBaseURL().$size;
     }
 
     //------------------------------------------------------------------------------
@@ -221,20 +222,42 @@ class MasVideos_TMDB {
         $url = $this->api_url . $action . '?api_key=' . $this->getConfig()->getAPIKey() . '&language=' . $this->getConfig()->getLang() . '&append_to_response=' . $append_to_response . '&include_adult='. $this->getConfig()->getAdult();
 
         if ( $this->getConfig()->getDebug() ) {
-            echo '<pre><a href="' . $url . '">check request</a></pre>';
+            // Show only the endpoint path, never the API key or full query string, and escape it (MV-14).
+            echo '<pre>' . esc_html( $this->api_url . $action ) . '</pre>';
         }
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+        // Pin the request to the intended TMDB endpoint over HTTPS: untrusted input in $action must
+        // not be able to point the request (or, via a redirect, the eventual request) at another or
+        // an internal host (MV-14 SSRF hardening).
+        $parsed       = wp_parse_url( $url );
+        $allowed_host = wp_parse_url( $this->api_url, PHP_URL_HOST );
 
-        $results = curl_exec($ch);
+        if ( empty( $parsed['host'] ) || empty( $parsed['scheme'] ) || 'https' !== strtolower( $parsed['scheme'] ) || strtolower( $parsed['host'] ) !== strtolower( $allowed_host ) ) {
+            return array();
+        }
 
-        curl_close( $ch );
+        // Use the WordPress HTTP API over HTTPS with TLS verification left enabled (never disabled).
+        // wp_safe_remote_get() additionally rejects unsafe URLs and blocks redirects to internal or
+        // private hosts.
+        $response = wp_safe_remote_get(
+            $url,
+            array(
+                'timeout'   => (int) apply_filters( 'masvideos_tmdb_request_timeout', 15 ),
+                'sslverify' => true,
+            )
+        );
 
-        return (array) json_decode( ( $results ), true );
+        if ( is_wp_error( $response ) ) {
+            return array();
+        }
+
+        if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+            return array();
+        }
+
+        $data = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        return is_array( $data ) ? $data : array();
     }
 
     //------------------------------------------------------------------------------

@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 do_action( 'masvideos_before_single_movie' );
 
 if ( post_password_required() ) {
-    echo get_the_password_form(); // WPCS: XSS ok.
+    echo get_the_password_form(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_password_form() returns core-generated form markup.
     return;
 }
 ?>

@@ -76,7 +76,13 @@ class MasVideos_Widget_Movies_Rating_Filter extends MasVideos_Widget {
 			$sql .= ' AND ' . $search;
 		}
 
-		return absint( $wpdb->get_var( $sql ) ); // WPCS: unprepared SQL ok.
+		// $sql is assembled from WP_Tax_Query / WP_Meta_Query core-generated SQL, hard-coded post_type
+		// and post_status literals, and MasVideos_Movies_Query::get_main_search_query_sql() (which binds
+		// every search term through $wpdb->prepare()). No request value reaches raw SQL: $rating is only
+		// used to resolve visibility term IDs that are passed through WP_Tax_Query. The scanner cannot
+		// follow pre-assembled core SQL, so a narrow, documented suppression is used here.
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Assembled core WP_Tax_Query/WP_Meta_Query SQL + prepared search fragment; see note above.
+		return absint( $wpdb->get_var( $sql ) );
 	}
 
 	/**
@@ -123,7 +129,7 @@ class MasVideos_Widget_Movies_Rating_Filter extends MasVideos_Widget {
 			$rating_html = masvideos_get_star_rating_html( $rating );
 			$count_html  = esc_html( apply_filters( 'masvideos_movies_rating_filter_count', "({$count})", $count, $rating ) );
 
-			printf( '<li class="%s"><a href="%s"><div class="star-rating">%s</div> %s</a></li>', esc_attr( $class ), esc_url( $link ), $rating_html, $count_html ); // WPCS: XSS ok.
+			printf( '<li class="%s"><a href="%s"><div class="star-rating">%s</div> %s</a></li>', esc_attr( $class ), esc_url( $link ), $rating_html, $count_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Hardcoded markup; $class/$link escaped inline, $rating_html is trusted star-rating HTML from masvideos_get_star_rating_html(), $count_html escaped at source.
 		}
 
 		echo '</ul>';
@@ -133,7 +139,7 @@ class MasVideos_Widget_Movies_Rating_Filter extends MasVideos_Widget {
 		if ( ! $found ) {
 			ob_end_clean();
 		} else {
-			echo ob_get_clean(); // WPCS: XSS ok.
+			echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Buffered widget HTML fragment; dynamic values escaped at source.
 		}
 	}
 }

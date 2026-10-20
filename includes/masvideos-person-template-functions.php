@@ -235,7 +235,7 @@ if ( ! function_exists( 'masvideos_get_person_search_form' ) ) {
             return $form;
         }
 
-        echo $form; // WPCS: XSS ok.
+        echo $form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Search form markup from template + apply_filters(); contains form controls (not kses-able), dynamic values escaped at source.
     }
 }
 
@@ -261,7 +261,7 @@ if ( ! function_exists( 'masvideos_person_loop_start' ) ) {
         $loop_start = apply_filters( 'masvideos_person_loop_start', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_start; // WPCS: XSS ok.
+            echo $loop_start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_start;
         }
@@ -284,7 +284,7 @@ if ( ! function_exists( 'masvideos_no_persons_found' ) ) {
      * Handles the loop when no persons were found/no person exist.
      */
     function masvideos_no_persons_found() {
-        ?><p class="masvideos-info"><?php _e( 'No persons were found matching your selection.', 'masvideos' ); ?></p><?php
+        ?><p class="masvideos-info"><?php esc_html_e( 'No persons were found matching your selection.', 'masvideos' ); ?></p><?php
     }
 }
 
@@ -304,7 +304,7 @@ if ( ! function_exists( 'masvideos_person_loop_end' ) ) {
         $loop_end = apply_filters( 'masvideos_person_loop_end', ob_get_clean() );
 
         if ( $echo ) {
-            echo $loop_end; // WPCS: XSS ok.
+            echo $loop_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Loop wrapper markup from template + apply_filters(); dynamic values escaped at source.
         } else {
             return $loop_end;
         }
@@ -347,7 +347,7 @@ if ( ! function_exists( 'masvideos_person_page_title' ) ) {
         $page_title = apply_filters( 'masvideos_person_page_title', $page_title );
 
         if ( $echo ) {
-            echo $page_title; // WPCS: XSS ok.
+            echo esc_html( $page_title );
         } else {
             return $page_title;
         }
@@ -454,12 +454,12 @@ if ( ! function_exists( 'masvideos_persons_count' ) ) {
             <?php
             if ( $args['total'] <= $args['per_page'] || -1 === $args['per_page'] ) {
                 /* translators: %d: total results */
-                printf( _n( 'Showing the single result', 'Showing all %d results', $args['total'], 'masvideos' ), $args['total'] );
+                printf( esc_html( _n( 'Showing %d result', 'Showing all %d results', $args['total'], 'masvideos' ) ), (int) $args['total'] );
             } else {
                 $first = ( $args['per_page'] * $args['current'] ) - $args['per_page'] + 1;
                 $last  = min( $args['total'], $args['per_page'] * $args['current'] );
                 /* translators: 1: first result 2: last result 3: total results */
-                printf( _nx( 'Showing the single result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), $first, $last, $args['total'] );
+                printf( _nx( 'Showing %1$d&ndash;%2$d of %3$d result', 'Showing %1$d&ndash;%2$d of %3$d results', $args['total'], 'with first and last result', 'masvideos' ), (int) $first, (int) $last, (int) $args['total'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static translators string (contains an &ndash; entity that must not be re-encoded); only integer counts are interpolated.
             }
             ?>
         </p>
@@ -495,7 +495,8 @@ if ( ! function_exists( 'masvideos_persons_pagination' ) ) {
 
         <nav class="masvideos-pagination masvideos-persons-pagination">
             <?php
-                echo paginate_links( apply_filters( 'masvideos_persons_pagination_args', array( // WPCS: XSS ok.
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- paginate_links() returns markup already escaped by WordPress core.
+                echo paginate_links( apply_filters( 'masvideos_persons_pagination_args', array(
                     'base'         => $args['base'],
                     'format'       => $args['format'],
                     'add_args'     => false,
@@ -549,7 +550,7 @@ if ( ! function_exists( 'masvideos_template_loop_person_poster' ) ) {
      * person poster in the loop.
      */
     function masvideos_template_loop_person_poster() {
-        echo masvideos_get_person_thumbnail( 'masvideos_person_medium' );
+        echo masvideos_get_person_thumbnail( 'masvideos_person_medium' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_post_thumbnail()-based markup, already escaped by core; kses would strip supported img attributes (srcset/sizes/data-*).
     }
 }
 
@@ -652,7 +653,7 @@ if ( ! function_exists( 'masvideos_template_single_person_short_desc' ) ) {
 
         ?>
         <div class="single-person__short-description">
-            <?php echo '<div>' . $short_description . '</div>'; ?>
+            <?php echo '<div>' . wp_kses_post( $short_description ) . '</div>'; ?>
         </div>
         <?php
     }
@@ -706,7 +707,7 @@ if ( ! function_exists( 'masvideos_template_single_person_movies_tab' ) ) {
                     ?>
                     <div class="person-cast-movies">
                         <h2 class="movie-cast-title">
-                            <?php echo apply_filters( 'masvideos_template_single_movie_movies_cast_title_text',  esc_html__( 'Acting', 'masvideos' ) ); ?>
+                            <?php echo esc_html( apply_filters( 'masvideos_template_single_movie_movies_cast_title_text', __( 'Acting', 'masvideos' ) ) ); ?>
                         </h2>
                         <?php
                         foreach( $cast_movie_ids as $cast_movie_id ) {
@@ -719,7 +720,7 @@ if ( ! function_exists( 'masvideos_template_single_person_movies_tab' ) ) {
                                 <div class="person-cast-movie">
                                     <div class="movie-release-year">
                                         <?php if( ! empty( $release_date ) ) : ?>
-                                            <?php echo date( 'Y', strtotime( $release_date ) ); ?>
+                                            <?php echo esc_html( gmdate( 'Y', strtotime( $release_date ) ) ); ?>
                                         <?php else : ?>
                                             -
                                         <?php endif; ?>
@@ -756,7 +757,7 @@ if ( ! function_exists( 'masvideos_template_single_person_movies_tab' ) ) {
                                     $category_based_movies[$movie_crew[$found_key]['category']][] = array(
                                         'movie_id'      => $movie->get_ID(),
                                         'movie_name'    => $movie->get_name(),
-                                        'release_year'  => ! empty( $movie->get_movie_release_date() ) ? date( 'Y', strtotime( $movie->get_movie_release_date() ) ) : '-',
+                                        'release_year'  => ! empty( $movie->get_movie_release_date() ) ? gmdate( 'Y', strtotime( $movie->get_movie_release_date() ) ) : '-',
                                         'job'           => $movie_crew[$found_key]['job'],
                                     );
                                 }
@@ -807,7 +808,7 @@ if ( ! function_exists( 'masvideos_template_single_person_tv_shows_tab' ) ) {
                     ?>
                     <div class="person-cast-tv-shows">
                         <h2 class="tv-show-cast-title">
-                            <?php echo apply_filters( 'masvideos_template_single_tv_show_tv_shows_cast_title_text',  esc_html__( 'Acting', 'masvideos' ) ); ?>
+                            <?php echo esc_html( apply_filters( 'masvideos_template_single_tv_show_tv_shows_cast_title_text', __( 'Acting', 'masvideos' ) ) ); ?>
                         </h2>
                         <?php
                         foreach( $cast_tv_show_ids as $cast_tv_show_id ) {
@@ -1019,7 +1020,7 @@ if ( ! function_exists( 'masvideos_template_single_person_birthday' ) ) {
             ?>
             <div class="single-person__birthday">
                 <h4 class="single-person__sidebar-title birthday-title"><?php echo esc_html( $title ); ?></h4>
-                <?php echo date_i18n( $format, $date ); ?>
+                <?php echo esc_html( date_i18n( $format, $date ) ); ?>
             </div>
             <?php
         endif;

@@ -52,7 +52,7 @@ function masvideos_get_episodes( $args ) {
 function masvideos_get_episode( $the_episode = false ) {
     if ( ! did_action( 'masvideos_init' ) ) {
         /* translators: 1: masvideos_get_episode 2: masvideos_init */
-        _doing_it_wrong( __FUNCTION__, sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_episode', 'masvideos_init' ), '1.0.0' );
+        _doing_it_wrong( __FUNCTION__, esc_html( sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_episode', 'masvideos_init' ) ), '1.0.0' );
         return false;
     }
     return MasVideos()->episode_factory->get_episode( $the_episode );
@@ -318,7 +318,7 @@ function masvideos_get_related_episodes( $episode_id, $limit = 5, $exclude_ids =
 
 if ( ! function_exists ( 'masvideos_the_episode' ) ) {
     function masvideos_the_episode( $post = null ) {
-        echo masvideos_get_the_episode( $post );
+        echo masvideos_get_the_episode( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Player markup from the plugin's safe render pipeline (sanitised source/oEmbed/iframe allowlist).
     }
 }
 
@@ -345,7 +345,8 @@ if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
             $episode_src = $episode->get_episode_url_link();
         }
 
-        return apply_filters( 'the_content', $episode_src );
+        // Safe rendering instead of the_content (no arbitrary shortcode/block execution).
+        return apply_filters( 'masvideos_get_the_episode', masvideos_render_video_source( $episode_choice, $episode_src ), $episode, $episode_choice );
     }
 }
 

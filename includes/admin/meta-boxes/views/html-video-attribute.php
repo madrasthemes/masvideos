@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <h3>
         <a href="#" class="remove_row delete"><?php esc_html_e( 'Remove', 'masvideos' ); ?></a>
         <div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'masvideos' ); ?>"></div>
-        <strong class="attribute_name"><?php echo masvideos_video_attribute_label( $attribute->get_name() ); ?></strong>
+        <strong class="attribute_name"><?php echo esc_html( masvideos_video_attribute_label( $attribute->get_name() ) ); ?></strong>
     </h3>
     <div class="masvideos_attribute_data masvideos-metabox-content">
         <table cellpadding="0" cellspacing="0">
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <label><?php esc_html_e( 'Name', 'masvideos' ); ?>:</label>
 
                         <?php if ( $attribute->is_taxonomy() ) : ?>
-                            <strong><?php echo masvideos_video_attribute_label( $attribute->get_name() ); ?></strong>
+                            <strong><?php echo esc_html( masvideos_video_attribute_label( $attribute->get_name() ) ); ?></strong>
                             <input type="hidden" name="attribute_names[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $attribute->get_name() ); ?>" />
                         <?php else : ?>
                             <input type="text" class="attribute_name" name="attribute_names[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $attribute->get_name() ); ?>" />
@@ -43,11 +43,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                                         'orderby'    => 'name',
                                         'hide_empty' => 0,
                                     );
-                                    $all_terms = get_terms( $attribute->get_taxonomy(), apply_filters( 'masvideos_video_attribute_terms', $args ) );
+                                    $all_terms = get_terms( array_merge( wp_parse_args( apply_filters( 'masvideos_video_attribute_terms', $args ) ), array( 'taxonomy' => $attribute->get_taxonomy() ) ) );
                                     if ( $all_terms ) {
                                         foreach ( $all_terms as $term ) {
                                             $options = $attribute->get_options();
                                             $options = ! empty( $options ) ? $options : array();
+                                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_selected() returns safe selected() output; the term id and term name are escaped via esc_attr().
                                             echo '<option value="' . esc_attr( $term->term_id ) . '"' . masvideos_selected( $term->term_id, $options ) . '>' . esc_attr( apply_filters( 'masvideos_video_attribute_term_name', $term->name, $term ) ) . '</option>';
                                         }
                                     }
@@ -61,9 +62,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
                             do_action( 'masvideos_video_option_terms', $attribute_taxonomy, $i );
                         } else {
-                            /* translators: %s: MASVIDEOS_DELIMITER */
                             ?>
-                            <textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]" cols="5" rows="5" placeholder="<?php printf( esc_attr__( 'Enter some text, or some attributes by "%s" separating values.', 'masvideos' ), MASVIDEOS_DELIMITER ); ?>"><?php echo esc_textarea( masvideos_implode_text_attributes( $attribute->get_options() ) ); ?></textarea>
+                            <textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]" cols="5" rows="5" placeholder="<?php /* translators: %s: attribute value delimiter */ printf( esc_attr__( 'Enter some text, or some attributes by "%s" separating values.', 'masvideos' ), esc_attr( MASVIDEOS_DELIMITER ) ); ?>"><?php echo esc_textarea( masvideos_implode_text_attributes( $attribute->get_options() ) ); ?></textarea>
                             <?php
                         }
                         ?>

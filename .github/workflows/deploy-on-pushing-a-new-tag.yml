@@ -1,14 +1,61 @@
 name: Deploy to WordPress.org
+
+# Least-privilege token: the job only reads the repository to check out the tagged source and hand it
+# to the SVN deploy action, which authenticates to WordPress.org with its own SVN credentials (not the
+# GitHub token). No GitHub write scope is required for an SVN deploy.
+permissions:
+  contents: read
+
 on:
   push:
     tags:
-    - "*"
+      # Gate 1 (trigger glob): only semantic X.Y.Z release tags start the workflow at all. Arbitrary or
+      # test tags are ignored by GitHub before any job runs.
+      - '[0-9]+.[0-9]+.[0-9]+'
+
 jobs:
   tag:
-    name: New tag
+    name: New release tag
     runs-on: ubuntu-latest
+    # Gate 2 (protected environment): a matching tag still requires a configured reviewer to approve the
+    # run in repo Settings -> Environments -> "wordpress-org-release" before anything is published.
+    environment: wordpress-org-release
     steps:
-    - uses: actions/checkout@master
+    - name: Check out the exact tagged commit
+      uses: actions/checkout@v4
+      with:
+        # Deploy the source at the pushed tag, never a moving branch head.
+        ref: ${{ github.ref }}
+
+    - name: Validate release tag format
+      env:
+        REF_NAME: ${{ github.ref_name }}
+      run: |
+        set -euo pipefail
+        # Gate 3 (strict, independent of the trigger glob): require EXACTLY three dot-separated
+        # non-negative integer components, e.g. 1.3.5. Rejects v1.3.5, 1.3.5-rc1, 1.3.5.1, 1.3,
+        # and anything containing unexpected characters.
+        if [[ ! "$REF_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "::error::Refusing to deploy: tag '$REF_NAME' is not a strict X.Y.Z release version."
+          exit 1
+        fi
+        echo "Release tag format OK: $REF_NAME"
+
+    - name: Verify tag matches plugin metadata
+      env:
+        REF_NAME: ${{ github.ref_name }}
+      run: |
+        set -euo pipefail
+        # Gate 4: the tag must equal BOTH the plugin header Version and the readme Stable tag, so an
+        # unsynchronised/incomplete release cannot be published.
+        HEADER_VER="$(sed -n 's/^[[:space:]]*\*[[:space:]]*Version:[[:space:]]*//p' masvideos.php | head -n1 | tr -d '[:space:]')"
+        STABLE_VER="$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt | head -n1 | tr -d '[:space:]')"
+        echo "tag=$REF_NAME header=$HEADER_VER stable=$STABLE_VER"
+        if [ "$REF_NAME" != "$HEADER_VER" ] || [ "$REF_NAME" != "$STABLE_VER" ]; then
+          echo "::error::Tag ($REF_NAME) does not match plugin header ($HEADER_VER) / readme Stable tag ($STABLE_VER). Refusing to deploy."
+          exit 1
+        fi
+
     - name: WordPress Plugin Deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
       env:

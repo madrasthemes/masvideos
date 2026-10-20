@@ -137,7 +137,7 @@ class MasVideos_Movies_Genres_Filter_Widget extends MasVideos_Widget {
                 break;
         }
 
-        $terms = get_terms( $taxonomy, $get_terms_args );
+        $terms = get_terms( array_merge( wp_parse_args( $get_terms_args ), array( 'taxonomy' => $taxonomy ) ) );
 
         if ( 0 === count( $terms ) ) {
             return;

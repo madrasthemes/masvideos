@@ -26,7 +26,9 @@ jQuery( function( $ ) {
             data[ key ] = value;
         });
 
-        
+        // Send the CSRF nonce with the request.
+        data.security = masvideos_playlist_tv_show_params.nonce;
+
         // Trigger event.
         $( document.body ).trigger( 'toggle_tv_show_playlist_before', [ $thisbutton, data ] );
 

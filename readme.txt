@@ -2,17 +2,17 @@
 Contributors: madrasthemes
 Tags: videos, movies, tv shows, tmdb
 Requires at least: 6.4
-Tested up to: 6.9.1
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-MAS Videos is a free plugin that allows you to to create and list movies, videos and TV shows.
+MAS Videos is a free plugin that allows you to create and list movies, videos and TV shows.
 
 == Description ==
 
-MAS Videos is a free plugin that allows you to to create and list movies, videos and TV shows. Have you ever wished to build a website similar to YouTube, Netflix or a simple video based website using WordPress ? MAS Videos allows you to do just that. You can create a website similar to YouTube, Netflix or any video based website.
+MAS Videos is a free plugin that allows you to create and list movies, videos and TV shows. Have you ever wished to build a website similar to YouTube, Netflix or a simple video based website using WordPress ? MAS Videos allows you to do just that. You can create a website similar to YouTube, Netflix or any video based website.
 
 = MAS Videos' Features =
 
@@ -30,7 +30,8 @@ MAS Videos is free and has many advanced features to suit your needs.
 
 = Minimum Requirements =
 
-* PHP version 5.7 or greater (PHP 7.0 or greater is recommended)
+* WordPress 6.4 or greater
+* PHP version 7.4 or greater
 
 = Automatic installation =
 
@@ -55,6 +56,10 @@ Yes; MAS Videos will work with any theme, but may require some styling to make i
 = Where can I report bugs or contribute to the project? =
 
 Bugs can be reported either in our support forum or preferably on the [MAS Videos GitHub repository](https://github.com/madrasthemes/masvideos/issues).
+
+= How do I report a security vulnerability? =
+
+Please do not report security issues in public issues or forums. Use private vulnerability reporting on the GitHub repository (open the repository's Security tab and choose "Report a vulnerability"). If private reporting is not available, contact the MadrasThemes team via https://madrasthemes.com/ and request a secure channel before sharing any details. We will coordinate a fix and disclosure with you.
 
 = Can I contribute? =
 
@@ -82,7 +87,31 @@ All of our online documentation can be found on [our documentation site](https:/
 14. MAS Videos episodes admin.
 15. Episode data panel.
 
+== External services ==
+
+This plugin can connect to The Movie Database (TMDB) to import movie, TV show and person data. This happens only when a site administrator uses the built-in TMDB importer and has entered a TMDB API key in the plugin settings. The feature is optional and is never used on the site front end.
+
+- When requests are sent: only during an administrator-initiated action in the WordPress admin — the TMDB importer's search/fetch step (wp-admin, Tools &rarr; Import). No requests are made on the front end or on a schedule by this feature.
+- What is sent: requests go to TMDB's API over HTTPS and include the site's configured TMDB API key and the lookup parameters for that action (the search text you enter, or the TMDB id / season / episode numbers being imported, together with a language code and an "include adult" flag). This feature does not send any WordPress user, visitor or site-credential data.
+- What is received: movie, TV show and person metadata (titles, descriptions, dates, credits, genres, etc.) and image URLs, which are stored as the imported posts and their media.
+
+TMDB is a third-party service provided by TiVo Platform Technologies LLC, governed by its own terms and privacy policy:
+
+- Terms of Use: https://www.themoviedb.org/terms-of-use
+- API Terms of Use: https://www.themoviedb.org/api-terms-of-use
+- Privacy Policy: https://www.themoviedb.org/privacy-policy
+
+This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.
+
 == Changelog ==
+
+= 1.3.5 - 2026-10-20 =
+* Security : Hardened access control and CSRF protection across AJAX, account and admin request handlers.
+* Security : Restricted attribute taxonomy handling and added sanitization of video/cast/crew metadata.
+* Security : Confined email-template file operations to the active theme and prepared all database queries.
+* Security : Safer redirects, hardened session cookies, and TMDB requests over HTTPS with host restriction.
+* Compliance : WordPress.org Plugin Check remediation - output escaping, internationalization and deprecated-API fixes.
+* Credit : Thanks to JunHee CHO (reported via WPScan) for responsibly disclosing security issues.
 
 = 1.3.4 - 2026-02-09 =
 * Fix : Issues in readme.txt file

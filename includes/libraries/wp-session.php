@@ -151,14 +151,19 @@ function wp_session_cleanup() {
                 }
 
                 $expired_sessions[] = $expiration->option_name;
-                $expired_sessions[] = esc_sql( "_wp_session_$session_id" );
+                $expired_sessions[] = "_wp_session_$session_id";
             }
         }
 
-        // Delete all expired sessions in a single query
+        // Delete all expired sessions in a single query. Values are bound through
+        // $wpdb->prepare() (no manual esc_sql), with one %s placeholder generated per
+        // option name so the IN() list is fully prepared regardless of its length.
         if ( ! empty( $expired_sessions ) ) {
-            $option_names = implode( "','", $expired_sessions );
-            $wpdb->query( "DELETE FROM $wpdb->options WHERE option_name IN ('$option_names')"  );
+            $placeholders = implode( ', ', array_fill( 0, count( $expired_sessions ), '%s' ) );
+            // $placeholders is a generated list of %s tokens only (no data); every option name is bound
+            // through the $expired_sessions arguments below, so the statement is fully prepared.
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- generated %s placeholder list; values bound via prepare().
+            $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name IN ( $placeholders )", $expired_sessions ) );
         }
     }
 

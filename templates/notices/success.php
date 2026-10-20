@@ -27,7 +27,7 @@ if ( ! $messages ) {
 <?php foreach ( $messages as $message ) : ?>
 	<div class="masvideos-message" role="alert">
 		<?php
-			echo masvideos_kses_notice( $message );
+			echo masvideos_kses_notice( $message ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already sanitised by masvideos_kses_notice() (wp_kses).
 		?>
 	</div>
 <?php endforeach; ?>

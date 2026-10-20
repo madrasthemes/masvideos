@@ -11,6 +11,83 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Resolve and authorize an account-owned post for a frontend edit/delete operation.
+ *
+ * Enforces, in strict order: authentication, a positive integer ID, existence of the
+ * target post, an exact post-type allowlist, and finally authorization. Authorization
+ * succeeds when the current user is the post author (when $allow_owner is true) OR the
+ * current user passes the given meta capability for that specific object.
+ *
+ * The post-type allowlist is the critical guard: because it runs before the ownership
+ * exception, the owner shortcut can never reach an unrelated post type (pages,
+ * attachments, other plugins' content, other MAS Videos types). The ownership exception
+ * exists only to preserve the intentional frontend self-service feature for users who
+ * can create their own videos/playlists but do not hold the "others"/"published" meta
+ * capabilities.
+ *
+ * @since 1.3.5
+ *
+ * @param mixed        $post_id     Untrusted target post ID.
+ * @param string|array $post_types  Allowed post type slug(s).
+ * @param string       $meta_cap    Meta capability checked against the object, e.g. 'edit_post' or 'delete_post'.
+ * @param bool         $allow_owner Whether the post author is authorized regardless of the meta capability. Default true.
+ * @return WP_Post|false The validated post on success, false on any failure.
+ */
+function masvideos_get_authorized_account_post( $post_id, $post_types, $meta_cap, $allow_owner = true ) {
+    if ( ! is_user_logged_in() ) {
+        return false;
+    }
+
+    if ( ! is_scalar( $post_id ) ) {
+        return false;
+    }
+
+    $post_id = absint( $post_id );
+
+    if ( $post_id <= 0 ) {
+        return false;
+    }
+
+    $post = get_post( $post_id );
+
+    if ( ! $post instanceof WP_Post ) {
+        return false;
+    }
+
+    if ( ! in_array( $post->post_type, (array) $post_types, true ) ) {
+        return false;
+    }
+
+    $user_id = get_current_user_id();
+
+    if ( $allow_owner && $user_id > 0 && (int) $post->post_author === $user_id ) {
+        return $post;
+    }
+
+    if ( current_user_can( $meta_cap, $post_id ) ) {
+        return $post;
+    }
+
+    return false;
+}
+
+/**
+ * Whether wp_trash_post() performs a RECOVERABLE trash rather than a permanent delete.
+ *
+ * WordPress permanently deletes instead of trashing when EMPTY_TRASH_DAYS is falsy
+ * (0, or not yet defined). In that configuration an "ownership-only" trash would destroy
+ * content and thereby bypass the permanent-deletion capability boundary, so callers must
+ * fall back to requiring the delete capability. This fails closed: if we cannot confirm
+ * that trashing is recoverable, we treat it as not recoverable.
+ *
+ * @since 1.3.5
+ * @return bool True only when a trash operation is guaranteed recoverable.
+ */
+function masvideos_trash_is_recoverable() {
+    return defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS > 0;
+}
+
+/**
  * Get My Account menu items.
  *
  * @since 1.0.0
@@ -130,7 +207,7 @@ function masvideos_get_account_videos_actions( $video ) {
             'name' => esc_html__( 'Edit', 'masvideos' ),
         ),
         'delete' => array(
-            'url'  => wp_nonce_url( add_query_arg( array( 'post' => $video->get_id(), 'action' => 'delete' ), get_permalink( $video->get_id() ) ), 'masvideos-delete-video', 'masvideos-delete-video-nonce' ),
+            'url'  => wp_nonce_url( add_query_arg( array( 'post' => $video->get_id(), 'action' => 'trash' ), get_permalink( $video->get_id() ) ), 'masvideos-delete-video_' . $video->get_id(), 'masvideos-delete-video-nonce' ),
             'name' => esc_html__( 'Delete', 'masvideos' ),
         ),
     );
@@ -168,7 +245,7 @@ function masvideos_get_account_playlists_actions( $obj ) {
             'name' => esc_html__( 'Edit', 'masvideos' ),
         ),
         'delete' => array(
-            'url'  => wp_nonce_url( add_query_arg( array( 'post' => $obj->ID, 'action' => 'delete' ), $current_page_link ), 'masvideos-delete-playlist', 'masvideos-delete-playlist-nonce' ),
+            'url'  => wp_nonce_url( add_query_arg( array( 'post' => $obj->ID, 'action' => 'trash' ), $current_page_link ), 'masvideos-delete-playlist_' . $obj->ID, 'masvideos-delete-playlist-nonce' ),
             'name' => esc_html__( 'Delete', 'masvideos' ),
         ),
     );

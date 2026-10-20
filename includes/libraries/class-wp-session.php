@@ -130,10 +130,25 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
     }
 
     /**
-     * Set the session cookie
+     * Set the session cookie.
+     *
+     * Hardened to mark the cookie HttpOnly (not readable by JavaScript), Secure over HTTPS, and
+     * SameSite=Lax (MV-20). The options-array form of setcookie() is used, which is available since
+     * PHP 7.3 and therefore safe for the plugin's PHP 7.4 target.
      */
     protected function set_cookie() {
-        @setcookie( WP_SESSION_COOKIE, $this->session_id . '||' . $this->expires . '||' . $this->exp_variant , $this->expires, COOKIEPATH, COOKIE_DOMAIN );
+        $cookie_value = $this->session_id . '||' . $this->expires . '||' . $this->exp_variant;
+
+        $options = array(
+            'expires'  => (int) $this->expires,
+            'path'     => COOKIEPATH ? COOKIEPATH : '/',
+            'domain'   => COOKIE_DOMAIN,
+            'secure'   => (bool) apply_filters( 'masvideos_session_cookie_secure', is_ssl() ),
+            'httponly' => (bool) apply_filters( 'masvideos_session_cookie_httponly', true ),
+            'samesite' => apply_filters( 'masvideos_session_cookie_samesite', 'Lax' ),
+        );
+
+        @setcookie( WP_SESSION_COOKIE, $cookie_value, $options ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
     }
 
     /**

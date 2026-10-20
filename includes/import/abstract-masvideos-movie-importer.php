@@ -614,14 +614,14 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 			$upload = masvideos_rest_upload_image_from_url( $url );
 
 			if ( is_wp_error( $upload ) ) {
-				throw new Exception( $upload->get_error_message(), 400 );
+				throw new Exception( esc_html( $upload->get_error_message() ), 400 );
 			}
 
 			$id = masvideos_rest_set_uploaded_image_as_attachment( $upload, $movie_id );
 
 			if ( ! wp_attachment_is_image( $id ) ) {
 				/* translators: %s: image URL */
-				throw new Exception( sprintf( __( 'Not able to attach "%s".', 'masvideos' ), $url ), 400 );
+				throw new Exception( esc_html( sprintf( __( 'Not able to attach "%s".', 'masvideos' ), $url ) ), 400 );
 			}
 
 			// Save attachment source for future reference.
@@ -630,7 +630,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 
 		if ( ! $id ) {
 			/* translators: %s: image URL */
-			throw new Exception( sprintf( __( 'Unable to use image "%s".', 'masvideos' ), $url ), 400 );
+			throw new Exception( esc_html( sprintf( __( 'Unable to use image "%s".', 'masvideos' ), $url ) ), 400 );
 		}
 
 		return $id;
@@ -673,7 +673,7 @@ abstract class MasVideos_Movie_Importer implements MasVideos_Importer_Interface 
 		) );
 
 		if ( is_wp_error( $attribute_id ) ) {
-			throw new Exception( $attribute_id->get_error_message(), 400 );
+			throw new Exception( esc_html( $attribute_id->get_error_message() ), 400 );
 		}
 
 		// Register as taxonomy while importing.

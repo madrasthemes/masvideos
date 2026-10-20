@@ -22,9 +22,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <p><?php
-    /* translators: 1: user display name 2: logout url */
     printf(
-        __( 'Hello %1$s (not %1$s? <a href="%2$s">Log out</a>)', 'masvideos' ),
+        /* translators: 1: user display name 2: logout url */
+        __( 'Hello %1$s (not %1$s? <a href="%2$s">Log out</a>)', 'masvideos' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Translatable string with intentional inline <a> markup; interpolated values escaped (esc_html + esc_url).
         '<strong>' . esc_html( $current_user->display_name ) . '</strong>',
         esc_url( masvideos_logout_url() )
     );
@@ -32,7 +32,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <p><?php
     printf(
-        __( 'From your account dashboard you can view your <a href="%1$s">recently added videos</a>, manage your <a href="%2$s">movie playlists</a>, manage your <a href="%3$s">video playlists</a>, and manage your <a href="%4$s">tv show playlists</a>.', 'masvideos' ),
+        /* translators: 1: recently added videos URL, 2: movie playlists URL, 3: video playlists URL, 4: tv show playlists URL */
+        __( 'From your account dashboard you can view your <a href="%1$s">recently added videos</a>, manage your <a href="%2$s">movie playlists</a>, manage your <a href="%3$s">video playlists</a>, and manage your <a href="%4$s">tv show playlists</a>.', 'masvideos' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Translatable string with intentional inline <a> markup; all interpolated URLs escaped with esc_url().
         esc_url( masvideos_get_endpoint_url( 'videos' ) ),
         esc_url( masvideos_get_endpoint_url( 'movie-playlists' ) ),
         esc_url( masvideos_get_endpoint_url( 'video-playlists' ) ),

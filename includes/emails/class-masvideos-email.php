@@ -670,6 +670,133 @@ class MasVideos_Email {
 	}
 
 	/**
+	 * Resolve a template path and confirm it is contained within an allowed base directory.
+	 *
+	 * Containment is verified on canonical, symlink-resolved paths (via realpath()) using a
+	 * separator-aware comparison, so symlinked files, symlinked parent directories, sibling-prefix
+	 * directories (e.g. "masvideos-evil" next to "masvideos"), traversal sequences, stream wrappers
+	 * and malformed paths are all rejected. It fails closed: if either canonical path cannot be
+	 * resolved, it returns false and the caller must abort rather than fall back to a string check.
+	 *
+	 * For a not-yet-created destination the parent directory is resolved canonically and the
+	 * traversal-free basename appended, so new theme-override files can still be created safely.
+	 *
+	 * @since 1.3.5
+	 * @param string $file     Absolute path to the template file (may or may not exist yet).
+	 * @param string $base_dir Absolute path to the allowed base directory.
+	 * @return string|false Canonical, normalized path when contained; false otherwise.
+	 */
+	protected function resolve_contained_template_path( $file, $base_dir ) {
+		$file     = (string) $file;
+		$base_dir = (string) $base_dir;
+
+		if ( '' === $file || '' === $base_dir ) {
+			return false;
+		}
+
+		// Reject NUL bytes, stream wrappers and other obviously malformed destinations outright.
+		if ( false !== strpos( $file, "\0" ) || preg_match( '#^[a-zA-Z][a-zA-Z0-9+.\-]*://#', $file ) || false !== strpos( $file, '://' ) ) {
+			return false;
+		}
+
+		// Outer trust anchor: the active theme directory. Resolving containment against this (rather
+		// than only against the template sub-directory) means a template directory that is itself a
+		// symlink out of the theme — whether on disk or introduced via the masvideos_template_directory
+		// / masvideos_template_path filters — is rejected instead of silently moving the boundary.
+		$theme_real = realpath( get_stylesheet_directory() );
+		if ( false === $theme_real ) {
+			return false;
+		}
+		$theme_real = untrailingslashit( wp_normalize_path( $theme_real ) );
+
+		// Canonical (symlink-resolved) boundary. Fail closed if it cannot be resolved, or if it
+		// resolves outside the active theme.
+		$base_real = realpath( $base_dir );
+		if ( false === $base_real ) {
+			return false;
+		}
+		$base_real = untrailingslashit( wp_normalize_path( $base_real ) );
+		if ( 0 !== strpos( $base_real . '/', $theme_real . '/' ) ) {
+			return false;
+		}
+
+		// Canonical destination: resolve an existing file directly (following symlinks); for a
+		// file to be created, resolve its parent and append the sanitized basename.
+		if ( file_exists( $file ) ) {
+			$target_real = realpath( $file );
+		} else {
+			$parent_real = realpath( dirname( $file ) );
+			$target_real = ( false === $parent_real ) ? false : $parent_real . '/' . basename( $file );
+		}
+		if ( false === $target_real ) {
+			return false;
+		}
+		$target_real = wp_normalize_path( $target_real );
+
+		// Separator-aware containment: the target must sit strictly inside the boundary directory.
+		if ( 0 !== strpos( $target_real, $base_real . '/' ) ) {
+			return false;
+		}
+
+		return $target_real;
+	}
+
+	/**
+	 * Confirm a (possibly not-yet-existing) destination can be created without escaping the active theme.
+	 *
+	 * resolve_contained_template_path() fails closed when a parent directory does not exist yet, which
+	 * would block legitimate first-time creation of a theme email-override directory. This companion
+	 * check is used *before* any wp_mkdir_p(): it rejects NUL bytes, stream wrappers, traversal and
+	 * absolute escapes, then walks up to the nearest *existing* ancestor, resolves it canonically and
+	 * requires it to live inside the canonical theme directory — so directory creation can never follow
+	 * a symlinked ancestor out of the theme. The strict resolver is still run again after creation and
+	 * immediately before the write.
+	 *
+	 * @since 1.3.5
+	 * @param string $file Absolute destination path (may not exist yet).
+	 * @return bool True when creation is safely contained within the active theme.
+	 */
+	protected function template_path_is_creatable_within_theme( $file ) {
+		$file = (string) $file;
+
+		if ( '' === $file || false !== strpos( $file, "\0" ) || preg_match( '#^[a-zA-Z][a-zA-Z0-9+.\-]*://#', $file ) || false !== strpos( $file, '://' ) ) {
+			return false;
+		}
+
+		$theme_real = realpath( get_stylesheet_directory() );
+		if ( false === $theme_real ) {
+			return false;
+		}
+		$theme_real = untrailingslashit( wp_normalize_path( $theme_real ) );
+
+		$file_n = wp_normalize_path( $file );
+
+		// Reject any traversal component outright.
+		if ( '..' === $file_n || 0 === strpos( $file_n, '../' ) || false !== strpos( $file_n, '/../' ) || '/..' === substr( $file_n, -3 ) ) {
+			return false;
+		}
+
+		// Walk up to the nearest existing ancestor and resolve it canonically (follows symlinks).
+		$probe = $file_n;
+		while ( ! file_exists( $probe ) && dirname( $probe ) !== $probe ) {
+			$probe = dirname( $probe );
+		}
+		$anchor = realpath( $probe );
+		if ( false === $anchor ) {
+			return false;
+		}
+		$anchor = untrailingslashit( wp_normalize_path( $anchor ) );
+
+		// The nearest existing ancestor must be the theme directory itself or inside it: this is what
+		// prevents wp_mkdir_p() from creating directories through a symlink that escapes the theme.
+		if ( $anchor !== $theme_real && 0 !== strpos( $anchor . '/', $theme_real . '/' ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Save the email templates.
 	 *
 	 * @since 2.4.0
@@ -679,21 +806,44 @@ class MasVideos_Email {
 	protected function save_template( $template_code, $template_path ) {
 		if ( current_user_can( 'edit_themes' ) && ! empty( $template_code ) && ! empty( $template_path ) ) {
 			$saved = false;
-			$file  = get_stylesheet_directory() . '/' . MasVideos()->template_path() . $template_path;
+			$base  = get_stylesheet_directory() . '/' . MasVideos()->template_path() . $template_path;
 			$code  = wp_unslash( $template_code );
 
-			if ( is_writeable( $file ) ) { // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_is_writeable
-				$f = fopen( $file, 'w+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+			// Resolve the destination canonically and confirm it is contained within the theme's MAS
+			// Videos template directory (symlink-, wrapper- and traversal-safe). The editor only ever
+			// rewrites an existing override file, so a missing/unresolvable target fails closed here.
+			$allowed_dir = get_stylesheet_directory() . '/' . MasVideos()->template_path();
+			$file        = $this->resolve_contained_template_path( $base, $allowed_dir );
 
-				if ( false !== $f ) {
-					fwrite( $f, $code ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
-					fclose( $f ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
-					$saved = true;
+			if ( $file && file_exists( $file ) ) {
+				// Write through WP_Filesystem (direct method only; no credential prompt). To avoid
+				// truncating the live template on a failed/partial write, the new content is written to
+				// a temporary file in the same directory and then moved into place; the original is only
+				// replaced once the full write has succeeded. Existing permissions are carried over.
+				$wp_filesystem = masvideos_wp_filesystem();
+				if ( $wp_filesystem && $wp_filesystem->is_writable( $file ) ) {
+					$dir   = dirname( $file );
+					$perms = $wp_filesystem->getchmod( $file );
+					$mode  = ( is_string( $perms ) && '' !== $perms && '0' !== $perms ) ? intval( $perms, 8 ) : false;
+					$tmp   = $dir . '/masvideos-email-tmpl-' . wp_generate_password( 12, false ) . '.tmp';
+
+					if ( $wp_filesystem->put_contents( $tmp, $code, $mode ) ) {
+						// move() with overwrite swaps the fully-written temp file over the original; on the
+						// same filesystem this is a rename, so readers never see a partially written file.
+						if ( $wp_filesystem->move( $tmp, $file, true ) ) {
+							$saved = true;
+						} else {
+							$wp_filesystem->delete( $tmp );
+						}
+					} elseif ( $wp_filesystem->exists( $tmp ) ) {
+						$wp_filesystem->delete( $tmp );
+					}
 				}
 			}
 
 			if ( ! $saved ) {
-				$redirect = add_query_arg( 'masvideos_error', rawurlencode( __( 'Could not write to template file.', 'masvideos' ) ) );
+				// Pass a known error code (not free text); the reader maps it to a fixed message (MV-16).
+				$redirect = add_query_arg( 'masvideos_error', 'template_file_not_writable' );
 				wp_safe_redirect( $redirect );
 				exit;
 			}
@@ -717,32 +867,51 @@ class MasVideos_Email {
 	 * @param string $template_type Template type.
 	 */
 	protected function move_template_action( $template_type ) {
+		if ( ! current_user_can( 'edit_themes' ) ) {
+			return;
+		}
 		$template = $this->get_template( $template_type );
 		if ( ! empty( $template ) ) {
-			$theme_file = $this->get_theme_template_file( $template );
+			$theme_file  = $this->get_theme_template_file( $template );
+			$allowed_dir = get_stylesheet_directory() . '/' . apply_filters( 'masvideos_template_directory', 'masvideos', $template );
+
+			// Validate the destination boundary BEFORE creating any directory, so a traversal/symlink/
+			// filter-escaped path can never cause wp_mkdir_p() to create folders outside the theme.
+			if ( ! $this->template_path_is_creatable_within_theme( $theme_file ) ) {
+				return;
+			}
 
 			if ( wp_mkdir_p( dirname( $theme_file ) ) && ! file_exists( $theme_file ) ) {
+
+				// Re-validate the full canonical path now that the directory exists and immediately
+				// before the copy (strict symlink-/separator-aware containment within the theme dir).
+				$dest = $this->resolve_contained_template_path( $theme_file, $allowed_dir );
+				if ( ! $dest ) {
+					return;
+				}
 
 				// Locate template file.
 				$core_file     = $this->template_base . $template;
 				$template_file = apply_filters( 'masvideos_locate_core_template', $core_file, $template, $this->template_base, $this->id );
 
-				// Copy template file.
-				copy( $template_file, $theme_file );
+				// Copy the core template into the theme through WP_Filesystem (no raw PHP writes).
+				$wp_filesystem = masvideos_wp_filesystem();
+				if ( $wp_filesystem && $wp_filesystem->exists( $template_file ) && $wp_filesystem->copy( $template_file, $dest, false, FS_CHMOD_FILE ) ) {
 
-				/**
-				 * Action hook fired after copying email template file.
-				 *
-				 * @param string $template_type The copied template type
-				 * @param string $email The email object
-				 */
-				do_action( 'masvideos_copy_email_template', $template_type, $this );
+					/**
+					 * Action hook fired after copying email template file.
+					 *
+					 * @param string $template_type The copied template type
+					 * @param string $email The email object
+					 */
+					do_action( 'masvideos_copy_email_template', $template_type, $this );
 
-				?>
-				<div class="updated">
-					<p><?php echo esc_html__( 'Template file copied to theme.', 'masvideos' ); ?></p>
-				</div>
-				<?php
+					?>
+					<div class="updated">
+						<p><?php echo esc_html__( 'Template file copied to theme.', 'masvideos' ); ?></p>
+					</div>
+					<?php
+				}
 			}
 		}
 	}
@@ -753,14 +922,22 @@ class MasVideos_Email {
 	 * @param string $template_type Template type.
 	 */
 	protected function delete_template_action( $template_type ) {
+		if ( ! current_user_can( 'edit_themes' ) ) {
+			return;
+		}
 		$template = $this->get_template( $template_type );
 
 		if ( $template ) {
 			if ( ! empty( $template ) ) {
-				$theme_file = $this->get_theme_template_file( $template );
+				$theme_file  = $this->get_theme_template_file( $template );
+				$allowed_dir = get_stylesheet_directory() . '/' . apply_filters( 'masvideos_template_directory', 'masvideos', $template );
 
-				if ( file_exists( $theme_file ) ) {
-					unlink( $theme_file ); // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_unlink
+				// Only delete a file that canonically resolves inside the theme template directory
+				// (rejects symlink escapes and traversal); the resolved path is what gets deleted.
+				$target = $this->resolve_contained_template_path( $theme_file, $allowed_dir );
+
+				if ( $target && file_exists( $target ) ) {
+					wp_delete_file( $target );
 
 					/**
 					 * Action hook fired after deleting template file.

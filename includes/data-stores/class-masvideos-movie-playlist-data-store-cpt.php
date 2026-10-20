@@ -106,7 +106,7 @@ class MasVideos_Movie_Playlist_Data_Store_CPT extends MasVideos_Data_Store_WP im
         $post_object = get_post( $movie_playlist->get_id() );
 
         if ( ! $movie_playlist->get_id() || ! $post_object || 'movie_playlist' !== $post_object->post_type ) {
-            throw new Exception( __( 'Invalid movie playlist.', 'masvideos' ) );
+            throw new Exception( esc_html__( 'Invalid movie playlist.', 'masvideos' ) );
         }
 
         $movie_playlist->set_props(

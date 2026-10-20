@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+  Runs the MV-10 multisite integration tests. The WordPress test library enables multisite when the
+  environment variable WP_MULTISITE=1 is set, so invoke with:
+    WP_MULTISITE=1 vendor/bin/phpunit -c phpunit-multisite.xml.dist
+-->
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	cacheResult="false"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	convertDeprecationsToExceptions="false"
+	beStrictAboutTestsThatDoNotTestAnything="false"
+	>
+	<testsuites>
+		<testsuite name="multisite">
+			<directory prefix="test-" suffix=".php">./tests/phpunit/multisite</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

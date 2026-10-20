@@ -64,7 +64,7 @@ class MasVideos_Person_CSV_Importer extends MasVideos_Person_Importer {
      */
     protected function read_file() {
         if ( ! MasVideos_Person_CSV_Importer_Controller::is_file_valid_csv( $this->file ) ) {
-            wp_die( __( 'Invalid file type. The importer supports CSV and TXT file formats.', 'masvideos' ) );
+            wp_die( esc_html__( 'Invalid file type. The importer supports CSV and TXT file formats.', 'masvideos' ) );
         }
 
         $handle = fopen( $this->file, 'r' ); // @codingStandardsIgnoreLine.

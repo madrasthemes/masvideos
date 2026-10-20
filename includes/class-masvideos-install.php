@@ -434,7 +434,21 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
             }
         }
 
-        $video_contributor_capabilities = apply_filters( 'masvideos_video_contributor_capabilities', array(
+        foreach ( self::get_contributor_capabilities() as $cap ) {
+            $wp_roles->add_cap( 'contributor', $cap );
+        }
+    }
+
+    /**
+     * Capabilities this plugin grants to the built-in `contributor` role on install.
+     *
+     * Single source of truth shared by create_roles() and remove_roles() so that whatever is added
+     * on install is exactly what is considered for removal on uninstall (MV-19).
+     *
+     * @return array
+     */
+    private static function get_contributor_capabilities() {
+        return (array) apply_filters( 'masvideos_video_contributor_capabilities', array(
             'edit_video',
             'read_video',
             'delete_video',
@@ -444,10 +458,6 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
             'assign_video_terms',
             'upload_files',
         ) );
-
-        foreach ( $video_contributor_capabilities as $cap ) {
-            $wp_roles->add_cap( 'contributor', $cap );
-        }
     }
 
     /**
@@ -513,6 +523,21 @@ CREATE TABLE {$wpdb->prefix}masvideos_attribute_taxonomies (
             foreach ( $cap_group as $cap ) {
                 $wp_roles->remove_cap( 'administrator', $cap );
             }
+        }
+
+        // Also remove the capabilities granted to the built-in contributor role on install, so the
+        // plugin does not leave privileges behind after uninstall (MV-19). Only caps uniquely owned
+        // by this plugin are removed; 'upload_files' is a WordPress core capability of ambiguous
+        // provenance (another plugin or the site owner may rely on it having been granted), so it is
+        // preserved by default and can be opted into removal via the filter below.
+        $preserve_caps = (array) apply_filters( 'masvideos_preserve_contributor_capabilities', array( 'upload_files' ) );
+
+        foreach ( self::get_contributor_capabilities() as $cap ) {
+            if ( in_array( $cap, $preserve_caps, true ) ) {
+                continue;
+            }
+
+            $wp_roles->remove_cap( 'contributor', $cap );
         }
     }
 }

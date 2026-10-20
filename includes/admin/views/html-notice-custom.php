@@ -9,6 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div id="message" class="updated masvideos-message">
-	<a class="masvideos-message-close notice-dismiss" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'masvideos-hide-notice', $notice ), 'masvideos_hide_notices_nonce', '_masvideos_notice_nonce' ) ); ?>"><?php _e( 'Dismiss', 'masvideos' ); ?></a>
+	<a class="masvideos-message-close notice-dismiss" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'masvideos-hide-notice', $notice ), 'masvideos_hide_notices_nonce', '_masvideos_notice_nonce' ) ); ?>"><?php esc_html_e( 'Dismiss', 'masvideos' ); ?></a>
 	<?php echo wp_kses_post( wpautop( $notice_html ) ); ?>
 </div>

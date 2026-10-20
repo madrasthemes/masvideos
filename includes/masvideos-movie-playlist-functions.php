@@ -52,7 +52,7 @@ function masvideos_get_movie_playlists( $args ) {
 function masvideos_get_movie_playlist( $the_movie_playlist = false ) {
     if ( ! did_action( 'masvideos_init' ) ) {
         /* translators: 1: masvideos_get_movie_playlist 2: masvideos_init */
-        _doing_it_wrong( __FUNCTION__, sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_movie_playlist', 'masvideos_init' ), '1.0.0' );
+        _doing_it_wrong( __FUNCTION__, esc_html( sprintf( __( '%1$s should not be called before the %2$s action.', 'masvideos' ), 'masvideos_get_movie_playlist', 'masvideos_init' ) ), '1.0.0' );
         return false;
     }
     return MasVideos()->movie_playlist_factory->get_movie_playlist( $the_movie_playlist );

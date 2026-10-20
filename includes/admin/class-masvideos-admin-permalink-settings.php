@@ -535,6 +535,12 @@ class MasVideos_Admin_Permalink_Settings {
 			return;
 		}
 
+		// Permalink options are a site-level setting: require the same capability WordPress enforces for
+		// the Permalinks screen before writing any option (explicit authorization, not just screen gating).
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		// We need to save the options ourselves; settings api does not trigger save for the permalinks page.
 		if ( isset( $_POST['permalink_structure'], $_POST['masvideos-permalinks-nonce'], $_POST['masvideos_movie_genre_slug'], $_POST['masvideos_movie_tag_slug'], $_POST['masvideos_movie_attribute_slug'] ) && wp_verify_nonce( wp_unslash( $_POST['masvideos-permalinks-nonce'] ), 'masvideos-permalinks' ) ) { // WPCS: input var ok, sanitization ok.
 			masvideos_switch_to_site_locale();

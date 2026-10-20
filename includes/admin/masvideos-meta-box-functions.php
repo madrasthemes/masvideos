@@ -53,9 +53,10 @@ function masvideos_wp_text_input( $field ) {
         <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
 
     if ( ! empty( $field['description'] ) && false !== $field['desc_tip'] ) {
-        echo masvideos_help_tip( $field['description'] );
+        echo masvideos_help_tip( $field['description'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_help_tip() returns a built HTML span and escapes its content via esc_attr() internally.
     }
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built HTML; all field values are escaped via esc_attr() and $custom_attributes are individually escaped with esc_attr() at build site.
     echo '<input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
 
     if ( ! empty( $field['description'] ) && false === $field['desc_tip'] ) {
@@ -113,9 +114,10 @@ function masvideos_wp_textarea_input( $field ) {
         <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
 
     if ( ! empty( $field['description'] ) && false !== $field['desc_tip'] ) {
-        echo masvideos_help_tip( $field['description'] );
+        echo masvideos_help_tip( $field['description'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_help_tip() returns a built HTML span and escapes its content via esc_attr() internally.
     }
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built HTML; all field values are escaped via esc_attr()/esc_textarea() and $custom_attributes are individually escaped with esc_attr() at build site.
     echo '<textarea class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '"  name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" rows="' . esc_attr( $field['rows'] ) . '" cols="' . esc_attr( $field['cols'] ) . '" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
 
     if ( ! empty( $field['description'] ) && false === $field['desc_tip'] ) {
@@ -156,9 +158,10 @@ function masvideos_wp_checkbox( $field ) {
         <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
 
     if ( ! empty( $field['description'] ) && false !== $field['desc_tip'] ) {
-        echo masvideos_help_tip( $field['description'] );
+        echo masvideos_help_tip( $field['description'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_help_tip() returns a built HTML span and escapes its content via esc_attr() internally.
     }
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built HTML; field values are escaped via esc_attr(), checked() returns safe output, and $custom_attributes are individually escaped with esc_attr() at build site.
     echo '<input type="checkbox" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['cbvalue'] ) . '" ' . checked( $field['value'], $field['cbvalue'], false ) . '  ' . implode( ' ', $custom_attributes ) . '/> ';
 
     if ( ! empty( $field['description'] ) && false === $field['desc_tip'] ) {
@@ -206,14 +209,15 @@ function masvideos_wp_select( $field ) {
     $tooltip     = ! empty( $field['description'] ) && false !== $field['desc_tip'] ? $field['description'] : '';
     $description = ! empty( $field['description'] ) && false === $field['desc_tip'] ? $field['description'] : '';
     ?>
-    <p <?php echo masvideos_implode_html_attributes( $wrapper_attributes ); // WPCS: XSS ok. ?>>
-        <label <?php echo masvideos_implode_html_attributes( $label_attributes ); // WPCS: XSS ok. ?>><?php echo wp_kses_post( $field['label'] ); ?></label>
+    <p <?php echo masvideos_implode_html_attributes( $wrapper_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_implode_html_attributes() escapes each attribute name and value via esc_attr() internally. ?>>
+        <label <?php echo masvideos_implode_html_attributes( $label_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_implode_html_attributes() escapes each attribute name and value via esc_attr() internally. ?>><?php echo wp_kses_post( $field['label'] ); ?></label>
         <?php if ( $tooltip ) : ?>
-            <?php echo masvideos_help_tip( $tooltip ); // WPCS: XSS ok. ?>
+            <?php echo masvideos_help_tip( $tooltip ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_help_tip() returns a built HTML span and escapes its content via esc_attr() internally. ?>
         <?php endif; ?>
-        <select <?php echo masvideos_implode_html_attributes( $field_attributes ); // WPCS: XSS ok. ?>>
+        <select <?php echo masvideos_implode_html_attributes( $field_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_implode_html_attributes() escapes each attribute name and value via esc_attr() internally. ?>>
             <?php
             foreach ( $field['options'] as $key => $value ) {
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_selected() returns safe selected() output; the option key is escaped via esc_attr() and the value via esc_html().
                 echo '<option value="' . esc_attr( $key ) . '"' . masvideos_selected( $key, $field['value'] ) . '>' . esc_html( $value ) . '</option>';
             }
             ?>
@@ -244,7 +248,7 @@ function masvideos_wp_radio( $field ) {
     echo '<fieldset class="form-field form-field-radio ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><legend>' . wp_kses_post( $field['label'] ) . '</legend>';
 
     if ( ! empty( $field['description'] ) && false !== $field['desc_tip'] ) {
-        echo masvideos_help_tip( $field['description'] );
+        echo masvideos_help_tip( $field['description'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- masvideos_help_tip() returns a built HTML span and escapes its content via esc_attr() internally.
     }
 
     echo '<ul class="masvideos-radios">';
@@ -287,7 +291,9 @@ function masvideos_wp_upload_video( $field ) {
         <?php
         if ( absint( $field['value'] ) ) {
             $video_src = wp_get_attachment_url( $field['value'] );
-            echo do_shortcode('[video src="' . $video_src . '"]');
+            // Build the player safely rather than interpolating the value into shortcode text.
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_video_shortcode() returns trusted player HTML; the src is escaped via esc_url().
+            echo wp_video_shortcode( array( 'src' => esc_url( $video_src ) ) );
         }
         ?>
         <input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>" class="upload_video_id" value="<?php echo esc_attr( $field['value'] ); ?>" />
@@ -326,6 +332,7 @@ function masvideos_wp_embed_video( $field ) {
     echo '<div class="form-field media-embed-video ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '">
         <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built HTML; all field values are escaped via esc_attr()/esc_textarea() and $custom_attributes are individually escaped with esc_attr() at build site.
         echo '<textarea class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '"  name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" rows="' . esc_attr( $field['rows'] ) . '" cols="' . esc_attr( $field['cols'] ) . '" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
 
     echo '</div>';
@@ -358,10 +365,14 @@ function masvideos_wp_video_url( $field ) {
 
     echo '<div class="form-field media-video-url ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built HTML; all field values are escaped via esc_attr() and $custom_attributes are individually escaped with esc_attr() at build site.
         echo '<input type="' . esc_attr( $field['type'] ) . '" class="media-video-url-box ' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
 
         if ( ! empty( $field['value'] ) ) {
-            echo do_shortcode('[video src="' . $field['value'] . '"]');
+            // The stored URL is user-controlled; render it as a player without interpolating it
+            // into shortcode text (which would let a crafted value inject other shortcodes).
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_video_shortcode() returns trusted player HTML; the src is escaped via esc_url().
+            echo wp_video_shortcode( array( 'src' => esc_url( $field['value'] ) ) );
         }
     echo '</div>';
 }
@@ -397,6 +408,7 @@ function masvideos_wp_date_picker( $field ) {
     echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '">
         <label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['label'] ) . '</label>';
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built HTML; all field values and the filtered pattern are escaped via esc_attr() and $custom_attributes are individually escaped with esc_attr() at build site.
     echo '<input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['name'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" maxlength="10" pattern="' . esc_attr( apply_filters( 'masvideos_date_input_html_pattern', '[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' ) ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
 
     if ( ! empty( $field['description'] ) && false === $field['desc_tip'] ) {

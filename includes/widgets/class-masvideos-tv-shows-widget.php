@@ -99,7 +99,7 @@ class MasVideos_Tv_Shows_Widget extends MasVideos_Widget {
 
         $atts = apply_filters('masvideos_tv_show_widget_atts', $atts, $instance );
 
-        echo MasVideos_Shortcodes::tv_shows( $atts );
+        echo MasVideos_Shortcodes::tv_shows( $atts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode returns trusted rendered HTML template.
 
         $this->widget_end( $args, $instance, $atts );
     }

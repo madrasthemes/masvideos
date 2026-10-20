@@ -295,7 +295,7 @@ abstract class MasVideos_Data {
             return false;
         }
         /* translators: %s: $key Key to check */
-        _doing_it_wrong( __FUNCTION__, sprintf( __( 'Generic add/update/get meta methods should not be used for internal meta data, including "%s". Use getters and setters.', 'masvideos' ), $key ), '3.2.0' );
+        _doing_it_wrong( __FUNCTION__, esc_html( sprintf( __( 'Generic add/update/get meta methods should not be used for internal meta data, including "%s". Use getters and setters.', 'masvideos' ), $key ) ), '3.2.0' );
 
         return true;
     }
@@ -782,6 +782,7 @@ abstract class MasVideos_Data {
      * @param array  $data             Extra error data.
      */
     protected function error( $code, $message, $http_status_code = 400, $data = array() ) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Structured exception; args (machine code, translated message, int status, data array) are stored and consumed programmatically by callers that escape at render, not output here.
         throw new MasVideos_Data_Exception( $code, $message, $http_status_code, $data );
     }
 }

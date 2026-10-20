@@ -147,7 +147,6 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
 
         $this->steps = apply_filters( 'masvideos_tv_show_csv_importer_steps', $default_steps );
 
-        // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification
         $this->step            = isset( $_REQUEST['step'] ) ? sanitize_key( $_REQUEST['step'] ) : current( array_keys( $this->steps ) );
         $this->file            = isset( $_REQUEST['file'] ) ? masvideos_clean( wp_unslash( $_REQUEST['file'] ) ) : '';
         $this->update_existing = isset( $_REQUEST['update_existing'] ) ? (bool) $_REQUEST['update_existing'] : false;
@@ -295,7 +294,7 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
             $this->file = $file;
         }
 
-        wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
+        wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
         exit;
     }
 
@@ -306,7 +305,6 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
      * @return string|WP_Error
      */
     public function handle_upload() {
-        // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification -- Nonce already verified in MasVideos_TV_Show_CSV_Importer_Controller::upload_form_handler()
         $file_url = isset( $_POST['file_url'] ) ? masvideos_clean( wp_unslash( $_POST['file_url'] ) ) : '';
 
         if ( empty( $file_url ) ) {
@@ -362,7 +360,6 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
 
             return $_SERVER['DOCUMENT_ROOT'] . '/' . $file_url;
         }
-        // phpcs:enable
 
         return new WP_Error( 'masvideos_tv_show_csv_importer_upload_invalid_file', __( 'Please upload or provide the link to a valid CSV file.', 'masvideos' ) );
     }
@@ -416,15 +413,15 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
             return;
         }
 
-        // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification -- Nonce already verified in MasVideos_Admin_Importers::do_ajax_tv_show_import()
-        if ( ! empty( $_POST['map_from'] ) && ! empty( $_POST['map_to'] ) ) {
+        if ( ! empty( $_POST['map_from'] ) && ! empty( $_POST['map_to'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by check_admin_referer() on the next line.
+        	check_admin_referer( 'masvideos-csv-importer' );
             $mapping_from = masvideos_clean( wp_unslash( $_POST['map_from'] ) );
             $mapping_to   = masvideos_clean( wp_unslash( $_POST['map_to'] ) );
 
             // Save mapping preferences for future imports.
             update_user_option( get_current_user_id(), 'masvideos_tv_show_import_mapping', $mapping_to );
         } else {
-            wp_redirect( esc_url_raw( $this->get_next_step_link( 'upload' ) ) );
+            wp_safe_redirect( esc_url_raw( $this->get_next_step_link( 'upload' ) ) );
             exit;
         }
         // phpcs:enable
@@ -450,7 +447,6 @@ class MasVideos_TV_Show_CSV_Importer_Controller {
      * Done step.
      */
     protected function done() {
-        // phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification
         $post_type  = isset( $_GET['post_type'] ) ? masvideos_clean( $_GET['post_type'] ) : 'post';
         $imported   = isset( $_GET['tv-shows-imported'] ) ? absint( $_GET['tv-shows-imported'] ) : 0;
         $updated    = isset( $_GET['tv-shows-updated'] ) ? absint( $_GET['tv-shows-updated'] ) : 0;

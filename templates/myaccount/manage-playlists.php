@@ -47,7 +47,7 @@ do_action( 'masvideos_before_manage_playlists' ); ?>
                 <?php foreach ( $playlists as $key => $obj ) : ?>
                     <tr>
                         <td>
-                            <a class="view" href="<?php echo get_permalink( $obj->ID ) ?>"><?php echo get_the_title( $obj->ID ); ?></a>
+                            <a class="view" href="<?php echo esc_url( get_permalink( $obj->ID ) ) ?>"><?php echo esc_html( get_the_title( $obj->ID ) ); ?></a>
                         </td>
                         <td>
                             <?php

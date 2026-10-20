@@ -71,6 +71,7 @@ class MasVideos_Admin_Taxonomies {
      * Description for movies attribute to aid users.
      */
     public function movie_attribute_description() {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wpautop() returns trusted HTML built from a static translatable string with intentional inline markup.
         echo wpautop( __( 'Attribute terms can be assigned to movies and variations.<br/><br/><b>Note</b>: Deleting a term will remove it from all movies and variations to which it has been assigned. Recreating a term will not automatically assign it back to movies.', 'masvideos' ) );
     }
 
@@ -78,6 +79,7 @@ class MasVideos_Admin_Taxonomies {
      * Description for videos attribute to aid users.
      */
     public function video_attribute_description() {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wpautop() returns trusted HTML built from a static translatable string with intentional inline markup.
         echo wpautop( __( 'Attribute terms can be assigned to mvideoes and variations.<br/><br/><b>Note</b>: Deleting a term will remove it from all videos and variations to which it has been assigned. Recreating a term will not automatically assign it back to videos.', 'masvideos' ) );
     }
 
@@ -87,11 +89,11 @@ class MasVideos_Admin_Taxonomies {
     public function add_movie_genre_fields() {
         ?>
         <div id="movie_genre_thumbnail_field" class="form-field term-thumbnail-wrap">
-            <label><?php _e( 'Thumbnail', 'masvideos' ); ?></label>
+            <label><?php esc_html_e( 'Thumbnail', 'masvideos' ); ?></label>
             <img src="<?php echo esc_url( masvideos_placeholder_img_src() ); ?>" width="60px" height="60px" style="margin-right: 10px;" class="upload_image_preview" />
             <input type="hidden" id="movie_genre_thumbnail_id" class="upload_image_id" name="movie_genre_thumbnail_id"/>
-            <a href="#" class="button masvideos_upload_image_button tips"><?php _e( 'Upload/Add image', 'masvideos' ); ?></a>
-            <a href="#" class="button masvideos_remove_image_button tips"><?php _e( 'Remove image', 'masvideos' ); ?></a>
+            <a href="#" class="button masvideos_upload_image_button tips"><?php esc_html_e( 'Upload/Add image', 'masvideos' ); ?></a>
+            <a href="#" class="button masvideos_remove_image_button tips"><?php esc_html_e( 'Remove image', 'masvideos' ); ?></a>
             <div class="clear"></div>
         </div>
         <?php
@@ -113,12 +115,12 @@ class MasVideos_Admin_Taxonomies {
         }
         ?>
         <tr class="term-thumbnail-wrap">
-            <th scope="row" valign="top"><label><?php _e( 'Thumbnail', 'masvideos' ); ?></label></th>
+            <th scope="row" valign="top"><label><?php esc_html_e( 'Thumbnail', 'masvideos' ); ?></label></th>
             <td id="movie_genre_thumbnail_field" class="form-field">
                 <img src="<?php echo esc_url( $image ); ?>" width="60px" height="60px" class="upload_image_preview" /></div>
                 <input type="hidden" class="upload_image_id" name="movie_genre_thumbnail_id" value="<?php echo esc_attr( $thumbnail_id ); ?>" />
-                <a href="#" class="button masvideos_upload_image_button tips"><?php _e( 'Upload/Add image', 'masvideos' ); ?></a>
-                <a href="#" class="button masvideos_remove_image_button tips"><?php _e( 'Remove image', 'masvideos' ); ?></a>
+                <a href="#" class="button masvideos_upload_image_button tips"><?php esc_html_e( 'Upload/Add image', 'masvideos' ); ?></a>
+                <a href="#" class="button masvideos_remove_image_button tips"><?php esc_html_e( 'Remove image', 'masvideos' ); ?></a>
                 <div class="clear"></div>
             </td>
         </tr>
@@ -192,11 +194,11 @@ class MasVideos_Admin_Taxonomies {
     public function add_video_cat_fields() {
         ?>
         <div id="video_cat_thumbnail_field" class="form-field term-thumbnail-wrap">
-            <label><?php _e( 'Thumbnail', 'masvideos' ); ?></label>
+            <label><?php esc_html_e( 'Thumbnail', 'masvideos' ); ?></label>
             <img src="<?php echo esc_url( masvideos_placeholder_img_src() ); ?>" width="60px" height="60px" style="margin-right: 10px;" class="upload_image_preview" />
             <input type="hidden" id="video_cat_thumbnail_id" class="upload_image_id" name="video_cat_thumbnail_id"/>
-            <a href="#" class="button masvideos_upload_image_button tips"><?php _e( 'Upload/Add image', 'masvideos' ); ?></a>
-            <a href="#" class="button masvideos_remove_image_button tips"><?php _e( 'Remove image', 'masvideos' ); ?></a>
+            <a href="#" class="button masvideos_upload_image_button tips"><?php esc_html_e( 'Upload/Add image', 'masvideos' ); ?></a>
+            <a href="#" class="button masvideos_remove_image_button tips"><?php esc_html_e( 'Remove image', 'masvideos' ); ?></a>
             <div class="clear"></div>
         </div>
         <?php
@@ -218,12 +220,12 @@ class MasVideos_Admin_Taxonomies {
         }
         ?>
         <tr class="term-thumbnail-wrap">
-            <th scope="row" valign="top"><label><?php _e( 'Thumbnail', 'masvideos' ); ?></label></th>
+            <th scope="row" valign="top"><label><?php esc_html_e( 'Thumbnail', 'masvideos' ); ?></label></th>
             <td id="video_cat_thumbnail_field" class="form-field">
                 <img src="<?php echo esc_url( $image ); ?>" width="60px" height="60px" class="upload_image_preview" /></div>
                 <input type="hidden" class="upload_image_id" name="video_cat_thumbnail_id" value="<?php echo esc_attr( $thumbnail_id ); ?>" />
-                <a href="#" class="button masvideos_upload_image_button tips"><?php _e( 'Upload/Add image', 'masvideos' ); ?></a>
-                <a href="#" class="button masvideos_remove_image_button tips"><?php _e( 'Remove image', 'masvideos' ); ?></a>
+                <a href="#" class="button masvideos_upload_image_button tips"><?php esc_html_e( 'Upload/Add image', 'masvideos' ); ?></a>
+                <a href="#" class="button masvideos_remove_image_button tips"><?php esc_html_e( 'Remove image', 'masvideos' ); ?></a>
                 <div class="clear"></div>
             </td>
         </tr>
