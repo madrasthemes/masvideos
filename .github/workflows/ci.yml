@@ -79,6 +79,15 @@ jobs:
           set -euo pipefail
           WP="${{ matrix.wp }}"
 
+          # wordpress-develop tags the first release of a major series in full
+          # (e.g. 6.4 -> tag 6.4.0), whereas the core tarball uses the short form
+          # (wordpress-6.4.tar.gz). Derive the matching develop tag accordingly.
+          if [[ "$WP" =~ ^[0-9]+\.[0-9]+$ ]]; then
+            DEV_TAG="${WP}.0"
+          else
+            DEV_TAG="$WP"
+          fi
+
           # WordPress core (a real release build) -> ABSPATH
           mkdir -p "$WP_CORE_DIR"
           curl -sSL "https://wordpress.org/wordpress-${WP}.tar.gz" -o /tmp/wp-core.tar.gz
@@ -86,11 +95,11 @@ jobs:
 
           # The matching PHPUnit test library (tests/phpunit/{includes,data}) for this
           # exact WordPress version, from the wordpress-develop tag. No svn required.
-          curl -sSL "https://github.com/WordPress/wordpress-develop/archive/refs/tags/${WP}.tar.gz" -o /tmp/wp-develop.tar.gz
+          curl -sSL "https://github.com/WordPress/wordpress-develop/archive/refs/tags/${DEV_TAG}.tar.gz" -o /tmp/wp-develop.tar.gz
           tar -xzf /tmp/wp-develop.tar.gz -C /tmp
           mkdir -p "$WP_TESTS_DIR"
-          cp -r "/tmp/wordpress-develop-${WP}/tests/phpunit/includes" "$WP_TESTS_DIR/includes"
-          cp -r "/tmp/wordpress-develop-${WP}/tests/phpunit/data" "$WP_TESTS_DIR/data"
+          cp -r "/tmp/wordpress-develop-${DEV_TAG}/tests/phpunit/includes" "$WP_TESTS_DIR/includes"
+          cp -r "/tmp/wordpress-develop-${DEV_TAG}/tests/phpunit/data" "$WP_TESTS_DIR/data"
 
       - name: Write test configuration
         run: |
