@@ -1,0 +1,163 @@
+name: CI
+
+# Continuous integration for MAS Videos.
+#
+# On every pull request and every push to main this runs:
+#   1. the PHPUnit regression suites (security, trash-disabled, multisite)
+#      across the declared support range — PHP 7.4 and 8.3, WordPress 6.4
+#      (minimum) and 7.1.3 (current) — against a MariaDB service;
+#   2. WordPress.org Plugin Check, failing the build on any *error*.
+#
+# This is a read-only, non-deploying workflow. Publishing to WordPress.org SVN
+# is handled separately by deploy-on-pushing-a-new-tag.yml, which only runs on a
+# pushed X.Y.Z tag behind a protected environment.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+# Least privilege: these jobs only read the repository.
+permissions:
+  contents: read
+
+# Cancel superseded runs for the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: PHPUnit (PHP ${{ matrix.php }}, WP ${{ matrix.wp }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { php: '7.4', wp: '6.4' }     # minimum supported PHP + minimum supported WordPress
+          - { php: '7.4', wp: '7.1.3' }   # minimum supported PHP + current WordPress
+          - { php: '8.3', wp: '7.1.3' }   # current PHP + current WordPress
+
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+
+    env:
+      WP_CORE_DIR: /tmp/wordpress
+      WP_TESTS_DIR: /tmp/wp-tests-lib
+      WP_TESTS_CONFIG_FILE_PATH: /tmp/wp-tests-lib/wp-tests-config.php
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli
+          coverage: none
+          tools: composer
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Download WordPress ${{ matrix.wp }} core and matching test library
+        run: |
+          set -euo pipefail
+          WP="${{ matrix.wp }}"
+
+          # wordpress-develop tags the first release of a major series in full
+          # (e.g. 6.4 -> tag 6.4.0), whereas the core tarball uses the short form
+          # (wordpress-6.4.tar.gz). Derive the matching develop tag accordingly.
+          if [[ "$WP" =~ ^[0-9]+\.[0-9]+$ ]]; then
+            DEV_TAG="${WP}.0"
+          else
+            DEV_TAG="$WP"
+          fi
+
+          # WordPress core (a real release build) -> ABSPATH
+          mkdir -p "$WP_CORE_DIR"
+          curl -sSL "https://wordpress.org/wordpress-${WP}.tar.gz" -o /tmp/wp-core.tar.gz
+          tar --strip-components=1 -xzf /tmp/wp-core.tar.gz -C "$WP_CORE_DIR"
+
+          # The matching PHPUnit test library (tests/phpunit/{includes,data}) for this
+          # exact WordPress version, from the wordpress-develop tag. No svn required.
+          curl -sSL "https://github.com/WordPress/wordpress-develop/archive/refs/tags/${DEV_TAG}.tar.gz" -o /tmp/wp-develop.tar.gz
+          tar -xzf /tmp/wp-develop.tar.gz -C /tmp
+          mkdir -p "$WP_TESTS_DIR"
+          cp -r "/tmp/wordpress-develop-${DEV_TAG}/tests/phpunit/includes" "$WP_TESTS_DIR/includes"
+          cp -r "/tmp/wordpress-develop-${DEV_TAG}/tests/phpunit/data" "$WP_TESTS_DIR/data"
+
+      - name: Write test configuration
+        run: |
+          cat > "$WP_TESTS_CONFIG_FILE_PATH" <<'PHP'
+          <?php
+          define( 'ABSPATH', '/tmp/wordpress/' );
+          define( 'WP_DEFAULT_THEME', 'twentytwentyfour' );
+          define( 'DB_NAME', 'wordpress_test' );
+          define( 'DB_USER', 'root' );
+          define( 'DB_PASSWORD', 'root' );
+          define( 'DB_HOST', '127.0.0.1:3306' );
+          define( 'DB_CHARSET', 'utf8' );
+          define( 'DB_COLLATE', '' );
+          $table_prefix = 'wptests_';
+          define( 'WP_TESTS_DOMAIN', 'example.org' );
+          define( 'WP_TESTS_EMAIL', 'admin@example.org' );
+          define( 'WP_TESTS_TITLE', 'MAS Videos CI' );
+          define( 'WP_PHP_BINARY', 'php' );
+          define( 'WPLANG', '' );
+          PHP
+
+      - name: PHPUnit — security suite
+        run: vendor/bin/phpunit -c phpunit.xml.dist
+
+      - name: PHPUnit — trash-disabled suite
+        env:
+          MASVIDEOS_TEST_EMPTY_TRASH_DAYS: '0'
+        run: vendor/bin/phpunit -c phpunit-trash-disabled.xml.dist
+
+      - name: PHPUnit — multisite suite
+        env:
+          WP_MULTISITE: '1'
+        run: vendor/bin/phpunit -c phpunit-multisite.xml.dist
+
+  plugin-check:
+    name: Plugin Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build the distribution package (.distignore)
+        # Check the package that is actually distributed and that WordPress.org
+        # reviews — built via the same .distignore the deploy uses — so dev-only
+        # files (tests, phpunit configs, composer, lint dotfiles, .wp-env.json)
+        # are excluded, exactly as in the published plugin.
+        run: |
+          set -euo pipefail
+          mkdir -p build/masvideos
+          rsync -a --exclude-from=.distignore \
+            --exclude='.git' --exclude='.github' --exclude='build' \
+            ./ build/masvideos/
+
+      - name: Run WordPress.org Plugin Check on the packaged build
+        # Fails the build on any Plugin Check error. The ~1.5k remaining warnings
+        # are triaged and documented as non-exploitable, so they do not fail CI;
+        # drop `ignore-warnings` to surface them.
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: ./build/masvideos
+          ignore-warnings: true
