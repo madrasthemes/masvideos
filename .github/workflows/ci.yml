@@ -132,11 +132,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run WordPress.org Plugin Check
+      - name: Build the distribution package (.distignore)
+        # Check the package that is actually distributed and that WordPress.org
+        # reviews — built via the same .distignore the deploy uses — so dev-only
+        # files (tests, phpunit configs, composer, lint dotfiles, .wp-env.json)
+        # are excluded, exactly as in the published plugin.
+        run: |
+          set -euo pipefail
+          mkdir -p build/masvideos
+          rsync -a --exclude-from=.distignore \
+            --exclude='.git' --exclude='.github' --exclude='build' \
+            ./ build/masvideos/
+
+      - name: Run WordPress.org Plugin Check on the packaged build
         # Fails the build on any Plugin Check error. The ~1.5k remaining warnings
         # are triaged and documented as non-exploitable, so they do not fail CI;
         # drop `ignore-warnings` to surface them.
         uses: wordpress/plugin-check-action@v1
         with:
-          exclude-directories: tests
+          build-dir: ./build/masvideos
           ignore-warnings: true
