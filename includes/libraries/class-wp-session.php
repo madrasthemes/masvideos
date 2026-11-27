@@ -76,18 +76,14 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
             $cookie = stripslashes( $_COOKIE[WP_SESSION_COOKIE] );
             $cookie_crumbs = explode( '||', $cookie );
 
-            if( $this->is_valid_md5( $cookie_crumbs[0] ) ) {
-
-                $this->session_id = $cookie_crumbs[0];
-
+            if ( isset( $cookie_crumbs[0], $cookie_crumbs[1], $cookie_crumbs[2] ) && $this->is_valid_md5( $cookie_crumbs[0] ) ) {
+                $this->session_id  = $cookie_crumbs[0];
+                $this->expires     = (int) $cookie_crumbs[1];
+                $this->exp_variant = (int) $cookie_crumbs[2];
             } else {
-
-                $this->regenerate_id( true );
-
+                $this->session_id = $this->generate_id();
+                $this->set_expiration();
             }
-
-            $this->expires     = $cookie_crumbs[1];
-            $this->exp_variant = $cookie_crumbs[2];
 
             // Update the session expiration if we're past the variant time
             if ( time() > $this->exp_variant ) {
@@ -157,10 +153,11 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
      * @return string
      */
     protected function generate_id() {
-        require_once( ABSPATH . 'wp-includes/class-phpass.php');
-        $hasher = new PasswordHash( 8, false );
-
-        return md5( $hasher->get_random_bytes( 32 ) );
+        try {
+            return bin2hex( random_bytes( 16 ) );
+        } catch ( Exception $e ) {
+            return md5( wp_generate_password( 32, true, true ) );
+        }
     }
 
     /**
@@ -282,6 +279,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current() {
         return current( $this->container );
     }
@@ -293,6 +291,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function key() {
         return key( $this->container );
     }
@@ -304,6 +303,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function next() {
         next( $this->container );
     }
@@ -315,6 +315,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function rewind() {
         reset( $this->container );
     }
@@ -326,6 +327,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid() {
         return $this->offsetExists( $this->key() );
     }
@@ -341,6 +343,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count() {
         return count( $this->container );
     }
