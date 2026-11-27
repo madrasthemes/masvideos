@@ -334,6 +334,10 @@ if ( ! function_exists ( 'masvideos_get_the_movie' ) ) {
             $movie = masvideos_get_movie( $movie );
         }
 
+        if ( ! is_a( $movie, 'MasVideos_Movie' ) ) {
+            return '';
+        }
+
         $movie_src = '';
         $movie_choice = $movie->get_movie_choice();
         $is_affiliate_html = false;

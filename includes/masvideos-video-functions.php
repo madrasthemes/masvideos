@@ -334,6 +334,10 @@ if ( ! function_exists ( 'masvideos_get_the_video' ) ) {
             $video = masvideos_get_video( $video );
         }
 
+        if ( ! is_a( $video, 'MasVideos_Video' ) ) {
+            return '';
+        }
+
         $video_src = '';
         $video_choice = $video->get_video_choice();
 

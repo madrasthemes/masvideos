@@ -334,6 +334,10 @@ if ( ! function_exists ( 'masvideos_get_the_episode' ) ) {
             $episode = masvideos_get_episode( $episode );
         }
 
+        if ( ! is_a( $episode, 'MasVideos_Episode' ) ) {
+            return '';
+        }
+
         $episode_src = '';
         $episode_choice = $episode->get_episode_choice();
 
